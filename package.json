@@ -7,8 +7,14 @@
     "example": "examples"
   },
   "scripts": {
+    "start": "node scripts/server.js",
+    "build": "rimraf dist && webpack --config scripts/webpack.config.prod.js",
+    "prepublishOnly": "npm run build",
     "test": "mocha",
     "lint": "eslint src"
+  },
+  "browser": {
+    "./src/worker/node/index.js": "./src/worker/browser/index.js"
   },
   "repository": {
     "type": "git",
@@ -29,9 +35,17 @@
     "@ffmpeg/core": "^0.1.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "babel-loader": "^8.0.6",
+    "cors": "^2.8.5",
     "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
-    "mocha": "^6.2.2"
+    "express": "^4.17.1",
+    "mocha": "^6.2.2",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-middleware": "^3.7.2"
   }
 }
