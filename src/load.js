@@ -1,8 +1,8 @@
-const { setModule } = require('./util/module');
 const FFmpegCore = require('@ffmpeg/core');
+const { setModule } = require('./util/module');
 
 module.exports = () => (
-  new Promise((resolve, reject) => {
+  new Promise((resolve) => {
     FFmpegCore()
       .then((Module) => {
         setModule(Module);
