@@ -1,6 +1,11 @@
 {
   "extends": "airbnb-base",
   "rules": {
-    "no-underscore-dangle": 0
+    "no-underscore-dangle": 0,
+    "global-require": 0
+  },
+  "env": {
+    "browser": true,
+    "node": true
   }
 }

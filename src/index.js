@@ -1,7 +1,6 @@
-const load = require('./load');
-const transcode = require('./transcode');
+require('regenerator-runtime/runtime');
+const createWorker = require('./createWorker');
 
 module.exports = {
-  load,
-  transcode,
+  createWorker,
 };

@@ -25,11 +25,13 @@ $ npm install @ffmpeg/ffmpeg
 
 ```javascript
 const fs = require('fs');
-const ffmpeg = require('@ffmpeg/ffmpeg');
+const { createWorker } = require('@ffmpeg/ffmpeg');
+
+const worker = createWorker();
 
 (async () => {
-  await ffmpeg.load();
-  const data = ffmpeg.transcode('./test.avi', 'mp4');
+  await worker.load();
+  const { data } = await worker.transcode('./test.avi', 'mp4');
   fs.wrieFileSync('./test.mp4', data);
 })();
 ```
