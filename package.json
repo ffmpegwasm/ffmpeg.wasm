@@ -7,7 +7,8 @@
     "example": "examples"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "lint": "eslint src"
   },
   "repository": {
     "type": "git",
@@ -26,5 +27,10 @@
   "homepage": "https://github.com/jeromewu/ffmpeg.js#readme",
   "dependencies": {
     "@ffmpeg/core": "^0.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2"
   }
 }

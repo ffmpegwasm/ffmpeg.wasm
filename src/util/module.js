@@ -1,6 +1,6 @@
 let Module = null;
 
-exports.setModule = m => {
+exports.setModule = (m) => {
   Module = m;
 };
 
