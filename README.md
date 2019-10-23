@@ -2,7 +2,7 @@ FFmpeg.js
 =========
 
 <p align="center">
-<a href="#"><img alt="Tesseract.js" src="https://github.com/naptha/tesseract.js/raw/master/docs/images/cover.png"></a>
+<a href="#"><img alt="ffmpeg.js" src="https://github.com/jeromewu/ffmpeg.js/raw/master/docs/images/cover.png"></a>
 </p>
 
 A FFmpeg WebAssembly version built from scratch, you can learn how to do it from this series of stories: [Build FFmpeg WebAssembly version (=ffmpeg.js)](https://medium.com/@jeromewus/build-ffmpeg-webassembly-version-ffmpeg-js-part-1-preparation-ed12bf4c8fac).
