@@ -3,31 +3,25 @@
     <script src="/dist/ffmpeg.dev.js"></script>
   </head>
   <body>
-    <input type="file" id="uploader">
-    <video controls>
-      <source id="video-src" type="video/mp4">
-    </video>
+    <div>
+      <input type="file" id="uploader">
+    </div>
     <script>
       const { createWorker } = FFmpeg;
       const worker = createWorker({
         corePath: '../../node_modules/@ffmpeg/core/ffmpeg-core.js',
       });
 
-      const bufferToBase64 = (buf) => {
-        const binstr = Array.prototype.map.call(buf, function (ch) {
-          return String.fromCharCode(ch);
-        }).join('');
-        return btoa(binstr);
-      }
-
       const transcode = async ({ target: { files }  }) => {
         await worker.load();
         console.log('Start transcoding');
-        const { data } = await worker.transcode('/tests/assets/test.avi', 'mp4');
-        console.log(data);
+        const { data } = await worker.transcode(files[0], 'mp4');
         console.log('Complete transcoding');
-        const b64 = bufferToBase64(data);
-        document.getElementById('video-src').setAttribute('src', `data:video/mp4;base64,${b64}`);
+
+        const video = document.createElement('video');
+        video.controls = true;
+        video.src = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
+        document.body.appendChild(video);
       }
       const elm = document.getElementById('uploader');
       elm.addEventListener('change', transcode);
