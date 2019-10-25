@@ -4,7 +4,7 @@
   </a>
 </p>
 
-# FFmpeg.js
+# ffmpeg.js
 
 [![Actions Status](https://github.com/ffmpegjs/ffmpeg.js/workflows/CI/badge.svg)](https://github.com/ffmpegjs/ffmpeg.js/actions)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/ffmpegjs/ffmpeg.js/graphs/commit-activity)
