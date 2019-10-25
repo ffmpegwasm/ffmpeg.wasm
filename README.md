@@ -1,5 +1,7 @@
 <p align="center">
-<a href="#"><img alt="ffmpeg.js" src="https://github.com/ffmpegjs/ffmpeg.js/raw/master/docs/images/ffmpegjs-icon.png"></a>
+  <a href="#">
+    <img alt="ffmpeg.js" width="128px" height="128px" src="https://github.com/ffmpegjs/ffmpeg.js/raw/master/docs/images/ffmpegjs-icon.png">
+  </a>
 </p>
 
 # FFmpeg.js
