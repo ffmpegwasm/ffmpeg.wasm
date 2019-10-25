@@ -1,3 +1,4 @@
+const fs = require('fs');
 const { createWorker } = require('../../src');
 
 const { argv } = process;
@@ -8,5 +9,5 @@ const worker = createWorker();
 (async () => {
   await worker.load();
   const { data } = await worker.transcode(inputPath, outputPath.split('.').pop());
-  console.log(data.length);
+  fs.writeFileSync(outputPath, Buffer.from(data));
 })();

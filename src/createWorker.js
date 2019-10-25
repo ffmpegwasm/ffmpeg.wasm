@@ -86,7 +86,7 @@ module.exports = (_options = {}) => {
       log(`[${workerId}]: Complete ${jobId}`);
       let d = data;
       if (action === 'transcode') {
-        d = Array.from({ ...data, length: Object.keys(data).length });
+        d = Uint8Array.from({ ...data, length: Object.keys(data).length });
       }
       resolves[action]({ jobId, data: d });
     } else if (status === 'reject') {

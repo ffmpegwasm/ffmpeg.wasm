@@ -49,7 +49,7 @@ const transcode = ({
   const data = Uint8Array.from({ ...media, length: Object.keys(media).length });
   const iPath = 'media';
   const oPath = `media.${outputExt}`;
-  const args = [...defaultArgs, ...`${options} -i ${iPath} ${oPath}`.trim().split(' ')];
+  const args = [...defaultArgs, ...`${options} -i file:${iPath} ${oPath}`.trim().split(' ')];
   Module.FS.writeFile(iPath, data);
   ffmpeg(args.length, strList2ptr(args));
   res.resolve(Module.FS.readFile(oPath));
