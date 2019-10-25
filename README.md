@@ -1,5 +1,9 @@
-FFmpeg.js
-=========
+<p align="center">
+<a href="#"><img alt="ffmpeg.js" src="https://github.com/ffmpegjs/ffmpeg.js/raw/master/docs/images/ffmpegjs-icon.png"></a>
+</p>
+
+# FFmpeg.js
+
 [![Actions Status](https://github.com/ffmpegjs/ffmpeg.js/workflows/CI/badge.svg)](https://github.com/ffmpegjs/ffmpeg.js/actions)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/ffmpegjs/ffmpeg.js/graphs/commit-activity)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -7,9 +11,6 @@ FFmpeg.js
 [![Downloads Total](https://img.shields.io/npm/dt/@ffmpeg/ffmpeg.svg)](https://www.npmjs.com/package/@ffmpeg/ffmpeg)
 [![Downloads Month](https://img.shields.io/npm/dm/@ffmpeg/ffmpeg.svg)](https://www.npmjs.com/package/@ffmpeg/ffmpeg)
 
-<p align="center">
-<a href="#"><img alt="ffmpeg.js" src="https://github.com/jeromewu/ffmpeg.js/raw/master/docs/images/cover.png"></a>
-</p>
 
 A FFmpeg WebAssembly version built from scratch, you can learn how to do it from this series of stories: [Build FFmpeg WebAssembly version (=ffmpeg.js)](https://medium.com/@jeromewus/build-ffmpeg-webassembly-version-ffmpeg-js-part-1-preparation-ed12bf4c8fac).
 
