@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jeromewu/ffmpeg.js.git"
+    "url": "git+https://github.com/ffmpegjs/ffmpeg.js.git"
   },
   "keywords": [
     "ffmpeg",
@@ -28,9 +28,9 @@
   "author": "Jerome Wu <jeromewus@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jeromewu/ffmpeg.js/issues"
+    "url": "https://github.com/ffmpegjs/ffmpeg.js/issues"
   },
-  "homepage": "https://github.com/jeromewu/ffmpeg.js#readme",
+  "homepage": "https://github.com/ffmpegjs/ffmpeg.js#readme",
   "dependencies": {
     "@ffmpeg/core": "^0.1.0"
   },
