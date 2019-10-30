@@ -10,4 +10,5 @@ const worker = createWorker();
   await worker.load();
   const { data } = await worker.transcode(inputPath, outputPath.split('.').pop());
   fs.writeFileSync(outputPath, Buffer.from(data));
+  process.exit(0);
 })();
