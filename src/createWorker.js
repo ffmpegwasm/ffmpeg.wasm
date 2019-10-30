@@ -1,6 +1,7 @@
 const createJob = require('./createJob');
 const { log } = require('./utils/log');
 const getId = require('./utils/getId');
+const resolvePaths = require('./utils/resolvePaths');
 const {
   defaultOptions,
   spawnWorker,
@@ -17,10 +18,10 @@ module.exports = (_options = {}) => {
   const {
     logger,
     ...options
-  } = {
+  } = resolvePaths({
     ...defaultOptions,
     ..._options,
-  };
+  });
   const resolves = {};
   const rejects = {};
   let worker = spawnWorker(options);
