@@ -2,7 +2,7 @@
   "extends": "airbnb-base",
   "rules": {
     "no-underscore-dangle": 0,
-    "linebreak-style": 0
+    "linebreak-style": 0,
     "global-require": 0
   },
   "env": {
