@@ -21,10 +21,7 @@ Use FFmpeg directly in your browser without any backend services!!
     <img alt="transcode-demo" src="https://github.com/ffmpegjs/ffmpeg.js/raw/master/docs/images/transcode.gif">
   </a>
 </p>
-
-<a href="https://codepen.io/jeromewu/pen/NWWaMeY" target="_blank">
-  <img alt="codepen" width="128px" src="https://blog.codepen.io/wp-content/uploads/2012/06/codepen-wordmark-display-inside-black@10x.png">
-</a>
+[Source Code](https://github.com/ffmpegjs/ffmpeg.js/blob/master/examples/browser/transcode.html)
 
 ---
 
