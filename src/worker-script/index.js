@@ -1,6 +1,7 @@
 require('regenerator-runtime/runtime');
 const defaultArgs = require('./constants/defaultArgs');
 
+let action = 'unknown';
 let Module = null;
 let adapter = null;
 let ffmpeg = null;
@@ -25,12 +26,16 @@ const strList2ptr = (strList) => {
   return listPtr;
 };
 
-const load = ({ payload: { options: { corePath } } }, res) => {
+const load = ({ workerId, payload: { options: { corePath } } }, res) => {
   if (Module == null) {
     const Core = adapter.getCore(corePath);
     Core()
       .then((_Module) => {
         Module = _Module;
+        console.log(JSON.stringify(Object.keys(Module)));
+        Module.setLogger((message, type) => {
+          res.progress({ workerId, action, type, message });
+        });
         ffmpeg = Module.cwrap('ffmpeg', 'number', ['number', 'number']);
         res.resolve(true);
       });
@@ -70,6 +75,7 @@ exports.dispatchHandlers = (packet, send) => {
   res.reject = res.bind(this, 'reject');
   res.progress = res.bind(this, 'progress');
 
+  action = packet.action
   try {
     ({
       load,
@@ -79,6 +85,7 @@ exports.dispatchHandlers = (packet, send) => {
     /** Prepare exception to travel through postMessage */
     res.reject(err.toString());
   }
+  action = 'unknown';
 };
 
 exports.setAdapter = (_adapter) => {

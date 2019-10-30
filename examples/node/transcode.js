@@ -4,7 +4,9 @@ const { createWorker } = require('../../src');
 const { argv } = process;
 const [,, inputPath, outputPath] = argv;
 
-const worker = createWorker();
+const worker = createWorker({
+  logger: ({ message }) => console.log(message),
+});
 
 (async () => {
   await worker.load();
