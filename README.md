@@ -24,7 +24,7 @@ Use FFmpeg directly in your browser without any backend services!!
 </p>
 
 <a href="https://codepen.io/jeromewu/pen/NWWaMeY">
-  <img alt="codepen" src="https://blog.codepen.io/wp-content/uploads/2012/06/codepen-wordmark-display-inside-white@10x.png">
+  <img alt="codepen" width="128px" src="https://blog.codepen.io/wp-content/uploads/2012/06/codepen-wordmark-display-inside-black@10x.png">
 </a>
 
 [Source Code](https://github.com/ffmpegjs/ffmpeg.js/blob/master/examples/browser/transcode.html)
