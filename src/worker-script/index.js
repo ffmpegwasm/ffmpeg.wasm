@@ -52,7 +52,10 @@ const transcode = ({
   const args = [...defaultArgs, ...`${options} -i file:${iPath} ${oPath}`.trim().split(' ')];
   Module.FS.writeFile(iPath, data);
   ffmpeg(args.length, strList2ptr(args));
-  res.resolve(Module.FS.readFile(oPath));
+  const out = Module.FS.readFile(oPath);
+  Module.FS.unlink(iPath);
+  Module.FS.unlink(oPath);
+  res.resolve(out);
 };
 
 exports.dispatchHandlers = (packet, send) => {
