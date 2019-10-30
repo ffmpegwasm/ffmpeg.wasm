@@ -19,7 +19,7 @@ Use FFmpeg directly in your browser without any backend services!!
 
 <p align="center">
   <a href="#">
-    <img alt="demo" src="https://github.com/ffmpegjs/ffmpeg.js/raw/master/docs/images/demo.gif">
+    <img alt="transcode-demo" src="https://github.com/ffmpegjs/ffmpeg.js/raw/master/docs/images/transcode.gif">
   </a>
 </p>
 
