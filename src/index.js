@@ -1,7 +1,9 @@
-const load = require('./load');
-const transcode = require('./transcode');
+require('regenerator-runtime/runtime');
+const { logging, setLogging } = require('./utils/log');
+const createWorker = require('./createWorker');
 
 module.exports = {
-  load,
-  transcode,
+  logging,
+  setLogging,
+  createWorker,
 };
