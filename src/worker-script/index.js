@@ -33,7 +33,9 @@ const load = ({ workerId, payload: { options: { corePath } } }, res) => {
       .then((_Module) => {
         Module = _Module;
         Module.setLogger((message, type) => {
-          res.progress({ workerId, action, type, message });
+          res.progress({
+            workerId, action, type, message,
+          });
         });
         ffmpeg = Module.cwrap('ffmpeg', 'number', ['number', 'number']);
         res.resolve(true);
@@ -74,7 +76,7 @@ exports.dispatchHandlers = (packet, send) => {
   res.reject = res.bind(this, 'reject');
   res.progress = res.bind(this, 'progress');
 
-  action = packet.action
+  action = packet.action;
   try {
     ({
       load,
