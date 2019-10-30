@@ -13,18 +13,23 @@
 [![Downloads Total](https://img.shields.io/npm/dt/@ffmpeg/ffmpeg.svg)](https://www.npmjs.com/package/@ffmpeg/ffmpeg)
 [![Downloads Month](https://img.shields.io/npm/dm/@ffmpeg/ffmpeg.svg)](https://www.npmjs.com/package/@ffmpeg/ffmpeg)
 
+Use FFmpeg directly in your browser without any backend services!!
 
-A FFmpeg WebAssembly version built from scratch, you can learn how to do it from this series of stories: [Build FFmpeg WebAssembly version (=ffmpeg.js)](https://medium.com/@jeromewus/build-ffmpeg-webassembly-version-ffmpeg-js-part-1-preparation-ed12bf4c8fac).
+**Transcode Example**
 
----
+<p align="center">
+  <a href="#">
+    <img alt="demo" src="https://github.com/ffmpegjs/ffmpeg.js/raw/master/docs/images/demo.gif">
+  </a>
+</p>
 
-## Installation
+<a href="https://codepen.io/jeromewu/pen/NWWaMeY">
+  <img alt="codepen" src="https://blog.codepen.io/wp-content/uploads/2012/06/codepen-wordmark-display-inside-white@10x.png">
+</a>
 
-```
-$ npm install @ffmpeg/ffmpeg
-```
+[Source Code](https://github.com/ffmpegjs/ffmpeg.js/blob/master/examples/browser/transcode.html)
 
-## Example
+ffmpeg.js provides simple to use APIs, to transcode a video you only need few lines of code:
 
 ```javascript
 const fs = require('fs');
@@ -38,3 +43,22 @@ const worker = createWorker();
   fs.wrieFileSync('./test.mp4', data);
 })();
 ```
+---
+
+## Installation
+
+```
+$ npm install @ffmpeg/ffmpeg
+```
+
+## Documentation
+
+WIP
+
+## Tutorials
+
+Learn how to build ffmpeg.js from stories:
+
+- [Part.1 Preparation](https://itnext.io/build-ffmpeg-webassembly-version-ffmpeg-js-part-1-preparation-ed12bf4c8fac)
+- [Part.2 Compile with Emscripten](https://itnext.io/build-ffmpeg-webassembly-version-ffmpeg-js-part-2-compile-with-emscripten-4c581e8c9a16)
+- [Part.3 ffmpeg.js v0.1.0 — Transcoding avi to mp4](https://itnext.io/build-ffmpeg-webassembly-version-ffmpeg-js-part-3-ffmpeg-js-v0-1-0-transcoding-avi-to-mp4-f729e503a397)
