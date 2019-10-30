@@ -15,7 +15,7 @@
 
 Use FFmpeg directly in your browser without any backend services!!
 
-**Transcode Example**
+**Transcode**
 
 <p align="center">
   <a href="#">
@@ -26,8 +26,6 @@ Use FFmpeg directly in your browser without any backend services!!
 <a href="https://codepen.io/jeromewu/pen/NWWaMeY">
   <img alt="codepen" width="128px" src="https://blog.codepen.io/wp-content/uploads/2012/06/codepen-wordmark-display-inside-black@10x.png">
 </a>
-
-[Source Code](https://github.com/ffmpegjs/ffmpeg.js/blob/master/examples/browser/transcode.html)
 
 ffmpeg.js provides simple to use APIs, to transcode a video you only need few lines of code:
 
