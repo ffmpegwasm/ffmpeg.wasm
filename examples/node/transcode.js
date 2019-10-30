@@ -10,7 +10,9 @@ const worker = createWorker({
 
 (async () => {
   await worker.load();
+  console.log('Start transcoding');
   const { data } = await worker.transcode(inputPath, outputPath.split('.').pop());
+  console.log('Complete transcoding');
   fs.writeFileSync(outputPath, Buffer.from(data));
   process.exit(0);
 })();
