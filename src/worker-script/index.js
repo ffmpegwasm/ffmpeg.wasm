@@ -32,7 +32,6 @@ const load = ({ workerId, payload: { options: { corePath } } }, res) => {
     Core()
       .then((_Module) => {
         Module = _Module;
-        console.log(JSON.stringify(Object.keys(Module)));
         Module.setLogger((message, type) => {
           res.progress({ workerId, action, type, message });
         });
