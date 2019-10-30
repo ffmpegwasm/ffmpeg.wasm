@@ -32,8 +32,8 @@ module.exports = [
     library: 'FFmpeg',
     libraryTarget: 'umd',
   }),
-  //genConfig({
-  //  entry: path.resolve(__dirname, '..', 'src', 'worker-script', 'browser', 'index.js'),
-  //  filename: 'worker.dev.js',
-  //}),
+  genConfig({
+    entry: path.resolve(__dirname, '..', 'src', 'worker-script', 'browser', 'index.js'),
+    filename: 'worker.dev.js',
+  }),
 ];
