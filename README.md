@@ -41,7 +41,7 @@ const worker = createWorker();
 (async () => {
   await worker.load();
   const { data } = await worker.transcode('./test.avi', 'mp4');
-  fs.wrieFileSync('./test.mp4', data);
+  fs.writeFileSync('./test.mp4', data);
 })();
 ```
 
