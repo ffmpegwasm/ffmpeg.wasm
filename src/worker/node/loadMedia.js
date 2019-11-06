@@ -14,7 +14,7 @@ module.exports = async (media) => {
   if (typeof media === 'string') {
     if (isURL(media) || media.startsWith('chrome-extension://') || media.startsWith('file://')) {
       const res = await fetch(media);
-      data = res.arrayBuffer();
+      data = await res.arrayBuffer();
     } else if (/data:media\/([a-zA-Z]*);base64,([^"]*)/.test(media)) {
       data = Buffer.from(media.split(',')[1], 'base64');
     } else {
