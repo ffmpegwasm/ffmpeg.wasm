@@ -89,6 +89,15 @@ const remove = ({
   res.resolve({ message: `Delete ${path}` });
 };
 
+const mkdir = ({
+  payload: {
+    path,
+  },
+}, res) => {
+  Module.FS.mkdir(path);
+  res.resolve({ message: `Create Directory ${path}` });
+};
+
 const run = ({
   payload: {
     args,
@@ -118,6 +127,7 @@ exports.dispatchHandlers = (packet, send) => {
       transcode,
       read,
       remove,
+      mkdir,
       run,
     })[packet.action](packet, res);
   } catch (err) {
