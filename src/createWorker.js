@@ -56,15 +56,38 @@ module.exports = (_options = {}) => {
     }))
   );
 
-  const transcode = async (media, outputExt, opts, jobId) => (
+  const write = async (path, data, jobId) => (
+    startJob(createJob({
+      id: jobId,
+      action: 'write',
+      payload: {
+        path,
+        data: await loadMedia(data),
+      },
+    }))
+  );
+
+  const transcode = (inputPath, outputPath, opts, jobId) => (
     startJob(createJob({
       id: jobId,
       action: 'transcode',
       payload: {
-        media: await loadMedia(media),
-        outputExt,
+        inputPath,
+        outputPath,
         options: opts,
       },
+    }))
+  );
+
+  const read = (path, jobId) => (
+    startJob(createJob({
+      id: jobId, action: 'read', payload: { path },
+    }))
+  );
+
+  const run = (args, jobId) => (
+    startJob(createJob({
+      id: jobId, action: 'run', payload: { args },
     }))
   );
 
@@ -86,8 +109,10 @@ module.exports = (_options = {}) => {
     if (status === 'resolve') {
       log(`[${workerId}]: Complete ${jobId}`);
       let d = data;
-      if (action === 'transcode') {
+      if (action === 'read') {
         d = Uint8Array.from({ ...data, length: Object.keys(data).length });
+      } else {
+        logger(d);
       }
       resolves[action]({ jobId, data: d });
     } else if (status === 'reject') {
@@ -104,7 +129,10 @@ module.exports = (_options = {}) => {
     setResolve,
     setReject,
     load,
+    write,
     transcode,
+    read,
+    run,
     terminate,
   };
 };
