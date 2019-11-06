@@ -55,7 +55,7 @@ $ npm install @ffmpeg/ffmpeg
 
 ## Documentation
 
-WIP
+- [API](https://github.com/ffmpegjs/ffmpeg.js/blob/master/docs/api.md)
 
 ## Tutorials
 
