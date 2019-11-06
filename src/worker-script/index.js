@@ -80,6 +80,15 @@ const read = ({
   res.resolve(Module.FS.readFile(path));
 };
 
+const remove = ({
+  payload: {
+    path,
+  },
+}, res) => {
+  Module.FS.unlink(path);
+  res.resolve({ message: `Delete ${path}` });
+};
+
 const run = ({
   payload: {
     args,
@@ -108,6 +117,7 @@ exports.dispatchHandlers = (packet, send) => {
       write,
       transcode,
       read,
+      remove,
       run,
     })[packet.action](packet, res);
   } catch (err) {
