@@ -26,6 +26,11 @@ const strList2ptr = (strList) => {
   return listPtr;
 };
 
+const doRun = (_args) => {
+  const args = [...defaultArgs, ..._args.trim().split(' ')];
+  ffmpeg(args.length, strList2ptr(args));
+};
+
 const load = ({ workerId, payload: { options: { corePath } } }, res) => {
   if (Module == null) {
     const Core = adapter.getCore(corePath);
@@ -63,8 +68,7 @@ const transcode = ({
     options = '',
   },
 }, res) => {
-  const args = [...defaultArgs, ...`${options} -i ${inputPath} ${outputPath}`.trim().split(' ')];
-  ffmpeg(args.length, strList2ptr(args));
+  doRun(`${options} -i ${inputPath} ${outputPath}`);
   res.resolve({ message: `Complete transcoding ${inputPath} to ${outputPath}` });
 };
 
@@ -78,12 +82,11 @@ const read = ({
 
 const run = ({
   payload: {
-    args: _args,
+    args,
   },
 }, res) => {
-  const args = [...defaultArgs, ..._args.trim().split(' ')];
-  ffmpeg(args.length, strList2ptr(args));
-  res.resolve({ message: `Complete ./ffmpeg ${_args}` });
+  doRun(args);
+  res.resolve({ message: `Complete ./ffmpeg ${args}` });
 };
 
 exports.dispatchHandlers = (packet, send) => {
