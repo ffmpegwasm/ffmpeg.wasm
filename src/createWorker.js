@@ -85,6 +85,12 @@ module.exports = (_options = {}) => {
     }))
   );
 
+  const remove = (path, jobId) => (
+    startJob(createJob({
+      id: jobId, action: 'remove', payload: { path },
+    }))
+  );
+
   const run = (args, jobId) => (
     startJob(createJob({
       id: jobId, action: 'run', payload: { args },
@@ -132,6 +138,7 @@ module.exports = (_options = {}) => {
     write,
     transcode,
     read,
+    remove,
     run,
     terminate,
   };
