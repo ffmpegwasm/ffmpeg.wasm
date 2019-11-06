@@ -38,30 +38,52 @@ const load = ({ workerId, payload: { options: { corePath } } }, res) => {
           });
         });
         ffmpeg = Module.cwrap('ffmpeg', 'number', ['number', 'number']);
-        res.resolve(true);
+        res.resolve({ message: 'Loaded ffmpeg-core' });
       });
   } else {
-    res.resolve(true);
+    res.resolve({ message: 'Loaded ffmpeg-core' });
   }
+};
+
+const write = ({
+  payload: {
+    path,
+    data,
+  },
+}, res) => {
+  const d = Uint8Array.from({ ...data, length: Object.keys(data).length });
+  Module.FS.writeFile(path, d);
+  res.resolve({ message: `Write ${path} (${d.length} bytes)` });
 };
 
 const transcode = ({
   payload: {
-    media,
-    outputExt,
+    inputPath,
+    outputPath,
     options = '',
   },
 }, res) => {
-  const data = Uint8Array.from({ ...media, length: Object.keys(media).length });
-  const iPath = 'media';
-  const oPath = `media.${outputExt}`;
-  const args = [...defaultArgs, ...`${options} -i file:${iPath} ${oPath}`.trim().split(' ')];
-  Module.FS.writeFile(iPath, data);
+  const args = [...defaultArgs, ...`${options} -i ${inputPath} ${outputPath}`.trim().split(' ')];
   ffmpeg(args.length, strList2ptr(args));
-  const out = Module.FS.readFile(oPath);
-  Module.FS.unlink(iPath);
-  Module.FS.unlink(oPath);
-  res.resolve(out);
+  res.resolve({ message: `Complete transcoding ${inputPath} to ${outputPath}` });
+};
+
+const read = ({
+  payload: {
+    path,
+  },
+}, res) => {
+  res.resolve(Module.FS.readFile(path));
+};
+
+const run = ({
+  payload: {
+    args: _args,
+  },
+}, res) => {
+  const args = [...defaultArgs, ..._args.trim().split(' ')];
+  ffmpeg(args.length, strList2ptr(args));
+  res.resolve({ message: `Complete ./ffmpeg ${_args}` });
 };
 
 exports.dispatchHandlers = (packet, send) => {
@@ -80,7 +102,10 @@ exports.dispatchHandlers = (packet, send) => {
   try {
     ({
       load,
+      write,
       transcode,
+      read,
+      run,
     })[packet.action](packet, res);
   } catch (err) {
     /** Prepare exception to travel through postMessage */
