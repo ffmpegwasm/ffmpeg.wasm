@@ -91,6 +91,12 @@ module.exports = (_options = {}) => {
     }))
   );
 
+  const mkdir = (path, jobId) => (
+    startJob(createJob({
+      id: jobId, action: 'mkdir', payload: { path },
+    }))
+  );
+
   const run = (args, jobId) => (
     startJob(createJob({
       id: jobId, action: 'run', payload: { args },
@@ -139,6 +145,7 @@ module.exports = (_options = {}) => {
     transcode,
     read,
     remove,
+    mkdir,
     run,
     terminate,
   };
