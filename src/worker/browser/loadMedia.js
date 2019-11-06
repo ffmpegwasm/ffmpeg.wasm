@@ -34,7 +34,7 @@ const loadMedia = async (image) => {
         .map((c) => c.charCodeAt(0));
     } else {
       const res = await fetch(resolveURL(image));
-      data = res.arrayBuffer();
+      data = await res.arrayBuffer();
     }
   } else if (image instanceof File || image instanceof Blob) {
     data = await readFromBlobOrFile(image);

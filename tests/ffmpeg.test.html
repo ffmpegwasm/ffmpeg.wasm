@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FFmpeg Unit Test</title>
+  <link rel="stylesheet" href="../node_modules/mocha/mocha.css">
+</head>
+<body>
+  <div id="mocha"></div>
+  <script src="../node_modules/mocha/mocha.js"></script>
+  <script src="../node_modules/expect.js/index.js"></script>
+  <script src="../dist/ffmpeg.dev.js"></script>
+  <script src="./constants.js"></script>
+  <script>mocha.setup('bdd');</script>
+  <script src="./ffmpeg.test.js"></script>
+  <script>
+    mocha.run();
+  </script>
+</body>
+</html>
