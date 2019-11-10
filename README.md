@@ -28,6 +28,13 @@ Use FFmpeg directly in your browser without any backend services!!
 
 [Source Code](https://github.com/ffmpegjs/ffmpeg.js/blob/master/examples/browser/transcode.html)
 
+## Examples:
+
+| Name | CodePen | Source Code |
+| ---- | ------- | ----------- |
+| Webcam | <a href="https://codepen.io/jeromewu/pen/qBBKzyW" target="_blank"><img alt="codepen" width="128px" src="https://blog.codepen.io/wp-content/uploads/2012/06/codepen-wordmark-display-inside-black@10x.png"></a> | [Link](https://github.com/ffmpegjs/ffmpeg.js/blob/master/examples/browser/webcam.html) |
+
+
 ---
 
 ffmpeg.js provides simple to use APIs, to transcode a video you only need few lines of code:
