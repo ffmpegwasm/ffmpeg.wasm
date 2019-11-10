@@ -18,7 +18,7 @@
     <h3>Upload a video to transcode to mp4 (x264) and play!</h3>
     <video id="output-video" controls></video><br/>
     <input type="file" id="uploader">
-    <p id="message" />
+    <p id="message"></p>
     <script>
       const { createWorker } = FFmpeg;
       const worker = createWorker({
