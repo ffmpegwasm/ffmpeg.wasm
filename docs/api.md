@@ -24,6 +24,7 @@ createWorker is a factory function that creates a ffmpeg worker, a worker is bas
   - `workerPath` path for downloading worker script
   - `workerBlobURL` a boolean to define whether to use Blob URL for worker script, default: true
   - `logger` a function to log the progress, a quick example is `m => console.log(m)`
+  - `progress` a function to trace the progress, a quick example is `p => console.log(p)`
 
 
 **Examples:**

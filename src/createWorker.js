@@ -1,6 +1,7 @@
 const createJob = require('./createJob');
 const { log } = require('./utils/log');
 const getId = require('./utils/getId');
+const extractProgress = require('./utils/extractProgress');
 const resolvePaths = require('./utils/resolvePaths');
 const {
   defaultOptions,
@@ -17,6 +18,7 @@ module.exports = (_options = {}) => {
   const id = getId('Worker', workerCounter);
   const {
     logger,
+    progress,
     ...options
   } = resolvePaths({
     ...defaultOptions,
@@ -131,6 +133,7 @@ module.exports = (_options = {}) => {
       rejects[action](data);
       throw Error(data);
     } else if (status === 'progress') {
+      extractProgress(data, progress);
       logger(data);
     }
   });
