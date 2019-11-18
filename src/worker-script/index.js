@@ -26,11 +26,6 @@ const strList2ptr = (strList) => {
   return listPtr;
 };
 
-const doRun = (_args) => {
-  const args = [...defaultArgs, ..._args.trim().split(' ')];
-  ffmpeg(args.length, strList2ptr(args));
-};
-
 const load = ({ workerId, payload: { options: { corePath } } }, res) => {
   if (Module == null) {
     const Core = adapter.getCore(corePath);
@@ -61,15 +56,14 @@ const write = ({
   res.resolve({ message: `Write ${path} (${d.length} bytes)` });
 };
 
-const transcode = ({
+const writeText = ({
   payload: {
-    inputPath,
-    outputPath,
-    options = '',
+    path,
+    text,
   },
 }, res) => {
-  doRun(`${options} -i ${inputPath} ${outputPath}`);
-  res.resolve({ message: `Complete transcoding ${inputPath} to ${outputPath}` });
+  Module.FS.writeFile(path, text);
+  res.resolve({ message: `Write ${path} (${text.length} bytes)` });
 };
 
 const read = ({
@@ -100,11 +94,12 @@ const mkdir = ({
 
 const run = ({
   payload: {
-    args,
+    args: _args,
   },
 }, res) => {
-  doRun(args);
-  res.resolve({ message: `Complete ./ffmpeg ${args}` });
+  const args = [...defaultArgs, ..._args.trim().split(' ')];
+  ffmpeg(args.length, strList2ptr(args));
+  res.resolve({ message: `Complete ${args.join(' ')}` });
 };
 
 exports.dispatchHandlers = (packet, send) => {
@@ -124,7 +119,7 @@ exports.dispatchHandlers = (packet, send) => {
     ({
       load,
       write,
-      transcode,
+      writeText,
       read,
       remove,
       mkdir,
