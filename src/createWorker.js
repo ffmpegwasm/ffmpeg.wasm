@@ -69,16 +69,29 @@ module.exports = (_options = {}) => {
     }))
   );
 
-  const transcode = (inputPath, outputPath, opts, jobId) => (
+  const writeText = async (path, text, jobId) => (
     startJob(createJob({
       id: jobId,
-      action: 'transcode',
+      action: 'writeText',
       payload: {
-        inputPath,
-        outputPath,
-        options: opts,
+        path,
+        text,
       },
     }))
+  );
+
+  const run = (args, jobId) => (
+    startJob(createJob({
+      id: jobId, action: 'run', payload: { args },
+    }))
+  );
+
+  const transcode = (inputPath, outputPath, opts = '', jobId) => (
+    run(`${opts} -i ${inputPath} ${outputPath}`, jobId)
+  );
+
+  const trim = (inputPath, outputPath, from, to, opts = '', jobId) => (
+    run(`${opts} -ss ${from} -i ${inputPath} -t ${to} -c copy ${outputPath}`, jobId)
   );
 
   const read = (path, jobId) => (
@@ -96,12 +109,6 @@ module.exports = (_options = {}) => {
   const mkdir = (path, jobId) => (
     startJob(createJob({
       id: jobId, action: 'mkdir', payload: { path },
-    }))
-  );
-
-  const run = (args, jobId) => (
-    startJob(createJob({
-      id: jobId, action: 'run', payload: { args },
     }))
   );
 
@@ -145,7 +152,9 @@ module.exports = (_options = {}) => {
     setReject,
     load,
     write,
+    writeText,
     transcode,
+    trim,
     read,
     remove,
     mkdir,

@@ -4,10 +4,12 @@ API
 - [createWorker()](#create-worker)
   - [Worker.load](#worker-load)
   - [Worker.write](#worker-write)
+  - [Worker.writeText](#worker-writeText)
   - [Worker.read](#worker-read)
   - [Worker.mkdir](#worker-mkdir)
   - [Worker.remove](#worker-remove)
   - [Worker.transcode](#worker-transcode)
+  - [Worker.trim](#worker-trim)
   - [Worker.run](#worker-run)
 
 ---
@@ -69,6 +71,25 @@ Worker.write() writes data to specific path in Emscripten file system, it is an 
 ```javascript
 (async () => {
   await worker.write('flame.avi', 'http://localhost:3000/tests/assets/flame.avi');
+})();
+```
+
+<a name="worker-writeText"></a>
+### Worker.writeText(path, text, jobId): Promise
+
+Worker.write() writes text data to specific path in Emscripten file system.
+
+**Arguments:**
+
+- `path` path to write data to file system
+- `text` string to write to file
+- `jobId` check Worker.load()
+
+**Examples:**
+
+```javascript
+(async () => {
+  await worker.write('sub.srt', '...');
 })();
 ```
 
@@ -143,6 +164,28 @@ Worker.transcode() transcode a video file to another format.
 ```javascript
 (async () => {
   await worker.transcode('flame.avi', 'output.mp4', '-s 1920x1080');
+})();
+```
+
+<a name="worker-trim"></a>
+### Worker.trim(inputPath, outputPath, from, to, options, jobId): Promise
+
+Worker.trim() trims video to specific interval.
+
+**Arguments:**
+
+- `inputPath` input file path, the input file should be written through Worker.write()
+- `outputPath` output file path, can be read with Worker.read() later
+- `from` start time, can be in time stamp (00:00:12.000) or seconds (12)
+- `to` end time, rule same as above
+- `options` a string to add extra arguments to ffmpeg
+- `jobId` check Worker.load()
+
+**Examples:**
+
+```javascript
+(async () => {
+  await worker.trim('flame.avi', 'output.mp4', 1, 2);
 })();
 ```
 
