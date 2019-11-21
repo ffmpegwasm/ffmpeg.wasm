@@ -38,7 +38,7 @@
   },
   "homepage": "https://github.com/ffmpegjs/ffmpeg.js#readme",
   "dependencies": {
-    "@ffmpeg/core": "^0.3.1",
+    "@ffmpeg/core": "^0.4.0",
     "is-url": "^1.2.4",
     "node-fetch": "^2.6.0",
     "regenerator-runtime": "^0.13.3",
