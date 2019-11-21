@@ -8,7 +8,10 @@ const ts2sec = (ts) => {
 module.exports = ({ message }, progress) => {
   if (message.startsWith('  Duration')) {
     const ts = message.split(', ')[0].split(': ')[1];
-    duration = ts2sec(ts);
+    const d = ts2sec(ts);
+    if (duration === 0 || duration > d) {
+      duration = d;
+    }
   } else if (message.startsWith('frame')) {
     const ts = message.split('time=')[1].split(' ')[0];
     const t = ts2sec(ts);
