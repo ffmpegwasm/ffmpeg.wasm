@@ -6,7 +6,6 @@ API
   - [Worker.write](#worker-write)
   - [Worker.writeText](#worker-writeText)
   - [Worker.read](#worker-read)
-  - [Worker.mkdir](#worker-mkdir)
   - [Worker.remove](#worker-remove)
   - [Worker.transcode](#worker-transcode)
   - [Worker.trim](#worker-trim)
@@ -56,7 +55,7 @@ Worker.load() loads ffmpeg-core.js script (download from remote if not presented
 ```
 
 <a name="worker-write"></a>
-### Worker.write(path, data, jobId): Promise
+### Worker.write(path, data): Promise
 
 Worker.write() writes data to specific path in Emscripten file system, it is an essential step before doing any other tasks.
 
@@ -64,7 +63,6 @@ Worker.write() writes data to specific path in Emscripten file system, it is an 
 
 - `path` path to write data to file system
 - `data` data to write, can be Uint8Array, URL or base64 format
-- `jobId` check Worker.load()
 
 **Examples:**
 
@@ -75,7 +73,7 @@ Worker.write() writes data to specific path in Emscripten file system, it is an 
 ```
 
 <a name="worker-writeText"></a>
-### Worker.writeText(path, text, jobId): Promise
+### Worker.writeText(path, text): Promise
 
 Worker.write() writes text data to specific path in Emscripten file system.
 
@@ -83,7 +81,6 @@ Worker.write() writes text data to specific path in Emscripten file system.
 
 - `path` path to write data to file system
 - `text` string to write to file
-- `jobId` check Worker.load()
 
 **Examples:**
 
@@ -94,14 +91,14 @@ Worker.write() writes text data to specific path in Emscripten file system.
 ```
 
 <a name="worker-read"></a>
-### Worker.read(path, jobId): Promise
+### Worker.read(path, del): Promise
 
 Worker.read() reads data from file system, often used to get output data after specific task.
 
 **Arguments:**
 
 - `path` path to read data from file system
-- `jobId` check Worker.load()
+- `del` whether to delete file in IDBFS or NODEFS, default: true
 
 **Examples:**
 
@@ -111,33 +108,14 @@ Worker.read() reads data from file system, often used to get output data after s
 })();
 ```
 
-<a name="worker-mkdir"></a>
-### Worker.mkdir(path, jobId): Promise
-
-Worker.mkdir() creates a directory in file system, useful when you need to group files in a directory.
-
-**Arguments:**
-
-- `path` path to create directory
-- `jobId` check Worker.load()
-
-**Examples:**
-
-```javascript
-(async () => {
-  await worker.mkdir('/video-clips');
-})();
-```
-
 <a name="worker-remove"></a>
-### Worker.remove(path, jobId): Promise
+### Worker.remove(path): Promise
 
 Worker.remove() removes files in file system, it will be better to delete unused files if you need to run ffmpeg.js multiple times.
 
 **Arguments:**
 
 - `path` path for file to delete
-- `jobId` check Worker.load()
 
 **Examples:**
 
@@ -148,7 +126,7 @@ Worker.remove() removes files in file system, it will be better to delete unused
 ```
 
 <a name="worker-transcode"></a>
-### Worker.transcode(inputPath, outputPath, options, jobId): Promise
+### Worker.transcode(inputPath, outputPath, options, del, jobId): Promise
 
 Worker.transcode() transcode a video file to another format.
 
@@ -157,6 +135,7 @@ Worker.transcode() transcode a video file to another format.
 - `inputPath` input file path, the input file should be written through Worker.write()
 - `outputPath` output file path, can be read with Worker.read() later
 - `options` a string to add extra arguments to ffmpeg
+- `del` a boolean to determine whether to delete input file after the task is done, default: true
 - `jobId` check Worker.load()
 
 **Examples:**
@@ -168,7 +147,7 @@ Worker.transcode() transcode a video file to another format.
 ```
 
 <a name="worker-trim"></a>
-### Worker.trim(inputPath, outputPath, from, to, options, jobId): Promise
+### Worker.trim(inputPath, outputPath, from, to, options, del, jobId): Promise
 
 Worker.trim() trims video to specific interval.
 
@@ -179,6 +158,7 @@ Worker.trim() trims video to specific interval.
 - `from` start time, can be in time stamp (00:00:12.000) or seconds (12)
 - `to` end time, rule same as above
 - `options` a string to add extra arguments to ffmpeg
+- `del` a boolean to determine whether to delete input file after the task is done, default: true
 - `jobId` check Worker.load()
 
 **Examples:**
@@ -190,19 +170,20 @@ Worker.trim() trims video to specific interval.
 ```
 
 <a name="worker-run"></a>
-### Worker.run(args, jobId): Promise
+### Worker.run(args, options, jobId): Promise
 
 Worker.run() is similar to FFmpeg cli tool, aims to provide maximum flexiblity for users.
 
 **Arguments:**
 
-- `args` a string to represent arguments
+- `args` a string to represent arguments, note: inputPath must start with `/data/` as worker.write write to this path by default.
+- `options` a object to define the value for inputPath, outputPath and del.
 - `jobId` check Worker.load()
 
 **Examples:**
 
 ```javascript
 (async () => {
-  await worker.run('-i flame.avi -s 1920x1080 output.mp4');
+  await worker.run('-i /data/flame.avi -s 1920x1080 output.mp4', { inputPath: 'flame.avi', outputPath: 'output.mp4' });
 })();
 ```
