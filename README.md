@@ -73,3 +73,4 @@ Learn how to build ffmpeg.js from stories:
 - [Part.3 ffmpeg.js v0.1.0 — Transcoding avi to mp4](https://itnext.io/build-ffmpeg-webassembly-version-ffmpeg-js-part-3-ffmpeg-js-v0-1-0-transcoding-avi-to-mp4-f729e503a397)
 - [Part.4 ffmpeg.js v0.2 — Web Worker and Libx264](https://medium.com/@jeromewus/build-ffmpeg-webassembly-version-ffmpeg-js-part-4-ffmpeg-js-v0-2-web-worker-and-libx264-d0596f1beb4e)
 - [Part.5 ffmpeg.js v0.3 — pre-js and live streaming](https://medium.com/@jeromewus/build-ffmpeg-webassembly-version-ffmpeg-js-part-5-ffmpeg-js-v0-3-pre-js-and-live-streaming-c1498939a74c)
+- [Part.6 a Deep Dive into File System](https://medium.com/@jeromewus/build-ffmpeg-webassembly-version-ffmpeg-js-part-6-a-deep-dive-into-file-system-56eba10067ca)
