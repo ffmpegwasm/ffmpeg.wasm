@@ -12,9 +12,7 @@ describe('transcode()', () => {
       it(`transcode ${name}`, async () => {
         await worker.write(name, `${BASE_URL}/${name}`);
         await worker.transcode(name, 'output.mp4');
-        await worker.remove(name);
         const { data } = await worker.read('output.mp4');
-        await worker.remove('output.mp4');
         expect(data.length).to.be(FLAME_MP4_LENGTH);
       }).timeout(TIMEOUT)
     ));

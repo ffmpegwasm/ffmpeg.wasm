@@ -13,7 +13,7 @@
     "lint": "eslint src",
     "wait": "rimraf dist && wait-on http://localhost:3000/dist/ffmpeg.dev.js",
     "test": "npm-run-all -p -r start test:all",
-    "test:all": "npm-run-all wait test:browser:* test:node:all",
+    "test:all": "npm-run-all wait test:node:all",
     "test:node": "nyc mocha --exit --bail --require ./scripts/test-helper.js",
     "test:node:all": "npm run test:node -- ./tests/*.test.js",
     "test:browser": "mocha-headless-chrome -a incognito -a no-sandbox -a disable-setuid-sandbox -a disable-logging -t 300000",
@@ -39,6 +39,7 @@
   "homepage": "https://github.com/ffmpegjs/ffmpeg.js#readme",
   "dependencies": {
     "@ffmpeg/core": "^0.4.0",
+    "idb": "^4.0.5",
     "is-url": "^1.2.4",
     "node-fetch": "^2.6.0",
     "regenerator-runtime": "^0.13.3",

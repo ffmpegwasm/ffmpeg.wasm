@@ -12,7 +12,8 @@ const spawnWorker = require('./spawnWorker');
 const terminateWorker = require('./terminateWorker');
 const onMessage = require('./onMessage');
 const send = require('./send');
-const loadMedia = require('./loadMedia');
+const fetchFile = require('./fetchFile');
+const fs = require('./fs');
 
 module.exports = {
   defaultOptions,
@@ -20,5 +21,6 @@ module.exports = {
   terminateWorker,
   onMessage,
   send,
-  loadMedia,
+  fetchFile,
+  fs,
 };
