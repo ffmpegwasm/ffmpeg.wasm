@@ -23,7 +23,7 @@
       const { createWorker } = FFmpeg;
       const worker = createWorker({
         corePath: '../../node_modules/@ffmpeg/core/ffmpeg-core.js',
-        logger: ({ message }) => console.log(message),
+        progress: p => console.log(p),
       });
 
       const transcode = async ({ target: { files } }) => {
@@ -31,11 +31,12 @@
         const { name } = files[0];
         message.innerHTML = 'Loading ffmpeg-core.js';
         await worker.load();
-        message.innerHTML = 'Start transcoding';
         await worker.write(name, files[0]);
+        message.innerHTML = 'Start transcoding';
         await worker.transcode(name,  'output.mp4');
         message.innerHTML = 'Complete transcoding';
         const { data } = await worker.read('output.mp4');
+        console.log(data);
 
         const video = document.getElementById('output-video');
         video.src = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));

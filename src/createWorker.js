@@ -8,8 +8,9 @@ const {
   spawnWorker,
   terminateWorker,
   onMessage,
-  loadMedia,
   send,
+  fetchFile,
+  fs,
 } = require('./worker/node');
 
 let workerCounter = 0;
@@ -58,57 +59,72 @@ module.exports = (_options = {}) => {
     }))
   );
 
-  const write = async (path, data, jobId) => (
+  const syncfs = (populate, jobId) => (
     startJob(createJob({
-      id: jobId,
-      action: 'write',
-      payload: {
-        path,
-        data: await loadMedia(data),
-      },
+      id: jobId, action: 'syncfs', payload: { populate },
     }))
   );
 
-  const writeText = async (path, text, jobId) => (
+  const write = async (path, data) => {
+    await syncfs();
+    await fs.writeFile(path, await fetchFile(data));
+    await syncfs(true);
+    return {
+      path: `/data/${path}`,
+    };
+  };
+
+  const writeText = async (path, text) => {
+    await syncfs(true);
+    await fs.writeFile(path, text);
+    await syncfs(true);
+    return {
+      path: `/data/${path}`,
+    };
+  };
+
+  const read = async (path, del = true) => {
+    const data = await fs.readFile(path);
+    if (del) {
+      await fs.deleteFile(path);
+    }
+    return {
+      data,
+    };
+  };
+
+  const remove = async (path) => {
+    await fs.deleteFile(path);
+    return {
+      path: `/data/${path}`,
+    };
+  };
+
+  const run = (args, opts = {}, jobId) => (
     startJob(createJob({
-      id: jobId,
-      action: 'writeText',
-      payload: {
-        path,
-        text,
-      },
+      id: jobId, action: 'run', payload: { args, options: opts },
     }))
   );
 
-  const run = (args, jobId) => (
+  const transcode = (inputPath, outputPath, opts = '', del = true, jobId) => (
+    run(
+      `${opts} -i /data/${inputPath} ${outputPath}`,
+      { inputPath, outputPath, del },
+      jobId,
+    )
+  );
+
+  const trim = (inputPath, outputPath, from, to, opts = '', del = true, jobId) => (
+    run(
+      `${opts} -ss ${from} -i /data/${inputPath} -t ${to} -c copy ${outputPath}`,
+      { inputPath, outputPath, del },
+      jobId,
+    )
+  );
+
+  const ls = (path, jobId) => (
     startJob(createJob({
-      id: jobId, action: 'run', payload: { args },
-    }))
-  );
-
-  const transcode = (inputPath, outputPath, opts = '', jobId) => (
-    run(`${opts} -i ${inputPath} ${outputPath}`, jobId)
-  );
-
-  const trim = (inputPath, outputPath, from, to, opts = '', jobId) => (
-    run(`${opts} -ss ${from} -i ${inputPath} -t ${to} -c copy ${outputPath}`, jobId)
-  );
-
-  const read = (path, jobId) => (
-    startJob(createJob({
-      id: jobId, action: 'read', payload: { path },
-    }))
-  );
-
-  const remove = (path, jobId) => (
-    startJob(createJob({
-      id: jobId, action: 'remove', payload: { path },
-    }))
-  );
-
-  const mkdir = (path, jobId) => (
-    startJob(createJob({
-      id: jobId, action: 'mkdir', payload: { path },
+      id: jobId, action: 'ls', payload: { path },
     }))
   );
 
@@ -151,14 +167,15 @@ module.exports = (_options = {}) => {
     setResolve,
     setReject,
     load,
+    syncfs,
     write,
     writeText,
-    transcode,
-    trim,
     read,
     remove,
-    mkdir,
     run,
+    transcode,
+    trim,
+    ls,
     terminate,
   };
 };

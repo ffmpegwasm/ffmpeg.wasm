@@ -30,7 +30,7 @@ const load = ({ workerId, payload: { options: { corePath } } }, res) => {
   if (Module == null) {
     const Core = adapter.getCore(corePath);
     Core()
-      .then((_Module) => {
+      .then(async (_Module) => {
         Module = _Module;
         Module.setLogger((message, type) => {
           res.progress({
@@ -45,60 +45,37 @@ const load = ({ workerId, payload: { options: { corePath } } }, res) => {
   }
 };
 
-const write = ({
+const syncfs = async ({
   payload: {
-    path,
-    data,
+    populate = false,
   },
 }, res) => {
-  const d = Uint8Array.from({ ...data, length: Object.keys(data).length });
-  Module.FS.writeFile(path, d);
-  res.resolve({ message: `Write ${path} (${d.length} bytes)` });
+  await Module.syncfs(populate);
+  res.resolve({ message: `Sync file system with populate=${populate}` });
 };
 
-const writeText = ({
-  payload: {
-    path,
-    text,
-  },
-}, res) => {
-  Module.FS.writeFile(path, text);
-  res.resolve({ message: `Write ${path} (${text.length} bytes)` });
-};
-
-const read = ({
+const ls = ({
   payload: {
     path,
   },
 }, res) => {
-  res.resolve(Module.FS.readFile(path));
+  const dirs = Module.FS.readdir(path);
+  res.resolve({ message: `List path ${path}`, dirs });
 };
 
-const remove = ({
-  payload: {
-    path,
-  },
-}, res) => {
-  Module.FS.unlink(path);
-  res.resolve({ message: `Delete ${path}` });
-};
-
-const mkdir = ({
-  payload: {
-    path,
-  },
-}, res) => {
-  Module.FS.mkdir(path);
-  res.resolve({ message: `Create Directory ${path}` });
-};
-
-const run = ({
+const run = async ({
   payload: {
     args: _args,
+    options: { inputPath, outputPath, del },
   },
 }, res) => {
   const args = [...defaultArgs, ..._args.trim().split(' ')];
   ffmpeg(args.length, strList2ptr(args));
+  await adapter.fs.writeFile(outputPath, Module.FS.readFile(outputPath));
+  Module.FS.unlink(outputPath);
+  if (del && typeof inputPath === 'string') {
+    await adapter.fs.deleteFile(inputPath);
+  }
   res.resolve({ message: `Complete ${args.join(' ')}` });
 };
 
@@ -118,11 +95,8 @@ exports.dispatchHandlers = (packet, send) => {
   try {
     ({
       load,
-      write,
-      writeText,
-      read,
-      remove,
-      mkdir,
+      ls,
+      syncfs,
       run,
     })[packet.action](packet, res);
   } catch (err) {
