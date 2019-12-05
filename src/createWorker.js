@@ -122,6 +122,12 @@ module.exports = (_options = {}) => {
     )
   );
 
+  const concatDemux = (texFilePath, outputPath, opts = '', del = false, jobId) => {
+    run(`${opts} -f concat -safe 0 -i /data/${texFilePath} -c copy ${outputPath}`,
+      { del },
+      jobId);
+  };
+
   const ls = (path, jobId) => (
     startJob(createJob({
       id: jobId, action: 'ls', payload: { path },
@@ -175,6 +181,7 @@ module.exports = (_options = {}) => {
     run,
     transcode,
     trim,
+    concatDemux,
     ls,
     terminate,
   };
