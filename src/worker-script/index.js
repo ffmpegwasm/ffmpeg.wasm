@@ -66,7 +66,9 @@ const ls = ({
 const run = async ({
   payload: {
     args: _args,
-    options: { inputPath, outputPath, del },
+    options: {
+      inputPath, inputPaths, outputPath, del,
+    },
   },
 }, res) => {
   const args = [...defaultArgs, ..._args.trim().split(' ')];
@@ -75,6 +77,9 @@ const run = async ({
   Module.FS.unlink(outputPath);
   if (del && typeof inputPath === 'string') {
     await adapter.fs.deleteFile(inputPath);
+  } else if (del && Array.isArray(inputPaths)) {
+    inputPaths.reduce((promise, input) => promise.then(() => adapter.fs.deleteFile(input)),
+      Promise.resolve());
   }
   res.resolve({ message: `Complete ${args.join(' ')}` });
 };
