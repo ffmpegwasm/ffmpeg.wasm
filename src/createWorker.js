@@ -122,9 +122,11 @@ module.exports = (_options = {}) => {
     )
   );
 
-  const concatDemux = (texFilePath, outputPath, opts = '', del = false, jobId) => {
-    run(`${opts} -f concat -safe 0 -i /data/${texFilePath} -c copy ${outputPath}`,
-      { del },
+  const concatDemuxer = async (inputPaths, outputPath, opts = '', del = true, jobId) => {
+    const text = inputPaths.reduce((acc, input) => `${acc}\nfile ${input}`, '');
+    await writeText('concat_list.txt', text);
+    return run(`${opts} -f concat -safe 0 -i /data/concat_list.txt -c copy ${outputPath}`,
+      { del, outputPath, inputPaths: [...inputPaths, 'concat_list.txt'] },
       jobId);
   };
 
@@ -181,7 +183,7 @@ module.exports = (_options = {}) => {
     run,
     transcode,
     trim,
-    concatDemux,
+    concatDemuxer,
     ls,
     terminate,
   };
