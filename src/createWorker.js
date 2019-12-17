@@ -122,6 +122,14 @@ module.exports = (_options = {}) => {
     )
   );
 
+  const concatDemuxer = async (inputPaths, outputPath, opts = '', del = true, jobId) => {
+    const text = inputPaths.reduce((acc, input) => `${acc}\nfile ${input}`, '');
+    await writeText('concat_list.txt', text);
+    return run(`${opts} -f concat -safe 0 -i /data/concat_list.txt -c copy ${outputPath}`,
+      { del, outputPath, inputPaths: [...inputPaths, 'concat_list.txt'] },
+      jobId);
+  };
+
   const ls = (path, jobId) => (
     startJob(createJob({
       id: jobId, action: 'ls', payload: { path },
@@ -175,6 +183,7 @@ module.exports = (_options = {}) => {
     run,
     transcode,
     trim,
+    concatDemuxer,
     ls,
     terminate,
   };
