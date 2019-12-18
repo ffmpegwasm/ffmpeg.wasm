@@ -9,7 +9,7 @@ const worker = createWorker({
   await worker.load();
   console.log('Start trimming');
   await worker.write('flame.avi', '../../tests/assets/flame.avi');
-  await worker.trim('flame.avi', 'flame_trim.avi', 1, 2);
+  await worker.trim('flame.avi', 'flame_trim.avi', 0, 10);
   const { data } = await worker.read('flame_trim.avi');
   console.log('Complete trimming');
   fs.writeFileSync('flame_trim.avi', Buffer.from(data));

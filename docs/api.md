@@ -8,6 +8,7 @@
   - [Worker.remove](#worker-remove)
   - [Worker.transcode](#worker-transcode)
   - [Worker.trim](#worker-trim)
+  - [Worker.concatDemuxer](#worker-concatDemuxer)
   - [Worker.run](#worker-run)
 
 ---
@@ -135,14 +136,14 @@ Worker.remove() removes files in file system, it will be better to delete unused
 
 <a name="worker-transcode"></a>
 
-### Worker.transcode(inputPath, outputPath, options, del, jobId): Promise
+### Worker.transcode(input, output, options, del, jobId): Promise
 
 Worker.transcode() transcode a video file to another format.
 
 **Arguments:**
 
-- `inputPath` input file path, the input file should be written through Worker.write()
-- `outputPath` output file path, can be read with Worker.read() later
+- `input` input file path, the input file should be written through Worker.write()
+- `output` output file path, can be read with Worker.read() later
 - `options` a string to add extra arguments to ffmpeg
 - `del` a boolean to determine whether to delete input file after the task is done, default: true
 - `jobId` check Worker.load()
@@ -157,7 +158,7 @@ Worker.transcode() transcode a video file to another format.
 
 <a name="worker-trim"></a>
 
-### Worker.trim(inputPath, outputPath, from, to, options, del, jobId): Promise
+### Worker.trim(input, output, from, to, options, del, jobId): Promise
 
 Worker.trim() trims video to specific interval.
 
@@ -181,14 +182,14 @@ Worker.trim() trims video to specific interval.
 
 <a name="worker-concatDemuxer"></a>
 
-### Worker.concatDemuxer(inputPaths, outputPath, options, del, jobId): Promise
+### Worker.concatDemuxer(input, output, options, del, jobId): Promise
 
 Worker.concatDemuxer() concatenates multiple videos using concatDemuxer. This method won't encode the videos again. But it has its limitations. See [Concat demuxer Wiki](https://trac.ffmpeg.org/wiki/Concatenate)
 
 **Arguments:**
 
-- `inputPaths` input file paths as an Array, the input files should be written through Worker.write()
-- `outputPath` output file path, can be read with Worker.read() later
+- `input` input file paths as an Array, the input files should be written through Worker.write()
+- `output` output file path, can be read with Worker.read() later
 - `options` a string to add extra arguments to ffmpeg
 - `del` a boolean to determine whether to delete input file after the task is done, default: true
 - `jobId` check Worker.load()
@@ -197,7 +198,7 @@ Worker.concatDemuxer() concatenates multiple videos using concatDemuxer. This me
 
 ```javascript
 (async () => {
-  await worker.trim(["flame-1.avi", "flame-2.avi"], "output.mp4");
+  await worker.concatDemuxer(["flame-1.avi", "flame-2.avi"], "output.mp4");
 })();
 ```
 
@@ -210,7 +211,10 @@ Worker.run() is similar to FFmpeg cli tool, aims to provide maximum flexiblity f
 **Arguments:**
 
 - `args` a string to represent arguments, note: inputPath must start with `/data/` as worker.write write to this path by default.
-- `options` a object to define the value for inputPath, outputPath and del.
+- `options` a object to define the value for input, output and del.
+  - `input` a string or an array of strings to indicate input files, ffmpeg.js deletes these files for you.
+  - `output` a string or an array of strings to indicate output files, ffmpeg.js moves these files to `/data`, deletes them from MEMFS and you can read them with Worker.read()
+  - `del` a boolean to determine whether to delete input file after the task is done, default: true
 - `jobId` check Worker.load()
 
 **Examples:**
@@ -218,8 +222,8 @@ Worker.run() is similar to FFmpeg cli tool, aims to provide maximum flexiblity f
 ```javascript
 (async () => {
   await worker.run("-i /data/flame.avi -s 1920x1080 output.mp4", {
-    inputPath: "flame.avi",
-    outputPath: "output.mp4"
+    input: "flame.avi",
+    output: "output.mp4"
   });
 })();
 ```

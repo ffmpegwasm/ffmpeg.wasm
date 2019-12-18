@@ -33,7 +33,7 @@
         await worker.load();
         message.innerHTML = 'Start transcoding';
         await worker.write(name, files[0]);
-        await worker.run(`-i /data/${name} output.mp4`, { inputPath: name, outputPath: 'output.mp4' });
+        await worker.run(`-i /data/${name} output.mp4`, { input: name, output: 'output.mp4' });
         message.innerHTML = 'Complete transcoding';
         const { data } = await worker.read('output.mp4');
 

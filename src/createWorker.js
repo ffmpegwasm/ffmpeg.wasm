@@ -106,33 +106,35 @@ module.exports = (_options = {}) => {
     }))
   );
 
-  const transcode = (inputPath, outputPath, opts = '', del = true, jobId) => (
+  const transcode = (input, output, opts = '', del = true, jobId) => (
     run(
-      `${opts} -i /data/${inputPath} ${outputPath}`,
-      { inputPath, outputPath, del },
+      `${opts} -i /data/${input} ${output}`,
+      { input, output, del },
       jobId,
     )
   );
 
-  const trim = (inputPath, outputPath, from, to, opts = '', del = true, jobId) => (
+  const trim = (input, output, from, to, opts = '', del = true, jobId) => (
     run(
-      `${opts} -i /data/${inputPath} -ss ${from} -to ${to} -c copy ${outputPath}`,
-      { inputPath, outputPath, del },
+      `${opts} -i /data/${input} -ss ${from} -to ${to} -c copy ${output}`,
+      { input, output, del },
       jobId,
     )
   );
 
-  const concatDemuxer = async (inputPaths, outputPath, opts = '', del = true, jobId) => {
-    const text = inputPaths.reduce((acc, input) => `${acc}\nfile ${input}`, '');
+  const concatDemuxer = async (input, output, opts = '', del = true, jobId) => {
+    const text = input.reduce((acc, path) => `${acc}\nfile ${path}`, '');
     await writeText('concat_list.txt', text);
-    return run(`${opts} -f concat -safe 0 -i /data/concat_list.txt -c copy ${outputPath}`,
-      { del, outputPath, inputPaths: [...inputPaths, 'concat_list.txt'] },
+    return run(`${opts} -f concat -safe 0 -i /data/concat_list.txt -c copy ${output}`,
+      { del, output, input: [...input, 'concat_list.txt'] },
       jobId);
   };
 
   const ls = (path, jobId) => (
     startJob(createJob({
-      id: jobId, action: 'ls', payload: { path },
+      id: jobId,
+      action: 'FS',
+      payload: { method: 'readdir', args: [path] },
     }))
   );
 
@@ -154,10 +156,13 @@ module.exports = (_options = {}) => {
     if (status === 'resolve') {
       log(`[${workerId}]: Complete ${jobId}`);
       let d = data;
-      if (action === 'read') {
-        d = Uint8Array.from({ ...data, length: Object.keys(data).length });
-      } else {
-        logger(d);
+      if (action === 'FS') {
+        const { method, data: _data } = data;
+        if (method === 'readFile') {
+          d = Uint8Array.from({ ..._data, length: Object.keys(_data).length });
+        } else {
+          d = _data;
+        }
       }
       resolves[action]({ jobId, data: d });
     } else if (status === 'reject') {
