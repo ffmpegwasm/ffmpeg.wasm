@@ -1,30 +1,11 @@
 require('regenerator-runtime/runtime');
 const defaultArgs = require('./constants/defaultArgs');
+const strList2ptr = require('./utils/strList2ptr');
 
 let action = 'unknown';
 let Module = null;
 let adapter = null;
 let ffmpeg = null;
-
-const str2ptr = (s) => {
-  const ptr = Module._malloc((s.length + 1) * Uint8Array.BYTES_PER_ELEMENT);
-  for (let i = 0; i < s.length; i += 1) {
-    Module.setValue(ptr + i, s.charCodeAt(i), 'i8');
-  }
-  Module.setValue(ptr + s.length, 0, 'i8');
-  return ptr;
-};
-
-const strList2ptr = (strList) => {
-  const listPtr = Module._malloc(strList.length * Uint32Array.BYTES_PER_ELEMENT);
-
-  strList.forEach((s, idx) => {
-    const strPtr = str2ptr(s);
-    Module.setValue(listPtr + (4 * idx), strPtr, 'i32');
-  });
-
-  return listPtr;
-};
 
 const load = ({ workerId, payload: { options: { corePath } } }, res) => {
   if (Module == null) {
@@ -54,33 +35,57 @@ const syncfs = async ({
   res.resolve({ message: `Sync file system with populate=${populate}` });
 };
 
-const ls = ({
+const FS = ({
   payload: {
-    path,
+    method,
+    args,
   },
 }, res) => {
-  const dirs = Module.FS.readdir(path);
-  res.resolve({ message: `List path ${path}`, dirs });
+  const data = Module.FS[method](...args);
+  res.resolve({
+    message: `${method} ${args.join(',')}`,
+    method,
+    data,
+  });
 };
 
 const run = async ({
   payload: {
     args: _args,
     options: {
-      inputPath, inputPaths, outputPath, del,
+      input, output, del = true,
     },
   },
 }, res) => {
   const args = [...defaultArgs, ..._args.trim().split(' ')];
-  ffmpeg(args.length, strList2ptr(args));
-  await adapter.fs.writeFile(outputPath, Module.FS.readFile(outputPath));
-  Module.FS.unlink(outputPath);
-  if (del && typeof inputPath === 'string') {
-    await adapter.fs.deleteFile(inputPath);
-  } else if (del && Array.isArray(inputPaths)) {
-    inputPaths.reduce((promise, input) => promise.then(() => adapter.fs.deleteFile(input)),
-      Promise.resolve());
+  ffmpeg(args.length, strList2ptr(Module, args));
+
+  /*
+   * After executing the ffmpeg command, the data is saved in MEMFS,
+   * if `output` is specified in the options, here ffmpeg.js will move
+   * these files to IDBFS or NODEFS here.
+   */
+  if (typeof output === 'string') {
+    await adapter.fs.writeFile(output, Module.FS.readFile(output));
+    Module.FS.unlink(output);
+  } else if (Array.isArray(output)) {
+    await Promise.all(output.map(async (p) => {
+      await adapter.fs.writeFile(p, Module.FS.readFile(p));
+      Module.FS.unlink(p);
+    }));
   }
+
+  /*
+   * To prevent input files occupy filesystem without notice,
+   * if `input` is specified in the options, ffmpeg.js cleans these
+   * files for you
+   */
+  if (del && typeof input === 'string') {
+    await adapter.fs.deleteFile(input);
+  } else if (del && Array.isArray(input)) {
+    await Promise.all(input.map((p) => adapter.fs.deleteFile(p)));
+  }
+
   res.resolve({ message: `Complete ${args.join(' ')}` });
 };
 
@@ -100,8 +105,8 @@ exports.dispatchHandlers = (packet, send) => {
   try {
     ({
       load,
-      ls,
       syncfs,
+      FS,
       run,
     })[packet.action](packet, res);
   } catch (err) {

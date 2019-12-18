@@ -15,7 +15,7 @@
     </style>
   </head>
   <body>
-    <h3>Upload a mp4 (x264) video and trim its first 2 seconds and play!</h3>
+    <h3>Upload a mp4 (x264) video and trim its first 10 seconds and play!</h3>
     <video id="output-video" controls></video><br/>
     <input type="file" id="uploader">
     <p id="message"></p>
@@ -33,7 +33,7 @@
         await worker.load();
         message.innerHTML = 'Start trimming';
         await worker.write(name, files[0]);
-        await worker.trim(name,  'output.mp4', 0, 2);
+        await worker.trim(name,  'output.mp4', 0, 10);
         message.innerHTML = 'Complete trimming';
         const { data } = await worker.read('output.mp4');
 
