@@ -116,7 +116,7 @@ module.exports = (_options = {}) => {
 
   const trim = (input, output, from, to, opts = '', del = true, jobId) => (
     run(
-      `${opts} -i /data/${input} -ss ${from} -to ${to} -c copy ${output}`,
+      `${opts} -i /data/${input} -ss ${from} -to ${to} ${output}`,
       { input, output, del },
       jobId,
     )
