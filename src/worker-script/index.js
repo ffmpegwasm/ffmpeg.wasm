@@ -57,7 +57,7 @@ const run = async ({
     },
   },
 }, res) => {
-  const args = [...defaultArgs, ..._args.trim().split(' ')];
+  const args = [...defaultArgs, ..._args.trim().split(' ')].filter((s) => s.length !== 0);
   ffmpeg(args.length, strList2ptr(Module, args));
 
   /*
