@@ -108,7 +108,7 @@ module.exports = (_options = {}) => {
 
   const transcode = (input, output, opts = '', del = true, jobId) => (
     run(
-      `${opts} -i /data/${input} ${output}`,
+      `-i /data/${input} ${opts} ${output}`,
       { input, output, del },
       jobId,
     )
@@ -116,7 +116,7 @@ module.exports = (_options = {}) => {
 
   const trim = (input, output, from, to, opts = '', del = true, jobId) => (
     run(
-      `${opts} -i /data/${input} -ss ${from} -to ${to} ${output}`,
+      `-i /data/${input} -ss ${from} -to ${to} ${opts} ${output}`,
       { input, output, del },
       jobId,
     )
@@ -125,7 +125,7 @@ module.exports = (_options = {}) => {
   const concatDemuxer = async (input, output, opts = '', del = true, jobId) => {
     const text = input.reduce((acc, path) => `${acc}\nfile ${path}`, '');
     await writeText('concat_list.txt', text);
-    return run(`${opts} -f concat -safe 0 -i /data/concat_list.txt -c copy ${output}`,
+    return run(`-f concat -safe 0 -i /data/concat_list.txt -c copy ${opts} ${output}`,
       { del, output, input: [...input, 'concat_list.txt'] },
       jobId);
   };
