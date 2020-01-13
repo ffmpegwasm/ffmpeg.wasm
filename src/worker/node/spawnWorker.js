@@ -1,12 +1,12 @@
-const { fork } = require('child_process');
+const { Worker } = require('worker_threads');
 
 /**
  * spawnWorker
  *
  * @name spawnWorker
- * @function fork a new process in node
+ * @function fork a new worker thread in node
  * @access public
  */
 module.exports = ({ workerPath }) => (
-  fork(workerPath)
+  new Worker(workerPath)
 );

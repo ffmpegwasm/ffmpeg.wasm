@@ -6,7 +6,7 @@ const isURL = require('is-url');
 module.exports = async (_data) => {
   let data = _data;
   if (typeof _data === 'undefined') {
-    return _data;
+    return new Uint8Array();
   }
 
   if (typeof _data === 'string') {
@@ -22,5 +22,5 @@ module.exports = async (_data) => {
     data = _data;
   }
 
-  return data;
+  return new Uint8Array(data);
 };
