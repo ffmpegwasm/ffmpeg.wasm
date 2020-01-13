@@ -62,6 +62,8 @@ Worker.load() loads ffmpeg-core.js script (download from remote if not presented
 
 Worker.write() writes data to specific path in Emscripten file system, it is an essential step before doing any other tasks.
 
+> Currently we found an issue that you should not have parallel Worker.write() as it may cause unexpected behavior, please do it in sequential for-loop like [HERE](https://github.com/ffmpegjs/ffmpeg.js/blob/master/examples/browser/image2video.html#L36)
+
 **Arguments:**
 
 - `path` path to write data to file system
