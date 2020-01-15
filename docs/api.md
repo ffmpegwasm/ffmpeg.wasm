@@ -204,6 +204,14 @@ Worker.concatDemuxer() concatenates multiple videos using concatDemuxer. This me
 })();
 ```
 
+If the input video files are the same as the output video file, you can pass an extra option to speed up the process
+
+```javascript
+(async () => {
+  await worker.concatDemuxer(["flame-1.mp4", "flame-2.mp4"], "output.mp4", "-c copy");
+})();
+```
+
 <a name="worker-run"></a>
 
 ### Worker.run(args, jobId): Promise
