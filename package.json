@@ -36,6 +36,9 @@
   "bugs": {
     "url": "https://github.com/ffmpegjs/ffmpeg.js/issues"
   },
+  "engines": {
+    "node": ">=10.5.0"
+  },
   "homepage": "https://github.com/ffmpegjs/ffmpeg.js#readme",
   "dependencies": {
     "@ffmpeg/core": "^0.6.0",
