@@ -145,7 +145,7 @@ module.exports = (_options = {}) => {
   const concatDemuxer = async (input, output, opts = '', jobId) => {
     const text = input.reduce((acc, path) => `${acc}\nfile ${path}`, '');
     await writeText('concat_list.txt', text);
-    return run(`-f concat -safe 0 -i concat_list.txt -c copy ${opts} ${output}`, jobId);
+    return run(`-f concat -safe 0 -i concat_list.txt ${opts} ${output}`, jobId);
   };
 
   const terminate = async (jobId) => {
