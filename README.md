@@ -63,6 +63,16 @@ $ npm install @ffmpeg/ffmpeg
 
 > As we use `worker_threads` which was introduced in Node.js v10.5.0, please remember to add `--experimental-worker` if you are using Node.js v10, and you don't have to add anything if you are using Node.js v12
 
+Or, using a script tag in the browser:
+
+```
+<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.6.0/dist/ffmpeg.min.js"></script>
+<script>
+  const { createWorker } = FFmpeg;
+  ...
+</script>
+```
+
 ## Documentation
 
 - [API](https://github.com/ffmpegjs/ffmpeg.js/blob/master/docs/api.md)
