@@ -8,6 +8,7 @@
 
 [![Node Version](https://img.shields.io/node/v/@ffmpeg/ffmpeg.svg)](https://img.shields.io/node/v/@ffmpeg/ffmpeg.svg)
 [![Actions Status](https://github.com/ffmpegjs/ffmpeg.js/workflows/CI/badge.svg)](https://github.com/ffmpegjs/ffmpeg.js/actions)
+![npm (tag)](https://img.shields.io/npm/v/@ffmpeg/ffmpeg/latest)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/ffmpegjs/ffmpeg.js/graphs/commit-activity)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code Style](https://badgen.net/badge/code%20style/airbnb/ff5a5f?icon=airbnb)](https://github.com/airbnb/javascript)
@@ -66,7 +67,7 @@ $ npm install @ffmpeg/ffmpeg
 Or, using a script tag in the browser:
 
 ```html
-<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.6.0/dist/ffmpeg.min.js"></script>
+<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.6.1/dist/ffmpeg.min.js"></script>
 <script>
   const { createWorker } = FFmpeg;
   ...
