@@ -220,13 +220,13 @@ Worker.run() is similar to FFmpeg cli tool, aims to provide maximum flexiblity f
 
 **Arguments:**
 
-- `args` a string to represent arguments, note: inputPath must start with `/data/` as worker.write write to this path by default.
+- `args` a string to represent arguments
 - `jobId` check Worker.load()
 
 **Examples:**
 
 ```javascript
 (async () => {
-  await worker.run("-i /data/flame.avi -s 1920x1080 output.mp4");
+  await worker.run("-i flame.avi -s 1920x1080 output.mp4");
 })();
 ```
