@@ -10,7 +10,7 @@ module.exports = ({ workerPath, workerBlobURL }) => {
   if (Blob && URL && workerBlobURL) {
     /* Use Blob to load cross domain worker script */
     const blob = new Blob([`importScripts("${workerPath}");`], {
-      type: 'application/javascript',
+      type: 'text/javascript',
     });
     worker = new Worker(URL.createObjectURL(blob));
   } else {
