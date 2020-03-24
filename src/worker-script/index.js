@@ -3,13 +3,15 @@ const defaultArgs = require('./constants/defaultArgs');
 const strList2ptr = require('./utils/strList2ptr');
 const getTransferables = require('../utils/getTransferables');
 
+const NO_LOAD_ERROR = 'FFmpegCore is not ready, make sure you have completed Worker.load().';
+
 let action = 'unknown';
 let Module = null;
 let adapter = null;
 let ffmpeg = null;
 
 const load = ({ workerId, payload: { options: { corePath } } }, res) => {
-  if (Module == null) {
+  if (Module === null) {
     const Core = adapter.getCore(corePath);
     Core()
       .then(async (_Module) => {
@@ -33,10 +35,14 @@ const FS = ({
     args,
   },
 }, res) => {
-  res.resolve({
-    message: `Complete ${method}`,
-    data: Module.FS[method](...args),
-  });
+  if (Module === null) {
+    throw NO_LOAD_ERROR;
+  } else {
+    res.resolve({
+      message: `Complete ${method}`,
+      data: Module.FS[method](...args),
+    });
+  }
 };
 
 const run = ({
@@ -44,11 +50,15 @@ const run = ({
     args: _args,
   },
 }, res) => {
-  const args = [...defaultArgs, ..._args.trim().split(' ')].filter((s) => s.length !== 0);
-  ffmpeg(args.length, strList2ptr(Module, args));
-  res.resolve({
-    message: `Complete ${args.join(' ')}`,
-  });
+  if (Module === null) {
+    throw NO_LOAD_ERROR;
+  } else {
+    const args = [...defaultArgs, ..._args.trim().split(' ')].filter((s) => s.length !== 0);
+    ffmpeg(args.length, strList2ptr(Module, args));
+    res.resolve({
+      message: `Complete ${args.join(' ')}`,
+    });
+  }
 };
 
 exports.dispatchHandlers = (packet, send) => {

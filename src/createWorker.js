@@ -176,7 +176,21 @@ module.exports = (_options = {}) => {
       });
     } else if (status === 'reject') {
       rejects[action](payload);
-      throw Error(payload);
+      throw Error(
+        `${payload}
+
+        To get more informaion for debugging, please add logger in createWorker():
+
+        const worker = createWorker({
+          logger: ({ message }) => console.log(message),
+        });
+
+        Even more details:
+
+        const { setLogging } = require('@ffmpeg/ffmpeg');
+        setLogging(true);
+        `,
+      );
     } else if (status === 'progress') {
       parseProgress(payload, progress);
       logger(payload);
