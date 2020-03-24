@@ -1,5 +1,5 @@
 const { parentPort } = require('worker_threads');
-const worker = require('../');
+const worker = require('..');
 const getCore = require('./getCore');
 
 parentPort.on('message', (packet) => {
