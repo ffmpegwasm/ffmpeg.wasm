@@ -24,5 +24,5 @@ const worker = createWorker({
     await worker.remove(`tmp.${num}.png`);
   }
   fs.writeFileSync('out.mp4', Buffer.from(data));
-  process.exit(0);
+  await worker.terminate();
 })();

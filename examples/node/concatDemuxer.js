@@ -13,5 +13,5 @@ const worker = createWorker({
   const { data } = await worker.read('flame.mp4');
   console.log('Complete concat');
   fs.writeFileSync('flame.mp4', Buffer.from(data));
-  process.exit(0);
+  await worker.terminate();
 })();

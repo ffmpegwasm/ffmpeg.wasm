@@ -40,6 +40,7 @@
 
         const video = document.getElementById('output-video');
         video.src = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
+        await worker.terminate();
       }
       const elm = document.getElementById('uploader');
       elm.addEventListener('change', transcode);

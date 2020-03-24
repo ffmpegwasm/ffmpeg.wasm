@@ -13,5 +13,5 @@ const worker = createWorker({
   const { data } = await worker.read('flame_trim.avi');
   console.log('Complete trimming');
   fs.writeFileSync('flame_trim.avi', Buffer.from(data));
-  process.exit(0);
+  await worker.terminate();
 })();

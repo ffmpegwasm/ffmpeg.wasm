@@ -148,12 +148,14 @@ module.exports = (_options = {}) => {
     return run(`-f concat -safe 0 -i concat_list.txt ${opts} ${output}`, jobId);
   };
 
-  const terminate = async (jobId) => {
+  const terminate = async () => {
     if (worker !== null) {
+      /*
       await startJob(createJob({
         id: jobId,
         action: 'terminate',
       }));
+      */
       worker.terminate();
       worker = null;
     }
