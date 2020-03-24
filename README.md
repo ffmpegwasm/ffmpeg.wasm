@@ -53,6 +53,7 @@ const worker = createWorker();
   await worker.transcode('test.avi', 'test.mp4');
   const { data } = await worker.read('test.mp4');
   fs.writeFileSync('./test.mp4', data);
+  await worker.terminate();
 })();
 ```
 
@@ -73,6 +74,10 @@ Or, using a script tag in the browser:
   ...
 </script>
 ```
+
+## Examples
+
+- With React: https://github.com/ffmpegjs/react-app
 
 ## Documentation
 
