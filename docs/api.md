@@ -10,6 +10,7 @@
   - [Worker.trim](#worker-trim)
   - [Worker.concatDemuxer](#worker-concatDemuxer)
   - [Worker.run](#worker-run)
+  - [Worker.terminate](#worker-terminate)
 
 ---
 
@@ -228,5 +229,19 @@ Worker.run() is similar to FFmpeg cli tool, aims to provide maximum flexiblity f
 ```javascript
 (async () => {
   await worker.run("-i flame.avi -s 1920x1080 output.mp4");
+})();
+```
+
+<a name="worker-run"></a>
+
+### Worker.terminate(): Promise
+
+Worker.terminate() terminates web worker / worker\_threads, after terminate(), you cannot use this worker anymore.
+
+**Examples:**
+
+```javascript
+(async () => {
+  await worker.terminate();
 })();
 ```

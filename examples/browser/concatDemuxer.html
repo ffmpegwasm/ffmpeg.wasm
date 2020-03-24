@@ -49,6 +49,7 @@
             type: "video/mp4"
           })
         );
+        await worker.terminate();
       };
       const elm = document.getElementById("uploader");
       elm.addEventListener("change", transcode);
