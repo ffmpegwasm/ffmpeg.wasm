@@ -1,12 +1,13 @@
 const fs = require('fs');
-const { createWorker } = require('../../src');
+const { createWorker, setLogging } = require('../../src');
 
+setLogging(true);
 const worker = createWorker({
   logger: ({ message }) => console.log(message),
 });
 
 (async () => {
-  await worker.load();
+  //await worker.load();
   console.log('Start transcoding');
   await worker.write('flame.avi', '../../tests/assets/flame.avi');
   await worker.transcode('flame.avi', 'flame.mp4');

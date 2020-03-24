@@ -1,4 +1,4 @@
-const worker = require('../');
+const worker = require('..');
 const getCore = require('./getCore');
 
 global.addEventListener('message', ({ data }) => {
