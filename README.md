@@ -68,7 +68,7 @@ $ npm install @ffmpeg/ffmpeg
 Or, using a script tag in the browser:
 
 ```html
-<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.6.1/dist/ffmpeg.min.js"></script>
+<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.7.0/dist/ffmpeg.min.js"></script>
 <script>
   const { createWorker } = FFmpeg;
   ...
