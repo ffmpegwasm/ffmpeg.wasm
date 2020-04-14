@@ -56,7 +56,7 @@ const parseArgs = (command) => {
       const delimeter = arg[0];
       const newNext = command.indexOf(delimeter, prevDelimiter + 1);
 
-      if (newNext < 0) throw `Bad command espcape ${delimeter} sequence near ${nextDelimiter}`
+      if (newNext < 0) throw `Bad command espcape sequence ${delimeter} near ${nextDelimiter}`
     
       arg = command.substring(prevDelimiter+1, newNext);
       prevDelimiter = newNext + 2;
