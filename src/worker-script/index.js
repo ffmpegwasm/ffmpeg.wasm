@@ -54,12 +54,12 @@ const parseArgs = (command) => {
 
     if (arg[0] === '\'' || arg[0] === '\"') {
       const delimeter = arg[0];
-      const newNext = command.indexOf(delimeter, prevDelimiter + 1);
+      const endDelimeter = command.indexOf(delimeter, prevDelimiter + 1);
 
-      if (newNext < 0) throw `Bad command espcape sequence ${delimeter} near ${nextDelimiter}`
+      if (endDelimeter < 0) throw `Bad command espcape sequence ${delimeter} near ${nextDelimiter}`
     
-      arg = command.substring(prevDelimiter+1, newNext);
-      prevDelimiter = newNext + 2;
+      arg = command.substring(prevDelimiter+1, endDelimeter);
+      prevDelimiter = endDelimeter + 2;
     }
     else {
       prevDelimiter = nextDelimiter + 1;
