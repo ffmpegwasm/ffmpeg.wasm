@@ -4,8 +4,10 @@ const IS_BROWSER = typeof window !== 'undefined' && typeof window.document !== '
 const OPTIONS = {
   corePath: '../node_modules/@ffmpeg/core/ffmpeg-core.js',
   ...(IS_BROWSER ? { workerPath: '../dist/worker.dev.js' } : {}),
+  logger: ({ message }) => console.log(message),
 };
 const FLAME_MP4_LENGTH = 100374;
+const META_FLAME_MP4_LENGTH = 100408;
 
 if (typeof module !== 'undefined') {
   module.exports = {
@@ -14,5 +16,6 @@ if (typeof module !== 'undefined') {
     IS_BROWSER,
     OPTIONS,
     FLAME_MP4_LENGTH,
+    META_FLAME_MP4_LENGTH,
   };
 }

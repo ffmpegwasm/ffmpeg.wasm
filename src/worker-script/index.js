@@ -46,38 +46,54 @@ const FS = ({
 };
 
 const parseArgs = (command) => {
-  let args = [];
+  const args = [];
   let nextDelimiter = 0;
   let prevDelimiter = 0;
-  while((nextDelimiter = command.indexOf(' ', prevDelimiter)) >= 0) {
-    let arg = command.substring(prevDelimiter, nextDelimiter)
+  while ((nextDelimiter = command.indexOf(' ', prevDelimiter)) >= 0) {
+    let arg = command.substring(prevDelimiter, nextDelimiter);
+    let quoteIndex = arg.indexOf('\'');
+    let doubleQuoteIndex = arg.indexOf('"');
 
-    if (arg[0] === '\'' || arg[0] === '\"') {
+    if (quoteIndex === 0 || doubleQuoteIndex === 0) {
+      /* The argument has a quote at the start i.e, 'id=0,streams=0 id=1,streams=1' */
       const delimiter = arg[0];
-      const endDelimiter = command.indexOf(delimeter, prevDelimiter + 1);
+      const endDelimiter = command.indexOf(delimiter, prevDelimiter + 1);
 
-      if (endDelimiter < 0) throw `Bad command espcape sequence ${delimeter} near ${nextDelimiter}`
-      
-      arg = command.substring(prevDelimiter+1, endDelimiter);
-      prevDelimiter = endDelimiter + 2;
-    }
-    else {
-      prevDelimiter = nextDelimiter + 1;
-
-      if (arg === "") {
-        continue; 
+      if (endDelimiter < 0) {
+        throw new Error(`Bad command escape sequence ${delimiter} near ${nextDelimiter}`);
       }
-    }
 
-    args.push(arg)
+      arg = command.substring(prevDelimiter + 1, endDelimiter);
+      prevDelimiter = endDelimiter + 2;
+      args.push(arg);
+    } else if (quoteIndex > 0 || doubleQuoteIndex > 0) {
+      /* The argument has a quote in it, it must be ended correctly i,e. title='test' */
+      if (quoteIndex === -1) quoteIndex = Infinity;
+      if (doubleQuoteIndex === -1) doubleQuoteIndex = Infinity;
+      const delimiter = (quoteIndex < doubleQuoteIndex) ? '\'' : '"';
+      const endDelimiter = command.indexOf(delimiter, prevDelimiter + Math.min(quoteIndex, doubleQuoteIndex) + 1);
+
+      if (endDelimiter < 0) {
+        throw new Error(`Bad command escape sequence ${delimiter} near ${nextDelimiter}`);
+      }
+
+      arg = command.substring(prevDelimiter, endDelimiter + 1);
+      prevDelimiter = endDelimiter + 2;
+      args.push(arg);
+    } else if (arg !== '') {
+      args.push(arg);
+      prevDelimiter = nextDelimiter + 1;
+    } else {
+      prevDelimiter = nextDelimiter + 1;
+    }
   }
 
-  if (prevDelimiter != command.length) {
-    args.push(command.substring(prevDelimiter))
+  if (prevDelimiter !== command.length) {
+    args.push(command.substring(prevDelimiter));
   }
 
   return args;
-}
+};
 
 const run = ({
   payload: {
