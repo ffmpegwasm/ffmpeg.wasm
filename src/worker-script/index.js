@@ -72,6 +72,10 @@ const parseArgs = (command) => {
     args.push(arg)
   }
 
+  if (prevDelimiter != command.length) {
+    args.push(command.substring(prevDelimiter))
+  }
+
   return args;
 }
 
@@ -83,7 +87,7 @@ const run = ({
   if (Module === null) {
     throw NO_LOAD_ERROR;
   } else {
-    const args = [...defaultArgs, ...parseArgs(_args))].filter((s) => s.length !== 0);
+    const args = [...defaultArgs, ...parseArgs(_args)].filter((s) => s.length !== 0);
     ffmpeg(args.length, strList2ptr(Module, args));
     res.resolve({
       message: `Complete ${args.join(' ')}`,
