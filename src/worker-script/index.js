@@ -45,6 +45,36 @@ const FS = ({
   }
 };
 
+const parseArgs = (command) => {
+  let args = [];
+  let nextDelimiter = 0;
+  let prevDelimiter = 0;
+  while((nextDelimiter = command.indexOf(' ', prevDelimiter)) >= 0) {
+    let arg = command.substring(prevDelimiter, nextDelimiter)
+
+    if (arg[0] === '\'' || arg[0] === '\"') {
+      const delimeter = arg[0];
+      const newNext = command.indexOf(delimeter, prevDelimiter + 1);
+
+      if (newNext < 0) throw `Bad command espcape ${delimeter} sequence near ${nextDelimiter}`
+    
+      arg = command.substring(prevDelimiter+1, newNext);
+      prevDelimiter = newNext + 2;
+    }
+    else {
+      prevDelimiter = nextDelimiter + 1;
+
+      if (arg === "") {
+        continue; 
+      }
+    }
+
+    args.push(arg)
+  }
+
+  return args;
+}
+
 const run = ({
   payload: {
     args: _args,
@@ -53,7 +83,7 @@ const run = ({
   if (Module === null) {
     throw NO_LOAD_ERROR;
   } else {
-    const args = [...defaultArgs, ..._args.trim().split(' ')].filter((s) => s.length !== 0);
+    const args = [...defaultArgs, ...parseArgs(_args))].filter((s) => s.length !== 0);
     ffmpeg(args.length, strList2ptr(Module, args));
     res.resolve({
       message: `Complete ${args.join(' ')}`,
