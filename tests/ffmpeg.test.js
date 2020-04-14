@@ -20,6 +20,17 @@ describe('transcode()', () => {
 });
 
 describe('run()', () => {
+  describe('should run a command with quoted parameters at start no spaces', () => {
+    ['flame.avi'].forEach((name) => (
+      it(`run ${name}`, async () => {
+        await worker.write(name, `${BASE_URL}/${name}`);
+        await worker.run(`-y -i ${name} -metadata 'title="test"' output.mp4`);
+        const { data } = await worker.read('output.mp4');
+        expect(data.length).to.be(META_FLAME_MP4_LENGTH_NO_SPACE);
+      }).timeout(TIMEOUT)
+    ));
+  });
+
   describe('should run a command with quoted parameters at start and a space in between', () => {
     ['flame.avi'].forEach((name) => (
       it(`run ${name}`, async () => {

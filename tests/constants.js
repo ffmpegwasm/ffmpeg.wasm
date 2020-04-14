@@ -8,6 +8,7 @@ const OPTIONS = {
 };
 const FLAME_MP4_LENGTH = 100374;
 const META_FLAME_MP4_LENGTH = 100408;
+const META_FLAME_MP4_LENGTH_NO_SPACE = 100404;
 
 if (typeof module !== 'undefined') {
   module.exports = {
@@ -17,5 +18,6 @@ if (typeof module !== 'undefined') {
     OPTIONS,
     FLAME_MP4_LENGTH,
     META_FLAME_MP4_LENGTH,
+    META_FLAME_MP4_LENGTH_NO_SPACE,
   };
 }
