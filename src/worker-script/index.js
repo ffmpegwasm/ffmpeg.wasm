@@ -45,39 +45,41 @@ const FS = ({
   }
 };
 
-const parseArgs = (command) => {
+const parseArgs = (cmd) => {
   const args = [];
   let nextDelimiter = 0;
   let prevDelimiter = 0;
-  while ((nextDelimiter = command.indexOf(' ', prevDelimiter)) >= 0) {
-    let arg = command.substring(prevDelimiter, nextDelimiter);
-    let quoteIndex = arg.indexOf('\'');
-    let doubleQuoteIndex = arg.indexOf('"');
+  // eslint-disable-next-line no-cond-assign
+  while ((nextDelimiter = cmd.indexOf(' ', prevDelimiter)) >= 0) {
+    let arg = cmd.substring(prevDelimiter, nextDelimiter);
+    let quoteIdx = arg.indexOf('\'');
+    let dblQuoteIdx = arg.indexOf('"');
 
-    if (quoteIndex === 0 || doubleQuoteIndex === 0) {
+    if (quoteIdx === 0 || dblQuoteIdx === 0) {
       /* The argument has a quote at the start i.e, 'id=0,streams=0 id=1,streams=1' */
       const delimiter = arg[0];
-      const endDelimiter = command.indexOf(delimiter, prevDelimiter + 1);
+      const endDelimiter = cmd.indexOf(delimiter, prevDelimiter + 1);
 
       if (endDelimiter < 0) {
         throw new Error(`Bad command escape sequence ${delimiter} near ${nextDelimiter}`);
       }
 
-      arg = command.substring(prevDelimiter + 1, endDelimiter);
+      arg = cmd.substring(prevDelimiter + 1, endDelimiter);
       prevDelimiter = endDelimiter + 2;
       args.push(arg);
-    } else if (quoteIndex > 0 || doubleQuoteIndex > 0) {
+    } else if (quoteIdx > 0 || dblQuoteIdx > 0) {
       /* The argument has a quote in it, it must be ended correctly i,e. title='test' */
-      if (quoteIndex === -1) quoteIndex = Infinity;
-      if (doubleQuoteIndex === -1) doubleQuoteIndex = Infinity;
-      const delimiter = (quoteIndex < doubleQuoteIndex) ? '\'' : '"';
-      const endDelimiter = command.indexOf(delimiter, prevDelimiter + Math.min(quoteIndex, doubleQuoteIndex) + 1);
+      if (quoteIdx === -1) quoteIdx = Infinity;
+      if (dblQuoteIdx === -1) dblQuoteIdx = Infinity;
+      const delimiter = (quoteIdx < dblQuoteIdx) ? '\'' : '"';
+      const quoteOffset = Math.min(quoteIdx, dblQuoteIdx);
+      const endDelimiter = cmd.indexOf(delimiter, prevDelimiter + quoteOffset + 1);
 
       if (endDelimiter < 0) {
         throw new Error(`Bad command escape sequence ${delimiter} near ${nextDelimiter}`);
       }
 
-      arg = command.substring(prevDelimiter, endDelimiter + 1);
+      arg = cmd.substring(prevDelimiter, endDelimiter + 1);
       prevDelimiter = endDelimiter + 2;
       args.push(arg);
     } else if (arg !== '') {
@@ -88,8 +90,8 @@ const parseArgs = (command) => {
     }
   }
 
-  if (prevDelimiter !== command.length) {
-    args.push(command.substring(prevDelimiter));
+  if (prevDelimiter !== cmd.length) {
+    args.push(cmd.substring(prevDelimiter));
   }
 
   return args;
