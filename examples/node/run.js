@@ -9,7 +9,7 @@ const worker = createWorker({
   await worker.load();
   console.log('Start transcoding');
   await worker.write('flame.avi', '../../tests/assets/flame.avi');
-  await worker.run('-i /data/flame.avi flame.mp4');
+  await worker.run('-i flame.avi flame.mp4');
   const { data } = await worker.read('flame.mp4');
   console.log('Complete transcoding');
   fs.writeFileSync('flame.mp4', Buffer.from(data));
