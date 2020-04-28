@@ -36,6 +36,11 @@ Use FFmpeg directly in your browser without any backend services!!
 | ---- | ------- | ----------- |
 | Webcam | <a href="https://codepen.io/jeromewu/pen/qBBKzyW" target="_blank"><img alt="codepen" width="128px" src="https://blog.codepen.io/wp-content/uploads/2012/06/codepen-wordmark-display-inside-black@10x.png"></a> | [Link](https://github.com/ffmpegjs/ffmpeg.js/blob/master/examples/browser/webcam.html) |
 
+## Supported Formats
+
+- mp4 (x264)
+- webm (vp8/vp9) (^0.8.0)
+- mp3 (^0.8.0)
 
 ---
 
@@ -43,17 +48,16 @@ ffmpeg.js provides simple to use APIs, to transcode a video you only need few li
 
 ```javascript
 const fs = require('fs');
-const { createWorker } = require('@ffmpeg/ffmpeg');
+const { createFFmpeg } = require('@ffmpeg/ffmpeg');
 
-const worker = createWorker();
+const ffmpeg = createFFmpeg({ log: true });
 
 (async () => {
-  await worker.load();
-  await worker.write('test.avi', './test.avi');
-  await worker.transcode('test.avi', 'test.mp4');
-  const { data } = await worker.read('test.mp4');
-  fs.writeFileSync('./test.mp4', data);
-  await worker.terminate();
+  await ffmpeg.load();
+  await ffmpeg.write('test.avi', './test.avi');
+  await ffmpeg.transcode('test.avi', 'test.mp4');
+  fs.writeFileSync('./test.mp4', ffmpeg.read('test.mp4'));
+  process.exit(0);
 })();
 ```
 
@@ -63,16 +67,32 @@ const worker = createWorker();
 $ npm install @ffmpeg/ffmpeg
 ```
 
-> As we use `worker_threads` which was introduced in Node.js v10.5.0, please remember to add `--experimental-worker` if you are using Node.js v10, and you don't have to add anything if you are using Node.js v12
+> As we are using the latest experimental features, you need to add few flags to run in Node.js
 
-Or, using a script tag in the browser:
+```
+$ node --experimental-wasm-threads --experimental-wasm-bulk-memory transcode.js
+```
+
+Or, using a script tag in the browser (only works in Chrome):
 
 ```html
-<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.7.0/dist/ffmpeg.min.js"></script>
+<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.8.0/dist/ffmpeg.min.js"></script>
 <script>
-  const { createWorker } = FFmpeg;
+  const { createFFmpeg } = FFmpeg;
   ...
 </script>
+```
+
+## Multi-thread
+
+Starting from v0.8.0, multithreading is enabled and you can use this feature by passing `-threads <NUM>` (`NUM` < 8 ). For built-in functions like `transcode()`, you can pass it as 3rd argument.
+
+```javascript
+// in transcode()
+await ffmpeg.transcode('flame.avi', 'flame.mp4', '-threads 2');
+
+// in run()
+await ffmpeg.run('-i flame.avi -threads 2 flame.mp4');
 ```
 
 ## Examples
@@ -93,3 +113,4 @@ Learn how to build ffmpeg.js from stories:
 - [Part.4 ffmpeg.js v0.2 — Web Worker and Libx264](https://medium.com/@jeromewus/build-ffmpeg-webassembly-version-ffmpeg-js-part-4-ffmpeg-js-v0-2-web-worker-and-libx264-d0596f1beb4e)
 - [Part.5 ffmpeg.js v0.3 — pre-js and live streaming](https://medium.com/@jeromewus/build-ffmpeg-webassembly-version-ffmpeg-js-part-5-ffmpeg-js-v0-3-pre-js-and-live-streaming-c1498939a74c)
 - [Part.6 a Deep Dive into File System](https://medium.com/@jeromewus/build-ffmpeg-webassembly-version-ffmpeg-js-part-6-a-deep-dive-into-file-system-56eba10067ca)
+- [Part.7 multithreading (WIP)]()

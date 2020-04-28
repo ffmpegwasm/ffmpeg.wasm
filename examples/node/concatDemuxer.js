@@ -1,17 +1,12 @@
 const fs = require('fs');
-const { createWorker } = require('../../src');
+const { createFFmpeg } = require('../../src');
 
-const worker = createWorker({
-  logger: ({ message }) => console.log(message),
-});
+const ffmpeg = createFFmpeg({ log: true });
 
 (async () => {
-  await worker.load();
-  console.log('Start to concat');
-  await worker.write('flame.avi', '../../tests/assets/flame.avi');
-  await worker.concatDemuxer(['flame.avi', 'flame.avi'], 'flame.mp4');
-  const { data } = await worker.read('flame.mp4');
-  console.log('Complete concat');
-  fs.writeFileSync('flame.mp4', Buffer.from(data));
-  await worker.terminate();
+  await ffmpeg.load();
+  await ffmpeg.write('flame.avi', '../../tests/assets/flame.avi');
+  await ffmpeg.concatDemuxer(['flame.avi', 'flame.avi'], 'flame.mp4');
+  fs.writeFileSync('flame.mp4', ffmpeg.read('flame.mp4'));
+  process.exit(0);
 })();
