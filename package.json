@@ -14,13 +14,13 @@
     "wait": "rimraf dist && wait-on http://localhost:3000/dist/ffmpeg.dev.js",
     "test": "npm-run-all -p -r start test:all",
     "test:all": "npm-run-all wait test:browser:ffmpeg test:node:all",
-    "test:node": "NODE_OPTIONS=--experimental-worker nyc mocha --exit --bail --require ./scripts/test-helper.js",
+    "test:node": "node --experimental-wasm-threads --experimental-wasm-bulk-memory node_modules/.bin/_mocha --exit --bail --require ./scripts/test-helper.js",
     "test:node:all": "npm run test:node -- ./tests/*.test.js",
-    "test:browser": "mocha-headless-chrome -a incognito -a no-sandbox -a disable-setuid-sandbox -a disable-logging -t 300000",
+    "test:browser": "mocha-headless-chrome -a allow-file-access-from-files -a incognito -a no-sandbox -a disable-setuid-sandbox -a disable-logging -t 300000",
     "test:browser:ffmpeg": "npm run test:browser -- -f ./tests/ffmpeg.test.html"
   },
   "browser": {
-    "./src/worker/node/index.js": "./src/worker/browser/index.js"
+    "./src/node/index.js": "./src/browser/index.js"
   },
   "repository": {
     "type": "git",
@@ -37,11 +37,11 @@
     "url": "https://github.com/ffmpegjs/ffmpeg.js/issues"
   },
   "engines": {
-    "node": ">=10.5.0"
+    "node": ">=12.16.1"
   },
   "homepage": "https://github.com/ffmpegjs/ffmpeg.js#readme",
   "dependencies": {
-    "@ffmpeg/core": "^0.6.0",
+    "@ffmpeg/core": "^0.7.0",
     "idb": "^4.0.5",
     "is-electron": "^2.2.0",
     "is-url": "^1.2.4",
