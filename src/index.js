@@ -1,9 +1,6 @@
 require('regenerator-runtime/runtime');
-const { logging, setLogging } = require('./utils/log');
-const createWorker = require('./createWorker');
+const createFFmpeg = require('./createFFmpeg');
 
 module.exports = {
-  logging,
-  setLogging,
-  createWorker,
+  createFFmpeg,
 };

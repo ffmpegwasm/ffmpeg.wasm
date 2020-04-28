@@ -1,11 +1,9 @@
 const defaultOptions = require('./defaultOptions');
-const spawnWorker = require('./spawnWorker');
-const onMessage = require('./onMessage');
+const getModule = require('./getModule');
 const fetchFile = require('./fetchFile');
 
 module.exports = {
   defaultOptions,
-  spawnWorker,
-  onMessage,
+  getModule,
   fetchFile,
 };

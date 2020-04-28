@@ -6,4 +6,4 @@ exports.setLogging = (_logging) => {
   logging = _logging;
 };
 
-exports.log = (...args) => (logging ? console.log.apply(this, args) : null);
+exports.log = (type, message) => (logging ? console.log(`[${type}] ${message}`) : null);
