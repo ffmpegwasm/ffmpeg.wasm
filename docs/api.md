@@ -62,7 +62,7 @@ ffmpeg.write() writes data to specific path in Emscripten file system, it is an 
 **Arguments:**
 
 - `path` path to write data to file system
-- `data` data to write, can be Uint8Array, URL or base64 format
+- `data` data to write, can be Uint8Array, URL, File, Blob or base64 format
 
 **Examples:**
 
