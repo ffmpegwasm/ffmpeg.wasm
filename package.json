@@ -41,7 +41,7 @@
   },
   "homepage": "https://github.com/ffmpegjs/ffmpeg.js#readme",
   "dependencies": {
-    "@ffmpeg/core": "^0.7.0",
+    "@ffmpeg/core": "^0.7.1",
     "idb": "^4.0.5",
     "is-electron": "^2.2.0",
     "is-url": "^1.2.4",
