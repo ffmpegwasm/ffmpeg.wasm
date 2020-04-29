@@ -30,6 +30,12 @@ Use FFmpeg directly in your browser without any backend services!!
 
 [Source Code](https://github.com/ffmpegjs/ffmpeg.js/blob/master/examples/browser/transcode.html)
 
+## Browsers support
+
+| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Chrome |
+| --------- |
+| last 2 versions
+
 ## Examples:
 
 | Name | Demo | Source Code |
