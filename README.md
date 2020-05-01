@@ -1,15 +1,18 @@
+# Please visit [Kagami/ffmpeg.js](https://github.com/Kagami/ffmpeg.js/) if you are looking for ffmpeg.js
+
+
 <p align="center">
   <a href="#">
-    <img alt="ffmpeg.js" width="128px" height="128px" src="https://github.com/ffmpegjs/ffmpeg.js/raw/master/docs/images/ffmpegjs-icon.png">
+    <img alt="ffmpeg.wasm" width="128px" height="128px" src="https://github.com/ffmpegwasm/ffmpeg.wasm/raw/master/docs/images/ffmpegjs-icon.png">
   </a>
 </p>
 
 # ffmpeg.wasm
 
 [![Node Version](https://img.shields.io/node/v/@ffmpeg/ffmpeg.svg)](https://img.shields.io/node/v/@ffmpeg/ffmpeg.svg)
-[![Actions Status](https://github.com/ffmpegjs/ffmpeg.js/workflows/CI/badge.svg)](https://github.com/ffmpegjs/ffmpeg.js/actions)
+[![Actions Status](https://github.com/ffmpegwasm/ffmpeg.wasm/workflows/CI/badge.svg)](https://github.com/ffmpegwasm/ffmpeg.wasm/actions)
 ![npm (tag)](https://img.shields.io/npm/v/@ffmpeg/ffmpeg/latest)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/ffmpegjs/ffmpeg.js/graphs/commit-activity)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/ffmpegwasm/ffmpeg.wasm/graphs/commit-activity)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code Style](https://badgen.net/badge/code%20style/airbnb/ff5a5f?icon=airbnb)](https://github.com/airbnb/javascript)
 [![Downloads Total](https://img.shields.io/npm/dt/@ffmpeg/ffmpeg.svg)](https://www.npmjs.com/package/@ffmpeg/ffmpeg)
@@ -20,7 +23,7 @@ Use FFmpeg directly in your browser without any backend services!!
 **Transcode**
 <p align="center">
   <a href="#">
-    <img alt="transcode-demo" src="https://github.com/ffmpegjs/ffmpeg.js/raw/master/docs/images/transcode.gif">
+    <img alt="transcode-demo" src="https://github.com/ffmpegwasm/ffmpeg.wasm/raw/master/docs/images/transcode.gif">
   </a>
 </p>
 
@@ -28,7 +31,7 @@ Use FFmpeg directly in your browser without any backend services!!
 <img alt="codepen" width="128px" src="https://blog.codepen.io/wp-content/uploads/2012/06/codepen-wordmark-display-inside-black@10x.png">
 </a>
 
-[Source Code](https://github.com/ffmpegjs/ffmpeg.js/blob/master/examples/browser/transcode.html)
+[Source Code](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/master/examples/browser/transcode.html)
 
 ## Browsers support
 
@@ -40,7 +43,7 @@ Use FFmpeg directly in your browser without any backend services!!
 
 | Name | Demo | Source Code |
 | ---- | ------- | ----------- |
-| Webcam | <a href="https://codepen.io/jeromewu/pen/qBBKzyW" target="_blank"><img alt="codepen" width="128px" src="https://blog.codepen.io/wp-content/uploads/2012/06/codepen-wordmark-display-inside-black@10x.png"></a> | [Link](https://github.com/ffmpegjs/ffmpeg.js/blob/master/examples/browser/webcam.html) |
+| Webcam | <a href="https://codepen.io/jeromewu/pen/qBBKzyW" target="_blank"><img alt="codepen" width="128px" src="https://blog.codepen.io/wp-content/uploads/2012/06/codepen-wordmark-display-inside-black@10x.png"></a> | [Link](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/master/examples/browser/webcam.html) |
 
 ## Supported Formats
 
@@ -107,7 +110,7 @@ await ffmpeg.run('-i flame.avi -threads 2 flame.mp4');
 
 ## Documentation
 
-- [API](https://github.com/ffmpegjs/ffmpeg.js/blob/master/docs/api.md)
+- [API](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/master/docs/api.md)
 
 ## Tutorials
 
@@ -115,8 +118,8 @@ Learn how to build ffmpeg.js from stories:
 
 - [Part.1 Preparation](https://itnext.io/build-ffmpeg-webassembly-version-ffmpeg-js-part-1-preparation-ed12bf4c8fac)
 - [Part.2 Compile with Emscripten](https://itnext.io/build-ffmpeg-webassembly-version-ffmpeg-js-part-2-compile-with-emscripten-4c581e8c9a16)
-- [Part.3 ffmpeg.js v0.1.0 — Transcoding avi to mp4](https://itnext.io/build-ffmpeg-webassembly-version-ffmpeg-js-part-3-ffmpeg-js-v0-1-0-transcoding-avi-to-mp4-f729e503a397)
-- [Part.4 ffmpeg.js v0.2 — Web Worker and Libx264](https://medium.com/@jeromewus/build-ffmpeg-webassembly-version-ffmpeg-js-part-4-ffmpeg-js-v0-2-web-worker-and-libx264-d0596f1beb4e)
-- [Part.5 ffmpeg.js v0.3 — pre-js and live streaming](https://medium.com/@jeromewus/build-ffmpeg-webassembly-version-ffmpeg-js-part-5-ffmpeg-js-v0-3-pre-js-and-live-streaming-c1498939a74c)
+- [Part.3 ffmpeg.wasm v0.1.0 — Transcoding avi to mp4](https://itnext.io/build-ffmpeg-webassembly-version-ffmpeg-js-part-3-ffmpeg-js-v0-1-0-transcoding-avi-to-mp4-f729e503a397)
+- [Part.4 ffmpeg.wasm v0.2 — Web Worker and Libx264](https://medium.com/@jeromewus/build-ffmpeg-webassembly-version-ffmpeg-js-part-4-ffmpeg-js-v0-2-web-worker-and-libx264-d0596f1beb4e)
+- [Part.5 ffmpeg.wasm v0.3 — pre-js and live streaming](https://medium.com/@jeromewus/build-ffmpeg-webassembly-version-ffmpeg-js-part-5-ffmpeg-js-v0-3-pre-js-and-live-streaming-c1498939a74c)
 - [Part.6 a Deep Dive into File System](https://medium.com/@jeromewus/build-ffmpeg-webassembly-version-ffmpeg-js-part-6-a-deep-dive-into-file-system-56eba10067ca)
 - [Part.7 multithreading (WIP)]()
