@@ -4,7 +4,7 @@
   </a>
 </p>
 
-# ffmpeg.js
+# ffmpeg.wasm
 
 [![Node Version](https://img.shields.io/node/v/@ffmpeg/ffmpeg.svg)](https://img.shields.io/node/v/@ffmpeg/ffmpeg.svg)
 [![Actions Status](https://github.com/ffmpegjs/ffmpeg.js/workflows/CI/badge.svg)](https://github.com/ffmpegjs/ffmpeg.js/actions)
