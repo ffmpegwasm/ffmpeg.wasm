@@ -6,6 +6,7 @@
   - [ffmpeg.writeText](#ffmpeg-writeText)
   - [ffmpeg.read](#ffmpeg-read)
   - [ffmpeg.remove](#ffmpeg-remove)
+  - [ffmpeg.ls](#ffmpeg-ls)
   - [ffmpeg.transcode](#ffmpeg-transcode)
   - [ffmpeg.trim](#ffmpeg-trim)
   - [ffmpeg.concatDemuxer](#ffmpeg-concatDemuxer)
