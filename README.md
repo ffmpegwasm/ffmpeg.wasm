@@ -53,7 +53,7 @@ Use FFmpeg directly in your browser without any backend services!!
 
 ---
 
-ffmpeg.js provides simple to use APIs, to transcode a video you only need few lines of code:
+ffmpeg.wasm provides simple to use APIs, to transcode a video you only need few lines of code:
 
 ```javascript
 const fs = require('fs');
@@ -85,7 +85,7 @@ $ node --experimental-wasm-threads --experimental-wasm-bulk-memory transcode.js
 Or, using a script tag in the browser (only works in Chrome):
 
 ```html
-<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.8.1/dist/ffmpeg.min.js"></script>
+<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.8.2/dist/ffmpeg.min.js"></script>
 <script>
   const { createFFmpeg } = FFmpeg;
   ...
@@ -106,7 +106,7 @@ await ffmpeg.run('-i flame.avi -threads 2 flame.mp4');
 
 ## Examples
 
-- With React: https://github.com/ffmpegjs/react-app
+- With React: https://github.com/ffmpegwasm/react-app
 
 ## Documentation
 
@@ -114,7 +114,7 @@ await ffmpeg.run('-i flame.avi -threads 2 flame.mp4');
 
 ## Tutorials
 
-Learn how to build ffmpeg.js from stories:
+Learn how to build ffmpeg.wasm from stories:
 
 - [Part.1 Preparation](https://itnext.io/build-ffmpeg-webassembly-version-ffmpeg-js-part-1-preparation-ed12bf4c8fac)
 - [Part.2 Compile with Emscripten](https://itnext.io/build-ffmpeg-webassembly-version-ffmpeg-js-part-2-compile-with-emscripten-4c581e8c9a16)
