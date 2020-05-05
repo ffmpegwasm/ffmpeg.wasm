@@ -25,3 +25,38 @@ describe('transcode()', () => {
     });
   });
 });
+
+describe('run()', () => {
+  describe('should run a command with quoted parameters at start no spaces', () => {
+    ['flame.avi'].forEach((name) => (
+      it(`run ${name}`, async () => {
+        await ffmpeg.write(name, `${BASE_URL}/${name}`);
+        await ffmpeg.run(`-y -i ${name} -metadata 'title="test"' output.mp4`);
+        const data = ffmpeg.read('output.mp4');
+        expect(data.length).to.be(META_FLAME_MP4_LENGTH_NO_SPACE);
+      }).timeout(TIMEOUT)
+    ));
+  });
+
+  describe('should run a command with quoted parameters at start and a space in between', () => {
+    ['flame.avi'].forEach((name) => (
+      it(`run ${name}`, async () => {
+        await ffmpeg.write(name, `${BASE_URL}/${name}`);
+        await ffmpeg.run(`-y -i ${name} -metadata 'title="my title"' output.mp4`);
+        const data = ffmpeg.read('output.mp4');
+        expect(data.length).to.be(META_FLAME_MP4_LENGTH);
+      }).timeout(TIMEOUT)
+    ));
+  });
+
+  describe('should run a command with name quoted parameters and a space in between', () => {
+    ['flame.avi'].forEach((name) => (
+      it(`run ${name}`, async () => {
+        await ffmpeg.write(name, `${BASE_URL}/${name}`);
+        await ffmpeg.run(`-y -i ${name} -metadata title="my title" output.mp4`);
+        const data = ffmpeg.read('output.mp4');
+        expect(data.length).to.be(META_FLAME_MP4_LENGTH);
+      }).timeout(TIMEOUT)
+    ));
+  });
+});

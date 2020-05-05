@@ -3,6 +3,7 @@ const { setLogging, log } = require('./utils/log');
 const resolvePaths = require('./utils/resolvePaths');
 const parseProgress = require('./utils/parseProgress');
 const stringList2pointer = require('./utils/stringList2pointer');
+const parseArgs = require('./utils/parseArgs');
 const {
   defaultOptions,
   getModule,
@@ -92,7 +93,7 @@ module.exports = (_options = {}) => {
     } else {
       running = true;
       return new Promise((resolve) => {
-        const args = [...defaultArgs, ..._args.trim().split(' ')].filter((s) => s.length !== 0);
+        const args = [...defaultArgs, ...parseArgs(_args)].filter((s) => s.length !== 0);
         log('info', `ffmpeg command: ${args.join(' ')}`);
         runResolve = resolve;
         ffmpeg(args.length, stringList2pointer(Module, args));
