@@ -1,6 +1,6 @@
 {
   "name": "@ffmpeg/ffmpeg",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "description": "FFmpeg WebAssembly version",
   "main": "src/index.js",
   "directories": {
