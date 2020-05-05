@@ -1,6 +1,6 @@
 {
   "name": "@ffmpeg/ffmpeg",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "FFmpeg WebAssembly version",
   "main": "src/index.js",
   "directories": {
@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ffmpegjs/ffmpeg.js.git"
+    "url": "git+https://github.com/ffmpegwasm/ffmpeg.wasm.git"
   },
   "keywords": [
     "ffmpeg",
@@ -34,12 +34,12 @@
   "author": "Jerome Wu <jeromewus@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ffmpegjs/ffmpeg.js/issues"
+    "url": "https://github.com/ffmpegwasm/ffmpeg.wasm/issues"
   },
   "engines": {
     "node": ">=12.16.1"
   },
-  "homepage": "https://github.com/ffmpegjs/ffmpeg.js#readme",
+  "homepage": "https://github.com/ffmpegwasm/ffmpeg.wasm#readme",
   "dependencies": {
     "@ffmpeg/core": "^0.7.1",
     "idb": "^4.0.5",
