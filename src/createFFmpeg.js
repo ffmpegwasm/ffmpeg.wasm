@@ -81,7 +81,7 @@ module.exports = (_options = {}) => {
   );
 
   const ls = (path) => (
-    FS('readir', [path])
+    FS('readdir', [path])
   );
 
   const run = (_args) => {
