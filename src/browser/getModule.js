@@ -11,12 +11,7 @@ module.exports = async ({ corePath }) => {
     log("info", `download ffmpeg-core script (~25 MB) from ${corePath}`);
     const timeoutPromise = new Promise((_, reject) => {
       setTimeout(() => {
-        reject(
-          new Error(
-            `Loading FFmpeg Failed! This is because it either timed out or we do not support your browser yet. Please try reloading or using another browser, sorry for the inconvenience.
-            Your Browser ${window.navigator.userAgent}`
-          )
-        );
+        reject(new Error(`Loading FFmpeg Failed!`));
       }, 10000);
     });
     const loadFFmpeg = new Promise((resolve) => {
