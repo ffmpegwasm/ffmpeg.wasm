@@ -13,7 +13,8 @@ module.exports = async ({ corePath }) => {
       setTimeout(() => {
         reject(
           new Error(
-            `Loading FFmpeg Failed! This is because it either timed out or we do not support your browser yet. ${window.navigator.userAgent}`
+            `Loading FFmpeg Failed! This is because it either timed out or we do not support your browser yet. Please try reloading or using another browser, sorry for the inconvenience.
+            Your Browser ${window.navigator.userAgent}`
           )
         );
       }, 10000);
