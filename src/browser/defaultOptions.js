@@ -12,8 +12,8 @@ module.exports = {
       ? resolveURL("/node_modules/@ffmpeg/core/ffmpeg-core.js")
       : process.env.PUBLIC_URL
       ? `${process.env.PUBLIC_}/ffmpeg-core.js`
-      // : `https://unpkg.com/@ffmpeg/core@v${dependencies[
-      //     "@ffmpeg/core"
-      //   ].substring(1)}/ffmpeg-core.js`,
-      `/ffmpeg-core.js`
+      : // : `https://unpkg.com/@ffmpeg/core@v${dependencies[
+        //     "@ffmpeg/core"
+        //   ].substring(1)}/ffmpeg-core.js`,
+        `/ffmpeg-core.js`,
 };
