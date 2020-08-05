@@ -9,11 +9,11 @@ module.exports = async ({ corePath }) => {
     window.FFMPEG_CORE_WORKER_SCRIPT = URL.createObjectURL(workerBlob);
     log("info", `worker object URL=${window.FFMPEG_CORE_WORKER_SCRIPT}`);
     log("info", `download ffmpeg-core script (~25 MB) from ${corePath}`);
-    // const timeoutPromise = new Promise((_, reject) => {
-    //   setTimeout(() => {
-    //     reject(new Error(`Loading FFmpeg Failed!`));
-    //   }, 10000);
-    // });
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => {
+        reject(new Error(`Loading FFmpeg Failed!`));
+      }, 30000);
+    });
     const loadFFmpeg = new Promise((resolve) => {
       const script = document.createElement("script");
       const eventHandler = () => {
@@ -29,7 +29,7 @@ module.exports = async ({ corePath }) => {
       script.addEventListener("load", eventHandler);
       document.getElementsByTagName("head")[0].appendChild(script);
     });
-    return Promise.race([loadFFmpeg]);
+    return Promise.race([loadFFmpeg, timeoutPromise]);
   }
   log("info", "ffmpeg-core is loaded already");
   return Promise.resolve(window.Module);
