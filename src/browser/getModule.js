@@ -29,7 +29,7 @@ module.exports = async ({ corePath }) => {
       script.addEventListener("load", eventHandler);
       document.getElementsByTagName("head")[0].appendChild(script);
     });
-    return Promise.race([loadFFmpeg, timeoutPromise]);
+    return await Promise.race([loadFFmpeg, timeoutPromise]);
   }
   log("info", "ffmpeg-core is loaded already");
   return Promise.resolve(window.Module);
