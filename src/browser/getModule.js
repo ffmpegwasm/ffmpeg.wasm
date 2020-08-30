@@ -12,7 +12,7 @@ module.exports = async ({ corePath }) => {
     const timeoutPromise = new Promise((_, reject) => {
       setTimeout(() => {
         reject(new Error(`Loading FFmpeg Failed!`));
-      }, 30000);
+      }, 60000);
     });
     const loadFFmpeg = new Promise((resolve) => {
       const script = document.createElement("script");
