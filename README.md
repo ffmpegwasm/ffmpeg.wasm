@@ -25,15 +25,8 @@ ffmpeg.wasm is a pure Webassembly / Javascript port of FFmpeg. It enables video 
   </a>
 </p>
 
-Try it: [https://ffmpegwasm.github.io](https://ffmpegwasm.github.io)
+Try it: [https://ffmpegwasm.github.io](https://ffmpegwasm.github.io#demo)
 
-## Browsers support
-
-Only browsers with SharedArrayBuffer support can use ffmpeg.wasm, you can check [HERE](https://caniuse.com/sharedarraybuffer) for the complete list.
-
-## Supported External Libraries
-
-Check [HERE](https://github.com/ffmpegwasm/ffmpeg.wasm-core#configuration)
 
 ## Installation
 
@@ -56,6 +49,8 @@ Or, using a script tag in the browser (only works in Chrome):
   ...
 </script>
 ```
+
+> Only browsers with SharedArrayBuffer support can use ffmpeg.wasm, you can check [HERE](https://caniuse.com/sharedarraybuffer) for the complete list.
 
 ## Usage
 
@@ -91,3 +86,4 @@ Need to pass `-row-mt 1`, but can only use one thread to help, can speed up arou
 ## Documentation
 
 - [API](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/master/docs/api.md)
+- [Supported External Libraries](https://github.com/ffmpegwasm/ffmpeg.wasm-core#configuration)
