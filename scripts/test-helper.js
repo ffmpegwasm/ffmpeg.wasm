@@ -1,6 +1,7 @@
+const chai = require('chai');
 const constants = require('../tests/constants');
 
-global.expect = require('expect.js');
+global.expect = chai.expect;
 global.FFmpeg = require('../src');
 
 Object.keys(constants).forEach((key) => {
