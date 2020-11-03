@@ -1,8 +1,10 @@
+const resolveURL = require('resolve-url');
 const { log } = require('../utils/log');
 
-module.exports = async ({ corePath }) => {
-  if (typeof window.Module === 'undefined') {
+module.exports = async ({ corePath: _corePath }) => {
+  if (typeof window.createFFmpegCore === 'undefined') {
     log('info', 'fetch ffmpeg-core.worker.js script');
+    const corePath = resolveURL(_corePath);
     const workerBlob = await (await fetch(corePath.replace('ffmpeg-core.js', 'ffmpeg-core.worker.js'))).blob();
     window.FFMPEG_CORE_WORKER_SCRIPT = URL.createObjectURL(workerBlob);
     log('info', `worker object URL=${window.FFMPEG_CORE_WORKER_SCRIPT}`);
@@ -12,10 +14,7 @@ module.exports = async ({ corePath }) => {
       const eventHandler = () => {
         script.removeEventListener('load', eventHandler);
         log('info', 'initialize ffmpeg-core');
-        window.Module.onRuntimeInitialized = () => {
-          log('info', 'ffmpeg-core initialized');
-          resolve(window.Module);
-        };
+        resolve(window.createFFmpegCore);
       };
       script.src = corePath;
       script.type = 'text/javascript';
@@ -24,5 +23,5 @@ module.exports = async ({ corePath }) => {
     });
   }
   log('info', 'ffmpeg-core is loaded already');
-  return Promise.resolve(window.Module);
+  return Promise.resolve(window.createFFmpegCore);
 };
