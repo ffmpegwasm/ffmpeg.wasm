@@ -7,20 +7,21 @@ const { defaultOptions, getCreateFFmpegCore } = require('./node');
 const NO_LOAD = Error('ffmpeg.wasm is not ready, make sure you have completed load().');
 
 module.exports = (_options = {}) => {
-  let Core = null;
-  let ffmpeg = null;
-  let runResolve = null;
-  let running = false;
   const {
     log: logging,
     logger,
-    progress,
+    progress: optProgress,
     ...options
   } = {
     ...baseOptions,
     ...defaultOptions,
     ..._options,
   };
+  let Core = null;
+  let ffmpeg = null;
+  let runResolve = null;
+  let running = false;
+  let progress = optProgress;
   const detectCompletion = (message) => {
     if (message === 'FFMPEG_END' && runResolve !== null) {
       runResolve();
@@ -145,10 +146,21 @@ module.exports = (_options = {}) => {
     }
   };
 
+  const setProgress = (_progress) => {
+    progress = _progress;
+  };
+
+  const setLogger = (_logger) => {
+    setCustomLogger(_logger);
+  };
+
   setLogging(logging);
   setCustomLogger(logger);
 
   return {
+    setProgress,
+    setLogger,
+    setLogging,
     load,
     isLoaded,
     run,
