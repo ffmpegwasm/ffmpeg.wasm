@@ -1,13 +1,13 @@
 # API
 
 - [createFFmpeg()](#create-ffmpeg)
-  - [ffmpeg.load](#ffmpeg-load)
-  - [ffmpeg.run](#ffmpeg-run)
-  - [ffmpeg.FS](#ffmpeg-fs)
-  - [ffmpeg.setLogging](#ffmpeg-setlogging)
-  - [ffmpeg.setLogger](#ffmpeg-setlogger)
-  - [ffmpeg.setProgress](#ffmpeg-setProgress)
-- [fetchFile](#fetch-file)
+  - [ffmpeg.load()](#ffmpeg-load)
+  - [ffmpeg.run()](#ffmpeg-run)
+  - [ffmpeg.FS()](#ffmpeg-fs)
+  - [ffmpeg.setLogging()](#ffmpeg-setlogging)
+  - [ffmpeg.setLogger()](#ffmpeg-setlogger)
+  - [ffmpeg.setProgress()](#ffmpeg-setProgress)
+- [fetchFile()](#fetch-file)
 
 ---
 
