@@ -7,6 +7,7 @@
   - [ffmpeg.setLogging](#ffmpeg-setlogging)
   - [ffmpeg.setLogger](#ffmpeg-setlogger)
   - [ffmpeg.setProgress](#ffmpeg-setProgress)
+- [fetchFile](#fetch-file)
 
 ---
 
@@ -158,4 +159,29 @@ ffmpeg.setProgress(({ ratio }) => {
    * ratio is a float number between 0 to 1.
    */
 });
+```
+
+<a name="fetch-file"></a>
+
+### fetchFile(media): Promise
+   
+Helper function for fetching files from various resource.
+
+Sometimes the video/audio file you want to process may located in a remote URL and somewhere in your local file system.
+   
+This helper function helps you to fetch to file and return an Uint8Array variable for ffmpeg.wasm to consume.
+
+**Arguments**
+
+- `media` an URL string, base64 string or File, Blob, Buffer object
+
+**Examples:**
+
+```javascript
+(async () => {
+  const data = await fetchFile('https://github.com/ffmpegwasm/testdata/raw/master/video-3s.avi');
+  /*
+   * data will be in Uint8Array format
+   */
+})();
 ```
