@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { createFFmpeg } = require('../../src');
+const { createFFmpeg, fetchFile } = require('../../src');
 
 const ffmpeg = createFFmpeg({
   log: true,
@@ -7,9 +7,9 @@ const ffmpeg = createFFmpeg({
 
 (async () => {
   await ffmpeg.load();
-  await ffmpeg.write('flame.avi', '../../tests/assets/flame.avi');
-  await ffmpeg.transcode('flame.avi', 'flame.mp4', '-threads 2');
-  const data = ffmpeg.read('flame.mp4');
+  ffmpeg.FS('writeFile', 'flame.avi', await fetchFile('../assets/flame.avi'));
+  await ffmpeg.run('-i', 'flame.avi', 'flame.mp4');
+  const data = ffmpeg.FS('readFile', 'flame.mp4');
   fs.writeFileSync('flame.mp4', Buffer.from(data));
   process.exit(0);
 })();

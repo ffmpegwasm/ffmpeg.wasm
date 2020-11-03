@@ -23,7 +23,7 @@
     <input type="file" id="uploader" multiple />
     <p id="message"></p>
     <script>
-      const { createFFmpeg } = FFmpeg;
+      const { createFFmpeg, fetchFile } = FFmpeg;
       const ffmpeg = createFFmpeg({ log: true });
 
       const transcode = async ({ target: { files } }) => {
@@ -34,12 +34,13 @@
         const inputPaths = [];
         for (const file of files) {
           const { name } = file;
-          await ffmpeg.write(name, file);
-          inputPaths.push(name);
+          ffmpeg.FS('writeFile', name, await fetchFile(file));
+          inputPaths.push(`file ${name}`);
         }
-        await ffmpeg.concatDemuxer(inputPaths, "output.mp4");
+        ffmpeg.FS('writeFile', 'concat_list.txt', inputPaths.join('\n'));
+        await ffmpeg.run('-f', 'concat', '-safe', '0', '-i', 'concat_list.txt', 'output.mp4');
         message.innerHTML = "Complete Concating";
-        const data = await ffmpeg.read("output.mp4");
+        const data = ffmpeg.FS('readFile', 'output.mp4');
         const video = document.getElementById("output-video");
         video.src = URL.createObjectURL(
           new Blob([data.buffer], {
