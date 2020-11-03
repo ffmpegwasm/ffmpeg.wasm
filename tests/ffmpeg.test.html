@@ -8,12 +8,13 @@
 <body>
   <div id="mocha"></div>
   <script src="../node_modules/mocha/mocha.js"></script>
-  <script src="../node_modules/expect.js/index.js"></script>
+  <script src="../node_modules/chai/chai.js"></script>
   <script src="../dist/ffmpeg.dev.js"></script>
   <script src="./constants.js"></script>
   <script>mocha.setup('bdd');</script>
   <script src="./ffmpeg.test.js"></script>
   <script>
+    window.expect = chai.expect;
     mocha.run();
   </script>
 </body>
