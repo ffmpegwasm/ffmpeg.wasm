@@ -47,25 +47,6 @@ ffmpeg.wasm is a pure Webassembly / Javascript port of FFmpeg. It enables video 
 
 Check [HERE](https://github.com/ffmpegwasm/ffmpeg.wasm-core#configuration)
 
----
-
-ffmpeg.wasm provides simple to use APIs, to transcode a video you only need few lines of code:
-
-```javascript
-const fs = require('fs');
-const { createFFmpeg, fetchFile } = require('@ffmpeg/ffmpeg');
-
-const ffmpeg = createFFmpeg({ log: true });
-
-(async () => {
-  await ffmpeg.load();
-  ffmpeg.FS('writeFile', 'test.avi', await fetchFile('./test.avi'));
-  await ffmpeg.transcode('test.avi', 'test.mp4');
-  fs.writeFileSync('./test.mp4', ffmpeg.FS('readFile', 'test.mp4'));
-  process.exit(0);
-})();
-```
-
 ## Installation
 
 ```
@@ -81,11 +62,30 @@ $ node --experimental-wasm-threads --experimental-wasm-bulk-memory transcode.js
 Or, using a script tag in the browser (only works in Chrome):
 
 ```html
-<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.8.3/dist/ffmpeg.min.js"></script>
+<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.9.0/dist/ffmpeg.min.js"></script>
 <script>
   const { createFFmpeg } = FFmpeg;
   ...
 </script>
+```
+
+## Usage
+
+ffmpeg.wasm provides simple to use APIs, to transcode a video you only need few lines of code:
+
+```javascript
+const fs = require('fs');
+const { createFFmpeg, fetchFile } = require('@ffmpeg/ffmpeg');
+
+const ffmpeg = createFFmpeg({ log: true });
+
+(async () => {
+  await ffmpeg.load();
+  ffmpeg.FS('writeFile', 'test.avi', await fetchFile('./test.avi'));
+  await ffmpeg.run('-i', 'test.avi', 'test.mp4');
+  fs.writeFileSync('./test.mp4', ffmpeg.FS('readFile', 'test.mp4'));
+  process.exit(0);
+})();
 ```
 
 ## Multi-threading
@@ -99,10 +99,6 @@ Run it multi-threading mode by default, no need to pass any arguments.
 ### libvpx / webm
 
 Need to pass `-row-mt 1`, but can only use one thread to help, can speed up around 30%
-
-## Examples
-
-- With React: https://github.com/ffmpegwasm/react-app
 
 ## Documentation
 
