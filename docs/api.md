@@ -4,6 +4,9 @@
   - [ffmpeg.load](#ffmpeg-load)
   - [ffmpeg.run](#ffmpeg-run)
   - [ffmpeg.FS](#ffmpeg-fs)
+  - [ffmpeg.setLogging](#ffmpeg-setlogging)
+  - [ffmpeg.setLogger](#ffmpeg-setlogger)
+  - [ffmpeg.setProgress](#ffmpeg-setProgress)
 
 ---
 
@@ -92,4 +95,67 @@ ffmpeg.FS('writeFile', 'video.avi', new Uint8Array(...));
 ffmpeg.FS('readFile', 'video.mp4');
 /* Delete file in MEMFS */
 ffmpeg.FS('unlink', 'video.mp4');
+```
+
+<a name="ffmpeg-setlogging"></a>
+
+### ffmpeg.setLogging(logging)
+
+Control whether to output log information to console
+
+**Arguments**
+
+- `logging` a boolean to turn of/off log messages in console
+
+**Examples:**
+
+```javascript
+ffmpeg.setLogging(true);
+```
+
+<a name="ffmpeg-setlogger"></a>
+
+### ffmpeg.setLogger(logger)
+
+Set customer logger to get ffmpeg.wasm output messages.
+
+**Arguments**
+
+- `logger` a function to handle the messages
+
+**Examples:**
+
+```javascript
+ffmpeg.setLogger(({ type, message }) => {
+  console.log(type, message);
+  /*
+   * type can be one of following:
+   *
+   * info: internal workflow debug messages
+   * fferr: ffmpeg native stderr output
+   * ffout: ffmpeg native stdout output
+   */
+});
+```
+
+<a name="ffmpeg-setprogress"></a>
+
+### ffmpeg.setProgress(progress)
+
+Progress handler to get current progress of ffmpeg command.
+
+**Arguments**
+
+- `progress` a function to handle progress info
+
+**Examples:**
+
+```javascript
+
+ffmpeg.setProgress(({ ratio }) => {
+  console.log(ratio);
+  /*
+   * ratio is a float number between 0 to 1.
+   */
+});
 ```
