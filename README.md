@@ -1,6 +1,3 @@
-# Please visit [Kagami/ffmpeg.js](https://github.com/Kagami/ffmpeg.js/) if you are looking for ffmpeg.js
-
-
 <p align="center">
   <a href="#">
     <img alt="ffmpeg.wasm" width="128px" height="128px" src="https://github.com/ffmpegwasm/ffmpeg.wasm/raw/master/docs/images/ffmpegwasm-icon.png">
@@ -18,7 +15,7 @@
 [![Downloads Total](https://img.shields.io/npm/dt/@ffmpeg/ffmpeg.svg)](https://www.npmjs.com/package/@ffmpeg/ffmpeg)
 [![Downloads Month](https://img.shields.io/npm/dm/@ffmpeg/ffmpeg.svg)](https://www.npmjs.com/package/@ffmpeg/ffmpeg)
 
-Use FFmpeg directly in your browser without any backend services!!
+ffmpeg.wasm is a pure Webassembly / Javascript port of FFmpeg. It enables video & audio record, convert and stream right inside browsers.
 
 **Transcode**
 <p align="center">
@@ -45,11 +42,9 @@ Use FFmpeg directly in your browser without any backend services!!
 | ---- | ------- | ----------- |
 | Webcam | <a href="https://codepen.io/jeromewu/pen/qBBKzyW" target="_blank"><img alt="codepen" width="128px" src="https://blog.codepen.io/wp-content/uploads/2012/06/codepen-wordmark-display-inside-black@10x.png"></a> | [Link](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/master/examples/browser/webcam.html) |
 
-## Supported Formats
+## Supported External Libraries
 
-- mp4 (x264)
-- webm (vp8/vp9) (^0.8.0)
-- mp3 (^0.8.0)
+Check [HERE](https://github.com/ffmpegwasm/ffmpeg.wasm-core#configuration)
 
 ---
 
@@ -57,15 +52,15 @@ ffmpeg.wasm provides simple to use APIs, to transcode a video you only need few 
 
 ```javascript
 const fs = require('fs');
-const { createFFmpeg } = require('@ffmpeg/ffmpeg');
+const { createFFmpeg, fetchFile } = require('@ffmpeg/ffmpeg');
 
 const ffmpeg = createFFmpeg({ log: true });
 
 (async () => {
   await ffmpeg.load();
-  await ffmpeg.write('test.avi', './test.avi');
+  ffmpeg.FS('writeFile', 'test.avi', await fetchFile('./test.avi'));
   await ffmpeg.transcode('test.avi', 'test.mp4');
-  fs.writeFileSync('./test.mp4', ffmpeg.read('test.mp4'));
+  fs.writeFileSync('./test.mp4', ffmpeg.FS('readFile', 'test.mp4'));
   process.exit(0);
 })();
 ```
@@ -73,7 +68,7 @@ const ffmpeg = createFFmpeg({ log: true });
 ## Installation
 
 ```
-$ npm install @ffmpeg/ffmpeg
+$ npm install @ffmpeg/ffmpeg @ffmpeg/core
 ```
 
 > As we are using the latest experimental features, you need to add few flags to run in Node.js
@@ -92,17 +87,17 @@ Or, using a script tag in the browser (only works in Chrome):
 </script>
 ```
 
-## Multi-thread
+## Multi-threading
 
-Starting from v0.8.0, multithreading is enabled and you can use this feature by passing `-threads <NUM>` (`NUM` < 8 ). For built-in functions like `transcode()`, you can pass it as 3rd argument.
+Multi-threading need to be configured per external libraries, only following libraries supports it now:
 
-```javascript
-// in transcode()
-await ffmpeg.transcode('flame.avi', 'flame.mp4', '-threads 2');
+### x264
 
-// in run()
-await ffmpeg.run('-i flame.avi -threads 2 flame.mp4');
-```
+Run it multi-threading mode by default, no need to pass any arguments.
+
+### libvpx / webm
+
+Need to pass `-row-mt 1`, but can only use one thread to help, can speed up around 30%
 
 ## Examples
 
@@ -111,12 +106,3 @@ await ffmpeg.run('-i flame.avi -threads 2 flame.mp4');
 ## Documentation
 
 - [API](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/master/docs/api.md)
-
-## Tutorials
-
-Learn how to build ffmpeg.wasm from stories:
-
-- [Part.1 Preparation](https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-1-preparation/)
-- [Part.2 Compile with Emscripten](https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-2-compile-with-emscripten/)
-- [Part.3 ffmpeg.wasm v0.1— Transcoding avi to mp4](https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-3-v0.1/)
-- [Part.4 ffmpeg.wasm v0.2 — Web Worker and Libx264](https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-4-v0.2/)
