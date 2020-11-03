@@ -18,30 +18,18 @@
 
 ffmpeg.wasm is a pure Webassembly / Javascript port of FFmpeg. It enables video & audio record, convert and stream right inside browsers.
 
-**Transcode**
+**AVI to MP4 Demo**
 <p align="center">
   <a href="#">
     <img alt="transcode-demo" src="https://github.com/ffmpegwasm/ffmpeg.wasm/raw/master/docs/images/transcode.gif">
   </a>
 </p>
 
-<a href="https://codepen.io/jeromewu/pen/NWWaMeY" target="_blank">
-<img alt="codepen" width="128px" src="https://blog.codepen.io/wp-content/uploads/2012/06/codepen-wordmark-display-inside-black@10x.png">
-</a>
-
-[Source Code](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/master/examples/browser/transcode.html)
+Try it: [https://ffmpegwasm.github.io](https://ffmpegwasm.github.io)
 
 ## Browsers support
 
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Chrome |
-| --------- |
-| last 2 versions
-
-## Examples:
-
-| Name | Demo | Source Code |
-| ---- | ------- | ----------- |
-| Webcam | <a href="https://codepen.io/jeromewu/pen/qBBKzyW" target="_blank"><img alt="codepen" width="128px" src="https://blog.codepen.io/wp-content/uploads/2012/06/codepen-wordmark-display-inside-black@10x.png"></a> | [Link](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/master/examples/browser/webcam.html) |
+Only browsers with SharedArrayBuffer support can use ffmpeg.wasm, you can check [HERE](https://caniuse.com/sharedarraybuffer) for the complete list.
 
 ## Supported External Libraries
 
