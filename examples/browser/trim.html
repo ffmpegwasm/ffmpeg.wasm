@@ -15,12 +15,12 @@
     </style>
   </head>
   <body>
-    <h3>Upload a mp4 (x264) video and trim its first 10 seconds and play!</h3>
+    <h3>Upload a mp4 (x264) video and trim its first 1 seconds and play!</h3>
     <video id="output-video" controls></video><br/>
     <input type="file" id="uploader">
     <p id="message"></p>
     <script>
-      const { createFFmpeg } = FFmpeg;
+      const { createFFmpeg, fetchFile } = FFmpeg;
       const ffmpeg = createFFmpeg({ log: true });
 
       const trim = async ({ target: { files } }) => {
@@ -29,10 +29,10 @@
         message.innerHTML = 'Loading ffmpeg-core.js';
         await ffmpeg.load();
         message.innerHTML = 'Start trimming';
-        await ffmpeg.write(name, files[0]);
-        await ffmpeg.trim(name,  'output.mp4', 0, 10);
+        ffmpeg.FS('writeFile', name, await fetchFile(files[0]));
+        await ffmpeg.run('-i', name, '-ss', '0', '-to', '1', 'output.mp4');
         message.innerHTML = 'Complete trimming';
-        const data = ffmpeg.read('output.mp4');
+        const data = ffmpeg.FS('readFile', 'output.mp4');
 
         const video = document.getElementById('output-video');
         video.src = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
