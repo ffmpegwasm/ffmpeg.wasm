@@ -53,6 +53,14 @@ module.exports = (_options = {}) => {
       Core = await createFFmpegCore({
         printErr: (message) => parseMessage({ type: 'fferr', message }),
         print: (message) => parseMessage({ type: 'ffout', message }),
+        locateFile: (path, prefix) => {
+          if (typeof window !== 'undefined'
+            && typeof window.FFMPEG_CORE_WORKER_SCRIPT !== 'undefined'
+            && path.endsWith('ffmpeg-core.worker.js')) {
+            return window.FFMPEG_CORE_WORKER_SCRIPT;
+          }
+          return prefix + path;
+        },
       });
       ffmpeg = Core.cwrap('proxy_main', 'number', ['number', 'number']);
       log('info', 'ffmpeg-core loaded');
