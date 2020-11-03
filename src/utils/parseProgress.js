@@ -5,7 +5,7 @@ const ts2sec = (ts) => {
   return (parseFloat(h) * 60 * 60) + (parseFloat(m) * 60) + parseFloat(s);
 };
 
-module.exports = ({ message }, progress) => {
+module.exports = (message, progress) => {
   if (typeof message === 'string') {
     if (message.startsWith('  Duration')) {
       const ts = message.split(', ')[0].split(': ')[1];
@@ -19,6 +19,7 @@ module.exports = ({ message }, progress) => {
       progress({ ratio: t / duration });
     } else if (message.startsWith('video:')) {
       progress({ ratio: 1 });
+      duration = 0;
     }
   }
 };

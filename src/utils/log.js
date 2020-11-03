@@ -1,9 +1,24 @@
 let logging = false;
+let customLogger = () => {};
 
-exports.logging = logging;
-
-exports.setLogging = (_logging) => {
+const setLogging = (_logging) => {
   logging = _logging;
 };
 
-exports.log = (type, message) => (logging ? console.log(`[${type}] ${message}`) : null);
+const setCustomLogger = (logger) => {
+  customLogger = logger;
+};
+
+const log = (type, message) => {
+  customLogger({ type, message });
+  if (logging) {
+    console.log(`[${type}] ${message}`);
+  }
+};
+
+module.exports = {
+  logging,
+  setLogging,
+  setCustomLogger,
+  log,
+};

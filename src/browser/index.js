@@ -1,9 +1,9 @@
 const defaultOptions = require('./defaultOptions');
-const getModule = require('./getModule');
+const getCreateFFmpegCore = require('./getCreateFFmpegCore');
 const fetchFile = require('./fetchFile');
 
 module.exports = {
   defaultOptions,
-  getModule,
+  getCreateFFmpegCore,
   fetchFile,
 };
