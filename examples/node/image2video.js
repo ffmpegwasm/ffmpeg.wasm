@@ -17,6 +17,6 @@ const ffmpeg = createFFmpeg({ log: true });
     const num = `00${i}`.slice(-3);
     await ffmpeg.FS('unlink', `tmp.${num}.png`);
   }
-  fs.writeFileSync('out.mp4', ffmpeg.FS('readFile', 'out.mp4'));
+  await fs.promises.writeFile('out.mp4', ffmpeg.FS('readFile', 'out.mp4'));
   process.exit(0);
 })();

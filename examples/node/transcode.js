@@ -9,7 +9,6 @@ const ffmpeg = createFFmpeg({
   await ffmpeg.load();
   ffmpeg.FS('writeFile', 'flame.avi', await fetchFile('../assets/flame.avi'));
   await ffmpeg.run('-i', 'flame.avi', 'flame.mp4');
-  const data = ffmpeg.FS('readFile', 'flame.mp4');
-  fs.writeFileSync('flame.mp4', Buffer.from(data));
+  await fs.promises.writeFile('flame.mp4', ffmpeg.FS('readFile', 'flame.mp4'));
   process.exit(0);
 })();
