@@ -66,7 +66,7 @@ const ffmpeg = createFFmpeg({ log: true });
   await ffmpeg.load();
   ffmpeg.FS('writeFile', 'test.avi', await fetchFile('./test.avi'));
   await ffmpeg.run('-i', 'test.avi', 'test.mp4');
-  fs.writeFileSync('./test.mp4', ffmpeg.FS('readFile', 'test.mp4'));
+  await fs.promises.writeFile('./test.mp4', ffmpeg.FS('readFile', 'test.mp4'));
   process.exit(0);
 })();
 ```
