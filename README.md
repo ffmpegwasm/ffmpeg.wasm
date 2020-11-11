@@ -87,3 +87,22 @@ Need to pass `-row-mt 1`, but can only use one thread to help, can speed up arou
 
 - [API](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/master/docs/api.md)
 - [Supported External Libraries](https://github.com/ffmpegwasm/ffmpeg.wasm-core#configuration)
+
+## FAQ
+
+### What is the license of ffmpeg.wasm?
+
+There are two components inside ffmpeg.wasm:
+
+- @ffmpeg/ffmpeg (https://github.com/ffmpegwasm/ffmpeg.wasm)
+- @ffmpeg/core (https://github.com/ffmpegwasm/ffmpeg.wasm-core)
+
+@ffmpeg/core contains WebAssembly code which is transpiled from original FFmpeg C code with minor modifications, but overall it still following the same licenses as FFmpeg and its external libraries (as each external libraries might have its own license).
+
+@ffmpeg/ffmpeg contains kind of a wrapper to handle the complexity of loading core and calling low-level APIs. It is a small code base and under MIT license.
+
+### Can I use ffmpeg.wasm in Firefox?
+
+Sadly, no for now. You can check this issue for more details: https://github.com/ffmpegwasm/ffmpeg.wasm/issues/106
+
+But it might be possible one day.
