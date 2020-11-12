@@ -144,3 +144,16 @@ But it might be possible one day.
 ### What is the maximum size of input file?
 
 2 GB, which is a hard limit in WebAssembly. Might become 4 GB in the future.
+
+### How can I build my own ffmpeg.wasm?
+
+In fact, it is ffmpeg.wasm-core most people would like to build.
+
+To build on your own, you can check build.sh inside https://github.com/ffmpegwasm/ffmpeg.wasm-core repository.
+
+Also you can check this series of posts to learn more fundamental concepts:
+
+https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-1-preparation/
+https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-2-compile-with-emscripten/
+https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-3-v0.1/
+https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-4-v0.2/
