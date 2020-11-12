@@ -30,6 +30,8 @@ Try it: [https://ffmpegwasm.github.io](https://ffmpegwasm.github.io#demo)
 
 ## Installation
 
+**Node**
+
 ```
 $ npm install @ffmpeg/ffmpeg @ffmpeg/core
 ```
@@ -39,6 +41,8 @@ $ npm install @ffmpeg/ffmpeg @ffmpeg/core
 ```
 $ node --experimental-wasm-threads --experimental-wasm-bulk-memory transcode.js
 ```
+
+**Browser**
 
 Or, using a script tag in the browser (only works in Chrome):
 
@@ -70,6 +74,36 @@ const ffmpeg = createFFmpeg({ log: true });
   process.exit(0);
 })();
 ```
+
+### Use other version of ffmpeg.wasm-core / @ffmpeg/core
+
+For each version of ffmpeg.wasm, there is a default version of @ffmpeg/core (you can find it in **devDependencies** section of [package.json](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/master/package.json)), but sometimes you may need to use newer version of @ffmpeg/core to use the latest/experimental features.
+
+**Node**
+
+Just install the specific version you need:
+
+```bash
+$ npm install @ffmpeg/core@latest
+```
+
+Or use your own version with customized path
+
+```javascript
+const ffmpeg = createFFmpeg({
+  corePath: '../../../src/ffmpeg-core.js',
+});
+```
+
+**Browser**
+
+```javascript
+const ffmpeg = createFFmpeg({
+  corePath: 'https://unpkg.com/@ffmpeg/core@0.8.3/dist/ffmpeg-core.js',
+});
+```
+
+For the list available versions and their changelog, please check: https://github.com/ffmpegwasm/ffmpeg.wasm-core/releases
 
 ## Multi-threading
 
