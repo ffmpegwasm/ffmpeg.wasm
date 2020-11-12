@@ -106,3 +106,7 @@ There are two components inside ffmpeg.wasm:
 Sadly, no for now. You can check this issue for more details: https://github.com/ffmpegwasm/ffmpeg.wasm/issues/106
 
 But it might be possible one day.
+
+### What is the maximum size of input file?
+
+2 GB, which is a hard limit in WebAssembly. Might become 4 GB in the future.
