@@ -137,9 +137,11 @@ There are two components inside ffmpeg.wasm:
 
 ### Can I use ffmpeg.wasm in Firefox?
 
-Sadly, no for now. You can check this issue for more details: https://github.com/ffmpegwasm/ffmpeg.wasm/issues/106
+Yes, but only for Firefox 79+ with proper header in both client and server, visit https://ffmpegwasm.et.r.appspot.com to try whether your Firefox works.
 
-But it might be possible one day.
+![](https://user-images.githubusercontent.com/5723124/98955802-4cb20c80-253a-11eb-8f16-ce0298720a2a.png)
+
+For more details: https://github.com/ffmpegwasm/ffmpeg.wasm/issues/106
 
 ### What is the maximum size of input file?
 
