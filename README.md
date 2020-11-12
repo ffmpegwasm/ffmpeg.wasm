@@ -153,7 +153,7 @@ To build on your own, you can check build.sh inside https://github.com/ffmpegwas
 
 Also you can check this series of posts to learn more fundamental concepts:
 
-https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-1-preparation/
-https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-2-compile-with-emscripten/
-https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-3-v0.1/
-https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-4-v0.2/
+- https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-1-preparation/
+- https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-2-compile-with-emscripten/
+- https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-3-v0.1/
+- https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-4-v0.2/
