@@ -3,6 +3,7 @@ const { setLogging, setCustomLogger, log } = require('./utils/log');
 const parseProgress = require('./utils/parseProgress');
 const parseArgs = require('./utils/parseArgs');
 const { defaultOptions, getCreateFFmpegCore } = require('./node');
+const { version } = require('../package.json');
 
 const NO_LOAD = Error('ffmpeg.wasm is not ready, make sure you have completed load().');
 
@@ -156,6 +157,8 @@ module.exports = (_options = {}) => {
 
   setLogging(logging);
   setCustomLogger(logger);
+
+  log('info', `use ffmpeg.wasm v${version}`);
 
   return {
     setProgress,
