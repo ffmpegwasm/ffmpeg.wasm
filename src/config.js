@@ -6,8 +6,6 @@ module.exports = {
     '-nostdin',
     /* Force to override output file */
     '-y',
-    /* Not to output banner */
-    '-hide_banner',
   ],
   baseOptions: {
     /* Flag to turn on/off log messages in console */
