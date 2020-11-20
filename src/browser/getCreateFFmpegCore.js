@@ -2,6 +2,9 @@ const resolveURL = require('resolve-url');
 const { log } = require('../utils/log');
 
 module.exports = async ({ corePath: _corePath }) => {
+  if (typeof _corePath !== 'string') {
+    throw Error('corePath should be a string!');
+  }
   if (typeof window.createFFmpegCore === 'undefined') {
     log('info', 'fetch ffmpeg-core.worker.js script');
     const corePath = resolveURL(_corePath);

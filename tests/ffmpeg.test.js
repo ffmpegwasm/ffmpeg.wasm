@@ -1,6 +1,15 @@
 const { createFFmpeg } = FFmpeg;
 
 describe('load()', () => {
+  it('should throw error when corePath is not a string', async () => {
+    const ffmpeg = createFFmpeg({ ...OPTIONS, corePath: null });
+
+    try {
+      await ffmpeg.load();
+    } catch (e) {
+      expect(e).to.be.an('Error');
+    }
+  });
   it('should throw error when not called before FS() and run()', () => {
     const ffmpeg = createFFmpeg(OPTIONS);
     expect(() => ffmpeg.FS('readdir', 'dummy')).to.throw();
