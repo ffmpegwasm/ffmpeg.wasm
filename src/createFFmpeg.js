@@ -51,15 +51,39 @@ module.exports = (_options = {}) => {
     log('info', 'load ffmpeg-core');
     if (Core === null) {
       log('info', 'loading ffmpeg-core');
-      const createFFmpegCore = await getCreateFFmpegCore(options);
+      /*
+       * In node environment, all paths are undefined as there
+       * is no need to set them.
+       */
+      const {
+        createFFmpegCore,
+        corePath,
+        workerPath,
+        wasmPath,
+      } = await getCreateFFmpegCore(options);
       Core = await createFFmpegCore({
+        /*
+         * Assign mainScriptUrlOrBlob fixes chrome extension web worker issue
+         * as there is no document.currentScript in the context of content_scripts
+         */
+        mainScriptUrlOrBlob: corePath,
         printErr: (message) => parseMessage({ type: 'fferr', message }),
         print: (message) => parseMessage({ type: 'ffout', message }),
+        /*
+         * locateFile overrides paths of files that is loaded by main script (ffmpeg-core.js).
+         * It is critical for browser environment and we override both wasm and worker paths
+         * as we are using blob URL instead of original URL to avoid cross origin issues.
+         */
         locateFile: (path, prefix) => {
-          if (typeof window !== 'undefined'
-            && typeof window.FFMPEG_CORE_WORKER_SCRIPT !== 'undefined'
-            && path.endsWith('ffmpeg-core.worker.js')) {
-            return window.FFMPEG_CORE_WORKER_SCRIPT;
+          if (typeof window !== 'undefined') {
+            if (typeof wasmPath !== 'undefined'
+              && path.endsWith('ffmpeg-core.wasm')) {
+              return wasmPath;
+            }
+            if (typeof workerPath !== 'undefined'
+              && path.endsWith('ffmpeg-core.worker.js')) {
+              return workerPath;
+            }
           }
           return prefix + path;
         },
