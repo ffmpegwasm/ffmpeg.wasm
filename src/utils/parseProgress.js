@@ -13,7 +13,7 @@ module.exports = (message, progress) => {
       if (duration === 0 || duration > d) {
         duration = d;
       }
-    } else if (message.startsWith('frame')) {
+    } else if (message.startsWith('frame') || message.startsWith('size')) {
       const ts = message.split('time=')[1].split(' ')[0];
       const t = ts2sec(ts);
       progress({ ratio: t / duration });
