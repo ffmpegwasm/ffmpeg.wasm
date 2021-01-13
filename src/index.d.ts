@@ -102,4 +102,4 @@ export function createFFmpeg(options?: CreateFFmpegOptions): FFmpeg;
  * Uint8Array variable for ffmpeg.wasm to consume.
  *
  */
-export function fetchFile(data: string | Buffer | Blob | File): Uint8Array;
+export function fetchFile(data: string | Buffer | Blob | File): Promise<Uint8Array>;
