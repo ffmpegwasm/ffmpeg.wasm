@@ -1,7 +1,7 @@
 export const FS: {
-    writeFile: (fileName: string, binaryData: Uint8Array) => Promise<void>,
-    readFile: (fileName: string) => Promise<Uint8Array>,
-    unlink: (fileName: string) => Promise<void>,
+    writeFile: (fileName: string, binaryData: Uint8Array) => void,
+    readFile: (fileName: string) => void,
+    unlink: (fileName: string) => void,
 }
 
 type FSMethodNames = { [K in keyof typeof FS]: (typeof FS)[K] extends (...args: any[]) => any ? K : never }[keyof typeof FS];
