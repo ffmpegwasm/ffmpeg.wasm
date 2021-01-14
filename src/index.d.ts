@@ -1,3 +1,9 @@
+export const FS: {
+    writeFile: (fileName: string, binaryData: Uint8Array) => void,
+    readFile: (fileName: string) => Uint8Array,
+    unlink: (fileName: string) => void,
+}
+
 type FSMethodNames = { [K in keyof typeof FS]: (typeof FS)[K] extends (...args: any[]) => any ? K : never }[keyof typeof FS];
 type FSMethodArgs = { [K in FSMethodNames]: Parameters<(typeof FS)[K]> };
 type FSMethodReturn = { [K in FSMethodNames]: ReturnType<(typeof FS)[K]> };
