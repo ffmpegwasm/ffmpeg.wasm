@@ -1,8 +1,9 @@
 {
   "name": "@ffmpeg/ffmpeg",
-  "version": "0.8.3",
+  "version": "0.9.7",
   "description": "FFmpeg WebAssembly version",
   "main": "src/index.js",
+  "types": "src/index.d.ts",
   "directories": {
     "example": "examples"
   },
@@ -41,31 +42,29 @@
   },
   "homepage": "https://github.com/ffmpegwasm/ffmpeg.wasm#readme",
   "dependencies": {
-    "@ffmpeg/core": "^0.7.1",
-    "idb": "^4.0.5",
-    "is-electron": "^2.2.0",
     "is-url": "^1.2.4",
-    "node-fetch": "^2.6.0",
-    "regenerator-runtime": "^0.13.5",
+    "node-fetch": "^2.6.1",
+    "regenerator-runtime": "^0.13.7",
     "resolve-url": "^0.2.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0",
-    "@babel/preset-env": "^7.9.0",
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "@ffmpeg/core": "^0.8.5",
+    "@types/emscripten": "^1.39.4",
     "babel-loader": "^8.1.0",
+    "chai": "^4.2.0",
     "cors": "^2.8.5",
-    "eslint": "^6.8.0",
+    "eslint": "^7.12.1",
     "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-plugin-import": "^2.20.1",
-    "expect.js": "^0.3.1",
+    "eslint-plugin-import": "^2.22.1",
     "express": "^4.17.1",
-    "mocha": "^5.2.0",
+    "mocha": "^8.2.1",
     "mocha-headless-chrome": "^2.0.3",
     "npm-run-all": "^4.1.5",
-    "nyc": "^14.1.1",
-    "wait-on": "^3.3.0",
-    "webpack": "^4.42.0",
-    "webpack-cli": "^3.3.11",
-    "webpack-dev-middleware": "^3.7.2"
+    "wait-on": "^5.2.0",
+    "webpack": "^5.3.2",
+    "webpack-cli": "^4.1.0",
+    "webpack-dev-middleware": "^4.0.0"
   }
 }
