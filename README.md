@@ -44,7 +44,7 @@ $ node --experimental-wasm-threads --experimental-wasm-bulk-memory transcode.js
 
 **Browser**
 
-Or, using a script tag in the browser (only works in Chrome):
+Or, using a script tag in the browser (only works in some browsers, see list below):
 
 ```html
 <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.9.5/dist/ffmpeg.min.js"></script>
