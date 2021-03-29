@@ -8,7 +8,7 @@ const ffmpeg = createFFmpeg({ log: true });
   ffmpeg.FS('writeFile', 'flame.avi', await fetchFile('../assets/flame.avi'));
   await ffmpeg.run('-i', 'flame.avi', '-map', '0:v', '-r', '25', 'out_%06d.bmp');
   ffmpeg.FS('readdir', '/').filter((p) => p.endsWith('.bmp')).forEach(async (p) => {
-    await fs.promises.writeFile(p, ffmpeg.FS('readFile', p));
+    fs.writeFileSync(p, ffmpeg.FS('readFile', p));
   });
   process.exit(0);
 })();
