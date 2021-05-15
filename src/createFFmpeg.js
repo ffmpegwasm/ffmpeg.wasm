@@ -95,7 +95,6 @@ module.exports = (_options = {}) => {
     }
   };
 
-
   /*
    * Determine whether the Core is loaded.
    */
@@ -171,6 +170,21 @@ module.exports = (_options = {}) => {
     }
   };
 
+  /**
+   * forcibly terminate the ffmpeg program.
+   */
+  const exit = () => {
+    if (Core === null) {
+      throw NO_LOAD;
+    } else {
+      running = false;
+      Core.exit(1);
+      Core = null;
+      ffmpeg = null;
+      runResolve = null;
+    }
+  };
+
   const setProgress = (_progress) => {
     progress = _progress;
   };
@@ -191,6 +205,7 @@ module.exports = (_options = {}) => {
     load,
     isLoaded,
     run,
+    exit,
     FS,
   };
 };
