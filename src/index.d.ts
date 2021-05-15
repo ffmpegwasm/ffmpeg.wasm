@@ -77,6 +77,7 @@ export interface FFmpeg {
     setProgress(progress: ProgressCallback): void;
     setLogger(log: LogCallback): void;
     setLogging(logging: boolean): void;
+    exit(): void;
 }
 
 /*
