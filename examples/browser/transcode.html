@@ -18,16 +18,22 @@
     <h3>Upload a video to transcode to mp4 (x264) and play!</h3>
     <video id="output-video" controls></video><br/>
     <input type="file" id="uploader">
+    <button onClick="cancel()">Cancel</button>
     <p id="message"></p>
     <script>
       const { createFFmpeg, fetchFile } = FFmpeg;
-      const ffmpeg = createFFmpeg({ log: true });
+      let ffmpeg = null;
 
       const transcode = async ({ target: { files } }) => {
+        if (ffmpeg === null) {
+          ffmpeg = createFFmpeg({ log: true });
+        }
         const message = document.getElementById('message');
         const { name } = files[0];
         message.innerHTML = 'Loading ffmpeg-core.js';
-        await ffmpeg.load();
+        if (!ffmpeg.isLoaded()) {
+          await ffmpeg.load();
+        }
         ffmpeg.FS('writeFile', name, await fetchFile(files[0]));
         message.innerHTML = 'Start transcoding';
         await ffmpeg.run('-i', name,  'output.mp4');
@@ -39,6 +45,13 @@
       }
       const elm = document.getElementById('uploader');
       elm.addEventListener('change', transcode);
+
+      const cancel = () => {
+        try {
+          ffmpeg.exit();
+        } catch(e) {}
+        ffmpeg = null;
+      }
     </script>
   </body>
 </html>
