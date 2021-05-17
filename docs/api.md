@@ -4,6 +4,7 @@
   - [ffmpeg.load()](#ffmpeg-load)
   - [ffmpeg.run()](#ffmpeg-run)
   - [ffmpeg.FS()](#ffmpeg-fs)
+  - [ffmpeg.exit()](#ffmpeg-exit)
   - [ffmpeg.setLogging()](#ffmpeg-setlogging)
   - [ffmpeg.setLogger()](#ffmpeg-setlogger)
   - [ffmpeg.setProgress()](#ffmpeg-setProgress)
@@ -96,6 +97,23 @@ ffmpeg.FS('writeFile', 'video.avi', new Uint8Array(...));
 ffmpeg.FS('readFile', 'video.mp4');
 /* Delete file in MEMFS */
 ffmpeg.FS('unlink', 'video.mp4');
+```
+
+<a name="ffmpeg-exit"></a>
+
+### ffmpeg.exit()
+
+Kill the execution of the program, also remove MEMFS to free memory
+
+**Examples:**
+
+```javascript
+const ffmpeg = createFFmpeg({ log: true });
+await ffmpeg.load(...);
+setTimeout(() => {
+  ffmpeg.exit(); // ffmpeg.exit() is callable only after load() stage.
+}, 1000);
+await ffmpeg.run(...);
 ```
 
 <a name="ffmpeg-setlogging"></a>
