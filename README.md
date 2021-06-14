@@ -159,3 +159,19 @@ Also you can check this series of posts to learn more fundamental concepts:
 - https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-2-compile-with-emscripten/
 - https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-3-v0.1/
 - https://jeromewu.github.io/build-ffmpeg-webassembly-version-part-4-v0.2/
+
+### Why it doesn't work in my local environment?
+
+When calling `ffmpeg.load()`, by default it looks for `http://localhost:3000/node_modules/@ffmpeg/core/dist/` to download essential files (ffmpeg-core.js, ffmpeg-core.wasm, ffmpeg-core.worker.js). It is necessary to make sure you have those files served there.
+
+If you have those files serving in other location, you can rewrite the default behavior when calling `createFFmpeg()`:
+
+```javascript
+const { createFFmpeg } = FFmpeg;
+const ffmpeg = createFFmpeg({
+  corePath: "http://localhost:3000/public/ffmpeg-core.js",
+  // Use public address if you don't want to host your own.
+  // corePath: 'https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js'
+  log: true,
+});
+```
