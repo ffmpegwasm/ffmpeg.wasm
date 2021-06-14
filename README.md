@@ -47,7 +47,7 @@ $ node --experimental-wasm-threads --experimental-wasm-bulk-memory transcode.js
 Or, using a script tag in the browser (only works in some browsers, see list below):
 
 ```html
-<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.10.0/dist/ffmpeg.min.js"></script>
+<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.10.1/dist/ffmpeg.min.js"></script>
 <script>
   const { createFFmpeg } = FFmpeg;
   ...
@@ -99,7 +99,7 @@ const ffmpeg = createFFmpeg({
 
 ```javascript
 const ffmpeg = createFFmpeg({
-  corePath: 'https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js',
+  corePath: 'https://unpkg.com/@ffmpeg/core@0.10.1/dist/ffmpeg-core.js',
 });
 ```
 
