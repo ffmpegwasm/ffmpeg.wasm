@@ -13,13 +13,6 @@ const genConfig = ({
     library,
     libraryTarget,
   },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        FFMPEG_ENV: JSON.stringify('development'),
-      },
-    }),
-  ],
   devServer: {
     allowedHosts: ['localhost', '.gitpod.io'],
   },
