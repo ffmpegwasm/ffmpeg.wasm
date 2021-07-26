@@ -25,7 +25,7 @@ ffmpeg.wasm is a pure Webassembly / Javascript port of FFmpeg. It enables video 
   </a>
 </p>
 
-Try it: [https://ffmpegwasm.github.io](https://ffmpegwasm.github.io#demo)
+Try it: [https://ffmpegwasm.appspot.com/](https://ffmpegwasm.appspot.com/#demo)
 
 
 ## Installation
@@ -46,8 +46,10 @@ $ node --experimental-wasm-threads --experimental-wasm-bulk-memory transcode.js
 
 Or, using a script tag in the browser (only works in some browsers, see list below):
 
+> SharedArrayBuffer is only available to pages that are [cross-origin isolated](https://developer.chrome.com/blog/enabling-shared-array-buffer/#cross-origin-isolation). So you need to host your own server with `Cross-Origin-Embedder-Policy: require-corp` and `Cross-Origin-Opener-Policy: same-origin` headers to use ffmpeg.wasm.
+
 ```html
-<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.10.1/dist/ffmpeg.min.js"></script>
+<script src="static/js/ffmpeg.min.js"></script>
 <script>
   const { createFFmpeg } = FFmpeg;
   ...
@@ -99,7 +101,7 @@ const ffmpeg = createFFmpeg({
 
 ```javascript
 const ffmpeg = createFFmpeg({
-  corePath: 'https://unpkg.com/@ffmpeg/core@0.10.1/dist/ffmpeg-core.js',
+  corePath: 'static/js/ffmpeg-core.js',
 });
 ```
 
@@ -137,7 +139,7 @@ There are two components inside ffmpeg.wasm:
 
 ### Can I use ffmpeg.wasm in Firefox?
 
-Yes, but only for Firefox 79+ with proper header in both client and server, visit https://ffmpegwasm.et.r.appspot.com to try whether your Firefox works.
+Yes, but only for Firefox 79+ with proper header in both client and server, visit https://ffmpegwasm.appspot.com to try whether your Firefox works.
 
 ![](https://user-images.githubusercontent.com/5723124/98955802-4cb20c80-253a-11eb-8f16-ce0298720a2a.png)
 
