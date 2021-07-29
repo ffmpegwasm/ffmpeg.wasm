@@ -88,8 +88,7 @@ module.exports = (_options = {}) => {
           return prefix + path;
         },
       });
-      const mainName = options.pthread === 0 ? '_main' : 'proxy_main';
-      ffmpeg = Core.cwrap(mainName, 'number', ['number', 'number']);
+      ffmpeg = Core.cwrap(options.mainName || 'proxy_main', 'number', ['number', 'number']);
       log('info', 'ffmpeg-core loaded');
     } else {
       throw Error('ffmpeg.wasm was loaded, you should not load it again, use ffmpeg.isLoaded() to check next time.');
