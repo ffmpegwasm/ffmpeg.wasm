@@ -139,7 +139,7 @@ There are two components inside ffmpeg.wasm:
 
 ### Can I use ffmpeg.wasm in Firefox?
 
-Yes, but only for Firefox 79+ with proper header in both client and server, visit https://ffmpegwasm.appspot.com to try whether your Firefox works.
+Yes, but only for Firefox 79+ with proper header in both client and server, visit https://ffmpegwasm.netlify.app to try whether your Firefox works.
 
 ![](https://user-images.githubusercontent.com/5723124/98955802-4cb20c80-253a-11eb-8f16-ce0298720a2a.png)
 
