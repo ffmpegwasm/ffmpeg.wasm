@@ -25,7 +25,7 @@ ffmpeg.wasm is a pure Webassembly / Javascript port of FFmpeg. It enables video 
   </a>
 </p>
 
-Try it: [https://ffmpegwasm.appspot.com/](https://ffmpegwasm.appspot.com/#demo)
+Try it: [https://ffmpegwasm.netlify.app](https://ffmpegwasm.netlify.app#demo)
 
 
 ## Installation
