@@ -178,10 +178,10 @@ module.exports = (_options = {}) => {
       throw NO_LOAD;
     } else {
       running = false;
-      Core.exit(1);
       Core = null;
       ffmpeg = null;
       runResolve = null;
+      Core.exit(1);
     }
   };
 
