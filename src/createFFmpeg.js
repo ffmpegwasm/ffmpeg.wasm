@@ -178,7 +178,11 @@ module.exports = (_options = {}) => {
       throw NO_LOAD;
     } else {
       running = false;
-      Core.exit(1);
+      try {
+        Core.exit(1);
+      } catch(e) {
+        console.log('catch core exit error', e);
+      }
       Core = null;
       ffmpeg = null;
       runResolve = null;
