@@ -48,6 +48,16 @@ describe('run()', () => {
       }
     }, 500);
   }).timeout(TIMEOUT);
+
+  it('should terminate the run if exit is called', async () => {
+    const ffmpeg = createFFmpeg(OPTIONS);
+    await ffmpeg.load();
+
+    ffmpeg.run('-h').catch(e=> {
+      expect(e).to.be.equal('ffmpeg has exited')
+    });
+    expect(ffmpeg.exit()).to.throw();
+  }).timeout(TIMEOUT);
 });
 
 describe('FS()', () => {

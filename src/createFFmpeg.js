@@ -21,12 +21,14 @@ module.exports = (_options = {}) => {
   let Core = null;
   let ffmpeg = null;
   let runResolve = null;
+  let runReject = null;
   let running = false;
   let progress = optProgress;
   const detectCompletion = (message) => {
     if (message === 'FFMPEG_END' && runResolve !== null) {
       runResolve();
       runResolve = null;
+      runReject = null;
       running = false;
     }
   };
@@ -126,9 +128,10 @@ module.exports = (_options = {}) => {
       throw Error('ffmpeg.wasm can only run one command at a time');
     } else {
       running = true;
-      return new Promise((resolve) => {
+      return new Promise((resolve, reject) => {
         const args = [...defaultArgs, ..._args].filter((s) => s.length !== 0);
         runResolve = resolve;
+        runReject = reject
         ffmpeg(...parseArgs(Core, args));
       });
     }
@@ -177,6 +180,10 @@ module.exports = (_options = {}) => {
     if (Core === null) {
       throw NO_LOAD;
     } else {
+      // if there's any pending runs, reject them
+      if(runReject) {
+        runReject('ffmpeg has exited')
+      }
       running = false;
       Core.exit(1);
       Core = null;
