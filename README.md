@@ -36,7 +36,7 @@ Try it: [https://ffmpegwasm.netlify.app](https://ffmpegwasm.netlify.app#demo)
 $ npm install @ffmpeg/ffmpeg @ffmpeg/core
 ```
 
-> As we are using the latest experimental features, you need to add few flags to run in Node.js
+> As we are using experimental features, you need to add flags to run in Node.js
 
 ```
 $ node --experimental-wasm-threads transcode.js
