@@ -15,7 +15,7 @@
     "wait": "rimraf dist && wait-on http://localhost:3000/dist/ffmpeg.dev.js",
     "test": "npm-run-all -p -r start test:all",
     "test:all": "npm-run-all wait test:browser:ffmpeg test:node:all",
-    "test:node": "node --experimental-wasm-threads --experimental-wasm-bulk-memory node_modules/.bin/_mocha --exit --bail --require ./scripts/test-helper.js",
+    "test:node": "node --experimental-wasm-threads node_modules/.bin/_mocha --exit --bail --require ./scripts/test-helper.js",
     "test:node:all": "npm run test:node -- ./tests/*.test.js",
     "test:browser": "mocha-headless-chrome -a allow-file-access-from-files -a incognito -a no-sandbox -a disable-setuid-sandbox -a disable-logging -t 300000",
     "test:browser:ffmpeg": "npm run test:browser -- -f ./tests/ffmpeg.test.html"
