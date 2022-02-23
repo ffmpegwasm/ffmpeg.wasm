@@ -39,7 +39,7 @@ $ npm install @ffmpeg/ffmpeg @ffmpeg/core
 > As we are using the latest experimental features, you need to add few flags to run in Node.js
 
 ```
-$ node --experimental-wasm-threads --experimental-wasm-bulk-memory transcode.js
+$ node --experimental-wasm-threads transcode.js
 ```
 
 **Browser**
