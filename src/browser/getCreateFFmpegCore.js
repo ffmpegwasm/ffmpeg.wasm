@@ -39,10 +39,10 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
     );
     if (typeof createFFmpegCore === 'undefined') {
       return new Promise((resolve) => {
+        globalThis.importScripts(corePath);
         if (typeof createFFmpegCore === 'undefined') {
           throw Error(CREATE_FFMPEG_CORE_IS_NOT_DEFINED(coreRemotePath));
         }
-        importScripts(corePath);
         log('info', 'ffmpeg-core.js script loaded');
         resolve({
           createFFmpegCore,
