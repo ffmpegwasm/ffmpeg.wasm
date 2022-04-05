@@ -1,5 +1,3 @@
-const resolveURL = require('resolve-url');
-
 const readFromBlobOrFile = (blob) => (
   new Promise((resolve, reject) => {
     const fileReader = new FileReader();
@@ -27,7 +25,7 @@ module.exports = async (_data) => {
         .map((c) => c.charCodeAt(0));
     /* From remote server/URL */
     } else {
-      const res = await fetch(resolveURL(_data));
+      const res = await fetch(new URL(_data, import.meta.url).href);
       data = await res.arrayBuffer();
     }
   /* From Blob or File */
