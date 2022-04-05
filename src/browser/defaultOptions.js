@@ -1,4 +1,3 @@
-const resolveURL = require('resolve-url');
 const { devDependencies } = require('../../package.json');
 
 /*
@@ -6,6 +5,6 @@ const { devDependencies } = require('../../package.json');
  */
 module.exports = {
   corePath: typeof process !== 'undefined' && process.env.NODE_ENV === 'development'
-    ? resolveURL('/node_modules/@ffmpeg/core/dist/ffmpeg-core.js')
+    ? new URL('/node_modules/@ffmpeg/core/dist/ffmpeg-core.js', import.meta.url).href
     : `https://unpkg.com/@ffmpeg/core@${devDependencies['@ffmpeg/core'].substring(1)}/dist/ffmpeg-core.js`,
 };
