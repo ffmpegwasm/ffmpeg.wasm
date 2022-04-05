@@ -75,14 +75,17 @@ module.exports = (_options = {}) => {
          * as we are using blob URL instead of original URL to avoid cross origin issues.
          */
         locateFile: (path, prefix) => {
-          if (typeof wasmPath !== 'undefined'
-            && path.endsWith('ffmpeg-core.wasm')) {
-            return wasmPath;
+          if (typeof window !== 'undefined' || typeof WorkerGlobalScope !== 'undefined') {
+            if (typeof wasmPath !== 'undefined'
+              && path.endsWith('ffmpeg-core.wasm')) {
+              return wasmPath;
+            }
+            if (typeof workerPath !== 'undefined'
+              && path.endsWith('ffmpeg-core.worker.js')) {
+              return workerPath;
+            }
           }
-          if (typeof workerPath !== 'undefined'
-            && path.endsWith('ffmpeg-core.worker.js')) {
-            return workerPath;
-          }
+          return prefix + path;
         },
       });
       ffmpeg = Core.cwrap('proxy_main', 'number', ['number', 'number']);
