@@ -18,9 +18,9 @@ const toBlobURL = async (url, mimeType) => {
   return blobURL;
 };
 
-if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope) {
+export const getCreateFFmpegCore = async ({ corePath: _corePath }) => {
   // in Web Worker context
-  module.exports = async ({ corePath: _corePath }) => {
+  if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope) {
     if (typeof _corePath !== 'string') {
       throw Error('corePath should be a string!');
     }
@@ -59,9 +59,7 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
       wasmPath,
       workerPath,
     });
-  };
-} else {
-  module.exports = async ({ corePath: _corePath }) => {
+  } else {
     if (typeof _corePath !== 'string') {
       throw Error('corePath should be a string!');
     }
@@ -107,6 +105,8 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
       wasmPath,
       workerPath,
     });
-  };
+  }
+  
 }
+
 

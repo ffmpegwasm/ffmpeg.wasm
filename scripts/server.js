@@ -8,7 +8,15 @@ const webpackConfig = require('./webpack.config.dev');
 const compiler = webpack(webpackConfig);
 const app = express();
 
+function coi(req, res, next) {
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+  res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+  next();
+}
+
 app.use(cors());
+app.use(coi);
+
 app.use('/', express.static(path.resolve(__dirname, '..')));
 app.use(middleware(compiler, { publicPath: '/dist', writeToDisk: true }));
 
