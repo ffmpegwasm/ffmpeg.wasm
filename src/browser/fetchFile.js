@@ -11,7 +11,7 @@ const readFromBlobOrFile = (blob) => (
   })
 );
 
-module.exports = async (_data) => {
+export const fetchFile = async (_data) => {
   let data = _data;
   if (typeof _data === 'undefined') {
     return new Uint8Array();
