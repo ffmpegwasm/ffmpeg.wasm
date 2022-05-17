@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "node scripts/server.js",
+    "start:worker": "node scripts/worker-server.js",
     "build": "rimraf dist && webpack --config scripts/webpack.config.prod.js",
     "prepublishOnly": "npm run build",
     "lint": "eslint src",
