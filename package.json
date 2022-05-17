@@ -11,6 +11,7 @@
     "start": "node scripts/server.js",
     "start:worker": "node scripts/worker-server.js",
     "build": "rimraf dist && webpack --config scripts/webpack.config.prod.js",
+    "build:worker": "rimraf dist && webpack --config scripts/webpack.config.worker.prod.js",
     "prepublishOnly": "npm run build",
     "lint": "eslint src",
     "wait": "rimraf dist && wait-on http://localhost:3000/dist/ffmpeg.dev.js",
