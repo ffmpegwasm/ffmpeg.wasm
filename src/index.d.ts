@@ -14,6 +14,10 @@ type ProgressCallback = (progressParams: { ratio: number }) => any;
 export interface CreateFFmpegOptions {
     /** path for ffmpeg-core.js script */
     corePath?: string;
+    /** path for ffmpeg-worker.js script */
+    workerPath?: string;
+    /** path for ffmpeg-core.wasm script */
+    wasmPath?: string;
     /** a boolean to turn on all logs, default is false */
     log?: boolean;
     /** a function to get log messages, a quick example is ({ message }) => console.log(message) */
