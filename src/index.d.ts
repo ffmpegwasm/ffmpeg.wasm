@@ -1,5 +1,5 @@
 export const FS: {
-    writeFile: (fileName: string, binaryData: Uint8Array) => void,
+    writeFile: (fileName: string, binaryData: Uint8Array | string) => void,
     readFile: (fileName: string) => Uint8Array,
     unlink: (fileName: string) => void,
 }
