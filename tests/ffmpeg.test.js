@@ -1,5 +1,23 @@
 const { createFFmpeg } = FFmpeg;
 
+describe('FS()', () => {
+  const ffmpeg = createFFmpeg(OPTIONS);
+  before(async function cb() {
+    this.timeout(0);
+    await ffmpeg.load();
+  });
+
+  it('should throw error when readdir for invalid path ', () => {
+    expect(() => ffmpeg.FS('readdir', '/invalid')).to.throw(/readdir/);
+  });
+  it('should throw error when readFile for invalid path ', () => {
+    expect(() => ffmpeg.FS('readFile', '/invalid')).to.throw(/readFile/);
+  });
+  it('should throw an default error ', () => {
+    expect(() => ffmpeg.FS('unlink', '/invalid')).to.throw(/Oops/);
+  });
+});
+
 describe('load()', () => {
   it('should throw error when corePath is not a string', async () => {
     const ffmpeg = createFFmpeg({ ...OPTIONS, corePath: null });
@@ -48,22 +66,4 @@ describe('run()', () => {
       }
     }, 500);
   }).timeout(TIMEOUT);
-});
-
-describe('FS()', () => {
-  const ffmpeg = createFFmpeg(OPTIONS);
-  before(async function cb() {
-    this.timeout(0);
-    await ffmpeg.load();
-  });
-
-  it('should throw error when readdir for invalid path ', () => {
-    expect(() => ffmpeg.FS('readdir', '/invalid')).to.throw(/readdir/);
-  });
-  it('should throw error when readFile for invalid path ', () => {
-    expect(() => ffmpeg.FS('readFile', '/invalid')).to.throw(/readFile/);
-  });
-  it('should throw an default error ', () => {
-    expect(() => ffmpeg.FS('unlink', '/invalid')).to.throw(/Oops/);
-  });
 });
