@@ -7,7 +7,7 @@ const NO_LOAD = Error('ffmpeg.wasm is not ready, make sure you have completed lo
 
 module.exports = (_options = {}) => {
   const {
-    log: logging,
+    log: optLog,
     logger,
     progress: optProgress,
     ...options
@@ -22,6 +22,7 @@ module.exports = (_options = {}) => {
   let runReject = null;
   let running = false;
   let customLogger = () => {};
+  let logging = optLog;
   let progress = optProgress;
   let duration = 0;
   let ratio = 0;
@@ -44,12 +45,12 @@ module.exports = (_options = {}) => {
     const [h, m, s] = ts.split(':');
     return (parseFloat(h) * 60 * 60) + (parseFloat(m) * 60) + parseFloat(s);
   };
-  const parseProgress = (message, progress) => {
+  const parseProgress = (message, prog) => {
     if (typeof message === 'string') {
       if (message.startsWith('  Duration')) {
         const ts = message.split(', ')[0].split(': ')[1];
         const d = ts2sec(ts);
-        progress({ duration: d, ratio });
+        prog({ duration: d, ratio });
         if (duration === 0 || duration > d) {
           duration = d;
         }
@@ -57,9 +58,9 @@ module.exports = (_options = {}) => {
         const ts = message.split('time=')[1].split(' ')[0];
         const t = ts2sec(ts);
         ratio = t / duration;
-        progress({ ratio, time: t });
+        prog({ ratio, time: t });
       } else if (message.startsWith('video:')) {
-        progress({ ratio: 1 });
+        prog({ ratio: 1 });
         duration = 0;
       }
     }
@@ -213,8 +214,8 @@ module.exports = (_options = {}) => {
       throw NO_LOAD;
     } else {
       // if there's any pending runs, reject them
-      if(runReject) {
-        runReject('ffmpeg has exited')
+      if (runReject) {
+        runReject('ffmpeg has exited');
       }
       running = false;
       try {
