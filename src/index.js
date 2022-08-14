@@ -2,7 +2,7 @@ require('regenerator-runtime/runtime');
 const createFFmpeg = require('./createFFmpeg');
 const { fetchFile } = require('./node');
 
-export {
+module.exports = {
   /*
    * Create ffmpeg instance.
    * Each ffmpeg instance owns an isolated MEMFS and works
