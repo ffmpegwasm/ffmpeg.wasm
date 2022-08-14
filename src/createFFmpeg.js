@@ -1,6 +1,4 @@
 const { defaultArgs, baseOptions } = require('./config');
-const { setLogging, setCustomLogger, log } = require('./utils/log');
-const parseProgress = require('./utils/parseProgress');
 const parseArgs = require('./utils/parseArgs');
 const { defaultOptions, getCreateFFmpegCore } = require('./node');
 const { version } = require('../package.json');
@@ -23,13 +21,47 @@ module.exports = (_options = {}) => {
   let runResolve = null;
   let runReject = null;
   let running = false;
+  let customLogger = () => {};
   let progress = optProgress;
+  let duration = 0;
+  let ratio = 0;
+
   const detectCompletion = (message) => {
     if (message === 'FFMPEG_END' && runResolve !== null) {
       runResolve();
       runResolve = null;
       runReject = null;
       running = false;
+    }
+  };
+  const log = (type, message) => {
+    customLogger({ type, message });
+    if (logging) {
+      console.log(`[${type}] ${message}`);
+    }
+  };
+  const ts2sec = (ts) => {
+    const [h, m, s] = ts.split(':');
+    return (parseFloat(h) * 60 * 60) + (parseFloat(m) * 60) + parseFloat(s);
+  };
+  const parseProgress = (message, progress) => {
+    if (typeof message === 'string') {
+      if (message.startsWith('  Duration')) {
+        const ts = message.split(', ')[0].split(': ')[1];
+        const d = ts2sec(ts);
+        progress({ duration: d, ratio });
+        if (duration === 0 || duration > d) {
+          duration = d;
+        }
+      } else if (message.startsWith('frame') || message.startsWith('size')) {
+        const ts = message.split('time=')[1].split(' ')[0];
+        const t = ts2sec(ts);
+        ratio = t / duration;
+        progress({ ratio, time: t });
+      } else if (message.startsWith('video:')) {
+        progress({ ratio: 1 });
+        duration = 0;
+      }
     }
   };
   const parseMessage = ({ type, message }) => {
@@ -203,11 +235,12 @@ module.exports = (_options = {}) => {
   };
 
   const setLogger = (_logger) => {
-    setCustomLogger(_logger);
+    customLogger = _logger;
   };
 
-  setLogging(logging);
-  setCustomLogger(logger);
+  const setLogging = (_logging) => {
+    logging = _logging;
+  };
 
   log('info', `use ffmpeg.wasm v${version}`);
 
