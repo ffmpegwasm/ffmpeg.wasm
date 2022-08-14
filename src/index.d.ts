@@ -3,6 +3,8 @@ export const FS: {
     readFile: (fileName: string) => Uint8Array,
     readdir: (pathName: string) => string[],
     unlink: (fileName: string) => void,
+    mkdir: (fileName: string) => void,
+    readdir: (fileName: string) => string[],
 }
 
 type FSMethodNames = { [K in keyof typeof FS]: (typeof FS)[K] extends (...args: any[]) => any ? K : never }[keyof typeof FS];
