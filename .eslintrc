@@ -1,5 +1,6 @@
 {
   "extends": "airbnb-base",
+	"parser": "babel-eslint",
   "rules": {
     "no-underscore-dangle": 0,
     "linebreak-style": 0,
