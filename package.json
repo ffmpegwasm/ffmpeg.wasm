@@ -1,6 +1,6 @@
 {
   "name": "@ffmpeg/ffmpeg",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "description": "FFmpeg WebAssembly version",
   "main": "src/index.js",
   "types": "src/index.d.ts",
@@ -9,13 +9,15 @@
   },
   "scripts": {
     "start": "node scripts/server.js",
+    "start:worker": "node scripts/worker-server.js",
     "build": "rimraf dist && webpack --config scripts/webpack.config.prod.js",
+    "build:worker": "rimraf dist && webpack --config scripts/webpack.config.worker.prod.js",
     "prepublishOnly": "npm run build",
     "lint": "eslint src",
     "wait": "rimraf dist && wait-on http://localhost:3000/dist/ffmpeg.dev.js",
     "test": "npm-run-all -p -r start test:all",
     "test:all": "npm-run-all wait test:browser:ffmpeg test:node:all",
-    "test:node": "node --experimental-wasm-threads node_modules/.bin/_mocha --exit --bail --require ./scripts/test-helper.js",
+    "test:node": "node node_modules/mocha/bin/_mocha --exit --bail --require ./scripts/test-helper.js",
     "test:node:all": "npm run test:node -- ./tests/*.test.js",
     "test:browser": "mocha-headless-chrome -a allow-file-access-from-files -a incognito -a no-sandbox -a disable-setuid-sandbox -a disable-logging -t 300000",
     "test:browser:ffmpeg": "npm run test:browser -- -f ./tests/ffmpeg.test.html"

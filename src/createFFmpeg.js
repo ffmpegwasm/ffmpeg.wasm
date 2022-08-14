@@ -110,7 +110,7 @@ module.exports = (_options = {}) => {
          * as we are using blob URL instead of original URL to avoid cross origin issues.
          */
         locateFile: (path, prefix) => {
-          if (typeof window !== 'undefined') {
+          if (typeof window !== 'undefined' || typeof WorkerGlobalScope !== 'undefined') {
             if (typeof wasmPath !== 'undefined'
               && path.endsWith('ffmpeg-core.wasm')) {
               return wasmPath;
