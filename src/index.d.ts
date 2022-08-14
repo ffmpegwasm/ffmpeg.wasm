@@ -1,7 +1,10 @@
 export const FS: {
-    writeFile: (fileName: string, binaryData: Uint8Array) => void,
+    writeFile: (fileName: string, binaryData: Uint8Array | string) => void,
     readFile: (fileName: string) => Uint8Array,
+    readdir: (pathName: string) => string[],
     unlink: (fileName: string) => void,
+    mkdir: (fileName: string) => void,
+    readdir: (fileName: string) => string[],
 }
 
 type FSMethodNames = { [K in keyof typeof FS]: (typeof FS)[K] extends (...args: any[]) => any ? K : never }[keyof typeof FS];
@@ -14,6 +17,10 @@ type ProgressCallback = (progressParams: { ratio: number }) => any;
 export interface CreateFFmpegOptions {
     /** path for ffmpeg-core.js script */
     corePath?: string;
+    /** path for ffmpeg-worker.js script */
+    workerPath?: string;
+    /** path for ffmpeg-core.wasm script */
+    wasmPath?: string;
     /** a boolean to turn on all logs, default is false */
     log?: boolean;
     /** a function to get log messages, a quick example is ({ message }) => console.log(message) */

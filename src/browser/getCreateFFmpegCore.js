@@ -18,7 +18,7 @@ const toBlobURL = async (url, mimeType) => {
   return blobURL;
 };
 
-export const getCreateFFmpegCore = async ({ corePath: _corePath }) => {
+export const getCreateFFmpegCore = async ({ corePath: _corePath, workerPath: _workerPath, wasmPath: _wasmPath  }) => {
   // in Web Worker context
   if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope) {
     if (typeof _corePath !== 'string') {
@@ -30,11 +30,11 @@ export const getCreateFFmpegCore = async ({ corePath: _corePath }) => {
       'application/javascript',
     );
     const wasmPath = await toBlobURL(
-      coreRemotePath.replace('ffmpeg-core.js', 'ffmpeg-core.wasm'),
+      _wasmPath !== undefined ? _wasmPath : coreRemotePath.replace('ffmpeg-core.js', 'ffmpeg-core.wasm'),
       'application/wasm',
     );
     const workerPath = await toBlobURL(
-      coreRemotePath.replace('ffmpeg-core.js', 'ffmpeg-core.worker.js'),
+      _workerPath !== undefined ? _workerPath : coreRemotePath.replace('ffmpeg-core.js', 'ffmpeg-core.worker.js'),
       'application/javascript',
     );
     if (typeof createFFmpegCore === 'undefined') {
