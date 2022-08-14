@@ -107,6 +107,15 @@ const ffmpeg = createFFmpeg({
 
 For the list available versions and their changelog, please check: https://github.com/ffmpegwasm/ffmpeg.wasm-core/releases
 
+### Use single thread version
+
+```javascript
+const ffmpeg = createFFmpeg({
+  mainName: 'main',
+  corePath: 'https://unpkg.com/@ffmpeg/core-st@0.11.1/dist/ffmpeg-core.js',
+});
+```
+
 ## Multi-threading
 
 Multi-threading need to be configured per external libraries, only following libraries supports it now:
