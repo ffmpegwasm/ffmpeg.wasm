@@ -163,7 +163,7 @@ module.exports = (_options = {}) => {
       return new Promise((resolve, reject) => {
         const args = [...defaultArgs, ..._args].filter((s) => s.length !== 0);
         runResolve = resolve;
-        runReject = reject
+        runReject = reject;
         ffmpeg(...parseArgs(Core, args));
       });
     }
@@ -219,14 +219,17 @@ module.exports = (_options = {}) => {
       running = false;
       try {
         Core.exit(1);
-      } catch (e) {
-        log(e.message);
+      } catch (err) {
+        log(err.message);
+        if (runReject) {
+          runReject(err);
+        }
       } finally {
         Core = null;
         ffmpeg = null;
         runResolve = null;
+        runReject = null;
       }
-
     }
   };
 
