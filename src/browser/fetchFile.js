@@ -11,6 +11,7 @@ const readFromBlobOrFile = (blob) => (
   })
 );
 
+// eslint-disable-next-line
 export const fetchFile = async (_data) => {
   let data = _data;
   if (typeof _data === 'undefined') {
