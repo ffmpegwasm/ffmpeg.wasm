@@ -7,4 +7,4 @@ const corePath = typeof process !== 'undefined' && process.env.NODE_ENV === 'dev
   ? new URL('/node_modules/@ffmpeg/core/dist/ffmpeg-core.js', import.meta.url).href
   : `https://unpkg.com/@ffmpeg/core@${devDependencies['@ffmpeg/core'].substring(1)}/dist/ffmpeg-core.js`;
 
-module.exports = { corePath };
+export default { corePath };
