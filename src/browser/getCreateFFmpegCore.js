@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
-const { log } = require('../utils/log');
-const {
+import { log } from '../utils/log';
+import {
   CREATE_FFMPEG_CORE_IS_NOT_DEFINED,
-} = require('../utils/errors');
+} from '../utils/errors';
 
 /*
  * Fetch data from remote URL and convert to blob URL
