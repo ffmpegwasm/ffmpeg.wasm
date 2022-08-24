@@ -58,7 +58,7 @@ module.exports = (_options = {}) => {
           readFrames = true;
         }
       } else if (readFrames && message.startsWith('    Stream')) {
-        const match = message.match(/(\d+) fps/);
+        const match = message.match(/([\d\.]+) fps/);
         if (match) {
           const fps = parseFloat(match[1]);
           frames = duration * fps;
