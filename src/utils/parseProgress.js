@@ -1,4 +1,6 @@
 let duration = 0;
+let frames = 0;
+let readFrames = false;
 let ratio = 0;
 
 const ts2sec = (ts) => {
@@ -14,11 +16,26 @@ module.exports = (message, progress) => {
       progress({ duration: d, ratio });
       if (duration === 0 || duration > d) {
         duration = d;
+        readFrames = true;
       }
+    } else if (readFrames && message.startsWith('    Stream')) {
+      const match = message.match(/([\d\.]+) fps/);
+      if (match) {
+        const fps = parseFloat(match[1]);
+        frames = duration * fps;
+      } else {
+        frames = 0;
+      };
+      readFrames = false;
     } else if (message.startsWith('frame') || message.startsWith('size')) {
       const ts = message.split('time=')[1].split(' ')[0];
       const t = ts2sec(ts);
-      ratio = t / duration;
+      const f = parseFloat(message.match(/frame=\s*(\d+)/)[1]);
+      if (frames) {
+        ratio = Math.min(f / frames, 1);
+      } else {
+        ratio = t / duration;
+      };
       progress({ ratio, time: t });
     } else if (message.startsWith('video:')) {
       progress({ ratio: 1 });

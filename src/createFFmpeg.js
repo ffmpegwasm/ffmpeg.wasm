@@ -25,6 +25,8 @@ module.exports = (_options = {}) => {
   let logging = optLog;
   let progress = optProgress;
   let duration = 0;
+  let frames = 0;
+  let readFrames = false;
   let ratio = 0;
 
   const detectCompletion = (message) => {
@@ -53,11 +55,26 @@ module.exports = (_options = {}) => {
         prog({ duration: d, ratio });
         if (duration === 0 || duration > d) {
           duration = d;
+          readFrames = true;
         }
+      } else if (readFrames && message.startsWith('    Stream')) {
+        const match = message.match(/([\d\.]+) fps/);
+        if (match) {
+          const fps = parseFloat(match[1]);
+          frames = duration * fps;
+        } else {
+          frames = 0;
+        };
+        readFrames = false;
       } else if (message.startsWith('frame') || message.startsWith('size')) {
         const ts = message.split('time=')[1].split(' ')[0];
         const t = ts2sec(ts);
-        ratio = t / duration;
+        const f = parseFloat(message.match(/frame=\s*(\d+)/)[1]);
+        if (frames) {
+          ratio = Math.min(f / frames, 1);
+        } else {
+          ratio = t / duration;
+        };
         prog({ ratio, time: t });
       } else if (message.startsWith('video:')) {
         prog({ ratio: 1 });
