@@ -105,6 +105,14 @@ const ffmpeg = createFFmpeg({
 });
 ```
 
+Keep in mind that for compatibility with webworkers and nodejs this will default to a local path, so it will attempt to look for `'static/js/ffmpeg.core.js'` locally, often resulting in a local resource error. If you wish to use a core version hosted on your own domain, you might reference it relatively like this:
+
+```javascript
+const ffmpeg = createFFmpeg({
+  corePath: new URL('static/js/ffmpeg-core.js', document.location).href,
+});
+```
+
 For the list available versions and their changelog, please check: https://github.com/ffmpegwasm/ffmpeg.wasm-core/releases
 
 ### Use single thread version
