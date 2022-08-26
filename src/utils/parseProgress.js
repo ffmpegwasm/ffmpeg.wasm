@@ -19,13 +19,13 @@ module.exports = (message, progress) => {
         readFrames = true;
       }
     } else if (readFrames && message.startsWith('    Stream')) {
-      const match = message.match(/([\d\.]+) fps/);
+      const match = message.match(/([\d.]+) fps/);
       if (match) {
         const fps = parseFloat(match[1]);
         frames = duration * fps;
       } else {
         frames = 0;
-      };
+      }
       readFrames = false;
     } else if (message.startsWith('frame') || message.startsWith('size')) {
       const ts = message.split('time=')[1].split(' ')[0];
@@ -35,7 +35,7 @@ module.exports = (message, progress) => {
         ratio = Math.min(f / frames, 1);
       } else {
         ratio = t / duration;
-      };
+      }
       progress({ ratio, time: t });
     } else if (message.startsWith('video:')) {
       progress({ ratio: 1 });
