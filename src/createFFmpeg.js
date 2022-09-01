@@ -69,8 +69,9 @@ module.exports = (_options = {}) => {
       } else if (message.startsWith('frame') || message.startsWith('size')) {
         const ts = message.split('time=')[1].split(' ')[0];
         const t = ts2sec(ts);
-        const f = parseFloat(message.match(/frame=\s*(\d+)/)[1]);
-        if (frames) {
+        const match = message.match(/frame=\s*(\d+)/);
+        if (frames && match) {
+          const f = parseFloat(match[1]);
           ratio = Math.min(f / frames, 1);
         } else {
           ratio = t / duration;
