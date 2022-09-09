@@ -32,7 +32,7 @@ Check next steps of ffmpeg.wasm [HERE](https://github.com/ffmpegwasm/ffmpeg.wasm
 
 Join us on Discord!
 
-![Discord Banner 2](https://discordapp.com/api/guilds/NjGMaqqfm5/widget.png?style=banner2)
+![Discord Banner 2](https://discordapp.com/api/guilds/1017664732561424404/widget.png?style=banner2)
 
 ## Installation
 
