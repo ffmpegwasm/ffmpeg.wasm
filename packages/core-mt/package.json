@@ -1,0 +1,50 @@
+{
+  "name": "@ffmpeg/core-mt",
+  "version": "0.11.0",
+  "description": "ffmpeg.wasm core",
+  "main": "./dist/ffmpeg-core.cjs",
+  "types": "./types/ffmpeg-core.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types/ffmpeg-core.d.ts",
+      "import": "./dist/ffmpeg-core.js",
+      "require": "./dist/ffmpeg-core.cjs"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ffmpegwasm/ffmpeg.wasm.git"
+  },
+  "keywords": [
+    "ffmpeg",
+    "webassembly",
+    "video",
+    "audio",
+    "transcode"
+  ],
+  "author": "jeromewus@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ffmpegwasm/ffmpeg.wasm/issues"
+  },
+  "homepage": "https://github.com/ffmpegwasm/ffmpeg.wasm#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "types"
+  ],
+  "scripts": {
+    "lint": "eslint types"
+  },
+  "dependencies": {
+    "@types/emscripten": "^1.39.6"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.37.0",
+    "@typescript-eslint/parser": "^5.37.0",
+    "eslint": "^8.23.1",
+    "typescript": "^4.8.3"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "node-ts",
+  "version": "0.0.1",
+  "description": "node example",
+  "main": "index.ts",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jerome Wu <jeromewus@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@ffmpeg/core": "^0.11.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.37.0",
+    "@typescript-eslint/parser": "^5.37.0",
+    "eslint": "^8.23.1",
+    "typescript": "^4.8.3"
+  }
+}
