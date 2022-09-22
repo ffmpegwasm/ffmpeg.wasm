@@ -1,7 +1,7 @@
 {
-  "name": "@ffmpeg/ffmpeg",
+  "name": "@ffmpeg/ffmpeg-mt",
   "version": "0.11.5",
-  "description": "FFmpeg WebAssembly version",
+  "description": "FFmpeg WebAssembly version w/ multi-thread",
   "main": "./dist/commonjs/ffmpeg.js",
   "types": "./types/ffmpeg.d.ts",
   "exports": {
@@ -15,7 +15,7 @@
     "lint": "eslint tests types",
     "test": "npm run test:browser && npm run test:node",
     "test:node": "mocha --exit --bail --require tests/test-helper.js tests/ffmpeg.test.js",
-    "test:browser": "mocha-headless-chrome -a allow-file-access-from-files -f tests/ffmpeg.test.html"
+    "test:browser": "mocha-headless-chrome -a allow-file-access-from-files -a enable-features=SharedArrayBuffer -f tests/ffmpeg.test.html"
   },
   "files": [
     "dist",
