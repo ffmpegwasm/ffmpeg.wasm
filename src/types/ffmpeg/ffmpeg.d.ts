@@ -29,10 +29,6 @@ export interface FFmpegModule {
   setLogger: (logger: (log: Log) => void) => void;
   setTimeout: (timeout: number) => void;
   setProgress: (handler: (progress: number) => void) => void;
-
-  _ffmpeg: (args: number, argv: StringArrayPointer) => number;
-  stringToPtr: (str: string) => Pointer;
-  stringsToPtr: (strs: string[]) => Pointer;
 }
 
 declare function createFFmpeg(): Promise<FFmpegModule>;

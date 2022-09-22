@@ -1,8 +1,8 @@
 all: dev
 
 MT_FLAGS := -sUSE_PTHREADS -pthread
-MT_LDFLAGS := -sPTHREAD_POOL_SIZE=8
 
+DEV_ARGS := --progress=plain
 DEV_CFLAGS := --profiling
 DEV_MT_CFLAGS := $(DEV_CFLAGS) $(MT_FLAGS)
 PROD_CFLAGS := -O3 -msimd128
@@ -17,12 +17,12 @@ build:
 	make clean PKG_SUFFIX="$(PKG_SUFFIX)"
 	cp -r src/types/ffmpeg packages/ffmpeg$(PKG_SUFFIX)/types
 	EXTRA_CFLAGS="$(EXTRA_CFLAGS)" \
-	EXTRA_LDLAGS="$(EXTRA_LDLAGS)" \
+	EXTRA_LDFLAGS="$(EXTRA_LDFLAGS)" \
 	FFMPEG_ST="$(FFMPEG_ST)" \
 	FFMPEG_MT="$(FFMPEG_MT)" \
 		docker buildx build \
 			--build-arg EXTRA_CFLAGS \
-			--build-arg EXTRA_LDLAGS \
+			--build-arg EXTRA_LDFLAGS \
 			--build-arg FFMPEG_MT \
 			--build-arg FFMPEG_ST \
 			-o ./packages/ffmpeg$(PKG_SUFFIX) \
@@ -36,14 +36,13 @@ build-st:
 build-mt:
 	make build \
 		PKG_SUFFIX=-mt \
-		FFMPEG_MT=yes \
-		EXTRA_LDLAGS="$(MT_LDFLAGS)"
+		FFMPEG_MT=yes
 
 dev:
-	make build-st EXTRA_CFLAGS="$(DEV_CFLAGS)"
+	make build-st EXTRA_CFLAGS="$(DEV_CFLAGS)" EXTRA_ARGS="$(DEV_ARGS)"
 
 dev-mt:
-	make build-mt EXTRA_CFLAGS="$(DEV_MT_CFLAGS)"
+	make build-mt EXTRA_CFLAGS="$(DEV_MT_CFLAGS)" EXTRA_ARGS="$(DEV_ARGS)"
 
 prd:
 	make build-st EXTRA_CFLAGS="$(PROD_CFLAGS)"
