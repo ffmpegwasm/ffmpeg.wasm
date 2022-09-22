@@ -24,6 +24,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <math.h>
+#include <emscripten.h>
 
 /* Include only the enabled headers since some compilers (namely, Sun
    Studio) will not omit unused inline functions and create undefined
@@ -95,7 +96,23 @@ void exit_program(int ret)
     if (program_exit)
         program_exit(ret);
 
-    exit(ret);
+    /*
+     * abort() is used instead of exit() because exit() not only
+     * terminates ffmpeg but also the whole node.js program, which 
+     * is not ideal.
+     *
+     * abort() terminiates the ffmpeg with an JS exception
+     *
+     *   RuntimeError: Aborted...
+     *
+     * This excpetion is catch and not visible to users.
+     *
+     */
+    EM_ASM({
+        Module.ret = $0;
+    }, ret);
+    abort();
+    // exit(ret);
 }
 
 double parse_number_or_die(const char *context, const char *numstr, int type,

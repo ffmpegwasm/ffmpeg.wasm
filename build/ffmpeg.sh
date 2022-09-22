@@ -1,37 +1,35 @@
 #!/bin/bash
 
-EXTRA_CONF_FLAGS=(
-  --disable-pthreads
-  --disable-w32threads
-  --disable-os2threads
+CONF_FLAGS=(
+  --target-os=none              # disable target specific configs
+  --arch=x86_32                 # use x86_32 arch
+  --enable-cross-compile        # use cross compile configs
+  --disable-asm                 # disable asm
+  --disable-stripping           # disable stripping as it won't work
+  --disable-programs            # disable ffmpeg, ffprobe and ffplay build
+  --disable-doc                 # disable doc build
+  --disable-debug               # disable debug mode
+  --disable-runtime-cpudetect   # disable cpu detection
+  --disable-autodetect          # disable env auto detect
+
+  # assign toolchains and extra flags
+  --nm="llvm-nm"
+  --ar=emar
+  --ranlib=emranlib
+  --cc=emcc
+  --cxx=em++
+  --objcc=emcc
+  --dep-cc=emcc
+  --extra-cflags="$CFLAGS"
+  --extra-cxxflags="$CFLAGS"
+
+  # disable thread when FFMPEG_ST is NOT defined
+  ${FFMPEG_ST:+ --disable-pthreads --disable-w32threads --disable-os2threads}
+
+  # extra libraries
+  --enable-gpl
+  --enable-libx264
 )
 
-if [[ ! -z "$FFMPEG_MT" ]]; then
-  EXTRA_CONF_FLAGS=()
-fi
-
-emconfigure ./configure \
-  --target-os=none \
-  --arch=x86_32 \
-  --enable-cross-compile \
-  --disable-asm \
-  --disable-stripping \
-  --disable-programs \
-  --disable-doc \
-  --disable-debug \
-  --disable-runtime-cpudetect \
-  --disable-autodetect \
-  --extra-cflags="$CFLAGS" \
-  --extra-cxxflags="$CFLAGS" \
-  --nm="llvm-nm" \
-  --ar=emar \
-  --ranlib=emranlib \
-  --cc=emcc \
-  --cxx=em++ \
-  --objcc=emcc \
-  --dep-cc=emcc \
-  ${EXTRA_CONF_FLAGS[@]} \
-  --enable-gpl \
-  --enable-libx264
-
+emconfigure ./configure "${CONF_FLAGS[@]}"
 emmake make -j

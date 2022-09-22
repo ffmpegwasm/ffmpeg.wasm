@@ -32,6 +32,7 @@
 #include <limits.h>
 #include <stdatomic.h>
 #include <stdint.h>
+#include <emscripten.h>
 
 #if HAVE_IO_H
 #include <io.h>
@@ -1504,6 +1505,10 @@ static void print_final_stats(int64_t total_size)
     }
 }
 
+EM_JS(void, send_progress, (double progress), {
+    Module.receiveProgress(progress);
+});
+
 static void print_report(int is_last_report, int64_t timer_start, int64_t cur_time)
 {
     AVBPrint buf, buf_script;
@@ -1629,6 +1634,24 @@ static void print_report(int is_last_report, int64_t timer_start, int64_t cur_ti
             nb_frames_drop += ost->last_dropped;
     }
 
+    /* send_progress here only works when the duration of
+     * input and output file are the same, other cases (ex. trim)
+     * still WIP.
+     *
+     * TODO: support cases like trim.
+     */
+    int64_t duration = -1;
+    int64_t pts_abs = FFABS(pts);
+    /* Use the longest duration among all input files.
+     */
+    for (int i = 0; i < nb_input_files; i++) {
+      int64_t file_duration = input_files[i]->ctx->duration;
+      if (file_duration > duration) {
+        duration = file_duration;
+      }
+    }
+    send_progress((double)pts_abs / (double)duration);
+
     secs = FFABS(pts) / AV_TIME_BASE;
     us = FFABS(pts) % AV_TIME_BASE;
     mins = secs / 60;
@@ -1710,8 +1733,11 @@ static void print_report(int is_last_report, int64_t timer_start, int64_t cur_ti
 
     first_report = 0;
 
-    if (is_last_report)
-        print_final_stats(total_size);
+    if (is_last_report) {
+      // Make sure the progress is ended with 1.
+      if (pts_abs != duration) send_progress(1);
+      print_final_stats(total_size);
+    }
 }
 
 static int ifilter_parameters_from_codecpar(InputFilter *ifilter, AVCodecParameters *par)
@@ -4321,6 +4347,16 @@ static int transcode_step(void)
     return reap_filters(0);
 }
 
+/* is_timeout checks if transcode() is running longer
+ * than a timeout value, return 1 when timeout.
+ */
+EM_JS(int, is_timeout, (int64_t diff), {
+    if (Module.timeout === -1) return 0;
+    else {
+      return Module.timeout <= diff;
+    }
+});
+
 /*
  * The following code is the main loop of the file converter
  */
@@ -4350,6 +4386,8 @@ static int transcode(void)
 
     while (!received_sigterm) {
         int64_t cur_time= av_gettime_relative();
+
+        if (is_timeout((cur_time - timer_start) / 1000) == 1) exit_program(1);
 
         /* if 'q' pressed, exits */
         if (stdin_interaction)
@@ -4513,8 +4551,55 @@ static int64_t getmaxrss(void)
 #endif
 }
 
+/* init_globals initializes global variables to enable multiple
+ * calls of ffmpeg().
+ *
+ * This is not required in the original command line version as
+ * the global varialbes are always re-initialized when calling
+ * main() function.
+ */
+void init_globals() {
+  nb_frames_dup = 0;
+  dup_warning = 1000;
+  nb_frames_drop = 0;
+  nb_output_dumped = 0;
+  want_sdp = 1;
+
+  progress_avio = NULL;
+
+  input_streams = NULL;
+  nb_input_streams = 0;
+  input_files = NULL;
+  nb_input_files = 0;
+
+  output_streams = NULL;
+  nb_output_streams = 0;
+  output_files = NULL;
+  nb_output_files = 0;
+
+  filtergraphs = NULL;
+  nb_filtergraphs = 0;
+
+  received_sigterm = 0;
+  received_nb_signals = 0;
+  transcode_init_done = ATOMIC_VAR_INIT(0);
+  ffmpeg_exited = 0;
+  main_return_code = 0;
+  copy_ts_first_pts = AV_NOPTS_VALUE;
+}
+
+/* ffmpeg() is simply a rename of main(), but it makes things easier to
+ * control as main() is a special function name that might trigger
+ * some hidden mechanisms.
+ *
+ * One example is that when using multi-threading, a proxy_main() function
+ * might be used instead of main().
+ */
 int ffmpeg(int argc, char **argv)
+// int main(int argc, char **argv)
 {
+    init_globals();
+
     int i, ret;
     BenchmarkTimeStamps ti;
 
