@@ -7,8 +7,8 @@
   },
   "include": [
     // whatever paths you intend to lint
-    "src",
-    "test",
-    "tools"
+    "packages/**/*",
+    "apps/**/*",
+    "src/bind/**/*"
   ]
 }
