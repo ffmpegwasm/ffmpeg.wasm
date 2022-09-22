@@ -12,7 +12,6 @@
     }
   },
   "scripts": {
-    "lint": "eslint src",
     "test": "jest"
   },
   "repository": {
