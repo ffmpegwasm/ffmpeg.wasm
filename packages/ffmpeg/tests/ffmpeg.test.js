@@ -53,11 +53,11 @@ describe("exec()", () => {
   });
 
   it("should output help", () => {
-    expect(ffmpeg.exec(["-h"])).to.equal(0);
+    expect(ffmpeg.exec("-h")).to.equal(0);
   });
 
   it("should transcode", () => {
-    expect(ffmpeg.exec(["-i", "video.mp4", "video.avi"])).to.equal(0);
+    expect(ffmpeg.exec("-i", "video.mp4", "video.avi")).to.equal(0);
     const out = ffmpeg.FS.readFile("video.avi");
     expect(out.length).to.not.equal(0);
     ffmpeg.FS.unlink("video.avi");
@@ -73,7 +73,7 @@ describe("setTimeout()", () => {
 
   it("should timeout", () => {
     ffmpeg.setTimeout(1); // timeout after 1ms
-    expect(ffmpeg.exec(["-i", "video.mp4", "video.avi"])).to.equal(1);
+    expect(ffmpeg.exec("-i", "video.mp4", "video.avi")).to.equal(1);
   });
 });
 
@@ -87,7 +87,7 @@ describe("setLogger()", () => {
   it("should handle logs", () => {
     const logs = [];
     ffmpeg.setLogger(({ message }) => logs.push(message));
-    ffmpeg.exec(["-h"]);
+    ffmpeg.exec("-h");
     expect(logs.length).to.not.equal(0);
   });
 });
@@ -102,7 +102,7 @@ describe("setProgress()", () => {
   it("should handle progress", () => {
     let progress = 0;
     ffmpeg.setProgress((_progress) => (progress = _progress));
-    expect(ffmpeg.exec(["-i", "video.mp4", "video.avi"])).to.equal(0);
+    expect(ffmpeg.exec("-i", "video.mp4", "video.avi")).to.equal(0);
     expect(progress).to.equal(1);
     ffmpeg.FS.unlink("video.avi");
   });

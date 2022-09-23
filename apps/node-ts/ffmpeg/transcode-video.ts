@@ -13,5 +13,5 @@ void (async () => {
   );
 
   ffmpeg.FS.writeFile("video.avi", avi);
-  console.log("return code: ", ffmpeg.exec(["-i", "video.avi", "video.mp4"]));
+  console.log("return code: ", ffmpeg.exec("-i", "video.avi", "video.mp4"));
 })();

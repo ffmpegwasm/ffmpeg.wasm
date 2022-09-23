@@ -24,7 +24,7 @@ export interface FFmpegModule {
   ret: number;
   timeout: number;
 
-  exec: (args: string[]) => number;
+  exec: (...args: string[]) => number;
   reset: () => void;
   setLogger: (logger: (log: Log) => void) => void;
   setTimeout: (timeout: number) => void;

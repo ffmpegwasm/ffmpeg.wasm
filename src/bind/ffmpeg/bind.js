@@ -50,7 +50,7 @@ function printErr(message) {
     Module["logger"]({ type: "stderr", message });
 }
 
-function exec(_args) {
+function exec(..._args) {
   const args = [...Module["DEFAULT_ARGS"], ..._args];
   try {
     Module["_ffmpeg"](args.length, stringsToPtr(args));
