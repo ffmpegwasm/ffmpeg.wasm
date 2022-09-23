@@ -1,9 +1,6 @@
 {
   "name": "root",
   "private": true,
-  "scripts": {
-    "lint": "eslint src/bind"
-  },
   "workspaces": [
     "packages/*",
     "apps/*"
