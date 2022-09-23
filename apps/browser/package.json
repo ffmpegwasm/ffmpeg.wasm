@@ -1,0 +1,10 @@
+{
+  "name": "browser",
+  "version": "0.0.1",
+  "description": "browser example",
+  "scripts": {
+    "start": "npx http-server ../../"
+  },
+  "author": "Jerome Wu <jeromewus@gmail.com>",
+  "license": "MIT"
+}

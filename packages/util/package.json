@@ -1,25 +1,23 @@
 {
-  "name": "@ffmpeg/ffmpeg",
+  "name": "@ffmpeg/util",
   "version": "0.11.5",
-  "description": "FFmpeg WebAssembly version",
-  "main": "./dist/cjs/ffmpeg.js",
-  "types": "./types/ffmpeg.d.ts",
+  "description": "browser utils for @ffmpeg/*",
+  "main": "./dist/cjs/index.js",
+  "types": "./dist/cjs/index.d.ts",
   "exports": {
     ".": {
-      "types": "./types/ffmpeg.d.ts",
-      "import": "./dist/esm/ffmpeg.js",
-      "require": "./dist/cjs/ffmpeg.js"
+      "types": "./dist/cjs/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
     }
   },
   "scripts": {
-    "lint": "eslint tests types",
-    "test": "npm run test:browser && npm run test:node",
-    "test:node": "mocha --exit --bail --require tests/test-helper.js tests/ffmpeg.test.js",
-    "test:browser": "mocha-headless-chrome -a allow-file-access-from-files -f tests/ffmpeg.test.html"
+    "dev": "tsc -p tsconfig-esm.json --watch",
+    "build": "rimraf dist && tsc -p tsconfig-esm.json && tsc -p tsconfig-cjs.json",
+    "lint": "eslint src"
   },
   "files": [
-    "dist",
-    "types/ffmpeg.d.ts"
+    "dist"
   ],
   "repository": {
     "type": "git",
@@ -27,7 +25,6 @@
   },
   "keywords": [
     "ffmpeg",
-    "WebAssembly",
     "video",
     "audio",
     "transcode"
@@ -47,10 +44,11 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.37.0",
     "@typescript-eslint/parser": "^5.37.0",
-    "chai": "^4.3.6",
     "eslint": "^8.23.1",
-    "mocha": "^10.0.0",
-    "mocha-headless-chrome": "^4.0.0",
-    "typescript": "^4.8.3"
+    "rimraf": "^3.0.2",
+    "ts-loader": "^9.4.1",
+    "typescript": "^4.8.3",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
   }
 }
