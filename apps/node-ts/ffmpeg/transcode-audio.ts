@@ -13,5 +13,5 @@ void (async () => {
   );
 
   ffmpeg.FS.writeFile("audio.wav", wav);
-  console.log("return code: ", ffmpeg.exec(["-i", "audio.wav", "audio.mp4"]));
+  console.log("return code: ", ffmpeg.exec("-i", "audio.wav", "audio.mp4"));
 })();
