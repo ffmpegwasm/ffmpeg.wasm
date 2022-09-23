@@ -2,13 +2,13 @@
   "name": "@ffmpeg/ffmpeg",
   "version": "0.11.5",
   "description": "FFmpeg WebAssembly version",
-  "main": "./dist/cjs/ffmpeg.js",
+  "main": "./dist/umd/ffmpeg.js",
   "types": "./types/ffmpeg.d.ts",
   "exports": {
     ".": {
       "types": "./types/ffmpeg.d.ts",
       "import": "./dist/esm/ffmpeg.js",
-      "require": "./dist/cjs/ffmpeg.js"
+      "require": "./dist/umd/ffmpeg.js"
     }
   },
   "scripts": {

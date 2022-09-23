@@ -1,6 +1,8 @@
 <html>
   <head>
     <link rel="stylesheet" href="style.css">
+    <script src="../../packages/ffmpeg/dist/umd/ffmpeg.js"></script>
+    <script src="../../packages/util/dist/umd/index.js"></script>
   </head>
   <body>
     <h3>Upload a video to transcode to mp4 (x264) and play!</h3>
@@ -8,8 +10,7 @@
     <input type="file" id="uploader">
     <p id="message"></p>
     <script type="module">
-      import createFFmpeg from "../../packages/ffmpeg/dist/esm/ffmpeg.js";
-      import { fetchFile } from "../../packages/util/dist/esm/index.js";
+      const { fetchFile } = FFmpegUtil;
       let ffmpeg = null;
 
       const transcode = async ({ target: { files } }) => {

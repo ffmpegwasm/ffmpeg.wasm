@@ -1,37 +1,35 @@
 <html>
   <head>
     <link rel="stylesheet" href="style.css">
-    <script src="../../packages/ffmpeg/dist/umd/ffmpeg.js"></script>
-    <script src="../../packages/util/dist/umd/index.js"></script>
   </head>
   <body>
-    <h3>Upload a mp4 (x264) video and trim its first 1 seconds and play!</h3>
+    <h3>Upload a video to transcode to mp4 (x264) and play!</h3>
     <video id="output-video" controls></video><br/>
     <input type="file" id="uploader">
     <p id="message"></p>
-    <script>
-      const { fetchFile } = FFmpegUtil;
+    <script type="module">
+      import createFFmpeg from "../../packages/ffmpeg/dist/esm/ffmpeg.js";
+      import { fetchFile } from "../../packages/util/dist/esm/index.js";
       let ffmpeg = null;
 
-      const trim = async ({ target: { files } }) => {
+      const transcode = async ({ target: { files } }) => {
         const message = document.getElementById('message');
         if (ffmpeg === null) {
           ffmpeg = await createFFmpeg();
-          ffmpeg.setProgress((progress) => { console.log(progress * 100) });
+          ffmpeg.setProgress((progress) => { console.log(progress * 100); });
         }
         const { name } = files[0];
-        message.innerHTML = 'Loading ffmpeg-core.js';
-        message.innerHTML = 'Start trimming';
         ffmpeg.FS.writeFile(name, await fetchFile(files[0]));
-        await ffmpeg.exec('-i', name, '-ss', '0', '-to', '1', 'output.mp4');
-        message.innerHTML = 'Complete trimming';
+        message.innerHTML = 'Start transcoding';
+        await ffmpeg.exec('-i', name,  'output.mp4');
+        message.innerHTML = 'Complete transcoding';
         const data = ffmpeg.FS.readFile('output.mp4');
 
         const video = document.getElementById('output-video');
         video.src = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
       }
       const elm = document.getElementById('uploader');
-      elm.addEventListener('change', trim);
+      elm.addEventListener('change', transcode);
     </script>
   </body>
 </html>

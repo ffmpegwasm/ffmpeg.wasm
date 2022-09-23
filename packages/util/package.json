@@ -13,7 +13,7 @@
   },
   "scripts": {
     "dev": "tsc -p tsconfig-esm.json --watch",
-    "build": "rimraf dist && tsc -p tsconfig-esm.json && tsc -p tsconfig-cjs.json",
+    "build": "rimraf dist && tsc -p tsconfig-esm.json && tsc -p tsconfig-cjs.json && webpack",
     "lint": "eslint src"
   },
   "files": [
@@ -46,6 +46,7 @@
     "@typescript-eslint/parser": "^5.37.0",
     "eslint": "^8.23.1",
     "rimraf": "^3.0.2",
-    "typescript": "^4.8.3"
+    "typescript": "^4.8.3",
+    "webpack-cli": "^4.10.0"
   }
 }
