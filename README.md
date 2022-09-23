@@ -69,6 +69,7 @@ Or, using a script tag in the browser (only works in some browsers, see list bel
 ffmpeg.wasm provides simple to use APIs, to transcode a video you only need few lines of code:
 
 ```javascript
+import { writeFile } from 'fs/promises';
 import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
 
 const ffmpeg = createFFmpeg({ log: true });
