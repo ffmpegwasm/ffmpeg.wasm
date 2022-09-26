@@ -3,14 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <title>FFmpeg Unit Test</title>
-  <link rel="stylesheet" href="../../../node_modules/mocha/mocha.css">
+  <link rel="stylesheet" href="../node_modules/mocha/mocha.css">
 </head>
 <body>
   <div id="mocha"></div>
-  <script src="../../../node_modules/mocha/mocha.js"></script>
-  <script src="../../../node_modules/chai/chai.js"></script>
-  <script src="../dist/umd/ffmpeg.js"></script>
+  <script src="../node_modules/mocha/mocha.js"></script>
+  <script src="../node_modules/chai/chai.js"></script>
+  <script src="../packages/ffmpeg-mt/dist/umd/ffmpeg.js"></script>
   <script src="./constants.js"></script>
+  <script type="text/javascript">
+    window.FFMPEG_TYPE = "mt";
+  </script>
   <script>mocha.setup('bdd');</script>
   <script src="./ffmpeg.test.js"></script>
   <script>

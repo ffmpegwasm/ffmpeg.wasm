@@ -1,5 +1,7 @@
 let ffmpeg;
 
+const genName = (name) => `[ffmpeg][${FFMPEG_TYPE}] ${name}`;
+
 const b64ToUint8Array = (b64) => {
   const bin = atob(b64);
   const len = bin.length;
@@ -16,25 +18,23 @@ const reset = () => {
   ffmpeg.setProgress(() => {});
 };
 
-before(async function () {
-  this.timeout(0);
+before(async () => {
   ffmpeg = await createFFmpeg();
   ffmpeg.FS.writeFile("video.mp4", b64ToUint8Array(VIDEO_1S_MP4));
 });
 
-describe("createFFmpeg()", () => {
+describe(genName("createFFmpeg()"), () => {
   it("should be OK", () => {
     expect(ffmpeg).to.be.ok;
   });
 });
 
-describe("reset()", () => {
+describe(genName("reset()"), () => {
   beforeEach(reset);
 
   it("should exist", () => {
     expect("reset" in ffmpeg).to.be.true;
   });
-
   it("should reset ret and timeout", () => {
     ffmpeg.ret = 1024;
     ffmpeg.timeout = 1024;
@@ -46,7 +46,7 @@ describe("reset()", () => {
   });
 });
 
-describe("exec()", () => {
+describe(genName("exec()"), () => {
   beforeEach(reset);
 
   it("should exist", () => {
@@ -65,7 +65,7 @@ describe("exec()", () => {
   });
 });
 
-describe("setTimeout()", () => {
+describe(genName("setTimeout()"), () => {
   beforeEach(reset);
 
   it("should exist", () => {
@@ -78,7 +78,7 @@ describe("setTimeout()", () => {
   });
 });
 
-describe("setLogger()", () => {
+describe(genName("setLogger()"), () => {
   beforeEach(reset);
 
   it("should exist", () => {
@@ -93,7 +93,7 @@ describe("setLogger()", () => {
   });
 });
 
-describe("setProgress()", () => {
+describe(genName("setProgress()"), () => {
   beforeEach(reset);
 
   it("should exist", () => {

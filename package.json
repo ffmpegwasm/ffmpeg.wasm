@@ -1,11 +1,27 @@
 {
   "name": "root",
   "private": true,
+  "scripts": {
+    "lint": "npm-run-all lint:*",
+    "lint:packages": "lerna run lint",
+    "lint:root": "eslint tests",
+    "test": "npm-run-all test:*:*",
+    "test:browser": "mocha-headless-chrome -a allow-file-access-from-files -a enable-features=SharedArrayBuffer",
+    "test:browser:mt": "npm run test:browser -- -f tests/*-mt.test.html",
+    "test:browser:st": "npm run test:browser -- -f tests/*-st.test.html",
+    "test:node": "mocha --exit --bail",
+    "test:node:mt": "npm run test:node -- --require tests/test-helper-mt.js tests/*.test.js",
+    "test:node:st": "npm run test:node -- --require tests/test-helper-st.js tests/*.test.js"
+  },
   "workspaces": [
     "packages/*",
     "apps/*"
   ],
   "devDependencies": {
-    "lerna": "^5.4.3"
+    "chai": "^4.3.6",
+    "lerna": "^5.4.3",
+    "mocha": "^10.0.0",
+    "mocha-headless-chrome": "^4.0.0",
+    "npm-run-all": "^4.1.5"
   }
 }
