@@ -3,7 +3,8 @@
   "globals": {
     "expect": true,
     "createFFmpeg": true,
-    "VIDEO_1S_MP4": true
+    "VIDEO_1S_MP4": true,
+    "FFMPEG_TYPE": true
   },
   "env": {
     "node": true,

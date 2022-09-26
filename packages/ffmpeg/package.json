@@ -12,10 +12,7 @@
     }
   },
   "scripts": {
-    "lint": "eslint tests types",
-    "test": "npm run test:browser && npm run test:node",
-    "test:node": "mocha --exit --bail --require tests/test-helper.js tests/ffmpeg.test.js",
-    "test:browser": "mocha-headless-chrome -a allow-file-access-from-files -f tests/ffmpeg.test.html"
+    "lint": "eslint types"
   },
   "files": [
     "dist",
@@ -47,10 +44,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.37.0",
     "@typescript-eslint/parser": "^5.37.0",
-    "chai": "^4.3.6",
     "eslint": "^8.23.1",
-    "mocha": "^10.0.0",
-    "mocha-headless-chrome": "^4.0.0",
     "typescript": "^4.8.3"
   }
 }
