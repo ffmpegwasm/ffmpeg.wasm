@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import createFFmpeg from "@ffmpeg/ffmpeg";
+import createFFmpeg from "@ffmpeg/core";
 
 void (async () => {
   const wav = Uint8Array.from(
