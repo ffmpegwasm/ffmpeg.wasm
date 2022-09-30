@@ -1,3 +1,5 @@
+// TODO: Add lint and test.
+
 export type Pointer = number;
 export type StringPointer = Pointer;
 export type StringArrayPointer = Pointer;

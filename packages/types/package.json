@@ -3,9 +3,6 @@
   "version": "0.11.5",
   "description": "ffmpeg.wasm types",
   "types": "types",
-  "scripts": {
-    "lint": "dtslint types"
-  },
   "files": [
     "types"
   ],
@@ -31,8 +28,5 @@
   "homepage": "https://github.com/ffmpegwasm/ffmpeg.wasm#readme",
   "publishConfig": {
     "access": "public"
-  },
-  "devDependencies": {
-    "@definitelytyped/dtslint": "^0.0.133"
   }
 }
