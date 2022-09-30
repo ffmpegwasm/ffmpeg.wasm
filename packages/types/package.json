@@ -1,0 +1,38 @@
+{
+  "name": "@ffmpeg/types",
+  "version": "0.11.5",
+  "description": "ffmpeg.wasm types",
+  "types": "types",
+  "scripts": {
+    "lint": "dtslint types"
+  },
+  "files": [
+    "types"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ffmpegwasm/ffmpeg.wasm.git"
+  },
+  "keywords": [
+    "ffmpeg",
+    "WebAssembly",
+    "video",
+    "audio",
+    "transcode"
+  ],
+  "author": "Jerome Wu <jeromewus@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ffmpegwasm/ffmpeg.wasm/issues"
+  },
+  "engines": {
+    "node": ">=16.6.0"
+  },
+  "homepage": "https://github.com/ffmpegwasm/ffmpeg.wasm#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@definitelytyped/dtslint": "^0.0.133"
+  }
+}

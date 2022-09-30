@@ -3,11 +3,11 @@
 # ex:
 #     bash ffmpeg-wasm.sh -o ffmpeg.js
 
-EXPORT_NAME="createFFmpeg"
+EXPORT_NAME="createFFmpegCore"
 
 CONF_FLAGS=(
   -I. 
-  -I./wasm/fftools 
+  -I./src/fftools 
   -I$INSTALL_DIR/include 
   -L$INSTALL_DIR/lib 
   -Llibavcodec 
@@ -35,17 +35,17 @@ CONF_FLAGS=(
   ${FFMPEG_MT:+ -sPTHREAD_POOL_SIZE=32}    # use 32 threads
   ${FFMPEG_ST:+ -sINITIAL_MEMORY=32MB -sALLOW_MEMORY_GROWTH} # Use just enough memory as memory usage can grow
   -sEXPORT_NAME="$EXPORT_NAME"             # required in browser env, so that user can access this module from window.createFFmpeg
-  -sEXPORTED_FUNCTIONS=$(node wasm/bind/ffmpeg/export.js) # exported functions
-  -sEXPORTED_RUNTIME_METHODS=$(node wasm/bind/ffmpeg/export-runtime.js) # exported built-in functions
-  --pre-js wasm/bind/ffmpeg/bind.js        # extra bindings, contains most of the ffmpeg.wasm javascript code
+  -sEXPORTED_FUNCTIONS=$(node src/bind/ffmpeg/export.js) # exported functions
+  -sEXPORTED_RUNTIME_METHODS=$(node src/bind/ffmpeg/export-runtime.js) # exported built-in functions
+  --pre-js src/bind/ffmpeg/bind.js        # extra bindings, contains most of the ffmpeg.wasm javascript code
   # ffmpeg source code
-  wasm/fftools/cmdutils.c 
-  wasm/fftools/ffmpeg.c 
-  wasm/fftools/ffmpeg_filter.c 
-  wasm/fftools/ffmpeg_hw.c 
-  wasm/fftools/ffmpeg_mux.c 
-  wasm/fftools/ffmpeg_opt.c 
-  wasm/fftools/opt_common.c 
+  src/fftools/cmdutils.c 
+  src/fftools/ffmpeg.c 
+  src/fftools/ffmpeg_filter.c 
+  src/fftools/ffmpeg_hw.c 
+  src/fftools/ffmpeg_mux.c 
+  src/fftools/ffmpeg_opt.c 
+  src/fftools/opt_common.c 
 )
 
 emcc "${CONF_FLAGS[@]}" $@

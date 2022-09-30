@@ -11,20 +11,32 @@
     <p id="message"></p>
     <script>
       const { fetchFile } = FFmpegUtil;
+      const { FFmpeg } = FFmpegWASM;
       let ffmpeg = null;
 
       const transcode = async ({ target: { files } }) => {
         const message = document.getElementById('message');
         if (ffmpeg === null) {
-          ffmpeg = await createFFmpeg();
-          ffmpeg.setProgress((progress) => { console.log(progress * 100); });
+          ffmpeg = new FFmpeg();
+          ffmpeg.on(FFmpeg.DOWNLOAD, ({ url, total, received, done }) => {
+              console.log(`downloading ${url}, progress: ${received / total * 100} %, done: ${done}`);
+          });
+          ffmpeg.on(FFmpeg.PROGRESS, (p) => {
+              message.innerHTML = `${p * 100} %`;
+          });
+          ffmpeg.on(FFmpeg.LOG, ({ message }) => {
+              console.log(message);
+          });
+          await ffmpeg.load({
+            coreURL: "/packages/core/dist/umd/ffmpeg-core.js",
+          });
         }
         const { name } = files[0];
-        ffmpeg.FS.writeFile(name, await fetchFile(files[0]));
+        await ffmpeg.writeFile(name, await fetchFile(files[0]));
         message.innerHTML = 'Start transcoding';
-        await ffmpeg.exec('-i', name,  'output.mp4');
+        await ffmpeg.exec(['-i', name,  'output.mp4']);
         message.innerHTML = 'Complete transcoding';
-        const data = ffmpeg.FS.readFile('output.mp4');
+        const data = await ffmpeg.readFile('output.mp4');
 
         const video = document.getElementById('output-video');
         video.src = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));

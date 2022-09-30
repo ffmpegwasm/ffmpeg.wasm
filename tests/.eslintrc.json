@@ -2,7 +2,7 @@
   "extends": "eslint:recommended",
   "globals": {
     "expect": true,
-    "createFFmpeg": true,
+    "createFFmpegCore": true,
     "VIDEO_1S_MP4": true,
     "FFMPEG_TYPE": true
   },
