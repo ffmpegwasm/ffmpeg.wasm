@@ -37,11 +37,11 @@ RUN bash -x /src/build.sh
 
 # Build ffmpeg.wasm
 FROM ffmpeg-builder AS ffmpeg-wasm-builder
-COPY src/bind /src/wasm/bind
-COPY src/fftools /src/wasm/fftools
+COPY src/bind /src/src/bind
+COPY src/fftools /src/src/fftools
 COPY build/ffmpeg-wasm.sh build.sh
-RUN mkdir -p /src/dist/umd && bash -x /src/build.sh -o dist/umd/ffmpeg.js
-RUN mkdir -p /src/dist/esm && bash -x /src/build.sh -sEXPORT_ES6 -o dist/esm/ffmpeg.js
+RUN mkdir -p /src/dist/umd && bash -x /src/build.sh -o dist/umd/ffmpeg-core.js
+RUN mkdir -p /src/dist/esm && bash -x /src/build.sh -sEXPORT_ES6 -o dist/esm/ffmpeg-core.js
 
 # Export ffmpeg-core.wasm to dist/, use `docker buildx build -o . .` to get assets
 FROM scratch AS exportor

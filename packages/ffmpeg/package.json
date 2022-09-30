@@ -3,16 +3,23 @@
   "version": "0.11.5",
   "description": "FFmpeg WebAssembly version",
   "main": "./dist/umd/ffmpeg.js",
-  "types": "./types/ffmpeg.d.ts",
+  "types": "./dist/umd/ffmpeg.d.ts",
   "exports": {
     ".": {
-      "types": "./types/ffmpeg.d.ts",
-      "import": "./dist/esm/ffmpeg.js",
+      "types": "./dist/umd/ffmpeg.d.ts",
+      "import": "./dist/esm/index.js",
       "require": "./dist/umd/ffmpeg.js"
     }
   },
   "scripts": {
-    "lint": "eslint types"
+    "dev": "webpack --watch -c webpack.dev.config.js",
+    "lint": "eslint src",
+    "clean": "rimraf dist",
+    "build:umd": "webpack",
+    "build:d": "tsc -p tsconfig.d.json",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build": "npm-run-all clean build:*",
+    "docs": "typedoc --entryPointStrategy expand ./src"
   },
   "files": [
     "dist",
@@ -45,6 +52,16 @@
     "@typescript-eslint/eslint-plugin": "^5.37.0",
     "@typescript-eslint/parser": "^5.37.0",
     "eslint": "^8.23.1",
-    "typescript": "^4.8.3"
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2",
+    "ts-loader": "^9.4.1",
+    "typedoc": "^0.23.15",
+    "typescript": "^4.8.3",
+    "webpack-cli": "^4.10.0",
+    "worker-loader": "^3.0.8"
+  },
+  "dependencies": {
+    "@ffmpeg/types": "^0.11.5",
+    "events": "^3.3.0"
   }
 }

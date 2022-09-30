@@ -9,13 +9,13 @@ PROD_CFLAGS := -O3 -msimd128
 PROD_MT_CFLAGS := $(PROD_CFLAGS) $(MT_FLAGS)
 
 clean:
-	rm -rf ./packages/ffmpeg$(PKG_SUFFIX)/dist
-	rm -rf ./packages/ffmpeg$(PKG_SUFFIX)/types
+	rm -rf ./packages/core$(PKG_SUFFIX)/dist
+	rm -rf ./packages/core$(PKG_SUFFIX)/types
 
 .PHONY: build
 build:
 	make clean PKG_SUFFIX="$(PKG_SUFFIX)"
-	cp -r src/types/ffmpeg packages/ffmpeg$(PKG_SUFFIX)/types
+	cp -r src/types/ffmpeg-core packages/core$(PKG_SUFFIX)/types
 	EXTRA_CFLAGS="$(EXTRA_CFLAGS)" \
 	EXTRA_LDFLAGS="$(EXTRA_LDFLAGS)" \
 	FFMPEG_ST="$(FFMPEG_ST)" \
@@ -25,7 +25,7 @@ build:
 			--build-arg EXTRA_LDFLAGS \
 			--build-arg FFMPEG_MT \
 			--build-arg FFMPEG_ST \
-			-o ./packages/ffmpeg$(PKG_SUFFIX) \
+			-o ./packages/core$(PKG_SUFFIX) \
 			$(EXTRA_ARGS) \
 			.
 
@@ -49,3 +49,6 @@ prd:
 
 prd-mt:
 	make build-mt EXTRA_CFLAGS="$(PROD_MT_CFLAGS)"
+
+test:
+	npm run test

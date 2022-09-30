@@ -1,6 +1,6 @@
 let ffmpeg;
 
-const genName = (name) => `[ffmpeg][${FFMPEG_TYPE}] ${name}`;
+const genName = (name) => `[ffmpeg-core][${FFMPEG_TYPE}] ${name}`;
 
 const b64ToUint8Array = (b64) => {
   const bin = atob(b64);
@@ -19,7 +19,7 @@ const reset = () => {
 };
 
 before(async () => {
-  ffmpeg = await createFFmpeg();
+  ffmpeg = await createFFmpegCore();
   ffmpeg.FS.writeFile("video.mp4", b64ToUint8Array(VIDEO_1S_MP4));
 });
 

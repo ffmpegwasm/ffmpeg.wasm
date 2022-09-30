@@ -1707,7 +1707,8 @@ static void print_report(int is_last_report, int64_t timer_start, int64_t cur_ti
     }
 
     if (print_stats || is_last_report) {
-        const char end = is_last_report ? '\n' : '\r';
+        // Always print a new line of message.
+        const char end = '\n'; //is_last_report ? '\n' : '\r';
         if (print_stats==1 && AV_LOG_INFO > av_log_get_level()) {
             fprintf(stderr, "%s    %c", buf.str, end);
         } else
