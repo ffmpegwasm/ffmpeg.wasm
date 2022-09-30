@@ -1,4 +1,4 @@
-import createFFmpeg from "@ffmpeg/ffmpeg";
+import createFFmpeg from "@ffmpeg/core";
 
 void (async () => {
   const ffmpeg = await createFFmpeg();
