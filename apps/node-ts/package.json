@@ -13,7 +13,7 @@
   "dependencies": {
     "@ffmpeg/core": "^0.11.0",
     "@ffmpeg/ffmpeg": "^0.11.5",
-    "ts-node": "^10.9.1"
+    "@ffmpeg/types": "^0.11.5"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.37.0",
