@@ -3,6 +3,8 @@
 # ex:
 #     bash ffmpeg-wasm.sh -o ffmpeg.js
 
+set -euo pipefail
+
 EXPORT_NAME="createFFmpegCore"
 
 CONF_FLAGS=(
@@ -26,7 +28,6 @@ CONF_FLAGS=(
   -lpostproc 
   -lswresample 
   -lswscale 
-  -lx264 
   -Wno-deprecated-declarations 
   $LDFLAGS 
   -sUSE_SDL=2                              # use emscripten SDL2 lib port
