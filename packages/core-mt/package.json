@@ -3,20 +3,14 @@
   "version": "0.11.5",
   "description": "FFmpeg WebAssembly version",
   "main": "./dist/umd/ffmpeg-core.js",
-  "types": "./types/ffmpeg-core.d.ts",
   "exports": {
     ".": {
-      "types": "./types/ffmpeg-core.d.ts",
       "import": "./dist/esm/ffmpeg-core.js",
       "require": "./dist/umd/ffmpeg-core.js"
     }
   },
-  "scripts": {
-    "lint": "eslint types"
-  },
   "files": [
-    "dist",
-    "types/ffmpeg-core.d.ts"
+    "dist"
   ],
   "repository": {
     "type": "git",
@@ -40,11 +34,5 @@
   "homepage": "https://github.com/ffmpegwasm/ffmpeg.wasm#readme",
   "publishConfig": {
     "access": "public"
-  },
-  "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.37.0",
-    "@typescript-eslint/parser": "^5.37.0",
-    "eslint": "^8.23.1",
-    "typescript": "^4.8.3"
   }
 }

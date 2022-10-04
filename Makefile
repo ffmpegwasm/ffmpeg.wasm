@@ -10,12 +10,10 @@ PROD_MT_CFLAGS := $(PROD_CFLAGS) $(MT_FLAGS)
 
 clean:
 	rm -rf ./packages/core$(PKG_SUFFIX)/dist
-	rm -rf ./packages/core$(PKG_SUFFIX)/types
 
 .PHONY: build
 build:
 	make clean PKG_SUFFIX="$(PKG_SUFFIX)"
-	cp -r src/types/ffmpeg-core packages/core$(PKG_SUFFIX)/types
 	EXTRA_CFLAGS="$(EXTRA_CFLAGS)" \
 	EXTRA_LDFLAGS="$(EXTRA_LDFLAGS)" \
 	FFMPEG_ST="$(FFMPEG_ST)" \
