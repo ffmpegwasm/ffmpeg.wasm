@@ -16,6 +16,5 @@ CONF_FLAGS=(
   --disable-dependency-tracking                       # speed up one-time build
 )
 
-emconfigure ./autogen.sh
-emconfigure ./configure "${CONF_FLAGS[@]}"
+emconfigure ./autogen.sh "${CONF_FLAGS[@]}"
 emmake make install -j
