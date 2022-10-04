@@ -15,7 +15,7 @@ CONF_FLAGS=(
   --disable-autodetect          # disable env auto detect
 
   # assign toolchains and extra flags
-  --nm="llvm-nm"
+  --nm=emnm
   --ar=emar
   --ranlib=emranlib
   --cc=emcc
