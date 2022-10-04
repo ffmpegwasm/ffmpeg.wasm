@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 CONF_FLAGS=(
   --target-os=none              # disable target specific configs
   --arch=x86_32                 # use x86_32 arch
@@ -21,15 +23,11 @@ CONF_FLAGS=(
   --objcc=emcc
   --dep-cc=emcc
   --extra-cflags="$CFLAGS"
-  --extra-cxxflags="$CFLAGS"
+  --extra-cxxflags="$CXXFLAGS"
 
   # disable thread when FFMPEG_ST is NOT defined
   ${FFMPEG_ST:+ --disable-pthreads --disable-w32threads --disable-os2threads}
-
-  # extra libraries
-  --enable-gpl
-  --enable-libx264
 )
 
-emconfigure ./configure "${CONF_FLAGS[@]}"
+emconfigure ./configure "${CONF_FLAGS[@]}" $@
 emmake make -j
