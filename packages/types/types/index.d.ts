@@ -4,12 +4,18 @@ export type Pointer = number;
 export type StringPointer = Pointer;
 export type StringArrayPointer = Pointer;
 
+export interface ReadFileOptions {
+  encdoing: string;
+}
+
 export interface FS {
-  mkdir: (fileName: string) => void;
-  readFile: (fileName: string) => Uint8Array;
-  readdir: (pathName: string) => string[];
-  unlink: (fileName: string) => void;
-  writeFile: (fileName: string, binaryData: Uint8Array | string) => void;
+  mkdir: (path: string) => void;
+  rmdir: (path: string) => void;
+  rename: (oldPath: string, newPath: string) => void;
+  writeFile: (path: string, data: Uint8Array | string) => void;
+  readFile: (path: string, opts: OptionReadFile) => Uint8Array | string;
+  readdir: (path: string) => string[];
+  unlink: (path: string) => void;
 }
 
 export interface Log {

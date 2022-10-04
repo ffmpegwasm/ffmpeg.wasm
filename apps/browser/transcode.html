@@ -21,8 +21,8 @@
           ffmpeg.on(FFmpeg.DOWNLOAD, ({ url, total, received, done }) => {
               console.log(`downloading ${url}, progress: ${received / total * 100} %, done: ${done}`);
           });
-          ffmpeg.on(FFmpeg.PROGRESS, (p) => {
-              message.innerHTML = `${p * 100} %`;
+          ffmpeg.on(FFmpeg.PROGRESS, ({ progress }) => {
+              message.innerHTML = `${progress * 100} %`;
           });
           ffmpeg.on(FFmpeg.LOG, ({ message }) => {
               console.log(message);

@@ -1,4 +1,5 @@
 export type FFFSPath = string;
+export type FFFSPaths = FFFSPath[];
 
 /**
  * ffmpeg-core loading configuration.
@@ -48,25 +49,56 @@ export interface FFMessageLoadConfig {
   thread?: boolean;
 }
 
-export interface FFMessageWriteFileData {
-  path: FFFSPath;
-  bin: Uint8Array | string;
-}
-
 export interface FFMessageExecData {
   args: string[];
   timeout?: number;
 }
 
+export interface FFMessageWriteFileData {
+  path: FFFSPath;
+  data: FileData;
+}
+
 export interface FFMessageReadFileData {
+  path: FFFSPath;
+  encoding: string;
+}
+
+export interface FFMessageDeleteFileData {
+  path: FFFSPath;
+}
+
+export interface FFMessageRenameData {
+  oldPath: FFFSPath;
+  newPath: FFFSPath;
+}
+
+export interface FFMessageCreateDirData {
+  path: FFFSPath;
+}
+
+export interface FFMessageListDirData {
+  path: FFFSPath;
+}
+
+/**
+ * @remarks
+ * Only deletes empty directory.
+ */
+export interface FFMessageDeleteDirData {
   path: FFFSPath;
 }
 
 export type FFMessageData =
   | FFMessageLoadConfig
-  | FFMessageWriteFileData
   | FFMessageExecData
-  | FFMessageReadFileData;
+  | FFMessageWriteFileData
+  | FFMessageReadFileData
+  | FFMessageDeleteFileData
+  | FFMessageRenameData
+  | FFMessageCreateDirData
+  | FFMessageListDirData
+  | FFMessageDeleteDirData;
 
 export interface Message {
   type: string;
@@ -94,12 +126,15 @@ export interface LogEvent {
   message: string;
 }
 
+export interface Progress {
+  progress: number;
+}
+
 export type ExitCode = number;
 export type ErrorMessage = string;
-export type FileData = Uint8Array;
-export type Progress = number;
+export type FileData = Uint8Array | string;
 export type IsFirst = boolean;
-export type IsDone = boolean;
+export type OK = boolean;
 
 export type CallbackData =
   | FileData
@@ -109,8 +144,9 @@ export type CallbackData =
   | LogEvent
   | Progress
   | IsFirst
-  | IsDone
+  | OK
   | Error
+  | FFFSPaths
   | undefined;
 
 export interface Callbacks {

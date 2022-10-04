@@ -6,13 +6,20 @@ import type { FFmpegCoreModule, FFmpegCoreModuleFactory } from "@ffmpeg/types";
 import type {
   FFMessageEvent,
   FFMessageLoadConfig,
-  FFMessageWriteFileData,
   FFMessageExecData,
+  FFMessageWriteFileData,
   FFMessageReadFileData,
+  FFMessageDeleteFileData,
+  FFMessageRenameData,
+  FFMessageCreateDirData,
+  FFMessageListDirData,
+  FFMessageDeleteDirData,
   CallbackData,
   IsFirst,
-  IsDone,
+  OK,
   ExitCode,
+  FFFSPaths,
+  FileData,
 } from "./types";
 import { toBlobURL } from "./utils";
 import {
@@ -53,18 +60,15 @@ const load = async ({
       self.postMessage({ type: FFMessageType.DOWNLOAD, data })
     );
     if (thread) {
-      try {
-        workerURL = await toBlobURL(workerURL, MIME_TYPE_JAVASCRIPT, (data) =>
-          self.postMessage({ type: FFMessageType.DOWNLOAD, data })
-        );
-        // eslint-disable-next-line
-      } catch (e) {}
+      workerURL = await toBlobURL(workerURL, MIME_TYPE_JAVASCRIPT, (data) =>
+        self.postMessage({ type: FFMessageType.DOWNLOAD, data })
+      );
     }
   }
 
   importScripts(coreURL);
   ffmpeg = await (self as WorkerGlobalScope).createFFmpegCore({
-    // Fixed `Overload resolution failed.` when using multi-threaded ffmpeg-core.
+    // Fix `Overload resolution failed.` when using multi-threaded ffmpeg-core.
     mainScriptUrlOrBlob: coreURL,
     locateFile: (path: string, prefix: string): string => {
       if (path.endsWith(".wasm")) return wasmURL;
@@ -75,15 +79,10 @@ const load = async ({
   ffmpeg.setLogger((data) =>
     self.postMessage({ type: FFMessageType.LOG, data })
   );
-  ffmpeg.setProgress((data: number) =>
-    self.postMessage({ type: FFMessageType.PROGRESS, data })
+  ffmpeg.setProgress((progress: number) =>
+    self.postMessage({ type: FFMessageType.PROGRESS, data: { progress } })
   );
   return first;
-};
-
-const writeFile = ({ path, bin }: FFMessageWriteFileData): IsDone => {
-  ffmpeg.FS.writeFile(path, bin);
-  return true;
 };
 
 const exec = ({ args, timeout = -1 }: FFMessageExecData): ExitCode => {
@@ -94,8 +93,40 @@ const exec = ({ args, timeout = -1 }: FFMessageExecData): ExitCode => {
   return ret;
 };
 
-const readFile = ({ path }: FFMessageReadFileData): Uint8Array =>
-  ffmpeg.FS.readFile(path);
+const writeFile = ({ path, data }: FFMessageWriteFileData): OK => {
+  ffmpeg.FS.writeFile(path, data);
+  return true;
+};
+
+const readFile = ({ path, encoding }: FFMessageReadFileData): FileData =>
+  ffmpeg.FS.readFile(path, { encoding });
+
+// TODO: check if deletion works.
+const deleteFile = ({ path }: FFMessageDeleteFileData): OK => {
+  ffmpeg.FS.unlink(path);
+  return true;
+};
+
+const rename = ({ oldPath, newPath }: FFMessageRenameData): OK => {
+  ffmpeg.FS.rename(oldPath, newPath);
+  return true;
+};
+
+// TODO: check if creation works.
+const createDir = ({ path }: FFMessageCreateDirData): OK => {
+  ffmpeg.FS.mkdir(path);
+  return true;
+};
+
+const listDir = ({ path }: FFMessageListDirData): FFFSPaths => {
+  return ffmpeg.FS.readdir(path);
+};
+
+// TODO: check if deletion works.
+const deleteDir = ({ path }: FFMessageDeleteDirData): OK => {
+  ffmpeg.FS.rmdir(path);
+  return true;
+};
 
 self.onmessage = async ({
   data: { id, type, data: _data },
@@ -109,14 +140,29 @@ self.onmessage = async ({
       case FFMessageType.LOAD:
         data = await load(_data as FFMessageLoadConfig);
         break;
-      case FFMessageType.WRITE_FILE:
-        data = writeFile(_data as FFMessageWriteFileData);
-        break;
       case FFMessageType.EXEC:
         data = exec(_data as FFMessageExecData);
         break;
+      case FFMessageType.WRITE_FILE:
+        data = writeFile(_data as FFMessageWriteFileData);
+        break;
       case FFMessageType.READ_FILE:
         data = readFile(_data as FFMessageReadFileData);
+        break;
+      case FFMessageType.DELETE_FILE:
+        data = deleteFile(_data as FFMessageDeleteFileData);
+        break;
+      case FFMessageType.RENAME:
+        data = rename(_data as FFMessageRenameData);
+        break;
+      case FFMessageType.CREATE_DIR:
+        data = createDir(_data as FFMessageCreateDirData);
+        break;
+      case FFMessageType.LIST_DIR:
+        data = listDir(_data as FFMessageListDirData);
+        break;
+      case FFMessageType.DELETE_DIR:
+        data = deleteDir(_data as FFMessageDeleteDirData);
         break;
       default:
         throw ERROR_UNKNOWN_MESSAGE_TYPE;

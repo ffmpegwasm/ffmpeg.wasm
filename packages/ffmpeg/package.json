@@ -1,7 +1,7 @@
 {
   "name": "@ffmpeg/ffmpeg",
   "version": "0.11.5",
-  "description": "FFmpeg WebAssembly version",
+  "description": "FFmpeg WebAssembly version for browser",
   "main": "./dist/umd/ffmpeg.js",
   "types": "./dist/umd/ffmpeg.d.ts",
   "exports": {
@@ -12,14 +12,15 @@
     }
   },
   "scripts": {
-    "dev": "webpack --watch -c webpack.dev.config.js",
+    "dev": "webpack -w --mode development",
     "lint": "eslint src",
     "clean": "rimraf dist",
     "build:umd": "webpack",
     "build:d": "tsc -p tsconfig.d.json",
     "build:esm": "tsc -p tsconfig.esm.json",
     "build": "npm-run-all clean build:*",
-    "docs": "typedoc --entryPointStrategy expand ./src"
+    "docs": "typedoc --entryPointStrategy expand ./src",
+    "docs:serve": "http-server docs"
   },
   "files": [
     "dist",
@@ -52,6 +53,7 @@
     "@typescript-eslint/eslint-plugin": "^5.37.0",
     "@typescript-eslint/parser": "^5.37.0",
     "eslint": "^8.23.1",
+    "http-server": "^14.1.1",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
     "ts-loader": "^9.4.1",
