@@ -16,36 +16,56 @@ export const getMessageID = (() => {
 
 /**
  * Download content of a URL with progress.
+ *
+ * Progress only works when Content-Length is provided by the server.
+ *
  */
 export const downloadWithProgress = async (
   url: string | URL,
   cb: ProgressCallback
-): Promise<Uint8Array> => {
+): Promise<ArrayBuffer> => {
   const resp = await fetch(url);
-  const reader = resp.body?.getReader();
-  if (!reader) throw ERROR_RESPONSE_BODY_READER;
+  let buf;
 
-  const total = parseInt(resp.headers.get(HeaderContentLength) || "0");
-  if (total === 0) throw ERROR_ZERO_CONTENT_LENGTH;
+  try {
+    const total = parseInt(resp.headers.get(HeaderContentLength) || "0");
+    if (total === 0) throw ERROR_ZERO_CONTENT_LENGTH;
 
-  const data = new Uint8Array(total);
-  let received = 0;
-  for (;;) {
-    const { done, value } = await reader.read();
-    const delta = value ? value.length : 0;
+    const reader = resp.body?.getReader();
+    if (!reader) throw ERROR_RESPONSE_BODY_READER;
 
-    if (done) {
-      if (total !== received) throw ERROR_INCOMPLETED_DOWNLOAD;
+    const data = new Uint8Array(total);
+    let received = 0;
+    for (;;) {
+      const { done, value } = await reader.read();
+      const delta = value ? value.length : 0;
+
+      if (done) {
+        if (total !== received) throw ERROR_INCOMPLETED_DOWNLOAD;
+        cb({ url, total, received, delta, done });
+        break;
+      }
+
+      data.set(value, received);
+      received += delta;
       cb({ url, total, received, delta, done });
-      break;
     }
 
-    data.set(value, received);
-    received += delta;
-    cb({ url, total, received, delta, done });
+    buf = data.buffer;
+  } catch (e) {
+    console.log(`failed to send download progress event: `, e);
+    // Fetch arrayBuffer directly when it is not possible to get progress.
+    buf = await resp.arrayBuffer();
+    cb({
+      url,
+      total: buf.byteLength,
+      received: buf.byteLength,
+      delta: 0,
+      done: true,
+    });
   }
 
-  return data;
+  return buf;
 };
 
 /**
@@ -58,5 +78,7 @@ export const toBlobURL = async (
   cb: ProgressCallback
 ): Promise<string> =>
   URL.createObjectURL(
-    new Blob([(await downloadWithProgress(url, cb)).buffer], { type: mimeType })
+    new Blob([await downloadWithProgress(url, cb)], {
+      type: mimeType,
+    })
   );

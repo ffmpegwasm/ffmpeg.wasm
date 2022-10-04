@@ -9,13 +9,14 @@
   <div id="mocha"></div>
   <script src="../node_modules/mocha/mocha.js"></script>
   <script src="../node_modules/chai/chai.js"></script>
-  <script src="../packages/core/dist/umd/ffmpeg-core.js"></script>
+  <script src="../packages/ffmpeg/dist/umd/ffmpeg.js"></script>
   <script src="./test-helper-browser.js"></script>
   <script type="text/javascript">
     window.FFMPEG_TYPE = "st";
+    window.CORE_URL = "http://localhost:3000/packages/core/dist/umd/ffmpeg-core.js";
   </script>
   <script>mocha.setup('bdd');</script>
-  <script src="./ffmpeg-core.test.js"></script>
+  <script src="./ffmpeg.test.js"></script>
   <script>
     window.expect = chai.expect;
     mocha.run();

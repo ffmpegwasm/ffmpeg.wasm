@@ -1,11 +1,11 @@
 const chai = require("chai");
-const constants = require("./constants");
+const browser = require("./test-helper-browser");
 
 global.expect = chai.expect;
 global.createFFmpegCore = require("../packages/core");
 global.atob = require("./util").atob;
 global.FFMPEG_TYPE = "st";
 
-Object.keys(constants).forEach((key) => {
-  global[key] = constants[key];
+Object.keys(browser).forEach((key) => {
+  global[key] = browser[key];
 });

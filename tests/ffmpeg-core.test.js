@@ -1,31 +1,21 @@
-let ffmpeg;
+let core;
 
 const genName = (name) => `[ffmpeg-core][${FFMPEG_TYPE}] ${name}`;
 
-const b64ToUint8Array = (b64) => {
-  const bin = atob(b64);
-  const len = bin.length;
-  const bytes = new Uint8Array(len);
-  for (let i = 0; i < len; i++) {
-    bytes[i] = bin.charCodeAt(i);
-  }
-  return bytes;
-};
-
 const reset = () => {
-  ffmpeg.reset();
-  ffmpeg.setLogger(() => {});
-  ffmpeg.setProgress(() => {});
+  core.reset();
+  core.setLogger(() => {});
+  core.setProgress(() => {});
 };
 
 before(async () => {
-  ffmpeg = await createFFmpegCore();
-  ffmpeg.FS.writeFile("video.mp4", b64ToUint8Array(VIDEO_1S_MP4));
+  core = await createFFmpegCore();
+  core.FS.writeFile("video.mp4", b64ToUint8Array(VIDEO_1S_MP4));
 });
 
 describe(genName("createFFmpeg()"), () => {
   it("should be OK", () => {
-    expect(ffmpeg).to.be.ok;
+    expect(core).to.be.ok;
   });
 });
 
@@ -33,16 +23,16 @@ describe(genName("reset()"), () => {
   beforeEach(reset);
 
   it("should exist", () => {
-    expect("reset" in ffmpeg).to.be.true;
+    expect("reset" in core).to.be.true;
   });
   it("should reset ret and timeout", () => {
-    ffmpeg.ret = 1024;
-    ffmpeg.timeout = 1024;
+    core.ret = 1024;
+    core.timeout = 1024;
 
-    ffmpeg.reset();
+    core.reset();
 
-    expect(ffmpeg.ret).to.equal(-1);
-    expect(ffmpeg.timeout).to.equal(-1);
+    expect(core.ret).to.equal(-1);
+    expect(core.timeout).to.equal(-1);
   });
 });
 
@@ -50,18 +40,18 @@ describe(genName("exec()"), () => {
   beforeEach(reset);
 
   it("should exist", () => {
-    expect("exec" in ffmpeg).to.be.true;
+    expect("exec" in core).to.be.true;
   });
 
   it("should output help", () => {
-    expect(ffmpeg.exec("-h")).to.equal(0);
+    expect(core.exec("-h")).to.equal(0);
   });
 
   it("should transcode", () => {
-    expect(ffmpeg.exec("-i", "video.mp4", "video.avi")).to.equal(0);
-    const out = ffmpeg.FS.readFile("video.avi");
+    expect(core.exec("-i", "video.mp4", "video.avi")).to.equal(0);
+    const out = core.FS.readFile("video.avi");
     expect(out.length).to.not.equal(0);
-    ffmpeg.FS.unlink("video.avi");
+    core.FS.unlink("video.avi");
   });
 });
 
@@ -69,12 +59,12 @@ describe(genName("setTimeout()"), () => {
   beforeEach(reset);
 
   it("should exist", () => {
-    expect("setTimeout" in ffmpeg).to.be.true;
+    expect("setTimeout" in core).to.be.true;
   });
 
   it("should timeout", () => {
-    ffmpeg.setTimeout(1); // timeout after 1ms
-    expect(ffmpeg.exec("-i", "video.mp4", "video.avi")).to.equal(1);
+    core.setTimeout(1); // timeout after 1ms
+    expect(core.exec("-i", "video.mp4", "video.avi")).to.equal(1);
   });
 });
 
@@ -82,13 +72,13 @@ describe(genName("setLogger()"), () => {
   beforeEach(reset);
 
   it("should exist", () => {
-    expect("setLogger" in ffmpeg).to.be.true;
+    expect("setLogger" in core).to.be.true;
   });
 
   it("should handle logs", () => {
     const logs = [];
-    ffmpeg.setLogger(({ message }) => logs.push(message));
-    ffmpeg.exec("-h");
+    core.setLogger(({ message }) => logs.push(message));
+    core.exec("-h");
     expect(logs.length).to.not.equal(0);
   });
 });
@@ -97,14 +87,14 @@ describe(genName("setProgress()"), () => {
   beforeEach(reset);
 
   it("should exist", () => {
-    expect("setProgress" in ffmpeg).to.be.true;
+    expect("setProgress" in core).to.be.true;
   });
 
   it("should handle progress", () => {
     let progress = 0;
-    ffmpeg.setProgress((_progress) => (progress = _progress));
-    expect(ffmpeg.exec("-i", "video.mp4", "video.avi")).to.equal(0);
+    core.setProgress((_progress) => (progress = _progress));
+    expect(core.exec("-i", "video.mp4", "video.avi")).to.equal(0);
     expect(progress).to.equal(1);
-    ffmpeg.FS.unlink("video.avi");
+    core.FS.unlink("video.avi");
   });
 });

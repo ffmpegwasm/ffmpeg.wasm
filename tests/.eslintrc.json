@@ -1,10 +1,13 @@
 {
   "extends": "eslint:recommended",
   "globals": {
-    "expect": true,
-    "createFFmpegCore": true,
+    "CORE_URL": true,
+    "FFMPEG_TYPE": true,
+    "FFmpegWASM": true,
     "VIDEO_1S_MP4": true,
-    "FFMPEG_TYPE": true
+    "b64ToUint8Array": true,
+    "createFFmpegCore": true,
+    "expect": true
   },
   "env": {
     "node": true,

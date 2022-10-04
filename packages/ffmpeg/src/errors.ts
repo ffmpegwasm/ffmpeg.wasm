@@ -11,3 +11,4 @@ export const ERROR_NOT_LOADED = new Error(
 export const ERROR_INCOMPLETED_DOWNLOAD = new Error(
   "failed to complete download"
 );
+export const ERROR_TERMINATED = new Error("called FFmpeg.terminate()");
