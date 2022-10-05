@@ -3,7 +3,6 @@ all: dev
 MT_FLAGS := -sUSE_PTHREADS -pthread
 
 DEV_ARGS := --progress=plain
-CI_ARGS := --cache-from=type=local,src=build-cache --cache-to=type=local,dest=build-cache,mode=max
 
 DEV_CFLAGS := --profiling
 DEV_MT_CFLAGS := $(DEV_CFLAGS) $(MT_FLAGS)
@@ -49,9 +48,3 @@ prd:
 
 prd-mt:
 	make build-mt EXTRA_CFLAGS="$(PROD_MT_CFLAGS)"
-
-ci:
-	make prd EXTRA_ARGS="$(CI_ARGS)"
-
-ci-mt:
-	make prd-mt EXTRA_ARGS="$(CI_ARGS)"

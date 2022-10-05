@@ -21,12 +21,16 @@ jobs:
       id: cache-build
       uses: actions/cache@v3
       with:
-        path: build-cache
-        key: build-cache-v1-${{ hashFiles('Dockerfile', 'build/*') }}
+        path: |
+          build-cache-st
+          build-cache-mt
+        key: build-cache-v1-${{ hashFiles('Dockerfile', 'Makefile', 'build/*') }}
         restore-keys: |
           build-cache-v1-
     - name: Build ffmpeg-core
-      run: make ci ci-mt
+      run: make prd EXTRA_ARGS="--cache-from=type=local,src=build-cache-st --cache-to=type=local,dest=build-cache-st,mode=max"
+    - name: Build ffmpet-core-mt
+      run: make prd-mt EXTRA_ARGS="--cache-from=type=local,src=build-cache-mt --cache-to=type=local,dest=build-cache-mt,mode=max"
     - name: Upload core and core-mt
       uses: actions/upload-artifact@v3
       with:
