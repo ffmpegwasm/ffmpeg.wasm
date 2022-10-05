@@ -8,7 +8,7 @@
     "pretest": "lerna run build --scope='@ffmpeg/*'",
     "test": "server-test test:browser:server http://localhost:3000 test:all",
     "test:all": "npm-run-all test:*:*:*",
-    "test:browser": "mocha-headless-chrome -t 60000 -a allow-file-access-from-files -a enable-features=SharedArrayBuffer",
+    "test:browser": "mocha-headless-chrome -a allow-file-access-from-files -a enable-features=SharedArrayBuffer",
     "test:browser:core:mt": "npm run test:browser -- -f tests/ffmpeg-core-mt.test.html",
     "test:browser:core:st": "npm run test:browser -- -f tests/ffmpeg-core-st.test.html",
     "test:browser:ffmpeg:mt": "npm run test:browser -- -f tests/ffmpeg-mt.test.html",

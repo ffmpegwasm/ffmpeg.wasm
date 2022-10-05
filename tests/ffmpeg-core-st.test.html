@@ -14,7 +14,10 @@
   <script type="text/javascript">
     window.FFMPEG_TYPE = "st";
   </script>
-  <script>mocha.setup('bdd');</script>
+  <script>
+    mocha.setup('bdd');
+    mocha.timeout(60000);
+  </script>
   <script src="./ffmpeg-core.test.js"></script>
   <script>
     window.expect = chai.expect;
