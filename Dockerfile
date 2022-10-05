@@ -160,6 +160,7 @@ FROM ffmpeg-builder AS ffmpeg-wasm-builder
 COPY src/bind /src/src/bind
 COPY src/fftools /src/src/fftools
 COPY build/ffmpeg-wasm.sh build.sh
+# libraries to link
 ENV FFMPEG_LIBS \
       -lx264 \
       -lx265 \

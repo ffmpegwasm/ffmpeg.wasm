@@ -44,6 +44,7 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: ffmpeg-cores
+        path: packages
     - name: Use Node.js 16
       uses: actions/setup-node@v3
       with:
