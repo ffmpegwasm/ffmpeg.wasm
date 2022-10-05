@@ -68,12 +68,12 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: ffmpeg-core
-        path: packages
+        path: packages/core/dist
     - name: Download ffmpeg-core-mt
       uses: actions/download-artifact@v3
       with:
         name: ffmpeg-core-mt
-        path: packages
+        path: packages/core-mt/dist
     - name: Use Node.js 16
       uses: actions/setup-node@v3
       with:
