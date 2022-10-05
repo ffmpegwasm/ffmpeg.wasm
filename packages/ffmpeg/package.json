@@ -3,10 +3,10 @@
   "version": "0.11.5",
   "description": "FFmpeg WebAssembly version for browser",
   "main": "./dist/umd/ffmpeg.js",
-  "types": "./dist/umd/ffmpeg.d.ts",
+  "types": "./dist/esm/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/umd/ffmpeg.d.ts",
+      "types": "./dist/esm/index.d.ts",
       "import": "./dist/esm/index.js",
       "require": "./dist/umd/ffmpeg.js"
     }
@@ -16,7 +16,6 @@
     "lint": "eslint src",
     "clean": "rimraf dist",
     "build:umd": "webpack",
-    "build:d": "tsc -p tsconfig.d.json",
     "build:esm": "tsc -p tsconfig.esm.json",
     "build": "npm-run-all clean build:*",
     "docs": "typedoc --entryPointStrategy expand ./src",

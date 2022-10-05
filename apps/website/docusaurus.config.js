@@ -8,7 +8,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 const config = {
   title: "ffmpeg.wasm",
   tagline:
-    "ffmpeg.wasm is pure WebAssembly / JavaScript port of FFmpeg enabling video & audio record, convert and stream right inside browsers!",
+    "ffmpeg.wasm is a pure WebAssembly / JavaScript port of FFmpeg enabling video & audio record, convert and stream right inside browsers!",
   url: "https://ffmpegwasm.netlify.app",
   baseUrl: "/",
   onBrokenLinks: "throw",
@@ -68,9 +68,10 @@ const config = {
             type: "doc",
             docId: "intro",
             position: "left",
-            label: "Tutorial",
+            label: "Docs",
           },
           { to: "/blog", label: "Blog", position: "left" },
+          { to: "/playground", label: "Playground", position: "left" },
           {
             href: "https://github.com/ffmpegwasm/ffmpeg.wasm",
             label: "GitHub",
