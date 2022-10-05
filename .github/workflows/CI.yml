@@ -78,6 +78,15 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: 16.x
+    - name: Cache dependencies
+      id: cache-dependencies
+      uses: actions/cache@v3
+      with:
+        path: node_modules
+          
+        key: node-modules-${{ hashFiles('package-lock.json') }}
+        restore-keys: |
+          node-modules-
     - name: Install dependencies
       run: npx lerna@5.4.3 bootstrap
     - name: Run tests
