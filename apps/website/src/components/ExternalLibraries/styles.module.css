@@ -1,0 +1,17 @@
+.libraries {
+  display: flex;
+  align-items: center;
+  padding: 2rem 0;
+  width: 100%;
+  background-color: rgba(229,231,235, 1);
+  color: #1b1b1d;
+}
+
+.libraryImg {
+  height: 96px;
+  padding: 16px;
+}
+
+.blackBackground {
+  background-color: #1b1b1d;
+}

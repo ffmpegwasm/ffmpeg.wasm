@@ -1,6 +1,5 @@
 import {
   ERROR_RESPONSE_BODY_READER,
-  ERROR_ZERO_CONTENT_LENGTH,
   ERROR_INCOMPLETED_DOWNLOAD,
 } from "./errors";
 import { HeaderContentLength } from "./const";
@@ -28,8 +27,8 @@ export const downloadWithProgress = async (
   let buf;
 
   try {
-    const total = parseInt(resp.headers.get(HeaderContentLength) || "0");
-    if (total === 0) throw ERROR_ZERO_CONTENT_LENGTH;
+    // Set total to -1 to indicate that there is not Content-Type Header.
+    const total = parseInt(resp.headers.get(HeaderContentLength) || "-1");
 
     const reader = resp.body?.getReader();
     if (!reader) throw ERROR_RESPONSE_BODY_READER;

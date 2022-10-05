@@ -165,7 +165,7 @@ export class FFmpeg extends EventEmitter {
    */
   public load = (config: FFMessageLoadConfig = {}): Promise<IsFirst> => {
     if (!this.#worker) {
-      this.#worker = new Worker(new URL("./worker.ts", import.meta.url));
+      this.#worker = new Worker(new URL("./worker", import.meta.url));
       this.#registerHandlers();
     }
     return this.#send({
