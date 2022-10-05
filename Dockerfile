@@ -160,7 +160,23 @@ FROM ffmpeg-builder AS ffmpeg-wasm-builder
 COPY src/bind /src/src/bind
 COPY src/fftools /src/src/fftools
 COPY build/ffmpeg-wasm.sh build.sh
-ENV FFMPEG_LIBS="-lx264 -lx265 -lvpx -lmp3lame -logg -ltheora -lvorbis -lvorbisenc -lvorbisfile -lopus -lz -lwebp -lfreetype -lfribidi -lharfbuzz -lass"
+ENV FFMPEG_LIBS \
+      -lx264 \
+      -lx265 \
+      -lvpx \
+      -lmp3lame \
+      -logg \
+      -ltheora \
+      -lvorbis \
+      -lvorbisenc \
+      -lvorbisfile \
+      -lopus \
+      -lz \
+      -lwebp \
+      -lfreetype \
+      -lfribidi \
+      -lharfbuzz \
+      -lass
 RUN mkdir -p /src/dist/umd && bash -x /src/build.sh \
       ${FFMPEG_LIBS} \
       -o dist/umd/ffmpeg-core.js
