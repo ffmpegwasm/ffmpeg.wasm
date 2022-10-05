@@ -14,7 +14,7 @@
     "test:browser:ffmpeg:mt": "npm run test:browser -- -f tests/ffmpeg-mt.test.html",
     "test:browser:ffmpeg:st": "npm run test:browser -- -f tests/ffmpeg-st.test.html",
     "test:browser:server": "http-server -c-1 --cors -p 3000 .",
-    "test:node": "mocha --exit --bail",
+    "test:node": "mocha --exit --bail -t 60000",
     "test:node:core:mt": "npm run test:node -- --require tests/test-helper-mt.js tests/ffmpeg-core.test.js",
     "test:node:core:st": "npm run test:node -- --require tests/test-helper-st.js tests/ffmpeg-core.test.js"
   },
