@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches: 
+    - main
+
+jobs:
+  build-core:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Source Code
+      uses: actions/checkuot@v3
+    - name: Setup Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@v2
+    - name: Cache build
+      id: cache-build
+      uses: actions/cache@v3
+      with:
+        path: build-cache
+        key: build-cache-v1-${{ hashFiles('Dockerfile', 'build/*') }}
+        restore-keys: |
+          build-cache-v1-
+    - name: Build ffmpeg-core
+      run: make ci
+    - name: Upload core and core-mt
+      uses: actions/upload-artifact@v3
+      with:
+        name: cores
+        path: |
+          packages/core/dist/*
+          packages/core-mt/dist/*

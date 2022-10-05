@@ -5,7 +5,7 @@
     "lint": "npm-run-all lint:*",
     "lint:packages": "lerna run lint",
     "lint:root": "eslint tests",
-    "pretest": "lerna run build",
+    "pretest": "lerna run build --scope='@ffmpeg/*'",
     "test": "server-test test:browser:server http://localhost:3000 test:all",
     "test:all": "npm-run-all test:*:*:*",
     "test:browser": "mocha-headless-chrome -t 60000 -a allow-file-access-from-files -a enable-features=SharedArrayBuffer",
