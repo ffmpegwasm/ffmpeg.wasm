@@ -33,21 +33,28 @@ export const downloadWithProgress = async (
     const reader = resp.body?.getReader();
     if (!reader) throw ERROR_RESPONSE_BODY_READER;
 
-    const data = new Uint8Array(total);
+    const chunks = [];
     let received = 0;
     for (;;) {
       const { done, value } = await reader.read();
       const delta = value ? value.length : 0;
 
       if (done) {
-        if (total !== received) throw ERROR_INCOMPLETED_DOWNLOAD;
+        if (total != -1 && total !== received) throw ERROR_INCOMPLETED_DOWNLOAD;
         cb({ url, total, received, delta, done });
         break;
       }
 
-      data.set(value, received);
+      chunks.push(value);
       received += delta;
       cb({ url, total, received, delta, done });
+    }
+
+    const data = new Uint8Array(received);
+    let position = 0;
+    for (const chunk of chunks) {
+      data.set(chunk, position);
+      position += chunk.length;
     }
 
     buf = data.buffer;

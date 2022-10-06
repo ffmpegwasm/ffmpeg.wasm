@@ -2,8 +2,8 @@ export const HeaderContentLength = "Content-Length";
 export const MIME_TYPE_JAVASCRIPT = "text/javascript";
 export const MIME_TYPE_WASM = "application/wasm";
 
-export const CORE_VERSION = "0.12.0";
-export const CORE_URL = `https://unpkg.com/@ffmpeg/core@${CORE_VERSION}/dist/ffmpeg-core.js`;
+export const CORE_VERSION = "0.12.0-alpha.2";
+export const CORE_URL = `https://unpkg.com/@ffmpeg/core@${CORE_VERSION}/dist/umd/ffmpeg-core.js`;
 
 export enum FFMessageType {
   LOAD = "load",
