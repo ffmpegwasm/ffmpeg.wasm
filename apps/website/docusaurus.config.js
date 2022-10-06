@@ -48,7 +48,13 @@ const config = {
             "https://github.com/ffmpegwasm/ffmpeg.wasm/tree/main/apps/website",
         },
         theme: {
-          customCss: require.resolve("./src/css/custom.css"),
+          customCss: [
+            require.resolve("./src/css/custom.css"),
+            require.resolve("@fontsource/roboto/300.css"),
+            require.resolve("@fontsource/roboto/400.css"),
+            require.resolve("@fontsource/roboto/500.css"),
+            require.resolve("@fontsource/roboto/700.css"),
+          ],
         },
       }),
     ],
