@@ -1,6 +1,6 @@
 {
   "name": "node-ts",
-  "version": "0.0.1",
+  "version": "0.12.0-alpha.0",
   "description": "node example",
   "scripts": {
     "lint": "eslint .",
@@ -11,9 +11,9 @@
   "author": "Jerome Wu <jeromewus@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@ffmpeg/core": "^0.11.0",
-    "@ffmpeg/ffmpeg": "^0.11.5",
-    "@ffmpeg/types": "^0.11.5"
+    "@ffmpeg/core": "^0.12.0-alpha.0",
+    "@ffmpeg/ffmpeg": "^0.12.0-alpha.0",
+    "@ffmpeg/types": "^0.12.0-alpha.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.37.0",

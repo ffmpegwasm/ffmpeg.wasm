@@ -1,6 +1,6 @@
 {
   "name": "@ffmpeg/core",
-  "version": "0.11.5",
+  "version": "0.12.0-alpha.0",
   "description": "FFmpeg WebAssembly version",
   "main": "./dist/umd/ffmpeg-core.js",
   "exports": {

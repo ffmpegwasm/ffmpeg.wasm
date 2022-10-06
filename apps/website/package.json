@@ -1,6 +1,6 @@
 {
   "name": "website",
-  "version": "0.0.0",
+  "version": "0.12.0-alpha.0",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
@@ -20,7 +20,7 @@
     "@docusaurus/preset-classic": "2.1.0",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
-    "@ffmpeg/ffmpeg": "^0.11.5",
+    "@ffmpeg/ffmpeg": "^0.12.0-alpha.0",
     "@fontsource/roboto": "^4.5.8",
     "@mdx-js/react": "^1.6.22",
     "@mui/icons-material": "^5.10.6",
