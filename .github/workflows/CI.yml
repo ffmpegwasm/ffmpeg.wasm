@@ -88,6 +88,6 @@ jobs:
         restore-keys: |
           node-modules-
     - name: Install dependencies
-      run: npx lerna@5.4.3 bootstrap
+      run: npx lerna bootstrap
     - name: Run tests
       run: npm test
