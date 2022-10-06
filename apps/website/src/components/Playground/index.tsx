@@ -1,38 +1,54 @@
-import React, { useState } from "react";
+import * as React from "react";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
-import Button from "@mui/material/Button";
-import { useColorMode } from "@docusaurus/theme-common";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import MuiThemeProvider from "@site/src/components/MuiThemeProvider";
+import CoreSelector from "./CoreSelector";
+import CoreDownloader from "./CoreDownloader";
+import Editor from "./Editor";
+import { getFFmpeg } from "./ffmpeg";
 
-const lightTheme = createTheme({});
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-  },
-});
+enum State {
+  NOT_LOADED,
+  LOADING,
+  LOADED,
+}
 
 export default function Playground() {
-  const [loaded, setLoaded] = useState(false);
-  const { colorMode } = useColorMode();
-  const ffmpeg = new FFmpeg();
+  const { useState } = React;
+  const [state, setState] = useState(State.LOADED);
+  const [option, setOption] = useState("core");
+  const [url, setURL] = useState("");
+  const [received, setReceived] = useState(0);
   const load = async () => {
-    ffmpeg.on(FFmpeg.DOWNLOAD, ({ url, total, received, done }) => {
-      console.log(url, total, received, done);
+    setState(State.LOADING);
+    const ffmpeg = getFFmpeg();
+    ffmpeg.terminate();
+    ffmpeg.on(FFmpeg.DOWNLOAD, ({ url: _url, received: _received }) => {
+      setURL(_url as string);
+      setReceived(_received);
     });
-    await ffmpeg.load({
-      coreURL: "http://localhost:8080/packages/core/dist/umd/ffmpeg-core.js",
-    });
-    setLoaded(true);
+    await ffmpeg.load();
+    setState(State.LOADED);
   };
+
   return (
-    <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
-      {loaded ? (
-        <></>
-      ) : (
-        <Button variant="contained" onClick={load}>
-          Load
-        </Button>
-      )}
-    </ThemeProvider>
+    <MuiThemeProvider>
+      {(() => {
+        switch (state) {
+          case State.LOADING:
+            return <CoreDownloader url={url} received={received} />;
+          case State.LOADED:
+            return <Editor />;
+          default:
+            return <></>;
+        }
+      })()}
+      <CoreSelector
+        option={option}
+        onChange={(event) => {
+          setOption((event.target as HTMLInputElement).value);
+        }}
+        onSubmit={load}
+      />
+    </MuiThemeProvider>
   );
 }

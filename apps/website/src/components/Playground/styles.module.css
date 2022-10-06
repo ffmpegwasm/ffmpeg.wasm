@@ -1,0 +1,13 @@
+.margin {
+  margin-bottom: 32px;
+}
+
+.alignRight {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.fsTitle {
+  align-items: center;
+  justify-content: space-between;
+}
