@@ -1,11 +1,29 @@
 // TODO: Add lint and test.
 
 export type Pointer = number;
+
 export type StringPointer = Pointer;
 export type StringArrayPointer = Pointer;
+export type DateString = string;
 
 export interface ReadFileOptions {
   encdoing: string;
+}
+
+export interface Stat {
+  dev: number;
+  ino: number;
+  mode: number;
+  nlink: number;
+  uid: number;
+  gid: number;
+  rdev: number;
+  size: number;
+  atime: DateString;
+  mtime: DateString;
+  ctime: DateString;
+  blksize: number;
+  blocks: number;
 }
 
 export interface FS {
@@ -16,6 +34,9 @@ export interface FS {
   readFile: (path: string, opts: OptionReadFile) => Uint8Array | string;
   readdir: (path: string) => string[];
   unlink: (path: string) => void;
+  stat: (path: string) => Stat;
+  isFile: (mode: number) => boolean;
+  isDir: (mode: number) => boolean;
 }
 
 export interface Log {
