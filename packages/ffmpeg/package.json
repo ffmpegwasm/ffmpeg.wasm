@@ -1,6 +1,6 @@
 {
   "name": "@ffmpeg/ffmpeg",
-  "version": "0.12.0-alpha.0",
+  "version": "0.12.0-alpha.1",
   "description": "FFmpeg WebAssembly version for browser",
   "main": "./dist/umd/ffmpeg.js",
   "types": "./dist/esm/index.d.ts",
@@ -62,7 +62,7 @@
     "worker-loader": "^3.0.8"
   },
   "dependencies": {
-    "@ffmpeg/types": "^0.12.0-alpha.0",
+    "@ffmpeg/types": "^0.12.0-alpha.1",
     "events": "^3.3.0"
   }
 }
