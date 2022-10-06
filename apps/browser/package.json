@@ -2,6 +2,7 @@
   "name": "browser",
   "version": "0.12.0-alpha.0",
   "description": "browser example",
+  "private": true,
   "scripts": {
     "start": "npx http-server -c-1 ../../"
   },
