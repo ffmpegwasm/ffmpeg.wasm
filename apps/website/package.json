@@ -18,8 +18,13 @@
   "dependencies": {
     "@docusaurus/core": "2.1.0",
     "@docusaurus/preset-classic": "2.1.0",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
     "@ffmpeg/ffmpeg": "^0.11.5",
+    "@fontsource/roboto": "^4.5.8",
     "@mdx-js/react": "^1.6.22",
+    "@mui/icons-material": "^5.10.6",
+    "@mui/material": "^5.10.8",
     "clsx": "^1.2.1",
     "prism-react-renderer": "^1.3.5",
     "react": "^17.0.2",
