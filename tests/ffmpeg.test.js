@@ -75,22 +75,22 @@ describe(
     it("should create a dir", async () => {
       await ffmpeg.createDir("/dir1");
       const files = await ffmpeg.listDir("/");
-      expect(files).to.include("dir1");
+      expect(files.map(({ name }) => name)).to.include("dir1");
     });
 
     it("should delete a dir", async () => {
       await ffmpeg.createDir("/dir2");
       await ffmpeg.deleteDir("/dir2");
       const files = await ffmpeg.listDir("/");
-      expect(files).to.not.include("dir2");
+      expect(files.map(({ name }) => name)).to.not.include("dir2");
     });
 
     it("should rename a dir", async () => {
       await ffmpeg.createDir("/dir3");
       await ffmpeg.rename("/dir3", "/dir4");
       const files = await ffmpeg.listDir("/");
-      expect(files).to.not.include("dir3");
-      expect(files).to.include("dir4");
+      expect(files.map(({ name }) => name)).to.not.include("dir3");
+      expect(files.map(({ name }) => name)).to.include("dir4");
     });
   }
 );
@@ -115,7 +115,7 @@ describe(
       await ffmpeg.writeFile("/file1", text);
       const data = await ffmpeg.readFile("/file1", "utf8");
       const files = await ffmpeg.listDir("/");
-      expect(files).to.include("file1");
+      expect(files.map(({ name }) => name)).to.include("file1");
       expect(data).to.equal(text);
     });
 
@@ -124,7 +124,7 @@ describe(
       await ffmpeg.writeFile("/file2", Uint8Array.from(bin));
       const data = await ffmpeg.readFile("/file2");
       const files = await ffmpeg.listDir("/");
-      expect(files).to.include("file2");
+      expect(files.map(({ name }) => name)).to.include("file2");
       expect(data).to.deep.equal(Uint8Array.from(bin));
     });
   }
