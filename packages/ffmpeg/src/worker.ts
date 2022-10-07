@@ -18,7 +18,7 @@ import type {
   IsFirst,
   OK,
   ExitCode,
-  FFFSPaths,
+  FSNode,
   FileData,
 } from "./types";
 import { toBlobURL } from "./utils";
@@ -118,8 +118,15 @@ const createDir = ({ path }: FFMessageCreateDirData): OK => {
   return true;
 };
 
-const listDir = ({ path }: FFMessageListDirData): FFFSPaths => {
-  return ffmpeg.FS.readdir(path);
+const listDir = ({ path }: FFMessageListDirData): FSNode[] => {
+  const names = ffmpeg.FS.readdir(path);
+  const nodes: FSNode[] = [];
+  for (const name of names) {
+    const stat = ffmpeg.FS.stat(`${path}/${name}`);
+    const isDir = ffmpeg.FS.isDir(stat.mode);
+    nodes.push({ name, isDir });
+  }
+  return nodes;
 };
 
 // TODO: check if deletion works.

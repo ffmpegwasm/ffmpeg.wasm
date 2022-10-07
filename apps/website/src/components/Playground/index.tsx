@@ -1,10 +1,12 @@
 import * as React from "react";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
+import Stack from "@mui/material/Stack";
 import MuiThemeProvider from "@site/src/components/MuiThemeProvider";
-import CoreSelector from "./CoreSelector";
 import CoreDownloader from "./CoreDownloader";
 import Editor from "./Editor";
 import { getFFmpeg } from "./ffmpeg";
+import { CORE_URL, CORE_MT_URL } from "./const";
+import CoreSwitcher from "./CoreSwitcher";
 
 enum State {
   NOT_LOADED,
@@ -13,12 +15,12 @@ enum State {
 }
 
 export default function Playground() {
-  const { useState } = React;
+  const { useState, useEffect } = React;
   const [state, setState] = useState(State.LOADED);
-  const [option, setOption] = useState("core");
+  const [isCoreMT, setIsCoreMT] = useState(false);
   const [url, setURL] = useState("");
   const [received, setReceived] = useState(0);
-  const load = async () => {
+  const load = async (mt: boolean = false) => {
     setState(State.LOADING);
     const ffmpeg = getFFmpeg();
     ffmpeg.terminate();
@@ -26,29 +28,38 @@ export default function Playground() {
       setURL(_url as string);
       setReceived(_received);
     });
-    await ffmpeg.load();
+    await ffmpeg.load({
+      coreURL: mt ? CORE_MT_URL : CORE_URL,
+      thread: mt,
+    });
     setState(State.LOADED);
   };
 
+  useEffect(() => {
+    load(isCoreMT);
+  }, []);
+
   return (
     <MuiThemeProvider>
-      {(() => {
-        switch (state) {
-          case State.LOADING:
-            return <CoreDownloader url={url} received={received} />;
-          case State.LOADED:
-            return <Editor />;
-          default:
-            return <></>;
-        }
-      })()}
-      <CoreSelector
-        option={option}
-        onChange={(event) => {
-          setOption((event.target as HTMLInputElement).value);
-        }}
-        onSubmit={load}
-      />
+      <Stack spacing={4}>
+        <CoreSwitcher
+          checked={isCoreMT}
+          onChange={(evt) => {
+            setIsCoreMT(evt.target.checked);
+            load(evt.target.checked);
+          }}
+        />
+        {(() => {
+          switch (state) {
+            case State.LOADING:
+              return <CoreDownloader url={url} received={received} />;
+            case State.LOADED:
+              return <Editor />;
+            default:
+              return <></>;
+          }
+        })()}
+      </Stack>
     </MuiThemeProvider>
   );
 }
