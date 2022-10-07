@@ -4,7 +4,7 @@ import {
   CallbackData,
   Callbacks,
   DownloadProgressEvent,
-  FFFSPaths,
+  FSNode,
   FFMessageEventCallback,
   FFMessageLoadConfig,
   OK,
@@ -94,6 +94,8 @@ export class FFmpeg extends EventEmitter {
   #resolves: Callbacks = {};
   #rejects: Callbacks = {};
 
+  public loaded = false;
+
   constructor() {
     super();
   }
@@ -108,6 +110,9 @@ export class FFmpeg extends EventEmitter {
       }: FFMessageEventCallback) => {
         switch (type) {
           case FFMessageType.LOAD:
+            this.loaded = true;
+            this.#resolves[id](data);
+            break;
           case FFMessageType.EXEC:
           case FFMessageType.WRITE_FILE:
           case FFMessageType.READ_FILE:
@@ -227,6 +232,7 @@ export class FFmpeg extends EventEmitter {
     if (this.#worker) {
       this.#worker.terminate();
       this.#worker = null;
+      this.loaded = false;
     }
   };
 
@@ -323,11 +329,11 @@ export class FFmpeg extends EventEmitter {
    *
    * @category File System
    */
-  public listDir = (path: string): Promise<FFFSPaths> =>
+  public listDir = (path: string): Promise<FSNode[]> =>
     this.#send({
       type: FFMessageType.LIST_DIR,
       data: { path },
-    }) as Promise<FFFSPaths>;
+    }) as Promise<FSNode[]>;
 
   /**
    * Delete an empty directory.

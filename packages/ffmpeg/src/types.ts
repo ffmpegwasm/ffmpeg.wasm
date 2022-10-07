@@ -1,5 +1,4 @@
 export type FFFSPath = string;
-export type FFFSPaths = FFFSPath[];
 
 /**
  * ffmpeg-core loading configuration.
@@ -136,6 +135,11 @@ export type FileData = Uint8Array | string;
 export type IsFirst = boolean;
 export type OK = boolean;
 
+export interface FSNode {
+  name: string;
+  isDir: boolean;
+}
+
 export type CallbackData =
   | FileData
   | ExitCode
@@ -146,7 +150,7 @@ export type CallbackData =
   | IsFirst
   | OK
   | Error
-  | FFFSPaths
+  | FSNode[]
   | undefined;
 
 export interface Callbacks {
