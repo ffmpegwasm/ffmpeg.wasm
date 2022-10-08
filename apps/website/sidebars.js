@@ -21,8 +21,25 @@ const sidebars = {
     "intro",
     {
       type: "category",
+      label: "Getting Started",
+      items: [
+        "getting-started/installation",
+        "getting-started/configuration",
+        "getting-started/multi-thread",
+        "getting-started/lib-versions",
+      ],
+    },
+    "migration",
+    "faq",
+    {
+      type: "category",
       label: "API",
       items: ["api/classes/FFmpeg"],
+    },
+    {
+      type: "category",
+      label: "Contribution",
+      items: ["contribution/core", "contribution/ffmpeg", "contribution/util"],
     },
   ],
 };

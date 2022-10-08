@@ -1,10 +1,9 @@
-import * as React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import Stack from "@mui/material/Stack";
-import MuiThemeProvider from "@site/src/components/MuiThemeProvider";
+import MuiThemeProvider from "@site/src/components/common/MuiThemeProvider";
 import CoreDownloader from "./CoreDownloader";
-import Editor from "./Editor";
-import { getFFmpeg } from "./ffmpeg";
+import Workspace from "./Workspace";
 import { CORE_URL, CORE_MT_URL } from "./const";
 import CoreSwitcher from "./CoreSwitcher";
 
@@ -15,20 +14,20 @@ enum State {
 }
 
 export default function Playground() {
-  const { useState, useEffect } = React;
   const [state, setState] = useState(State.LOADED);
   const [isCoreMT, setIsCoreMT] = useState(false);
   const [url, setURL] = useState("");
   const [received, setReceived] = useState(0);
+  const ffmpeg = useRef(new FFmpeg());
+
   const load = async (mt: boolean = false) => {
     setState(State.LOADING);
-    const ffmpeg = getFFmpeg();
-    ffmpeg.terminate();
-    ffmpeg.on(FFmpeg.DOWNLOAD, ({ url: _url, received: _received }) => {
+    ffmpeg.current.terminate();
+    ffmpeg.current.on(FFmpeg.DOWNLOAD, ({ url: _url, received: _received }) => {
       setURL(_url as string);
       setReceived(_received);
     });
-    await ffmpeg.load({
+    await ffmpeg.current.load({
       coreURL: mt ? CORE_MT_URL : CORE_URL,
       thread: mt,
     });
@@ -54,7 +53,7 @@ export default function Playground() {
             case State.LOADING:
               return <CoreDownloader url={url} received={received} />;
             case State.LOADED:
-              return <Editor />;
+              return <Workspace ffmpeg={ffmpeg} />;
             default:
               return <></>;
           }
