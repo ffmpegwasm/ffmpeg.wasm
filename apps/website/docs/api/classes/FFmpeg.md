@@ -28,7 +28,7 @@ const ffmpeg = new FFmpeg();
 
 #### Defined in
 
-[packages/ffmpeg/src/classes.ts:99](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/4a950d7/packages/ffmpeg/src/classes.ts#L99)
+[packages/ffmpeg/src/classes.ts:99](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/9cc991b/packages/ffmpeg/src/classes.ts#L99)
 
 ## Properties
 
@@ -38,7 +38,7 @@ const ffmpeg = new FFmpeg();
 
 #### Defined in
 
-[packages/ffmpeg/src/classes.ts:95](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/4a950d7/packages/ffmpeg/src/classes.ts#L95)
+[packages/ffmpeg/src/classes.ts:95](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/9cc991b/packages/ffmpeg/src/classes.ts#L95)
 
 ___
 
@@ -51,7 +51,7 @@ be called when we receive message from web worker.
 
 #### Defined in
 
-[packages/ffmpeg/src/classes.ts:94](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/4a950d7/packages/ffmpeg/src/classes.ts#L94)
+[packages/ffmpeg/src/classes.ts:94](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/9cc991b/packages/ffmpeg/src/classes.ts#L94)
 
 ___
 
@@ -61,7 +61,7 @@ ___
 
 #### Defined in
 
-[packages/ffmpeg/src/classes.ts:88](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/4a950d7/packages/ffmpeg/src/classes.ts#L88)
+[packages/ffmpeg/src/classes.ts:88](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/9cc991b/packages/ffmpeg/src/classes.ts#L88)
 
 ___
 
@@ -71,7 +71,7 @@ ___
 
 #### Defined in
 
-[packages/ffmpeg/src/classes.ts:97](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/4a950d7/packages/ffmpeg/src/classes.ts#L97)
+[packages/ffmpeg/src/classes.ts:97](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/9cc991b/packages/ffmpeg/src/classes.ts#L97)
 
 ___
 
@@ -131,7 +131,7 @@ node_modules/@types/node/events.d.ts:290
 
 #### Defined in
 
-[packages/ffmpeg/src/classes.ts:84](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/4a950d7/packages/ffmpeg/src/classes.ts#L84)
+[packages/ffmpeg/src/classes.ts:84](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/9cc991b/packages/ffmpeg/src/classes.ts#L84)
 
 ___
 
@@ -141,7 +141,7 @@ ___
 
 #### Defined in
 
-[packages/ffmpeg/src/classes.ts:85](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/4a950d7/packages/ffmpeg/src/classes.ts#L85)
+[packages/ffmpeg/src/classes.ts:85](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/9cc991b/packages/ffmpeg/src/classes.ts#L85)
 
 ___
 
@@ -151,7 +151,7 @@ ___
 
 #### Defined in
 
-[packages/ffmpeg/src/classes.ts:86](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/4a950d7/packages/ffmpeg/src/classes.ts#L86)
+[packages/ffmpeg/src/classes.ts:86](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/9cc991b/packages/ffmpeg/src/classes.ts#L86)
 
 ## Event Methods
 
@@ -182,7 +182,7 @@ ffmpeg.on(FFmpeg.DOWNLOAD, ({ url, total, received, delta, done }) => {
 
 #### Defined in
 
-[packages/ffmpeg/src/classes.ts:33](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/4a950d7/packages/ffmpeg/src/classes.ts#L33)
+[packages/ffmpeg/src/classes.ts:33](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/9cc991b/packages/ffmpeg/src/classes.ts#L33)
 
 ▸ **on**(`event`, `listener`): [`FFmpeg`](FFmpeg.md)
 
@@ -213,7 +213,7 @@ log includes output to stdout and stderr.
 
 #### Defined in
 
-[packages/ffmpeg/src/classes.ts:52](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/4a950d7/packages/ffmpeg/src/classes.ts#L52)
+[packages/ffmpeg/src/classes.ts:52](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/9cc991b/packages/ffmpeg/src/classes.ts#L52)
 
 ▸ **on**(`event`, `listener`): [`FFmpeg`](FFmpeg.md)
 
@@ -245,7 +245,7 @@ input and output video/audio file are the same.
 
 #### Defined in
 
-[packages/ffmpeg/src/classes.ts:69](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/4a950d7/packages/ffmpeg/src/classes.ts#L69)
+[packages/ffmpeg/src/classes.ts:69](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/9cc991b/packages/ffmpeg/src/classes.ts#L69)
 
 ___
 
@@ -288,7 +288,7 @@ const data = ffmpeg.readFile("video.mp4");
 
 #### Defined in
 
-[packages/ffmpeg/src/classes.ts:202](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/4a950d7/packages/ffmpeg/src/classes.ts#L202)
+[packages/ffmpeg/src/classes.ts:202](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/9cc991b/packages/ffmpeg/src/classes.ts#L202)
 
 ___
 
@@ -313,7 +313,7 @@ as it initializes WebAssembly and other essential variables.
 
 #### Defined in
 
-[packages/ffmpeg/src/classes.ts:171](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/4a950d7/packages/ffmpeg/src/classes.ts#L171)
+[packages/ffmpeg/src/classes.ts:171](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/9cc991b/packages/ffmpeg/src/classes.ts#L171)
 
 ___
 
@@ -330,7 +330,7 @@ Terminate all ongoing API calls and terminate web worker.
 
 #### Defined in
 
-[packages/ffmpeg/src/classes.ts:223](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/4a950d7/packages/ffmpeg/src/classes.ts#L223)
+[packages/ffmpeg/src/classes.ts:223](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/9cc991b/packages/ffmpeg/src/classes.ts#L223)
 
 ___
 
@@ -354,7 +354,7 @@ Create a directory.
 
 #### Defined in
 
-[packages/ffmpeg/src/classes.ts:321](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/4a950d7/packages/ffmpeg/src/classes.ts#L321)
+[packages/ffmpeg/src/classes.ts:321](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/9cc991b/packages/ffmpeg/src/classes.ts#L321)
 
 ___
 
@@ -376,7 +376,7 @@ Delete an empty directory.
 
 #### Defined in
 
-[packages/ffmpeg/src/classes.ts:343](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/4a950d7/packages/ffmpeg/src/classes.ts#L343)
+[packages/ffmpeg/src/classes.ts:343](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/9cc991b/packages/ffmpeg/src/classes.ts#L343)
 
 ___
 
@@ -398,7 +398,7 @@ Delete a file.
 
 #### Defined in
 
-[packages/ffmpeg/src/classes.ts:299](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/4a950d7/packages/ffmpeg/src/classes.ts#L299)
+[packages/ffmpeg/src/classes.ts:299](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/9cc991b/packages/ffmpeg/src/classes.ts#L299)
 
 ___
 
@@ -420,7 +420,7 @@ List directory contents.
 
 #### Defined in
 
-[packages/ffmpeg/src/classes.ts:332](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/4a950d7/packages/ffmpeg/src/classes.ts#L332)
+[packages/ffmpeg/src/classes.ts:332](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/9cc991b/packages/ffmpeg/src/classes.ts#L332)
 
 ___
 
@@ -451,7 +451,7 @@ const data = await ffmpeg.readFile("video.mp4");
 
 #### Defined in
 
-[packages/ffmpeg/src/classes.ts:278](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/4a950d7/packages/ffmpeg/src/classes.ts#L278)
+[packages/ffmpeg/src/classes.ts:278](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/9cc991b/packages/ffmpeg/src/classes.ts#L278)
 
 ___
 
@@ -474,7 +474,7 @@ Rename a file or directory.
 
 #### Defined in
 
-[packages/ffmpeg/src/classes.ts:310](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/4a950d7/packages/ffmpeg/src/classes.ts#L310)
+[packages/ffmpeg/src/classes.ts:310](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/9cc991b/packages/ffmpeg/src/classes.ts#L310)
 
 ___
 
@@ -506,7 +506,7 @@ await ffmpeg.writeFile("text.txt", "hello world");
 
 #### Defined in
 
-[packages/ffmpeg/src/classes.ts:252](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/4a950d7/packages/ffmpeg/src/classes.ts#L252)
+[packages/ffmpeg/src/classes.ts:252](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/9cc991b/packages/ffmpeg/src/classes.ts#L252)
 
 ___
 
@@ -524,7 +524,7 @@ register worker message event handlers.
 
 #### Defined in
 
-[packages/ffmpeg/src/classes.ts:106](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/4a950d7/packages/ffmpeg/src/classes.ts#L106)
+[packages/ffmpeg/src/classes.ts:106](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/9cc991b/packages/ffmpeg/src/classes.ts#L106)
 
 ___
 
@@ -547,7 +547,7 @@ Generic function to send messages to web worker.
 
 #### Defined in
 
-[packages/ffmpeg/src/classes.ts:148](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/4a950d7/packages/ffmpeg/src/classes.ts#L148)
+[packages/ffmpeg/src/classes.ts:148](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/9cc991b/packages/ffmpeg/src/classes.ts#L148)
 
 ___
 
