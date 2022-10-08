@@ -21,6 +21,8 @@ Join us on Discord!
 
 ffmpeg.wasm is a pure Webassembly / Javascript port of FFmpeg. It enables video & audio record, convert and stream right inside browsers.
 
+## Documentation
+
 - [Introduction](https://ffmpegwasm.netlify.app/docs/intro)
 - [Getting
     Started](https://ffmpegwasm.netlify.app/docs/getting-started/installation)
