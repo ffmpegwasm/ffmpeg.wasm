@@ -1,7 +1,7 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import LinearProgressWithLabel from "./LinearProgressWithLabel";
+import LinearProgressWithLabel from "@site/src/components/common/LinearProgressWithLabel";
 import { CORE_SIZE } from "./const";
 
 export default function CoreDownloader({ url, received }) {
