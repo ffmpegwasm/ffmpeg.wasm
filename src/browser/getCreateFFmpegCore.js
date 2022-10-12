@@ -75,11 +75,11 @@ export const getCreateFFmpegCore = async ({
     'application/javascript',
   );
   const wasmPath = await toBlobURL(
-    coreRemotePath.replace('ffmpeg-core.js', 'ffmpeg-core.wasm'),
+    _wasmPath !== undefined ? _wasmPath : coreRemotePath.replace('ffmpeg-core.js', 'ffmpeg-core.wasm'),
     'application/wasm',
   );
   const workerPath = await toBlobURL(
-    coreRemotePath.replace('ffmpeg-core.js', 'ffmpeg-core.worker.js'),
+    _workerPath !== undefined ? _workerPath : coreRemotePath.replace('ffmpeg-core.js', 'ffmpeg-core.worker.js'),
     'application/javascript',
   );
   if (typeof createFFmpegCore === 'undefined') {
