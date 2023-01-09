@@ -112,14 +112,6 @@ export interface FFMessageEvent extends MessageEvent {
   data: FFMessage;
 }
 
-export interface DownloadProgressEvent {
-  url: string | URL;
-  total: number;
-  received: number;
-  delta: number;
-  done: boolean;
-}
-
 export interface LogEvent {
   type: string;
   message: string;
@@ -144,7 +136,6 @@ export type CallbackData =
   | FileData
   | ExitCode
   | ErrorMessage
-  | DownloadProgressEvent
   | LogEvent
   | Progress
   | IsFirst
@@ -164,5 +155,3 @@ export interface FFMessageEventCallback {
     data: CallbackData;
   };
 }
-
-export type ProgressCallback = (event: DownloadProgressEvent) => void;

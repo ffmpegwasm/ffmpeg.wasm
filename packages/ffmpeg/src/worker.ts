@@ -21,13 +21,7 @@ import type {
   FSNode,
   FileData,
 } from "./types";
-import { toBlobURL } from "./utils";
-import {
-  CORE_URL,
-  FFMessageType,
-  MIME_TYPE_JAVASCRIPT,
-  MIME_TYPE_WASM,
-} from "./const";
+import { CORE_URL, FFMessageType } from "./const";
 import { ERROR_UNKNOWN_MESSAGE_TYPE, ERROR_NOT_LOADED } from "./errors";
 
 declare global {
@@ -42,29 +36,13 @@ const load = async ({
   coreURL: _coreURL = CORE_URL,
   wasmURL: _wasmURL,
   workerURL: _workerURL,
-  blob = true,
-  thread = false,
 }: FFMessageLoadConfig): Promise<IsFirst> => {
   const first = !ffmpeg;
-  let coreURL = _coreURL;
-  let wasmURL = _wasmURL ? _wasmURL : _coreURL.replace(/.js$/g, ".wasm");
-  let workerURL = _workerURL
+  const coreURL = _coreURL;
+  const wasmURL = _wasmURL ? _wasmURL : _coreURL.replace(/.js$/g, ".wasm");
+  const workerURL = _workerURL
     ? _workerURL
     : _coreURL.replace(/.js$/g, ".worker.js");
-
-  if (blob) {
-    coreURL = await toBlobURL(coreURL, MIME_TYPE_JAVASCRIPT, (data) =>
-      self.postMessage({ type: FFMessageType.DOWNLOAD, data })
-    );
-    wasmURL = await toBlobURL(wasmURL, MIME_TYPE_WASM, (data) =>
-      self.postMessage({ type: FFMessageType.DOWNLOAD, data })
-    );
-    if (thread) {
-      workerURL = await toBlobURL(workerURL, MIME_TYPE_JAVASCRIPT, (data) =>
-        self.postMessage({ type: FFMessageType.DOWNLOAD, data })
-      );
-    }
-  }
 
   importScripts(coreURL);
   ffmpeg = await (self as WorkerGlobalScope).createFFmpegCore({

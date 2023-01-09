@@ -3,7 +3,6 @@ import { FFMessageType } from "./const";
 import {
   CallbackData,
   Callbacks,
-  DownloadProgressEvent,
   FSNode,
   FFMessageEventCallback,
   FFMessageLoadConfig,
@@ -18,22 +17,6 @@ import { getMessageID } from "./utils";
 import { ERROR_TERMINATED, ERROR_NOT_LOADED } from "./errors";
 
 export declare interface FFmpeg {
-  /**
-   * Listen to download progress events from `ffmpeg.load()`.
-   *
-   * @example
-   * ```ts
-   * ffmpeg.on(FFmpeg.DOWNLOAD, ({ url, total, received, delta, done }) => {
-   *   // ...
-   * })
-   * ```
-   *
-   * @category Event
-   */
-  on(
-    event: typeof FFmpeg.DOWNLOAD,
-    listener: (data: DownloadProgressEvent) => void
-  ): this;
   /**
    * Listen to log events from `ffmpeg.exec()`.
    *
@@ -81,7 +64,6 @@ export declare interface FFmpeg {
  * ```
  */
 export class FFmpeg extends EventEmitter {
-  /** @event */ static readonly DOWNLOAD = "download" as const;
   /** @event */ static readonly LOG = "log" as const;
   /** @event */ static readonly PROGRESS = "progress" as const;
 
@@ -89,7 +71,6 @@ export class FFmpeg extends EventEmitter {
   /**
    * #resolves and #rejects tracks Promise resolves and rejects to
    * be called when we receive message from web worker.
-   *
    */
   #resolves: Callbacks = {};
   #rejects: Callbacks = {};
@@ -122,9 +103,6 @@ export class FFmpeg extends EventEmitter {
           case FFMessageType.LIST_DIR:
           case FFMessageType.DELETE_DIR:
             this.#resolves[id](data);
-            break;
-          case FFMessageType.DOWNLOAD:
-            this.emit(FFmpeg.DOWNLOAD, data as DownloadProgressEvent);
             break;
           case FFMessageType.LOG:
             this.emit(FFmpeg.LOG, data as LogEvent);
