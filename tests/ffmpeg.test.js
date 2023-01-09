@@ -23,33 +23,6 @@ describe(genName("FFmpeg.load()"), function () {
   //   await ffmpeg.load();
   //   expect(ffmpeg).to.be.ok;
   // });
-
-  it("should work when blob is false", async function () {
-    // FIXME: failed to load ffmpeg-core.worker.js when blob is false.
-    if (FFMPEG_TYPE === "mt") this.skip();
-
-    const ffmpeg = new FFmpeg();
-    await ffmpeg.load({
-      coreURL: CORE_URL,
-      blob: false,
-    });
-    expect(ffmpeg).to.be.ok;
-    ffmpeg.terminate();
-  });
-
-  it("should receive download progress events", async () => {
-    const ffmpeg = new FFmpeg();
-    let done = false;
-    ffmpeg.on(FFmpeg.DOWNLOAD, ({ done: _done }) => {
-      done = _done;
-    });
-    await ffmpeg.load({
-      coreURL: CORE_URL,
-      thread: FFMPEG_TYPE === "mt",
-    });
-    expect(done).to.be.true;
-    ffmpeg.terminate();
-  });
 });
 
 describe(

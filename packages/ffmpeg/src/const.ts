@@ -1,4 +1,3 @@
-export const HeaderContentLength = "Content-Length";
 export const MIME_TYPE_JAVASCRIPT = "text/javascript";
 export const MIME_TYPE_WASM = "application/wasm";
 
