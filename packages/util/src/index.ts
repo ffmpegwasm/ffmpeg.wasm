@@ -96,24 +96,6 @@ export const importScript = async (url: string): Promise<void> =>
   });
 
 /**
- * toBlobURL fetches data from an URL and return a blob URL.
- *
- * Example:
- *
- * ```ts
- * await toBlobURL("http://localhost:3000/ffmpeg.js", "text/javascript");
- * ```
- */
-export const toBlobURL = async (
-  url: string,
-  mimeType: string
-): Promise<string> => {
-  const buf = await (await fetch(url)).arrayBuffer();
-  const blob = new Blob([buf], { type: mimeType });
-  return URL.createObjectURL(blob);
-};
-
-/**
  * Download content of a URL with progress.
  *
  * Progress only works when Content-Length is provided by the server.
@@ -121,7 +103,7 @@ export const toBlobURL = async (
  */
 export const downloadWithProgress = async (
   url: string | URL,
-  cb: ProgressCallback
+  cb?: ProgressCallback
 ): Promise<ArrayBuffer> => {
   const resp = await fetch(url);
   let buf;
@@ -141,13 +123,13 @@ export const downloadWithProgress = async (
 
       if (done) {
         if (total != -1 && total !== received) throw ERROR_INCOMPLETED_DOWNLOAD;
-        cb({ url, total, received, delta, done });
+        cb && cb({ url, total, received, delta, done });
         break;
       }
 
       chunks.push(value);
       received += delta;
-      cb({ url, total, received, delta, done });
+      cb && cb({ url, total, received, delta, done });
     }
 
     const data = new Uint8Array(received);
@@ -162,29 +144,37 @@ export const downloadWithProgress = async (
     console.log(`failed to send download progress event: `, e);
     // Fetch arrayBuffer directly when it is not possible to get progress.
     buf = await resp.arrayBuffer();
-    cb({
-      url,
-      total: buf.byteLength,
-      received: buf.byteLength,
-      delta: 0,
-      done: true,
-    });
+    cb &&
+      cb({
+        url,
+        total: buf.byteLength,
+        received: buf.byteLength,
+        delta: 0,
+        done: true,
+      });
   }
 
   return buf;
 };
 
 /**
- * Convert an URL to an Blob URL to avoid issues like CORS.
+ * toBlobURL fetches data from an URL and return a blob URL.
+ *
+ * Example:
+ *
+ * ```ts
+ * await toBlobURL("http://localhost:3000/ffmpeg.js", "text/javascript");
+ * ```
  */
-export const toBlobURLWithProgress = async (
+export const toBlobURL = async (
   url: string,
-  /** mime type like `text/javascript` and `application/wasm` */
   mimeType: string,
-  cb: ProgressCallback
-): Promise<string> =>
-  URL.createObjectURL(
-    new Blob([await downloadWithProgress(url, cb)], {
-      type: mimeType,
-    })
-  );
+  progress = false,
+  cb?: ProgressCallback
+): Promise<string> => {
+  const buf = progress
+    ? await downloadWithProgress(url, cb)
+    : await (await fetch(url)).arrayBuffer();
+  const blob = new Blob([buf], { type: mimeType });
+  return URL.createObjectURL(blob);
+};
