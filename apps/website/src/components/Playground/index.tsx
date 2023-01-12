@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
+import { toBlobURL } from "@ffmpeg/util";
 import Stack from "@mui/material/Stack";
 import MuiThemeProvider from "@site/src/components/common/MuiThemeProvider";
 import CoreDownloader from "./CoreDownloader";
@@ -21,15 +22,38 @@ export default function Playground() {
   const ffmpeg = useRef(new FFmpeg());
 
   const load = async (mt: boolean = false) => {
-    setState(State.LOADING);
-    ffmpeg.current.terminate();
-    ffmpeg.current.on(FFmpeg.DOWNLOAD, ({ url: _url, received: _received }) => {
+    const setProgress = ({ url: _url, received: _received }) => {
       setURL(_url as string);
       setReceived(_received);
-    });
+    };
+    const coreURL = await toBlobURL(
+      mt ? CORE_MT_URL : CORE_URL,
+      "text/javascript",
+      true,
+      setProgress
+    );
+    const wasmURL = await toBlobURL(
+      mt
+        ? CORE_MT_URL.replace(/.js$/g, ".wasm")
+        : CORE_URL.replace(/.js$/g, ".wasm"),
+      "application/wasm",
+      true,
+      setProgress
+    );
+    const workerURL = mt
+      ? await toBlobURL(
+          CORE_MT_URL.replace(/.js$/g, ".worker.js"),
+          "text/javascript",
+          true,
+          setProgress
+        )
+      : "";
+    setState(State.LOADING);
+    ffmpeg.current.terminate();
     await ffmpeg.current.load({
-      coreURL: mt ? CORE_MT_URL : CORE_URL,
-      thread: mt,
+      coreURL,
+      wasmURL,
+      workerURL,
     });
     setState(State.LOADED);
   };
