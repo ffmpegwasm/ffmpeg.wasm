@@ -83,12 +83,13 @@ export const getCreateFFmpegCore = async ({
     'application/javascript',
   );
   if (typeof createFFmpegCore === 'undefined') {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       const script = document.createElement('script');
       const eventHandler = () => {
         script.removeEventListener('load', eventHandler);
         if (typeof createFFmpegCore === 'undefined') {
-          throw Error(CREATE_FFMPEG_CORE_IS_NOT_DEFINED(coreRemotePath));
+          reject(Error(CREATE_FFMPEG_CORE_IS_NOT_DEFINED(coreRemotePath)));
+          return;
         }
         log('info', 'ffmpeg-core.js script loaded');
         resolve({
