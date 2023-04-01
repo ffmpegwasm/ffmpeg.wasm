@@ -2,11 +2,11 @@ name: CI
 
 on:
   pull_request:
-    branches: 
-    - master
+    branches:
+      - master
   push:
     branches:
-    - master
+      - master
 
 jobs:
   test:
@@ -14,18 +14,18 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node_version: ['16'] #['8', '10', '12']
+        node_version: ["16", "18"] #['8', '10', '12']
         os: [ubuntu-latest] #[ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node_version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node_version }}
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node_version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node_version }}
 
-    - name: npm install, build and test
-      run: |
-        npm install --force
-        npm run lint
-        npm test
+      - name: npm install, build and test
+        run: |
+          npm install --force
+          npm run lint
+          npm test

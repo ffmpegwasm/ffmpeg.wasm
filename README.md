@@ -1,6 +1,6 @@
 <p align="center">
   <a href="#">
-    <img alt="ffmpeg.wasm" width="128px" height="128px" src="https://github.com/ffmpegwasm/ffmpeg.wasm/raw/master/docs/images/ffmpegwasm-icon.png">
+    <img alt="ffmpeg.wasm" width="128px" height="128px" src="https://github.com/DreamOfIce/ffmpeg.wasm/raw/master/docs/images/ffmpegwasm-icon.png">
   </a>
 </p>
 
@@ -8,38 +8,74 @@
 
 [![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://github.com/emersion/stability-badges#experimental)
 [![Node Version](https://img.shields.io/node/v/@ffmpeg.wasm/ffmpeg.svg)](https://img.shields.io/node/v/@ffmpeg.wasm/ffmpeg.svg)
-[![Actions Status](https://github.com/ffmpegwasm/ffmpeg.wasm/workflows/CI/badge.svg)](https://github.com/ffmpegwasm/ffmpeg.wasm/actions)
-![CodeQL](https://github.com/ffmpegwasm/ffmpeg.wasm/workflows/CodeQL/badge.svg)
+[![Actions Status](https://github.com/DreamOfIce/ffmpeg.wasm/workflows/CI/badge.svg)](https://github.com/DreamOfIce/ffmpeg.wasm/actions)
+![CodeQL](https://github.com/DreamOfIce/ffmpeg.wasm/workflows/CodeQL/badge.svg)
 ![npm (tag)](https://img.shields.io/npm/v/@ffmpeg.wasm/ffmpeg/latest)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/ffmpegwasm/ffmpeg.wasm/graphs/commit-activity)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/DreamOfIce/ffmpeg.wasm/graphs/commit-activity)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code Style](https://badgen.net/badge/code%20style/airbnb/ff5a5f?icon=airbnb)](https://github.com/airbnb/javascript)
 [![Downloads Total](https://img.shields.io/npm/dt/@ffmpeg.wasm/ffmpeg.svg)](https://www.npmjs.com/package/@ffmpeg.wasm/ffmpeg)
 [![Downloads Month](https://img.shields.io/npm/dm/@ffmpeg.wasm/ffmpeg.svg)](https://www.npmjs.com/package/@ffmpeg.wasm/ffmpeg)
 
-Join us on Discord!
+## About ffmpeg.wasm
 
-[![Discord](https://dcbadge.vercel.app/api/server/NjGMaqqfm5)](https://discord.gg/NjGMaqqfm5)
+Thanks to [Jerome Wu](https://github.com/jeromewu) for creating the very cool package ffmpegwasm!
+However, because this package hasn't been updated in a long time, a lot of features are on hold and it's not compatible with node18 and above (because the emsdk version is too old). So I decided to maintain a fork, fix the problems and continue development iterations.
+Hopefully these changes can be merged into ffmpegwasm in the future
+
+### Release Plan
+
+> See the [Todos](#todos) chapter for more plans
+
+- v0.12 is fully compatible with ffmpegwasm, but updates emsdk to the latest and fixes some bugs
+- Since v0.13, I will start refactoring with a modern toolchain (Typescript, vite, etc), **which will bring some breaking changes**.
+  **Therefore, it is strongly recommended that you ensure that you use `~0.12.0` when installing to ensure compatibility!**
+
+### Migration from ffmpegwasm
+
+1. Change package names and update imports:
+
+- `@ffmpeg/ffmpeg` => `@ffmpeg.wasm/main`
+- `@ffmpeg/core` => `@ffmpeg.wasm/core-mt`
+- `@ffmpeg/core-st` => `@ffmpeg.wasm/core-st`
+
+2. Update version to `~0.12.0`
+
+### Todos
+
+- [x] Update emsdk to latest
+- [ ] Update deps
+- [ ] Rewrite with TypeScript (expected in v0.12)
+- [ ] Migrate to pnpm (expected in v0.12)
+- [ ] Release with Github Action
+- [ ] Bundle with `vite` and test with `vitest`
+- [ ] Support uild cache
+- [ ] Migrate to monorepo
+- [ ] Upgrade to FFmpeg 5
+- [ ] Use the faster `libsvtav1` instead of `libaom` (currently disabled because it is too slow)
+
+## Original README
 
 ffmpeg.wasm is a pure Webassembly / Javascript port of FFmpeg. It enables video & audio record, convert and stream right inside browsers.
 
 **AVI to MP4 Demo**
+
 <p align="center">
   <a href="#">
-    <img alt="transcode-demo" src="https://github.com/ffmpegwasm/ffmpeg.wasm/raw/master/docs/images/transcode.gif">
+    <img alt="transcode-demo" src="https://github.com/DreamOfIce/ffmpeg.wasm/raw/master/docs/images/transcode.gif">
   </a>
 </p>
 
 Try it: [https://ffmpegwasm.netlify.app](https://ffmpegwasm.netlify.app#demo)
 
-Check next steps of ffmpeg.wasm [HERE](https://github.com/ffmpegwasm/ffmpeg.wasm/discussions/415)
+Check next steps of ffmpeg.wasm [HERE](https://github.com/DreamOfIce/ffmpeg.wasm/discussions/415)
 
 ## Installation
 
 **Node**
 
 ```
-$ npm install @ffmpeg.wasm/ffmpeg @ffmpeg/core
+$ npm install @ffmpeg.wasm/ffmpeg @ffmpeg.wasm/core-mt
 ```
 
 > As we are using experimental features, you need to add flags to run in Node.js
@@ -52,7 +88,7 @@ $ node --experimental-wasm-threads transcode.js
 
 Or, using a script tag in the browser (only works in some browsers, see list below):
 
-> SharedArrayBuffer is only available to pages that are [cross-origin isolated](https://developer.chrome.com/blog/enabling-shared-array-buffer/#cross-origin-isolation). So you need to host [your own server](https://github.com/ffmpegwasm/ffmpegwasm.github.io/blob/main/server/server.js) with `Cross-Origin-Embedder-Policy: require-corp` and `Cross-Origin-Opener-Policy: same-origin` headers to use ffmpeg.wasm.
+> SharedArrayBuffer is only available to pages that are [cross-origin isolated](https://developer.chrome.com/blog/enabling-shared-array-buffer/#cross-origin-isolation). So you need to host [your own server](https://github.com/DreamOfIce/ffmpegwasm.github.io/blob/main/server/server.js) with `Cross-Origin-Embedder-Policy: require-corp` and `Cross-Origin-Opener-Policy: same-origin` headers to use ffmpeg.wasm.
 
 ```html
 <script src="static/js/ffmpeg.min.js"></script>
@@ -69,37 +105,37 @@ Or, using a script tag in the browser (only works in some browsers, see list bel
 ffmpeg.wasm provides simple to use APIs, to transcode a video you only need few lines of code:
 
 ```javascript
-import { writeFile } from 'fs/promises';
-import { createFFmpeg, fetchFile } from '@ffmpeg.wasm/ffmpeg';
+import { writeFile } from "fs/promises";
+import { createFFmpeg, fetchFile } from "@ffmpeg.wasm/ffmpeg";
 
 const ffmpeg = createFFmpeg({ log: true });
 
 (async () => {
   await ffmpeg.load();
-  ffmpeg.FS('writeFile', 'test.avi', await fetchFile('./test.avi'));
-  await ffmpeg.run('-i', 'test.avi', 'test.mp4');
-  await fs.promises.writeFile('./test.mp4', ffmpeg.FS('readFile', 'test.mp4'));
+  ffmpeg.FS("writeFile", "test.avi", await fetchFile("./test.avi"));
+  await ffmpeg.run("-i", "test.avi", "test.mp4");
+  await fs.promises.writeFile("./test.mp4", ffmpeg.FS("readFile", "test.mp4"));
   process.exit(0);
 })();
 ```
 
-### Use other version of ffmpeg.wasm-core / @ffmpeg/core
+### Use other version of ffmpeg.wasm-core / @ffmpeg.wasm/core-mt
 
-For each version of ffmpeg.wasm, there is a default version of @ffmpeg/core (you can find it in **devDependencies** section of [package.json](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/master/package.json)), but sometimes you may need to use newer version of @ffmpeg/core to use the latest/experimental features.
+For each version of ffmpeg.wasm, there is a default version of @ffmpeg.wasm/core-mt (you can find it in **devDependencies** section of [package.json](https://github.com/DreamOfIce/ffmpeg.wasm/blob/master/package.json)), but sometimes you may need to use newer version of @ffmpeg.wasm/core-mt to use the latest/experimental features.
 
 **Node**
 
 Just install the specific version you need:
 
 ```bash
-$ npm install @ffmpeg/core@latest
+$ npm install @ffmpeg.wasm/core-mt@latest
 ```
 
 Or use your own version with customized path
 
 ```javascript
 const ffmpeg = createFFmpeg({
-  corePath: '../../../src/ffmpeg-core.js',
+  corePath: "../../../src/ffmpeg-core.js",
 });
 ```
 
@@ -107,7 +143,7 @@ const ffmpeg = createFFmpeg({
 
 ```javascript
 const ffmpeg = createFFmpeg({
-  corePath: 'static/js/ffmpeg-core.js',
+  corePath: "static/js/ffmpeg-core.js",
 });
 ```
 
@@ -115,18 +151,18 @@ Keep in mind that for compatibility with webworkers and nodejs this will default
 
 ```javascript
 const ffmpeg = createFFmpeg({
-  corePath: new URL('static/js/ffmpeg-core.js', document.location).href,
+  corePath: new URL("static/js/ffmpeg-core.js", document.location).href,
 });
 ```
 
-For the list available versions and their changelog, please check: https://github.com/ffmpegwasm/ffmpeg.wasm-core/releases
+For the list available versions and their changelog, please check: https://github.com/DreamOfIce/ffmpeg.wasm-core/releases
 
 ### Use single thread version
 
 ```javascript
 const ffmpeg = createFFmpeg({
-  mainName: 'main',
-  corePath: 'https://unpkg.com/@ffmpeg/core-st@0.11.1/dist/ffmpeg-core.js',
+  mainName: "main",
+  corePath: "https://unpkg.com/@ffmpeg.wasm/core-st@0.11.1/dist/ffmpeg-core.js",
 });
 ```
 
@@ -144,8 +180,8 @@ Need to pass `-row-mt 1`, but can only use one thread to help, can speed up arou
 
 ## Documentation
 
-- [API](https://github.com/ffmpegwasm/ffmpeg.wasm/blob/master/docs/api.md)
-- [Supported External Libraries](https://github.com/ffmpegwasm/ffmpeg.wasm-core#configuration)
+- [API](https://github.com/DreamOfIce/ffmpeg.wasm/blob/master/docs/api.md)
+- [Supported External Libraries](https://github.com/DreamOfIce/ffmpeg.wasm-core#configuration)
 
 ## FAQ
 
@@ -153,10 +189,10 @@ Need to pass `-row-mt 1`, but can only use one thread to help, can speed up arou
 
 There are two components inside ffmpeg.wasm:
 
-- @ffmpeg.wasm/ffmpeg (https://github.com/ffmpegwasm/ffmpeg.wasm)
-- @ffmpeg/core (https://github.com/ffmpegwasm/ffmpeg.wasm-core)
+- @ffmpeg.wasm/ffmpeg (https://github.com/DreamOfIce/ffmpeg.wasm)
+- @ffmpeg.wasm/core-mt (https://github.com/DreamOfIce/ffmpeg.wasm-core)
 
-@ffmpeg/core contains WebAssembly code which is transpiled from original FFmpeg C code with minor modifications, but overall it still following the same licenses as FFmpeg and its external libraries (as each external libraries might have its own license).
+@ffmpeg.wasm/core-mt contains WebAssembly code which is transpiled from original FFmpeg C code with minor modifications, but overall it still following the same licenses as FFmpeg and its external libraries (as each external libraries might have its own license).
 
 @ffmpeg.wasm/ffmpeg contains kind of a wrapper to handle the complexity of loading core and calling low-level APIs. It is a small code base and under MIT license.
 
@@ -166,7 +202,7 @@ Yes, but only for Firefox 79+ with proper header in both client and server, visi
 
 ![](https://user-images.githubusercontent.com/5723124/98955802-4cb20c80-253a-11eb-8f16-ce0298720a2a.png)
 
-For more details: https://github.com/ffmpegwasm/ffmpeg.wasm/issues/106
+For more details: https://github.com/DreamOfIce/ffmpeg.wasm/issues/106
 
 ### What is the maximum size of input file?
 
@@ -176,7 +212,7 @@ For more details: https://github.com/ffmpegwasm/ffmpeg.wasm/issues/106
 
 In fact, it is ffmpeg.wasm-core most people would like to build.
 
-To build on your own, you can check build.sh inside https://github.com/ffmpegwasm/ffmpeg.wasm-core repository.
+To build on your own, you can check build.sh inside https://github.com/DreamOfIce/ffmpeg.wasm-core repository.
 
 Also you can check this series of posts to learn more fundamental concepts:
 
@@ -187,7 +223,7 @@ Also you can check this series of posts to learn more fundamental concepts:
 
 ### Why it doesn't work in my local environment?
 
-When calling `ffmpeg.load()`, by default it looks for `http://localhost:3000/node_modules/@ffmpeg/core/dist/` to download essential files (ffmpeg-core.js, ffmpeg-core.wasm, ffmpeg-core.worker.js). It is necessary to make sure you have those files served there.
+When calling `ffmpeg.load()`, by default it looks for `http://localhost:3000/node_modules/@ffmpeg.wasm/core-mt/dist/` to download essential files (ffmpeg-core.js, ffmpeg-core.wasm, ffmpeg-core.worker.js). It is necessary to make sure you have those files served there.
 
 If you have those files serving in other location, you can rewrite the default behavior when calling `createFFmpeg()`:
 
@@ -196,7 +232,7 @@ const { createFFmpeg } = FFmpeg;
 const ffmpeg = createFFmpeg({
   corePath: "http://localhost:3000/public/ffmpeg-core.js",
   // Use public address if you don't want to host your own.
-  // corePath: 'https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js'
+  // corePath: 'https://unpkg.com/@ffmpeg.wasm/core-mt@0.10.0/dist/ffmpeg-core.js'
   log: true,
 });
 ```

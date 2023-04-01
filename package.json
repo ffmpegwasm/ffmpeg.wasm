@@ -1,6 +1,6 @@
 {
-  "name": "@ffmpeg.wasm/ffmpeg",
-  "version": "0.11.7",
+  "name": "@ffmpeg.wasm/main",
+  "version": "0.12.0",
   "description": "FFmpeg WebAssembly version",
   "main": "src/index.js",
   "types": "src/index.d.ts",
@@ -27,7 +27,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ffmpegwasm/ffmpeg.wasm.git"
+    "url": "git+https://github.com/DreamOfIce/ffmpeg.wasm.git"
   },
   "keywords": [
     "ffmpeg",
@@ -37,30 +37,30 @@
   "author": "Jerome Wu <jeromewus@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ffmpegwasm/ffmpeg.wasm/issues"
+    "url": "https://github.com/DreamOfIce/ffmpeg.wasm/issues"
   },
   "engines": {
     "node": ">=12.16.1"
   },
-  "homepage": "https://github.com/ffmpegwasm/ffmpeg.wasm#readme",
+  "homepage": "https://github.com/DreamOfIce/ffmpeg.wasm#readme",
   "dependencies": {
     "is-url": "^1.2.4",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.9",
     "regenerator-runtime": "^0.13.7",
     "resolve-url": "^0.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
     "@babel/preset-env": "^7.12.1",
-    "@ffmpeg/core": "^0.11.0",
+    "@ffmpeg.wasm/core-mt": "^0.12.0",
     "@types/emscripten": "^1.39.4",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "chai": "^4.2.0",
     "cors": "^2.8.5",
-    "eslint": "^7.12.1",
-    "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-plugin-import": "^2.22.1",
+    "eslint": "^8.37.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.27.5",
     "express": "^4.17.1",
     "mocha": "^10.1.0",
     "mocha-headless-chrome": "^2.0.3",

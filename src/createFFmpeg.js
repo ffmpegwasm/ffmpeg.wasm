@@ -1,9 +1,11 @@
-const { defaultArgs, baseOptions } = require('./config');
-const parseArgs = require('./utils/parseArgs');
-const { defaultOptions, getCreateFFmpegCore } = require('./node');
-const { version } = require('../package.json');
+const { defaultArgs, baseOptions } = require("./config");
+const parseArgs = require("./utils/parseArgs");
+const { defaultOptions, getCreateFFmpegCore } = require("./node");
+const { version } = require("../package.json");
 
-const NO_LOAD = Error('ffmpeg.wasm is not ready, make sure you have completed load().');
+const NO_LOAD = Error(
+  "ffmpeg.wasm is not ready, make sure you have completed load()."
+);
 
 module.exports = (_options = {}) => {
   const {
@@ -30,7 +32,7 @@ module.exports = (_options = {}) => {
   let ratio = 0;
 
   const detectCompletion = (message) => {
-    if (message === 'FFMPEG_END' && runResolve !== null) {
+    if (message === "FFMPEG_END" && runResolve !== null) {
       runResolve();
       runResolve = null;
       runReject = null;
@@ -44,20 +46,20 @@ module.exports = (_options = {}) => {
     }
   };
   const ts2sec = (ts) => {
-    const [h, m, s] = ts.split(':');
-    return (parseFloat(h) * 60 * 60) + (parseFloat(m) * 60) + parseFloat(s);
+    const [h, m, s] = ts.split(":");
+    return parseFloat(h) * 60 * 60 + parseFloat(m) * 60 + parseFloat(s);
   };
   const parseProgress = (message, prog) => {
-    if (typeof message === 'string') {
-      if (message.startsWith('  Duration')) {
-        const ts = message.split(', ')[0].split(': ')[1];
+    if (typeof message === "string") {
+      if (message.startsWith("  Duration")) {
+        const ts = message.split(", ")[0].split(": ")[1];
         const d = ts2sec(ts);
         prog({ duration: d, ratio });
         if (duration === 0 || duration > d) {
           duration = d;
           readFrames = true;
         }
-      } else if (readFrames && message.startsWith('    Stream')) {
+      } else if (readFrames && message.startsWith("    Stream")) {
         const match = message.match(/([\d.]+) fps/);
         if (match) {
           const fps = parseFloat(match[1]);
@@ -66,8 +68,8 @@ module.exports = (_options = {}) => {
           frames = 0;
         }
         readFrames = false;
-      } else if (message.startsWith('frame') || message.startsWith('size')) {
-        const ts = message.split('time=')[1].split(' ')[0];
+      } else if (message.startsWith("frame") || message.startsWith("size")) {
+        const ts = message.split("time=")[1].split(" ")[0];
         const t = ts2sec(ts);
         const match = message.match(/frame=\s*(\d+)/);
         if (frames && match) {
@@ -77,7 +79,7 @@ module.exports = (_options = {}) => {
           ratio = t / duration;
         }
         prog({ ratio, time: t });
-      } else if (message.startsWith('video:')) {
+      } else if (message.startsWith("video:")) {
         prog({ ratio: 1 });
         duration = 0;
       }
@@ -94,26 +96,22 @@ module.exports = (_options = {}) => {
    * In browser environment, the ffmpeg.wasm-core script is fetch from
    * CDN and can be assign to a local path by assigning `corePath`.
    * In node environment, we use dynamic require and the default `corePath`
-   * is `@ffmpeg/core`.
+   * is `@ffmpeg.wasm/core-mt`.
    *
    * Typically the load() func might take few seconds to minutes to complete,
    * better to do it as early as possible.
    *
    */
   const load = async () => {
-    log('info', 'load ffmpeg-core');
+    log("info", "load ffmpeg-core");
     if (Core === null) {
-      log('info', 'loading ffmpeg-core');
+      log("info", "loading ffmpeg-core");
       /*
        * In node environment, all paths are undefined as there
        * is no need to set them.
        */
-      const {
-        createFFmpegCore,
-        corePath,
-        workerPath,
-        wasmPath,
-      } = await getCreateFFmpegCore(options);
+      const { createFFmpegCore, corePath, workerPath, wasmPath } =
+        await getCreateFFmpegCore(options);
       Core = await createFFmpegCore({
         /*
          * Avoid automatic exit after main is run
@@ -124,31 +122,44 @@ module.exports = (_options = {}) => {
          * as there is no document.currentScript in the context of content_scripts
          */
         mainScriptUrlOrBlob: corePath,
-        printErr: (message) => parseMessage({ type: 'fferr', message }),
-        print: (message) => parseMessage({ type: 'ffout', message }),
+        printErr: (message) => parseMessage({ type: "fferr", message }),
+        print: (message) => parseMessage({ type: "ffout", message }),
         /*
          * locateFile overrides paths of files that is loaded by main script (ffmpeg-core.js).
          * It is critical for browser environment and we override both wasm and worker paths
          * as we are using blob URL instead of original URL to avoid cross origin issues.
          */
         locateFile: (path, prefix) => {
-          if (typeof window !== 'undefined' || typeof WorkerGlobalScope !== 'undefined') {
-            if (typeof wasmPath !== 'undefined'
-              && path.endsWith('ffmpeg-core.wasm')) {
+          if (
+            typeof window !== "undefined" ||
+            typeof WorkerGlobalScope !== "undefined"
+          ) {
+            if (
+              typeof wasmPath !== "undefined" &&
+              path.endsWith("ffmpeg-core.wasm")
+            ) {
               return wasmPath;
             }
-            if (typeof workerPath !== 'undefined'
-              && path.endsWith('ffmpeg-core.worker.js')) {
+            if (
+              typeof workerPath !== "undefined" &&
+              path.endsWith("ffmpeg-core.worker.js")
+            ) {
               return workerPath;
             }
           }
           return prefix + path;
         },
       });
-      ffmpeg = Core.cwrap(options.mainName || '_emscripten_proxy_main', 'number', ['number', 'number']);
-      log('info', 'ffmpeg-core loaded');
+      ffmpeg = Core.cwrap(
+        options.mainName || "_emscripten_proxy_main",
+        "number",
+        ["number", "number"]
+      );
+      log("info", "ffmpeg-core loaded");
     } else {
-      throw Error('ffmpeg.wasm was loaded, you should not load it again, use ffmpeg.isLoaded() to check next time.');
+      throw Error(
+        "ffmpeg.wasm was loaded, you should not load it again, use ffmpeg.isLoaded() to check next time."
+      );
     }
   };
 
@@ -176,11 +187,11 @@ module.exports = (_options = {}) => {
    *
    */
   const run = (..._args) => {
-    log('info', `run ffmpeg command: ${_args.join(' ')}`);
+    log("info", `run ffmpeg command: ${_args.join(" ")}`);
     if (Core === null) {
       throw NO_LOAD;
     } else if (running) {
-      throw Error('ffmpeg.wasm can only run one command at a time');
+      throw Error("ffmpeg.wasm can only run one command at a time");
     } else {
       running = true;
       return new Promise((resolve, reject) => {
@@ -208,7 +219,14 @@ module.exports = (_options = {}) => {
    *
    */
   const FS = (method, ...args) => {
-    log('info', `run FS.${method} ${args.map((arg) => (typeof arg === 'string' ? arg : `<${arg.length} bytes binary file>`)).join(' ')}`);
+    log(
+      "info",
+      `run FS.${method} ${args
+        .map((arg) =>
+          typeof arg === "string" ? arg : `<${arg.length} bytes binary file>`
+        )
+        .join(" ")}`
+    );
     if (Core === null) {
       throw NO_LOAD;
     } else {
@@ -216,12 +234,16 @@ module.exports = (_options = {}) => {
       try {
         ret = Core.FS[method](...args);
       } catch (e) {
-        if (method === 'readdir') {
-          throw Error(`ffmpeg.FS('readdir', '${args[0]}') error. Check if the path exists, ex: ffmpeg.FS('readdir', '/')`);
-        } else if (method === 'readFile') {
-          throw Error(`ffmpeg.FS('readFile', '${args[0]}') error. Check if the path exists`);
+        if (method === "readdir") {
+          throw Error(
+            `ffmpeg.FS('readdir', '${args[0]}') error. Check if the path exists, ex: ffmpeg.FS('readdir', '/')`
+          );
+        } else if (method === "readFile") {
+          throw Error(
+            `ffmpeg.FS('readFile', '${args[0]}') error. Check if the path exists`
+          );
         } else {
-          throw Error('Oops, something went wrong in FS operation.');
+          throw Error("Oops, something went wrong in FS operation.");
         }
       }
       return ret;
@@ -237,7 +259,7 @@ module.exports = (_options = {}) => {
     } else {
       // if there's any pending runs, reject them
       if (runReject) {
-        runReject('ffmpeg has exited');
+        runReject("ffmpeg has exited");
       }
       running = false;
       try {
@@ -268,7 +290,7 @@ module.exports = (_options = {}) => {
     logging = _logging;
   };
 
-  log('info', `use ffmpeg.wasm v${version}`);
+  log("info", `use ffmpeg.wasm v${version}`);
 
   return {
     setProgress,

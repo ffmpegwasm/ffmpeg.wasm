@@ -31,7 +31,7 @@ createFFmpeg is a factory function that creates a ffmpeg instance.
 ```javascript
 const { createFFmpeg } = FFmpeg;
 const ffmpeg = createFFmpeg({
-  corePath: "./node_modules/@ffmpeg/core/dist/ffmpeg-core.js",
+  corePath: "./node_modules/@ffmpeg.wasm/core-mt/dist/ffmpeg-core.js",
   log: true,
 });
 ```
@@ -197,7 +197,7 @@ This helper function helps you to fetch to file and return an Uint8Array variabl
 
 ```javascript
 (async () => {
-  const data = await fetchFile('https://github.com/ffmpegwasm/testdata/raw/master/video-3s.avi');
+  const data = await fetchFile('https://github.com/DreamOfIce/testdata/raw/master/video-3s.avi');
   /*
    * data will be in Uint8Array format
    */
