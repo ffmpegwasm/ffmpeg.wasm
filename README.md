@@ -21,6 +21,7 @@
 
 Thanks to [Jerome Wu](https://github.com/jeromewu) for creating the very cool package ffmpegwasm!
 However, because this package hasn't been updated in a long time, a lot of features are on hold and it's not compatible with node18 and above (because the emsdk version is too old). So I decided to maintain a fork, fix the problems and continue development iterations.
+Feel free to create issues or pull requests ヾ(≧▽≦\*)o
 Hopefully these changes can be merged into ffmpegwasm in the future
 
 ### Release Plan
@@ -36,7 +37,7 @@ Hopefully these changes can be merged into ffmpegwasm in the future
 1. Change package names and update imports:
 
 - `@ffmpeg/ffmpeg` => `@ffmpeg.wasm/main`
-- `@ffmpeg/core` => `@ffmpeg.wasm/core-mt`
+- `@ffmpeg/core` & `@ffmpeg/core-mt` => `@ffmpeg.wasm/core-mt`
 - `@ffmpeg/core-st` => `@ffmpeg.wasm/core-st`
 
 2. Update version to `~0.12.0`
@@ -45,8 +46,8 @@ Hopefully these changes can be merged into ffmpegwasm in the future
 
 - [x] Update emsdk to latest
 - [ ] Update deps
-- [ ] Rewrite with TypeScript (expected in v0.12)
-- [ ] Migrate to pnpm (expected in v0.12)
+- [ ] Rewrite with TypeScript (expected in v0.13)
+- [ ] Migrate to pnpm (expected in v0.13)
 - [ ] Release with Github Action
 - [ ] Bundle with `vite` and test with `vitest`
 - [ ] Support uild cache
@@ -162,7 +163,7 @@ For the list available versions and their changelog, please check: https://githu
 ```javascript
 const ffmpeg = createFFmpeg({
   mainName: "main",
-  corePath: "https://unpkg.com/@ffmpeg.wasm/core-st@0.11.1/dist/ffmpeg-core.js",
+  corePath: "https://unpkg.com/@ffmpeg.wasm/core-st@0.12.0/dist/ffmpeg-core.js",
 });
 ```
 
