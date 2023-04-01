@@ -7,15 +7,15 @@
 # ffmpeg.wasm
 
 [![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://github.com/emersion/stability-badges#experimental)
-[![Node Version](https://img.shields.io/node/v/@ffmpeg/ffmpeg.svg)](https://img.shields.io/node/v/@ffmpeg/ffmpeg.svg)
+[![Node Version](https://img.shields.io/node/v/@ffmpeg.wasm/ffmpeg.svg)](https://img.shields.io/node/v/@ffmpeg.wasm/ffmpeg.svg)
 [![Actions Status](https://github.com/ffmpegwasm/ffmpeg.wasm/workflows/CI/badge.svg)](https://github.com/ffmpegwasm/ffmpeg.wasm/actions)
 ![CodeQL](https://github.com/ffmpegwasm/ffmpeg.wasm/workflows/CodeQL/badge.svg)
-![npm (tag)](https://img.shields.io/npm/v/@ffmpeg/ffmpeg/latest)
+![npm (tag)](https://img.shields.io/npm/v/@ffmpeg.wasm/ffmpeg/latest)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/ffmpegwasm/ffmpeg.wasm/graphs/commit-activity)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code Style](https://badgen.net/badge/code%20style/airbnb/ff5a5f?icon=airbnb)](https://github.com/airbnb/javascript)
-[![Downloads Total](https://img.shields.io/npm/dt/@ffmpeg/ffmpeg.svg)](https://www.npmjs.com/package/@ffmpeg/ffmpeg)
-[![Downloads Month](https://img.shields.io/npm/dm/@ffmpeg/ffmpeg.svg)](https://www.npmjs.com/package/@ffmpeg/ffmpeg)
+[![Downloads Total](https://img.shields.io/npm/dt/@ffmpeg.wasm/ffmpeg.svg)](https://www.npmjs.com/package/@ffmpeg.wasm/ffmpeg)
+[![Downloads Month](https://img.shields.io/npm/dm/@ffmpeg.wasm/ffmpeg.svg)](https://www.npmjs.com/package/@ffmpeg.wasm/ffmpeg)
 
 Join us on Discord!
 
@@ -39,7 +39,7 @@ Check next steps of ffmpeg.wasm [HERE](https://github.com/ffmpegwasm/ffmpeg.wasm
 **Node**
 
 ```
-$ npm install @ffmpeg/ffmpeg @ffmpeg/core
+$ npm install @ffmpeg.wasm/ffmpeg @ffmpeg/core
 ```
 
 > As we are using experimental features, you need to add flags to run in Node.js
@@ -70,7 +70,7 @@ ffmpeg.wasm provides simple to use APIs, to transcode a video you only need few 
 
 ```javascript
 import { writeFile } from 'fs/promises';
-import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
+import { createFFmpeg, fetchFile } from '@ffmpeg.wasm/ffmpeg';
 
 const ffmpeg = createFFmpeg({ log: true });
 
@@ -153,12 +153,12 @@ Need to pass `-row-mt 1`, but can only use one thread to help, can speed up arou
 
 There are two components inside ffmpeg.wasm:
 
-- @ffmpeg/ffmpeg (https://github.com/ffmpegwasm/ffmpeg.wasm)
+- @ffmpeg.wasm/ffmpeg (https://github.com/ffmpegwasm/ffmpeg.wasm)
 - @ffmpeg/core (https://github.com/ffmpegwasm/ffmpeg.wasm-core)
 
 @ffmpeg/core contains WebAssembly code which is transpiled from original FFmpeg C code with minor modifications, but overall it still following the same licenses as FFmpeg and its external libraries (as each external libraries might have its own license).
 
-@ffmpeg/ffmpeg contains kind of a wrapper to handle the complexity of loading core and calling low-level APIs. It is a small code base and under MIT license.
+@ffmpeg.wasm/ffmpeg contains kind of a wrapper to handle the complexity of loading core and calling low-level APIs. It is a small code base and under MIT license.
 
 ### Can I use ffmpeg.wasm in Firefox?
 
