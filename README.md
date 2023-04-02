@@ -7,15 +7,15 @@
 # ffmpeg.wasm
 
 [![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://github.com/emersion/stability-badges#experimental)
-[![Node Version](https://img.shields.io/node/v/@ffmpeg.wasm/ffmpeg.svg)](https://img.shields.io/node/v/@ffmpeg.wasm/ffmpeg.svg)
+[![Node Version](https://img.shields.io/node/v/@ffmpeg.wasm/main.svg)](https://img.shields.io/node/v/@ffmpeg.wasm/main.svg)
 [![Actions Status](https://github.com/DreamOfIce/ffmpeg.wasm/workflows/CI/badge.svg)](https://github.com/DreamOfIce/ffmpeg.wasm/actions)
 ![CodeQL](https://github.com/DreamOfIce/ffmpeg.wasm/workflows/CodeQL/badge.svg)
-![npm (tag)](https://img.shields.io/npm/v/@ffmpeg.wasm/ffmpeg/latest)
+![npm (tag)](https://img.shields.io/npm/v/@ffmpeg.wasm/main/latest)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/DreamOfIce/ffmpeg.wasm/graphs/commit-activity)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code Style](https://badgen.net/badge/code%20style/airbnb/ff5a5f?icon=airbnb)](https://github.com/airbnb/javascript)
-[![Downloads Total](https://img.shields.io/npm/dt/@ffmpeg.wasm/ffmpeg.svg)](https://www.npmjs.com/package/@ffmpeg.wasm/ffmpeg)
-[![Downloads Month](https://img.shields.io/npm/dm/@ffmpeg.wasm/ffmpeg.svg)](https://www.npmjs.com/package/@ffmpeg.wasm/ffmpeg)
+[![Downloads Total](https://img.shields.io/npm/dt/@ffmpeg.wasm/main.svg)](https://www.npmjs.com/package/@ffmpeg.wasm/main)
+[![Downloads Month](https://img.shields.io/npm/dm/@ffmpeg.wasm/main.svg)](https://www.npmjs.com/package/@ffmpeg.wasm/main)
 
 ## About ffmpeg.wasm
 
@@ -35,11 +35,10 @@ Hopefully these changes can be merged into ffmpegwasm in the future
 ### Migration from ffmpegwasm
 
 1. Change package names and update imports:
-
-- `@ffmpeg/ffmpeg` => `@ffmpeg.wasm/main`
-- `@ffmpeg/core` & `@ffmpeg/core-mt` => `@ffmpeg.wasm/core-mt`
-- `@ffmpeg/core-st` => `@ffmpeg.wasm/core-st`
-
+   - `@ffmpeg/ffmpeg` => `@ffmpeg.wasm/main`
+   - `@ffmpeg/core` & `@ffmpeg/core-mt` => `@ffmpeg.wasm/core-mt`
+   - `@ffmpeg/core-st` => `@ffmpeg.wasm/core-st`
+   - `@ffmpeg/types` is expected to be bundled with `@ffmpeg.wasm/main` in v0.13
 2. Update version to `~0.12.0`
 
 ### Todos
@@ -47,12 +46,13 @@ Hopefully these changes can be merged into ffmpegwasm in the future
 - [x] Update emsdk to latest
 - [ ] Update deps
 - [ ] Rewrite with TypeScript (expected in v0.13)
+- [ ] ESM Support (expected in v0.13)
 - [ ] Migrate to pnpm (expected in v0.13)
 - [ ] Release with Github Action
 - [ ] Bundle with `vite` and test with `vitest`
 - [ ] Support uild cache
 - [ ] Migrate to monorepo
-- [ ] Upgrade to FFmpeg 5
+- [ ] Upgrade to FFmpeg@5
 - [ ] Use the faster `libsvtav1` instead of `libaom` (currently disabled because it is too slow)
 
 ## Original README
@@ -76,7 +76,7 @@ Check next steps of ffmpeg.wasm [HERE](https://github.com/DreamOfIce/ffmpeg.wasm
 **Node**
 
 ```
-$ npm install @ffmpeg.wasm/ffmpeg @ffmpeg.wasm/core-mt
+$ npm install @ffmpeg.wasm/main @ffmpeg.wasm/core-mt
 ```
 
 > As we are using experimental features, you need to add flags to run in Node.js
@@ -107,7 +107,7 @@ ffmpeg.wasm provides simple to use APIs, to transcode a video you only need few 
 
 ```javascript
 import { writeFile } from "fs/promises";
-import { createFFmpeg, fetchFile } from "@ffmpeg.wasm/ffmpeg";
+import { createFFmpeg, fetchFile } from "@ffmpeg.wasm/main";
 
 const ffmpeg = createFFmpeg({ log: true });
 
@@ -190,12 +190,12 @@ Need to pass `-row-mt 1`, but can only use one thread to help, can speed up arou
 
 There are two components inside ffmpeg.wasm:
 
-- @ffmpeg.wasm/ffmpeg (https://github.com/DreamOfIce/ffmpeg.wasm)
+- @ffmpeg.wasm/main (https://github.com/DreamOfIce/ffmpeg.wasm)
 - @ffmpeg.wasm/core-mt (https://github.com/DreamOfIce/ffmpeg.wasm-core)
 
 @ffmpeg.wasm/core-mt contains WebAssembly code which is transpiled from original FFmpeg C code with minor modifications, but overall it still following the same licenses as FFmpeg and its external libraries (as each external libraries might have its own license).
 
-@ffmpeg.wasm/ffmpeg contains kind of a wrapper to handle the complexity of loading core and calling low-level APIs. It is a small code base and under MIT license.
+@ffmpeg.wasm/main contains kind of a wrapper to handle the complexity of loading core and calling low-level APIs. It is a small code base and under MIT license.
 
 ### Can I use ffmpeg.wasm in Firefox?
 
