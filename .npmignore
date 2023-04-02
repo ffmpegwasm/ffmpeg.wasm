@@ -1,4 +1,4 @@
-.eslintrc
+.eslintrc.json
 .github
 .nyc_output
 docs

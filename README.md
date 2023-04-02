@@ -28,7 +28,7 @@ Hopefully these changes can be merged into ffmpegwasm in the future
 
 > See the [Todos](#todos) chapter for more plans
 
-- v0.12 is fully compatible with ffmpegwasm, but updates emsdk to the latest and fixes some bugs
+- v0.12 is fully compatible with ffmpegwasm v0.11.x, but updates emsdk to the latest and fixes some bugs
 - Since v0.13, I will start refactoring with a modern toolchain (Typescript, vite, etc), **which will bring some breaking changes**.
   **Therefore, it is strongly recommended that you ensure that you use `~0.12.0` when installing to ensure compatibility!**
 
@@ -48,9 +48,10 @@ Hopefully these changes can be merged into ffmpegwasm in the future
 - [ ] Rewrite with TypeScript (expected in v0.13)
 - [ ] ESM Support (expected in v0.13)
 - [ ] Migrate to pnpm (expected in v0.13)
+- [ ] Support for parallel tasks in multi-threaded mode
 - [ ] Release with Github Action
 - [ ] Bundle with `vite` and test with `vitest`
-- [ ] Support uild cache
+- [ ] Support build cache
 - [ ] Migrate to monorepo
 - [ ] Upgrade to FFmpeg@5
 - [ ] Use the faster `libsvtav1` instead of `libaom` (currently disabled because it is too slow)
