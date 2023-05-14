@@ -1,0 +1,13 @@
+{
+  "extends": [
+    "@tsconfig/strictest/tsconfig.json",
+    "@tsconfig/esm/tsconfig.json"
+  ],
+  "include": ["src/**/*", "tests/**/*", "*.config.ts"],
+  "compilerOptions": {
+    "lib": ["es6"],
+    "target": "es6",
+    "resolveJsonModule": true,
+    "moduleResolution": "node"
+  }
+}

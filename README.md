@@ -45,12 +45,12 @@ Hopefully these changes can be merged into ffmpegwasm in the future
 
 - [x] Update emsdk to latest
 - [ ] Update deps
-- [ ] Rewrite with TypeScript (expected in v0.13)
-- [ ] ESM Support (expected in v0.13)
-- [ ] Migrate to pnpm (expected in v0.13)
+- [ ] Rewrite with TypeScript (In Progress)
+- [ ] ESM Support (In progress)
+- [ ] Migrate to pnpm (In progress)
 - [ ] Support for parallel tasks in multi-threaded mode
 - [ ] Release with Github Action
-- [ ] Bundle with `vite` and test with `vitest`
+- [ ] Test with `vitest`
 - [ ] Support build cache
 - [ ] Migrate to monorepo
 - [ ] Upgrade to FFmpeg@5
