@@ -17,7 +17,7 @@
 [![Downloads Total](https://img.shields.io/npm/dt/@ffmpeg.wasm/main.svg)](https://www.npmjs.com/package/@ffmpeg.wasm/main)
 [![Downloads Month](https://img.shields.io/npm/dm/@ffmpeg.wasm/main.svg)](https://www.npmjs.com/package/@ffmpeg.wasm/main)
 
-## About ffmpeg.wasm
+## About this fork
 
 Thanks to [Jerome Wu](https://github.com/jeromewu) for creating the very cool package ffmpegwasm!
 However, because this package hasn't been updated in a long time, a lot of features are on hold and it's not compatible with node18 and above (because the emsdk version is too old). So I decided to maintain a fork, fix the problems and continue development iterations.
@@ -44,19 +44,19 @@ Hopefully these changes can be merged into ffmpegwasm in the future
 ### Todos
 
 - [x] Update emsdk to latest
-- [ ] Update deps
-- [ ] Rewrite with TypeScript (In Progress)
-- [ ] ESM Support (In progress)
-- [ ] Migrate to pnpm (In progress)
-- [ ] Support for parallel tasks in multi-threaded mode
+- [x] Migrate to pnpm
+- [ ] Update deps(WIP)
+- [ ] Rewrite with TypeScript (WIP)
+- [ ] ESM Support (WIP)
+- [ ] Test with `vitest`(WIP)
+- [ ] Support for parallel tasks in multi-threaded mode(WIP)
 - [ ] Release with Github Action
-- [ ] Test with `vitest`
 - [ ] Support build cache
 - [ ] Migrate to monorepo
 - [ ] Upgrade to FFmpeg@5
 - [ ] Use the faster `libsvtav1` instead of `libaom` (currently disabled because it is too slow)
 
-## Original README
+## Original readme
 
 ffmpeg.wasm is a pure Webassembly / Javascript port of FFmpeg. It enables video & audio record, convert and stream right inside browsers.
 
