@@ -1,13 +1,11 @@
 {
   "extends": [
+    "@tsconfig/node-lts",
     "@tsconfig/strictest/tsconfig.json",
     "@tsconfig/esm/tsconfig.json"
   ],
-  "include": ["src/**/*", "tests/**/*", "*.config.ts"],
+  "include": ["src/**/*", "examples/**/*", "tests/**/*", "*.config.ts"],
   "compilerOptions": {
-    "lib": ["es6"],
-    "target": "es6",
-    "resolveJsonModule": true,
-    "moduleResolution": "node"
+    "resolveJsonModule": true
   }
 }

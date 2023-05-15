@@ -6,7 +6,12 @@ import {
   type FFmpegLogger,
   type FFmpegRunningOptions,
 } from "./options";
-import type { FFmpegCore, FFmpegCoreVersion, FFmpegVersion } from "./types";
+import type {
+  FFmpegCore,
+  FFmpegCoreVersion,
+  FFmpegFileSystem,
+  FFmpegVersion,
+} from "./types";
 import { logError, parseVersion, writeArgs } from "./utils";
 import { importCore } from "./utils/importCore";
 
@@ -28,7 +33,7 @@ class FFmpeg {
   /**
    * Memory file system
    */
-  public fs: typeof FS;
+  public fs: FFmpegFileSystem;
   protected core: FFmpegCore;
   protected exec: (argc: number, argv: number) => number;
   protected execAsync: (
@@ -108,8 +113,8 @@ class FFmpeg {
   }
 
   public async run(
-    _options: FFmpegRunningOptions,
-    ..._args: string[]
+    _args: string[],
+    _options: Partial<FFmpegRunningOptions> = {}
   ): Promise<number> {
     if (this._exited) throw new Error("FFmpeg core has already been exited!");
 
@@ -158,7 +163,10 @@ class FFmpeg {
     }
   }
 
-  public runSync(_args: string[], _options: FFmpegRunningOptions): number {
+  public runSync(
+    _args: string[],
+    _options: Partial<FFmpegRunningOptions> = {}
+  ): number {
     if (this._exited) throw new Error("FFmpeg core has already been exited!");
 
     const options = { ...defaultRunningOptions, ..._options };
