@@ -6,7 +6,9 @@ const isDev =
 export default defineConfig({
   entry: ["src/index.ts"],
   format: ["cjs", "esm", "iife"],
+  clean: true,
   dts: true,
   minify: !isDev,
-  target: "es5",
+  target: ["es6"],
+  external: [/^data:.+$/], // ignore inline module
 });

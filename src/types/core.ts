@@ -1,5 +1,6 @@
 interface FFmpegCore extends EmscriptenModule {
   //flags
+  simd: boolean;
   thread: boolean;
   wasi: boolean;
   // methods

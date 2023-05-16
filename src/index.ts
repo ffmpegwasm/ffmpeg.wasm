@@ -10,6 +10,7 @@ import type {
   FFmpegCore,
   FFmpegCoreVersion,
   FFmpegFileSystem,
+  FFmpegFlags,
   FFmpegVersion,
 } from "./types";
 import { logError, parseVersion, writeArgs } from "./utils";
@@ -20,21 +21,23 @@ const VERSION_ARGS = ["ffmpeg", "-version"];
 
 class FFmpeg {
   /**
-   * Versions of FFmpeg.wasm
-   */
-  public version: FFmpegVersion;
-  /**
    * Has the core exited
+   * @readonly
    */
   public get exited() {
     return this._exited;
   }
-  protected _exited = false;
+  public flags: FFmpegFlags;
   /**
    * Memory file system
    */
   public fs: FFmpegFileSystem;
+  /**
+   * Versions of FFmpeg.wasm
+   */
+  public version: FFmpegVersion;
   protected core: FFmpegCore;
+  protected _exited = false;
   protected exec: (argc: number, argv: number) => number;
   protected execAsync: (
     argc: number,
@@ -62,6 +65,8 @@ class FFmpeg {
     this.core = core;
     this.options = { ...defaultInitOptions, ...options };
     this.version = { main: version, core: coreVersion };
+    const { simd, thread, wasi } = core;
+    this.flags = { simd, thread, wasi };
 
     this.exec = core.cwrap("_exec", "number", ["number", "number"]);
     this.execAsync = core.cwrap("_execAsync", "number", [
@@ -72,6 +77,7 @@ class FFmpeg {
     ]);
 
     this.fs = core.FS;
+
   }
 
   /**
@@ -79,7 +85,9 @@ class FFmpeg {
    * @param _options init options
    * @returns created instance
    */
-  public static async create(_options: FFmpegInitOptions): Promise<FFmpeg> {
+  public static async create(
+    _options: FFmpegInitOptions = {}
+  ): Promise<FFmpeg> {
     const options = { ...defaultInitOptions, ..._options };
 
     // used to get version info
