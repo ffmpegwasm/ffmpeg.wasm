@@ -1,0 +1,38 @@
+name: Test
+
+on:
+  pull_request:
+  release:
+    types:
+      - published
+
+jobs:
+  test:
+    name: Test on node ${{ matrix.node_version }} and ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node_version: ["12", "14", "16", "18"]
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node_version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node_version }}
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.x
+
+      - name: Install deps and build
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm run build
+
+      - name: Test
+        run: pnpm run test

@@ -43,13 +43,13 @@ Hopefully these changes can be merged into ffmpegwasm in the future
 ### Todos
 
 - [x] Update emsdk to latest
-- [x] Migrate to pnpm (WIP)
+- [x] Release with Github Action
+- [x] Migrate to pnpm
 - [x] ESM Support (WIP)
 - [x] Test with `vitest`(WIP)
 - [ ] Update deps(WIP)
 - [ ] Rewrite with TypeScript (WIP)
 - [ ] Support for parallel tasks in multi-threaded mode(WIP)
-- [ ] Release with Github Action
 - [ ] Support build cache
 - [ ] Migrate to monorepo
 - [ ] Upgrade to FFmpeg@6
