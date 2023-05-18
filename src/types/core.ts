@@ -1,3 +1,5 @@
+import type { FFmpegFileSystem } from "./fs";
+
 interface FFmpegCore extends EmscriptenModule {
   //flags
   simd: boolean;
@@ -8,7 +10,7 @@ interface FFmpegCore extends EmscriptenModule {
   ccall: typeof ccall;
   cwrap: typeof cwrap;
   exit: () => boolean;
-  FS: typeof FS;
+  FS: FFmpegFileSystem;
   lengthBytesUTF8: typeof lengthBytesUTF8;
   setValue: typeof setValue;
   stringToUTF8: typeof stringToUTF8;

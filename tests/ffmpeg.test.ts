@@ -1,13 +1,11 @@
 import { describe, expect, test } from "vitest";
 import FFmpeg from "../src";
-import type { FFmpegCoreConstructor } from "../src/types";
 
 describe("create", () => {
   test("construct with core path string", () =>
     FFmpeg.create({ core: "@ffmpeg.wasm/core-mt" }));
   test("construct with core factory function", async () => {
-    const core = (await import("@ffmpeg.wasm/core-mt"))
-      .default as FFmpegCoreConstructor;
+    const core = (await import("@ffmpeg.wasm/core-mt")).default;
     await FFmpeg.create({ core });
   });
   test("construct with invaild core (expect error)", () =>
