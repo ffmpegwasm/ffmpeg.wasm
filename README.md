@@ -29,8 +29,7 @@ Hopefully these changes can be merged into ffmpegwasm in the future
 > See the [Todos](#todos) chapter for more plans
 
 - v0.12 is fully compatible with ffmpegwasm v0.11.x, but updates emsdk to the latest and fixes some bugs
-- Since v0.13, I will start refactoring with a modern toolchain (Typescript, vite, etc), **which will bring some breaking changes**.
-  **Therefore, it is strongly recommended that you ensure that you use `~0.12.0` when installing to ensure compatibility!**
+- Since v0.13, I will start refactoring with a modern toolchain (TypeScript, vite, etc), **which will bring some breaking changes**.
 
 ### Migration from ffmpegwasm
 
@@ -39,21 +38,21 @@ Hopefully these changes can be merged into ffmpegwasm in the future
    - `@ffmpeg/core` & `@ffmpeg/core-mt` => `@ffmpeg.wasm/core-mt`
    - `@ffmpeg/core-st` => `@ffmpeg.wasm/core-st`
    - `@ffmpeg/types` is expected to be bundled with `@ffmpeg.wasm/main` in v0.13
-2. Update version to `~0.12.0`
+2. Update version to `^0.12.0`
 
 ### Todos
 
 - [x] Update emsdk to latest
-- [x] Migrate to pnpm
+- [x] Migrate to pnpm (WIP)
+- [x] ESM Support (WIP)
+- [x] Test with `vitest`(WIP)
 - [ ] Update deps(WIP)
 - [ ] Rewrite with TypeScript (WIP)
-- [ ] ESM Support (WIP)
-- [ ] Test with `vitest`(WIP)
 - [ ] Support for parallel tasks in multi-threaded mode(WIP)
 - [ ] Release with Github Action
 - [ ] Support build cache
 - [ ] Migrate to monorepo
-- [ ] Upgrade to FFmpeg@5
+- [ ] Upgrade to FFmpeg@6
 - [ ] Use the faster `libsvtav1` instead of `libaom` (currently disabled because it is too slow)
 
 ## Original readme
