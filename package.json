@@ -2,41 +2,38 @@
   "name": "@ffmpeg.wasm/main",
   "version": "0.12.0",
   "description": "FFmpeg WebAssembly version",
+  "keywords": [
+    "ffmpeg",
+    "WebAssembly",
+    "video"
+  ],
+  "homepage": "https://github.com/DreamOfIce/ffmpeg.wasm#readme",
+  "bugs": {
+    "url": "https://github.com/DreamOfIce/ffmpeg.wasm/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DreamOfIce/ffmpeg.wasm.git"
+  },
+  "license": "MIT",
+  "author": "Jerome Wu <jeromewus@gmail.com>",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "start": "node scripts/server.js",
-    "start:worker": "node scripts/worker-server.js",
     "build": "tsup",
     "lint": "pnpm run \"/^lint:.*/\"",
     "lint:eslint": "eslint --ext .ts --fix ./src",
     "lint:prettier": "prettier --write .",
     "prepare": "husky install",
     "release": "release-it",
+    "start": "node scripts/server.js",
+    "start:worker": "node scripts/worker-server.js",
     "test": "vitest"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/DreamOfIce/ffmpeg.wasm.git"
-  },
-  "keywords": [
-    "ffmpeg",
-    "WebAssembly",
-    "video"
-  ],
-  "author": "Jerome Wu <jeromewus@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/DreamOfIce/ffmpeg.wasm/issues"
-  },
-  "engines": {
-    "node": ">=12.16.1"
-  },
-  "files": [
-    "dist"
-  ],
-  "homepage": "https://github.com/DreamOfIce/ffmpeg.wasm#readme",
   "devDependencies": {
     "@babel/core": "^7.21.8",
     "@babel/preset-env": "^7.21.5",
@@ -70,7 +67,15 @@
     "webpack-cli": "^4.10.0",
     "webpack-dev-middleware": "^4.3.0"
   },
+  "engines": {
+    "node": ">=12.16.1"
+  },
   "publishConfig": {
     "access": "public"
+  },
+  "pnpm": {
+    "overrides": {
+      "ts-node": "npm:@dreamofice/ts-node@^10.9.2"
+    }
   }
 }
