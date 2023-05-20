@@ -79,17 +79,11 @@ Check next steps of ffmpeg.wasm [HERE](https://github.com/DreamOfIce/ffmpeg.wasm
 $ npm install @ffmpeg.wasm/main @ffmpeg.wasm/core-mt
 ```
 
-> As we are using experimental features, you need to add flags to run in Node.js
-
-```
-$ node --experimental-wasm-threads transcode.js
-```
-
 **Browser**
 
 Or, using a script tag in the browser (only works in some browsers, see list below):
 
-> SharedArrayBuffer is only available to pages that are [cross-origin isolated](https://developer.chrome.com/blog/enabling-shared-array-buffer/#cross-origin-isolation). So you need to host [your own server](https://github.com/DreamOfIce/ffmpegwasm.github.io/blob/main/server/server.js) with `Cross-Origin-Embedder-Policy: require-corp` and `Cross-Origin-Opener-Policy: same-origin` headers to use ffmpeg.wasm.
+> `SharedArrayBuffer` is only available to pages that are [cross-origin isolated](https://developer.chrome.com/blog/enabling-shared-array-buffer/#cross-origin-isolation). You need to send headers `Cross-Origin-Embedder-Policy: require-corp` and `Cross-Origin-Opener-Policy: same-origin` for your site, and make sure your static resource server contains the header `Cross-Origin- Resource-Policy: cross-origin`(e.g. [jsdelivr](https://jsdelivr.com), not [unpkg](https://unpkg.com))
 
 ```html
 <script src="static/js/ffmpeg.min.js"></script>
@@ -99,60 +93,57 @@ Or, using a script tag in the browser (only works in some browsers, see list bel
 </script>
 ```
 
-> Only browsers with SharedArrayBuffer support can use ffmpeg.wasm, you can check [HERE](https://caniuse.com/sharedarraybuffer) for the complete list.
+> Only browsers with SharedArrayBuffer support can use `ffmpeg.wasm`, you can check [HERE](https://caniuse.com/sharedarraybuffer) for the complete list.
 
 ## Usage
 
-ffmpeg.wasm provides simple to use APIs, to transcode a video you only need few lines of code:
+`ffmpeg.wasm` provides simple to use APIs, to transcode a video you only need few lines of code:
 
-```javascript
+```ts
 import { writeFile } from "fs/promises";
-import { createFFmpeg, fetchFile } from "@ffmpeg.wasm/main";
+import FFmpeg from "@ffmpeg.wasm/main";
 
-const ffmpeg = createFFmpeg({ log: true });
+const ffmpeg = await FFmpeg({ log: true });
 
-(async () => {
-  await ffmpeg.load();
-  ffmpeg\.fs\("(.+?)", "test.avi", await fetchFile("./test.avi"));
-  await ffmpeg.run("-i", "test.avi", "test.mp4");
-  await fs.promises.writeFile("./test.mp4", ffmpeg\.fs\("(.+?)", "test.mp4"));
-  process.exit(0);
-})();
+ffmpeg.fs.writeFile("test.avi", await fetchFile("./test.avi"));
+await ffmpeg.run("-i", "test.avi", "test.mp4");
+await writeFile("./test.mp4", ffmpeg.fs.readFile("test.mp4"));
+process.exit(0);
 ```
 
-### Use other version of ffmpeg.wasm-core / @ffmpeg.wasm/core-mt
+### Use other version of ffmpeg.wasm core
 
-For each version of ffmpeg.wasm, there is a default version of @ffmpeg.wasm/core-mt (you can find it in **devDependencies** section of [package.json](https://github.com/DreamOfIce/ffmpeg.wasm/blob/master/package.json)), but sometimes you may need to use newer version of @ffmpeg.wasm/core-mt to use the latest/experimental features.
+For each version of ffmpeg.wasm, there is a default version of `@ffmpeg.wasm/core-mt` (you can find it in **devDependencies** section of [package.json](./package.json)), but sometimes you may need to use newer version of `@ffmpeg.wasm/core-mt` to use the latest/experimental features.
 
 **Node**
 
 Just install the specific version you need:
 
-```bash
+```sh
 $ npm install @ffmpeg.wasm/core-mt@latest
 ```
 
 Or use your own version with customized path
 
-```javascript
-const ffmpeg = createFFmpeg({
-  corePath: "../../../src/ffmpeg-core.js",
+```ts
+const ffmpeg = await FFmpeg.create({
+  core: "path/to/your/ffmpeg-core.js",
 });
 ```
 
 **Browser**
 
-```javascript
-const ffmpeg = createFFmpeg({
-  corePath: "static/js/ffmpeg-core.js",
+```ts
+const ffmpeg = await FFmpeg.create({
+  core: "static/js/ffmpeg-core.js",
 });
 ```
 
 Keep in mind that for compatibility with webworkers and nodejs this will default to a local path, so it will attempt to look for `'static/js/ffmpeg.core.js'` locally, often resulting in a local resource error. If you wish to use a core version hosted on your own domain, you might reference it relatively like this:
 
-```javascript
-const ffmpeg = createFFmpeg({
-  corePath: new URL("static/js/ffmpeg-core.js", document.location).href,
+```ts
+const ffmpeg = await FFmpeg.create({
+  core: new URL("static/js/ffmpeg-core.js", document.location).href,
 });
 ```
 
@@ -160,10 +151,9 @@ For the list available versions and their changelog, please check: https://githu
 
 ### Use single thread version
 
-```javascript
-const ffmpeg = createFFmpeg({
-  mainName: "main",
-  corePath: "https://unpkg.com/@ffmpeg.wasm/core-st@0.12.0/dist/ffmpeg-core.js",
+```ts
+const ffmpeg = await FFmpeg.create({
+  core: "@ffmpeg.wasm/core-st",
 });
 ```
 
