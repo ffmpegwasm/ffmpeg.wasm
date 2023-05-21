@@ -68,8 +68,8 @@ class FFmpeg {
     const { simd, thread, wasi } = core;
     this.flags = { simd, thread, wasi };
 
-    this.exec = core.cwrap("_exec", "number", ["number", "number"]);
-    this.execAsync = core.cwrap("_execAsync", "number", [
+    this.exec = core.cwrap("exec", "number", ["number", "number"]);
+    this.execAsync = core.cwrap("execAsync", "number", [
       "number",
       "number",
       "number",
@@ -77,7 +77,6 @@ class FFmpeg {
     ]);
 
     this.fs = core.FS;
-
   }
 
   /**
