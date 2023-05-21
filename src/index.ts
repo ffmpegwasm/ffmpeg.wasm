@@ -153,7 +153,13 @@ class FFmpeg {
             rejectCallbackPtr
           );
           if (!result) reject("Failed to add task into queue!");
-          this.tasks.set(handle, { promise, reject });
+          this.tasks.set(handle, {
+            // can only be accessed after initialisation
+            get promise() {
+              return promise;
+            },
+            reject,
+          });
         } else {
           resolve(this.exec(args.length, argsPtr));
         }
