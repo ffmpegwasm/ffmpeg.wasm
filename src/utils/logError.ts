@@ -5,10 +5,6 @@ export const logError = (
   args: string[],
   logger: FFmpegLogger
 ) => {
-  const reason: string | undefined =
-    err instanceof Error ? err.message : err?.toString();
-  logger(
-    "error",
-    `Failed to execute '${args.join(" ")}'${reason ? `: ${reason}` : ""}`
-  );
+  const reason = err instanceof Error ? err?.message : err;
+  logger("error", `Failed to execute '${args.join(" ")}': `, reason);
 };

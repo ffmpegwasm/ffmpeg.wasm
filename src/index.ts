@@ -171,8 +171,6 @@ class FFmpeg {
     } finally {
       this.tasks.delete(handle);
       if (argsPtr) this.core._free(argsPtr);
-      if (resloveCallbackPtr) this.core._free(resloveCallbackPtr);
-      if (rejectCallbackPtr) this.core._free(rejectCallbackPtr);
     }
   }
 
