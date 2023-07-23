@@ -92,7 +92,7 @@ describe(genName("setProgress()"), () => {
 
   it("should handle progress", () => {
     let progress = 0;
-    core.setProgress((_progress) => (progress = _progress));
+    core.setProgress(({ progress: _progress }) => (progress = _progress));
     expect(core.exec("-i", "video.mp4", "video.avi")).to.equal(0);
     expect(progress).to.equal(1);
     core.FS.unlink("video.avi");

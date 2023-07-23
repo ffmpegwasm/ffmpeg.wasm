@@ -1505,8 +1505,8 @@ static void print_final_stats(int64_t total_size)
     }
 }
 
-EM_JS(void, send_progress, (double progress), {
-    Module.receiveProgress(progress);
+EM_JS(void, send_progress, (double progress, double elapsed), {
+    Module.receiveProgress(progress, elapsed);
 });
 
 static void print_report(int is_last_report, int64_t timer_start, int64_t cur_time)
@@ -1650,7 +1650,7 @@ static void print_report(int is_last_report, int64_t timer_start, int64_t cur_ti
         duration = file_duration;
       }
     }
-    send_progress((double)pts_abs / (double)duration);
+    send_progress((double)pts_abs / (double)duration, (double)pts_abs);
 
     secs = FFABS(pts) / AV_TIME_BASE;
     us = FFABS(pts) % AV_TIME_BASE;
@@ -1736,7 +1736,7 @@ static void print_report(int is_last_report, int64_t timer_start, int64_t cur_ti
 
     if (is_last_report) {
       // Make sure the progress is ended with 1.
-      if (pts_abs != duration) send_progress(1);
+      if (pts_abs != duration) send_progress(1, (double)pts_abs);
       print_final_stats(total_size);
     }
 }
