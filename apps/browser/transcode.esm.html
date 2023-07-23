@@ -23,13 +23,13 @@
             message.innerHTML = `${progress * 100} %`;
           });
           await ffmpeg.load({
-            coreURL: "/packages/core/dist/umd/ffmpeg-core.js",
+            coreURL: "/packages/core/dist/esm/ffmpeg-core.js",
           });
         }
         const { name } = files[0];
         await ffmpeg.writeFile(name, await fetchFile(files[0]));
         message.innerHTML = 'Start transcoding';
-        await ffmpeg.exec('-i', name,  'output.mp4');
+        await ffmpeg.exec(['-i', name,  'output.mp4']);
         message.innerHTML = 'Complete transcoding';
         const data = await ffmpeg.readFile('output.mp4');
 
