@@ -109,13 +109,13 @@ export default function Workspace({ ffmpeg: _ffmpeg }: WorkspaceProps) {
     const progListener = ({ progress: prog }) => {
       setProgress(prog * 100);
     };
-    ffmpeg.on(FFmpeg.LOG, logListener);
-    ffmpeg.on(FFmpeg.PROGRESS, progListener);
+    ffmpeg.on("log", logListener);
+    ffmpeg.on("progress", progListener);
     const start = performance.now();
     await ffmpeg.exec(JSON.parse(args));
     setTime(performance.now() - start);
-    ffmpeg.removeListener(FFmpeg.LOG, logListener);
-    ffmpeg.removeListener(FFmpeg.PROGRESS, progListener);
+    ffmpeg.off("log", logListener);
+    ffmpeg.off("progress", progListener);
     refreshDir(path);
   };
 
