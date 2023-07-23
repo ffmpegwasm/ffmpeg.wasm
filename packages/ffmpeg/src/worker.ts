@@ -30,6 +30,10 @@ declare global {
   }
 }
 
+interface ImportedFFmpegCoreModuleFactory {
+  default: FFmpegCoreModuleFactory;
+}
+
 let ffmpeg: FFmpegCoreModule;
 
 const load = async ({
@@ -44,7 +48,18 @@ const load = async ({
     ? _workerURL
     : _coreURL.replace(/.js$/g, ".worker.js");
 
-  importScripts(coreURL);
+  try {
+    // when web worker type is `classic`.
+    importScripts(coreURL);
+  } catch (e: unknown) {
+    // when web worker type is `module`.
+    if (e instanceof TypeError && e.toString().includes("Module scripts")) {
+      (self as WorkerGlobalScope).createFFmpegCore = (
+        (await import(coreURL)) as ImportedFFmpegCoreModuleFactory
+      ).default;
+    } else throw e;
+  }
+
   ffmpeg = await (self as WorkerGlobalScope).createFFmpegCore({
     // Fix `Overload resolution failed.` when using multi-threaded ffmpeg-core.
     mainScriptUrlOrBlob: coreURL,
