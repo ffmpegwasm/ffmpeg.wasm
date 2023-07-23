@@ -16,8 +16,8 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@docusaurus/core": "^2.2.0",
-    "@docusaurus/preset-classic": "^2.2.0",
+    "@docusaurus/core": "^2.4.1",
+    "@docusaurus/preset-classic": "^2.4.1",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@ffmpeg/ffmpeg": "^0.12.0-alpha.0",
@@ -54,6 +54,6 @@
     ]
   },
   "engines": {
-    "node": ">=16.14"
+    "node": ">=18.17"
   }
 }
