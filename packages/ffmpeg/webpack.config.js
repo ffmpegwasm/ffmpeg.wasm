@@ -3,20 +3,9 @@ const path = require("path");
 module.exports = {
   mode: "production",
   devtool: "source-map",
-  entry: "./src/index.ts",
-  module: {
-    rules: [
-      {
-        test: /\.ts$/,
-        loader: "ts-loader",
-        options: {
-          transpileOnly: false,
-        },
-      },
-    ],
-  },
+  entry: "./dist/esm/index.js",
   resolve: {
-    extensions: [".ts"],
+    extensions: [".js"],
   },
   output: {
     path: path.resolve(__dirname, "dist/umd"),

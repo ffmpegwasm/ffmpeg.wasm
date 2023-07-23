@@ -3,21 +3,22 @@
   "private": true,
   "scripts": {
     "lint": "npm-run-all lint:*",
-    "lint:packages": "lerna run lint",
+    "lint:packages": "npm run lint --workspace=packages --if-present",
     "lint:root": "eslint tests",
-    "pretest": "lerna run build --scope='@ffmpeg/*'",
-    "test": "server-test test:browser:server http://localhost:3000 test:all",
+    "build": "npm run build --workspace=packages --if-present",
+    "pretest": "npm run build",
+    "test": "server-test test:browser:server 3000 test:all",
     "test:all": "npm-run-all test:*:*:*",
     "test:browser": "mocha-headless-chrome -a enable-features=SharedArrayBuffer",
     "test:browser:core:mt": "npm run test:browser -- -f http://localhost:3000/tests/ffmpeg-core-mt.test.html",
     "test:browser:core:st": "npm run test:browser -- -f http://localhost:3000/tests/ffmpeg-core-st.test.html",
     "test:browser:ffmpeg:mt": "npm run test:browser -- -f http://localhost:3000/tests/ffmpeg-mt.test.html",
     "test:browser:ffmpeg:st": "npm run test:browser -- -f http://localhost:3000/tests/ffmpeg-st.test.html",
-    "test:browser:server": "http-server -c-1 --cors -p 3000 .",
+    "test:browser:server": "http-server -c-1 -s -p 3000 .",
     "test:node": "mocha --exit --bail -t 60000",
     "test:node:core:mt": "npm run test:node -- --require tests/test-helper-mt.js tests/ffmpeg-core.test.js",
     "test:node:core:st": "npm run test:node -- --require tests/test-helper-st.js tests/ffmpeg-core.test.js",
-    "prepublishOnly": "lerna run build --scope='@ffmpeg/*'"
+    "prepublishOnly": "npm run build"
   },
   "workspaces": [
     "packages/*",
@@ -26,10 +27,9 @@
   "devDependencies": {
     "chai": "^4.3.6",
     "http-server": "^14.1.1",
-    "lerna": "^5.4.3",
     "mocha": "^10.0.0",
     "mocha-headless-chrome": "^4.0.0",
     "npm-run-all": "^4.1.5",
-    "start-server-and-test": "^1.14.0"
+    "start-server-and-test": "^2.0.0"
   }
 }

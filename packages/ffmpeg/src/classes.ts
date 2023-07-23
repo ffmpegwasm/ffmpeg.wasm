@@ -1,5 +1,4 @@
-import EventEmitter from "events";
-import { FFMessageType } from "./const";
+import { FFMessageType } from "./const.js";
 import {
   CallbackData,
   Callbacks,
@@ -10,50 +9,13 @@ import {
   IsFirst,
   LogEvent,
   Message,
-  Progress,
+  ProgressEvent,
+  LogEventCallback,
+  ProgressEventCallback,
   FileData,
-} from "./types";
-import { getMessageID } from "./utils";
-import { ERROR_TERMINATED, ERROR_NOT_LOADED } from "./errors";
-
-export declare interface FFmpeg {
-  /**
-   * Listen to log events from `ffmpeg.exec()`.
-   *
-   * @example
-   * ```ts
-   * ffmpeg.on(FFmpeg.LOG, ({ message }) => {
-   *   // ...
-   * })
-   * ```
-   *
-   * @remarks
-   * log includes output to stdout and stderr.
-   *
-   * @category Event
-   */
-  on(event: typeof FFmpeg.LOG, listener: (log: LogEvent) => void): this;
-  /**
-   * Listen to progress events from `ffmpeg.exec()`.
-   *
-   * @example
-   * ```ts
-   * ffmpeg.on(FFmpeg.PROGRESS, ({ progress }) => {
-   *   // ...
-   * })
-   * ```
-   *
-   * @remarks
-   * The progress events are accurate only when the length of
-   * input and output video/audio file are the same.
-   *
-   * @category Event
-   */
-  on(
-    event: typeof FFmpeg.PROGRESS,
-    listener: (progress: Progress) => void
-  ): this;
-}
+} from "./types.js";
+import { getMessageID } from "./utils.js";
+import { ERROR_TERMINATED, ERROR_NOT_LOADED } from "./errors.js";
 
 /**
  * Provides APIs to interact with ffmpeg web worker.
@@ -63,10 +25,7 @@ export declare interface FFmpeg {
  * const ffmpeg = new FFmpeg();
  * ```
  */
-export class FFmpeg extends EventEmitter {
-  /** @event */ static readonly LOG = "log" as const;
-  /** @event */ static readonly PROGRESS = "progress" as const;
-
+export class FFmpeg {
   #worker: Worker | null = null;
   /**
    * #resolves and #rejects tracks Promise resolves and rejects to
@@ -75,11 +34,10 @@ export class FFmpeg extends EventEmitter {
   #resolves: Callbacks = {};
   #rejects: Callbacks = {};
 
-  public loaded = false;
+  #logEventCallbacks: LogEventCallback[] = [];
+  #progressEventCallbacks: ProgressEventCallback[] = [];
 
-  constructor() {
-    super();
-  }
+  public loaded = false;
 
   /**
    * register worker message event handlers.
@@ -105,10 +63,12 @@ export class FFmpeg extends EventEmitter {
             this.#resolves[id](data);
             break;
           case FFMessageType.LOG:
-            this.emit(FFmpeg.LOG, data as LogEvent);
+            this.#logEventCallbacks.forEach((f) => f(data as LogEvent));
             break;
           case FFMessageType.PROGRESS:
-            this.emit(FFmpeg.PROGRESS, data as Progress);
+            this.#progressEventCallbacks.forEach((f) =>
+              f(data as ProgressEvent)
+            );
             break;
           case FFMessageType.ERROR:
             this.#rejects[id](data);
@@ -140,6 +100,53 @@ export class FFmpeg extends EventEmitter {
   };
 
   /**
+   * Listen to log or prgress events from `ffmpeg.exec()`.
+   *
+   * @example
+   * ```ts
+   * ffmpeg.on(FFmpeg.LOG, ({ message }) => {
+   *   // ...
+   * })
+   * ```
+   *
+   * @remarks
+   * log includes output to stdout and stderr.
+   *
+   * @example
+   * ```ts
+   * ffmpeg.on(FFmpeg.PROGRESS, ({ progress }) => {
+   *   // ...
+   * })
+   * ```
+   *
+   * @remarks
+   * The progress events are accurate only when the length of
+   * input and output video/audio file are the same.
+   *
+   */
+  public on(
+    event: "log" | "progress",
+    callback: LogEventCallback | ProgressEventCallback
+  ) {
+    if (event === "log") {
+      this.#logEventCallbacks.push(callback as LogEventCallback);
+    } else if (event === "progress") {
+      this.#progressEventCallbacks.push(callback as ProgressEventCallback);
+    }
+  }
+
+  public off(
+    event: "log" | "progress",
+    callback: LogEventCallback | ProgressEventCallback
+  ) {
+    if (event === "log") {
+      this.#logEventCallbacks.filter((f) => f !== callback);
+    } else if (event === "progress") {
+      this.#progressEventCallbacks.filter((f) => f !== callback);
+    }
+  }
+
+  /**
    * Loads ffmpeg-core inside web worker. It is required to call this method first
    * as it initializes WebAssembly and other essential variables.
    *
@@ -148,7 +155,9 @@ export class FFmpeg extends EventEmitter {
    */
   public load = (config: FFMessageLoadConfig = {}): Promise<IsFirst> => {
     if (!this.#worker) {
-      this.#worker = new Worker(new URL("./worker", import.meta.url));
+      this.#worker = new Worker(new URL("./worker.js", import.meta.url), {
+        type: "module",
+      });
       this.#registerHandlers();
     }
     return this.#send({

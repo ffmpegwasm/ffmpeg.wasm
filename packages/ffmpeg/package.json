@@ -17,7 +17,7 @@
     "clean": "rimraf dist",
     "build:umd": "webpack",
     "build:esm": "tsc -p tsconfig.esm.json",
-    "build": "npm-run-all clean build:*",
+    "build": "npm-run-all clean build:esm build:umd",
     "docs": "typedoc --entryPointStrategy expand ./src",
     "docs:serve": "http-server docs"
   },
@@ -62,7 +62,6 @@
     "worker-loader": "^3.0.8"
   },
   "dependencies": {
-    "@ffmpeg/types": "^0.12.0-alpha.1",
-    "events": "^3.3.0"
+    "@ffmpeg/types": "^0.12.0-alpha.1"
   }
 }

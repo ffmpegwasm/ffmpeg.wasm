@@ -120,11 +120,11 @@ describe(genName("FFmpeg.exec()"), function () {
     const listener = ({ message }) => {
       m = message;
     };
-    ffmpeg.on(FFmpeg.LOG, listener);
+    ffmpeg.on("log", listener);
     const ret = await ffmpeg.exec(["-h"]);
     expect(ret).to.equal(0);
     expect(m).to.be.a("string");
-    ffmpeg.removeListener(FFmpeg.LOG, listener);
+    ffmpeg.off("log", listener);
   });
 
   it("should transcode mp4 to avi", async () => {
@@ -132,11 +132,11 @@ describe(genName("FFmpeg.exec()"), function () {
     const listener = ({ progress }) => {
       p = progress;
     };
-    ffmpeg.on(FFmpeg.PROGRESS, listener);
+    ffmpeg.on("progress", listener);
     const ret = await ffmpeg.exec(["-i", "video.mp4", "video.avi"]);
     expect(ret).to.equal(0);
     expect(p).to.equal(1);
-    ffmpeg.removeListener(FFmpeg.PROGRESS, listener);
+    ffmpeg.off("progress", listener);
   });
 
   it("should stop if timeout", async () => {
