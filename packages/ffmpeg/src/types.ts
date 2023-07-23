@@ -117,7 +117,7 @@ export interface LogEvent {
   message: string;
 }
 
-export interface Progress {
+export interface ProgressEvent {
   progress: number;
 }
 
@@ -137,7 +137,7 @@ export type CallbackData =
   | ExitCode
   | ErrorMessage
   | LogEvent
-  | Progress
+  | ProgressEvent
   | IsFirst
   | OK
   | Error
@@ -147,6 +147,9 @@ export type CallbackData =
 export interface Callbacks {
   [id: number | string]: (data: CallbackData) => void;
 }
+
+export type LogEventCallback = (event: LogEvent) => void;
+export type ProgressEventCallback = (event: ProgressEvent) => void;
 
 export interface FFMessageEventCallback {
   data: {

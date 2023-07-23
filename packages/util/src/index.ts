@@ -1,9 +1,9 @@
 import {
   ERROR_RESPONSE_BODY_READER,
   ERROR_INCOMPLETED_DOWNLOAD,
-} from "./errors";
-import { HeaderContentLength } from "./const";
-import { ProgressCallback } from "./types";
+} from "./errors.js";
+import { HeaderContentLength } from "./const.js";
+import { ProgressCallback } from "./types.js";
 
 export const readFromBlobOrFile = (blob: Blob | File): Promise<Uint8Array> =>
   new Promise((resolve, reject) => {

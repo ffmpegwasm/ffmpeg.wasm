@@ -21,8 +21,8 @@ import type {
   FSNode,
   FileData,
 } from "./types";
-import { CORE_URL, FFMessageType } from "./const";
-import { ERROR_UNKNOWN_MESSAGE_TYPE, ERROR_NOT_LOADED } from "./errors";
+import { CORE_URL, FFMessageType } from "./const.js";
+import { ERROR_UNKNOWN_MESSAGE_TYPE, ERROR_NOT_LOADED } from "./errors.js";
 
 declare global {
   interface WorkerGlobalScope {

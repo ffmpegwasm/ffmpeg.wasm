@@ -4,6 +4,7 @@
     "rootDir": "src",
     "declaration": true,
     "outDir": "./dist/esm",
-    "target": "esnext"
+    "target": "esnext",
+    "moduleResolution": "nodenext"
   }
 }
