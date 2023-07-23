@@ -74,8 +74,8 @@ function setProgress(handler) {
   Module["progress"] = handler;
 }
 
-function receiveProgress(progress) {
-  Module["progress"](progress);
+function receiveProgress(progress, elapsed) {
+  Module["progress"]({ progress, elapsed });
 }
 
 function reset() {

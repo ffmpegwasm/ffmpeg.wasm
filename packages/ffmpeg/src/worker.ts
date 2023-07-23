@@ -72,8 +72,11 @@ const load = async ({
   ffmpeg.setLogger((data) =>
     self.postMessage({ type: FFMessageType.LOG, data })
   );
-  ffmpeg.setProgress((progress: number) =>
-    self.postMessage({ type: FFMessageType.PROGRESS, data: { progress } })
+  ffmpeg.setProgress((data) =>
+    self.postMessage({
+      type: FFMessageType.PROGRESS,
+      data,
+    })
   );
   return first;
 };
