@@ -119,7 +119,7 @@ export interface LogEvent {
 
 export interface ProgressEvent {
   progress: number;
-  elapsed: number;
+  time: number;
 }
 
 export type ExitCode = number;
