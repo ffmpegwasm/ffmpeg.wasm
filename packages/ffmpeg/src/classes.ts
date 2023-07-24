@@ -123,6 +123,7 @@ export class FFmpeg {
    * The progress events are accurate only when the length of
    * input and output video/audio file are the same.
    *
+   * @category FFmpeg
    */
   public on(
     event: "log" | "progress",
@@ -135,6 +136,11 @@ export class FFmpeg {
     }
   }
 
+  /**
+   * Unlisten to log or prgress events from `ffmpeg.exec()`.
+   *
+   * @category FFmpeg
+   */
   public off(
     event: "log" | "progress",
     callback: LogEventCallback | ProgressEventCallback
