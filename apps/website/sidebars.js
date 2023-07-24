@@ -24,8 +24,7 @@ const sidebars = {
       label: "Getting Started",
       items: [
         "getting-started/installation",
-        "getting-started/configuration",
-        "getting-started/multi-thread",
+        "getting-started/usage",
         "getting-started/lib-versions",
       ],
     },
