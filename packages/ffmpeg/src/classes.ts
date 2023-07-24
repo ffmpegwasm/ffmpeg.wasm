@@ -104,7 +104,7 @@ export class FFmpeg {
    *
    * @example
    * ```ts
-   * ffmpeg.on(FFmpeg.LOG, ({ message }) => {
+   * ffmpeg.on("log", ({ type, message }) => {
    *   // ...
    * })
    * ```
@@ -114,7 +114,7 @@ export class FFmpeg {
    *
    * @example
    * ```ts
-   * ffmpeg.on(FFmpeg.PROGRESS, ({ progress }) => {
+   * ffmpeg.on("progress", ({ progress, time }) => {
    *   // ...
    * })
    * ```

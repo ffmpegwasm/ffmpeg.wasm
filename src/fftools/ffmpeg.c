@@ -1505,8 +1505,8 @@ static void print_final_stats(int64_t total_size)
     }
 }
 
-EM_JS(void, send_progress, (double progress, double elapsed), {
-    Module.receiveProgress(progress, elapsed);
+EM_JS(void, send_progress, (double progress, double time), {
+    Module.receiveProgress(progress, time);
 });
 
 static void print_report(int is_last_report, int64_t timer_start, int64_t cur_time)
