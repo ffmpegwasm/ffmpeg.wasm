@@ -32,7 +32,7 @@ development!
 
 ## How to Use :rocket:
 
-> It is recommended to read [Introduction](/docs/intro) first to learn
+> It is recommended to read [Overview](/docs/overview) first to learn
 ffmpeg.wasm fundamentals.
 
 Demo Video:

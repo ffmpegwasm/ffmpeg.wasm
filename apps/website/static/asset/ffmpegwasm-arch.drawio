@@ -1,0 +1,80 @@
+<mxfile host="Electron" modified="2023-07-25T14:12:19.793Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.1 Chrome/112.0.5615.204 Electron/24.6.1 Safari/537.36" etag="yk2PXCvCPGaUw3GiHUln" version="21.6.1" type="device">
+  <diagram name="Page-1" id="EXaSSQoJnIOsS1fF1PBt">
+    <mxGraphModel dx="1114" dy="829" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="veUAN4s3yOlf8Hxa7Fyb-27" value="if core is multithread version" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;dashed=1;fontSize=14;fontFamily=Noto Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DNoto%2BSans;" vertex="1" parent="1">
+          <mxGeometry x="720" y="110" width="220" height="420" as="geometry" />
+        </mxCell>
+        <mxCell id="veUAN4s3yOlf8Hxa7Fyb-7" value="Sends Message" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;fontSize=14;fontFamily=Noto Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DNoto%2BSans;" edge="1" parent="1" source="veUAN4s3yOlf8Hxa7Fyb-1" target="veUAN4s3yOlf8Hxa7Fyb-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="veUAN4s3yOlf8Hxa7Fyb-1" value="ffmpeg&lt;br style=&quot;font-size: 14px;&quot;&gt;(JavaScript)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;fontSize=14;fontFamily=Noto Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DNoto%2BSans;" vertex="1" parent="1">
+          <mxGeometry x="130" y="110" width="120" height="420" as="geometry" />
+        </mxCell>
+        <mxCell id="veUAN4s3yOlf8Hxa7Fyb-2" value="Main Thread" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontFamily=Noto Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DNoto%2BSans;" vertex="1" parent="1">
+          <mxGeometry x="145" y="50" width="90" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="veUAN4s3yOlf8Hxa7Fyb-8" value="Sends Message" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;fontSize=14;fontFamily=Noto Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DNoto%2BSans;" edge="1" parent="1" source="veUAN4s3yOlf8Hxa7Fyb-3" target="veUAN4s3yOlf8Hxa7Fyb-1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="veUAN4s3yOlf8Hxa7Fyb-3" value="ffmpeg.worker&lt;br style=&quot;font-size: 14px;&quot;&gt;(JavaScript)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;verticalAlign=top;fontSize=14;fontFamily=Noto Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DNoto%2BSans;" vertex="1" parent="1">
+          <mxGeometry x="450" y="110" width="150" height="420" as="geometry" />
+        </mxCell>
+        <mxCell id="veUAN4s3yOlf8Hxa7Fyb-4" value="Web Worker&lt;br style=&quot;font-size: 14px;&quot;&gt;(Worker Thread)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontFamily=Noto Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DNoto%2BSans;" vertex="1" parent="1">
+          <mxGeometry x="465" y="50" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="veUAN4s3yOlf8Hxa7Fyb-5" value="load()" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;fontFamily=Noto Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DNoto%2BSans;" vertex="1" parent="1">
+          <mxGeometry x="140" y="210" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="veUAN4s3yOlf8Hxa7Fyb-6" value="exec()" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;fontFamily=Noto Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DNoto%2BSans;" vertex="1" parent="1">
+          <mxGeometry x="140" y="280" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="veUAN4s3yOlf8Hxa7Fyb-22" value="Spawns" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;fontSize=14;fontFamily=Noto Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DNoto%2BSans;" edge="1" parent="1" source="veUAN4s3yOlf8Hxa7Fyb-9" target="veUAN4s3yOlf8Hxa7Fyb-20">
+          <mxGeometry x="0.0087" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="veUAN4s3yOlf8Hxa7Fyb-23" value="Spawns" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=14;fontFamily=Noto Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DNoto%2BSans;" edge="1" parent="1" source="veUAN4s3yOlf8Hxa7Fyb-9" target="veUAN4s3yOlf8Hxa7Fyb-15">
+          <mxGeometry x="0.0025" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="veUAN4s3yOlf8Hxa7Fyb-24" value="Spawns" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=14;fontFamily=Noto Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DNoto%2BSans;" edge="1" parent="1" source="veUAN4s3yOlf8Hxa7Fyb-9" target="veUAN4s3yOlf8Hxa7Fyb-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="veUAN4s3yOlf8Hxa7Fyb-9" value="ffmpeg-core&lt;br style=&quot;font-size: 14px;&quot;&gt;(WebAssembly)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;verticalAlign=top;fontSize=14;fontFamily=Noto Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DNoto%2BSans;" vertex="1" parent="1">
+          <mxGeometry x="465" y="210" width="120" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="veUAN4s3yOlf8Hxa7Fyb-10" value="File System" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=14;fontFamily=Noto Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DNoto%2BSans;" vertex="1" parent="1">
+          <mxGeometry x="475" y="378" width="100" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="veUAN4s3yOlf8Hxa7Fyb-25" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;startArrow=classic;startFill=1;fontSize=14;fontFamily=Noto Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DNoto%2BSans;" edge="1" parent="1" source="veUAN4s3yOlf8Hxa7Fyb-11" target="veUAN4s3yOlf8Hxa7Fyb-10">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="veUAN4s3yOlf8Hxa7Fyb-11" value="exec()" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;fontFamily=Noto Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DNoto%2BSans;" vertex="1" parent="1">
+          <mxGeometry x="475" y="260" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="veUAN4s3yOlf8Hxa7Fyb-15" value="ffmpeg-core.worker&lt;br style=&quot;font-size: 14px;&quot;&gt;(JavaScript)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;verticalAlign=middle;fontSize=14;fontFamily=Noto Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DNoto%2BSans;" vertex="1" parent="1">
+          <mxGeometry x="755" y="160" width="150" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="veUAN4s3yOlf8Hxa7Fyb-20" value="ffmpeg-core.worker&lt;br style=&quot;font-size: 14px;&quot;&gt;(JavaScript)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;verticalAlign=middle;fontSize=14;fontFamily=Noto Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DNoto%2BSans;" vertex="1" parent="1">
+          <mxGeometry x="755" y="290" width="150" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="veUAN4s3yOlf8Hxa7Fyb-21" value="ffmpeg-core.worker&lt;br style=&quot;font-size: 14px;&quot;&gt;(JavaScript)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;verticalAlign=middle;fontSize=14;fontFamily=Noto Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DNoto%2BSans;" vertex="1" parent="1">
+          <mxGeometry x="755" y="410" width="150" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="veUAN4s3yOlf8Hxa7Fyb-26" value="File I/O" style="text;html=1;strokeColor=none;fillColor=#e1d5e7;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontFamily=Noto Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DNoto%2BSans;" vertex="1" parent="1">
+          <mxGeometry x="495" y="330" width="60" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

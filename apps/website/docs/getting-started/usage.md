@@ -3,7 +3,7 @@
 Learn the basics of using ffmpeg.wasm.
 
 :::note
-It is recommended to read [introduction](/docs/intro) to fully understand the
+It is recommended to read [overview](/docs/overview) to fully understand the
 rationale.
 :::
 
