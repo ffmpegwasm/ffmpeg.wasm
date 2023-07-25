@@ -14,6 +14,8 @@ a ~31 MB ffmpeg-core.wasm.
 :::
 
 ```jsx live
+// import { FFmpeg } from '@ffmpeg/ffmpeg';
+// import { fetchFile } from '@ffmpeg/util';
 function() {
     const [loaded, setLoaded] = useState(false);
     const ffmpegRef = useRef(new FFmpeg());
@@ -64,6 +66,8 @@ a ~31 MB ffmpeg-core.wasm.
 :::
 
 ```jsx live
+// import { FFmpeg } from '@ffmpeg/ffmpeg';
+// import { fetchFile, toBlobURL } from '@ffmpeg/util';
 function() {
     const [loaded, setLoaded] = useState(false);
     const ffmpegRef = useRef(new FFmpeg());
