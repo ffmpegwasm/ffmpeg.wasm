@@ -23,23 +23,6 @@ export interface FFMessageLoadConfig {
    */
   workerURL?: string;
   /**
-   * When `blob` is true, the content of `coreURL`, `wasmURL` and `workerURL`
-   * will be fetched and convert to blob URL. This avoids problems like CORS
-   * and provides download progress than can be listened like below:
-   *
-   * @example
-   * ```ts
-   * const ffmpeg = new FFmpeg();
-   * ffmpeg.on(FFmpeg.DOWNLOAD, (ev) => {
-   *   console.log(ev);
-   * })
-   * await ffmpeg.load();
-   * ```
-   *
-   * @defaultValue `true`
-   */
-  blob?: boolean;
-  /**
    * When `thread` is true, ffmpeg imports `ffmpeg-core.worker.js` and thus
    * makes multi-threaded core work.
    *
