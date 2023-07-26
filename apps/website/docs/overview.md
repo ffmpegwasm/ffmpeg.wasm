@@ -1,3 +1,4 @@
+import MuiThemeProvider from "@site/src/components/common/MuiThemeProvider";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -49,44 +50,46 @@ be spawned by `ffmpeg-core` inside `ffmpeg.worker`
 
 ffmpeg.wasm is built with toolchains / libraries:
 
-<TableContainer>
-  <Table sx={{ minWidth: 650 }} aria-label="simple table">
-    <TableHead>
-      <TableRow>
-        <TableCell align="center">Name</TableCell>
-        <TableCell align="center">Version</TableCell>
-        <TableCell align="center">Note</TableCell>
-      </TableRow>
-    </TableHead>
-    <TableBody>
-      {[
-        {name: "Emscripten", version: "3.1.40", note: ""},
-        {name: "FFmpeg", version: "n5.1.3", note: ""},
-        {name: "x264", version: "0.164.x", note: ""},
-        {name: "x265", version: "3.4", note: ""},
-        {name: "libvpx", version: "v1.9.0", note: ""},
-        {name: "lame", version: "3.100", note: ""},
-        {name: "ogg", version: "v1.3.4", note: ""},
-        {name: "theora", version: "v1.1.1", note: ""},
-        {name: "opus", version: "v1.3.1", note: ""},
-        {name: "vorbis", version: "v1.3.3", note: ""},
-        {name: "zlib", version: "v1.2.11", note: ""},
-        {name: "libwebp", version: "v1.1.0", note: ""},
-        {name: "freetype2", version: "v2.10.4", note: ""},
-        {name: "fribidi", version: "v1.0.9", note: ""},
-        {name: "harfbuzz", version: "5.2.0", note: ""},
-        {name: "libass", version: "0.15.0", note: ""},
-       ].map((row) => (
-        <TableRow
-          key={row.name}
-        >
-          <TableCell component="th" scope="row">
-            {row.name}
-          </TableCell>
-          <TableCell align="center">{row.version}</TableCell>
-          <TableCell align="center">{row.note}</TableCell>
-        </TableRow>
-      ))}
-    </TableBody>
-  </Table>
-</TableContainer>
+<MuiThemeProvider>
+    <TableContainer>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell align="center">Name</TableCell>
+            <TableCell align="center">Version</TableCell>
+            <TableCell align="center">Note</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {[
+            {name: "Emscripten", version: "3.1.40", note: ""},
+            {name: "FFmpeg", version: "n5.1.3", note: ""},
+            {name: "x264", version: "0.164.x", note: ""},
+            {name: "x265", version: "3.4", note: ""},
+            {name: "libvpx", version: "v1.9.0", note: ""},
+            {name: "lame", version: "3.100", note: ""},
+            {name: "ogg", version: "v1.3.4", note: ""},
+            {name: "theora", version: "v1.1.1", note: ""},
+            {name: "opus", version: "v1.3.1", note: ""},
+            {name: "vorbis", version: "v1.3.3", note: ""},
+            {name: "zlib", version: "v1.2.11", note: ""},
+            {name: "libwebp", version: "v1.1.0", note: ""},
+            {name: "freetype2", version: "v2.10.4", note: ""},
+            {name: "fribidi", version: "v1.0.9", note: ""},
+            {name: "harfbuzz", version: "5.2.0", note: ""},
+            {name: "libass", version: "0.15.0", note: ""},
+           ].map((row) => (
+            <TableRow
+              key={row.name}
+            >
+              <TableCell component="th" scope="row">
+                {row.name}
+              </TableCell>
+              <TableCell align="left">{row.version}</TableCell>
+              <TableCell align="left">{row.note}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+</MuiThemeProvider>

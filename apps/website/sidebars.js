@@ -29,7 +29,7 @@ const sidebars = {
     {
       type: "category",
       label: "API",
-      items: ["api/classes/FFmpeg"],
+      items: ["api/ffmpeg/index", "api/util/index"],
     },
     {
       type: "category",
