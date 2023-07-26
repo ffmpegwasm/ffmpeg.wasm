@@ -15,11 +15,9 @@
     "dev": "webpack -w --mode development",
     "lint": "eslint src",
     "clean": "rimraf dist",
-    "build:umd": "webpack",
     "build:esm": "tsc -p tsconfig.esm.json",
-    "build": "npm-run-all clean build:esm build:umd",
-    "docs": "typedoc --entryPointStrategy expand ./src",
-    "docs:serve": "http-server docs"
+    "build:umd": "webpack",
+    "build": "npm run clean && npm run build:esm && npm run build:umd"
   },
   "files": [
     "dist",
@@ -52,11 +50,8 @@
     "@typescript-eslint/eslint-plugin": "^6.1.0",
     "@typescript-eslint/parser": "^6.1.0",
     "eslint": "^8.45.0",
-    "http-server": "^14.1.1",
-    "npm-run-all": "^4.1.5",
     "rimraf": "^5.0.1",
     "ts-loader": "^9.4.4",
-    "typedoc": "^0.24.8",
     "typescript": "^5.1.6",
     "webpack-cli": "^5.1.4",
     "worker-loader": "^3.0.8"
