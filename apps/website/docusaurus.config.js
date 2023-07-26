@@ -56,6 +56,10 @@ const config = {
             require.resolve("@fontsource/roboto/700.css"),
           ],
         },
+        gtag: {
+          trackingID: "G-8NBTQ7N6RB",
+          anonymizeIP: true,
+        },
       }),
     ],
   ],
