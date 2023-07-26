@@ -161,7 +161,7 @@ function() {
             await fetchFile('/video/video-15s.avi')
         );
         // The exec should stop after 1 second.
-        await ffmpeg.exec(['-i', 'input.avi', 'output.mp4'], 1);
+        await ffmpeg.exec(['-i', 'input.avi', 'output.mp4'], 1000);
         const data = await ffmpeg.readFile('output.mp4');
         videoRef.current.src =
             URL.createObjectURL(new Blob([data.buffer], {type: 'video/mp4'}));
