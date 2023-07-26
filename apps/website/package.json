@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "prestart": "rm -rf docs/api",
+    "build:packages": "cd ../.. && npm run build",
+    "clean": "rm -rf docs/api",
+    "prestart": "npm run clean && npm run build:packages",
     "start": "docusaurus start",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
