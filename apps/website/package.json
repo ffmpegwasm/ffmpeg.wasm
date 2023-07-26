@@ -8,6 +8,7 @@
     "clean": "rm -rf docs/api",
     "prestart": "npm run clean && npm run build:packages",
     "start": "docusaurus start",
+    "prebuild": "npm run clean && npm run build:packages",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
