@@ -1,9 +1,4 @@
-import Playground from "@site/src/components/Playground";
-import CoreSwitcher from "@site/src/components/Playground/CoreSwitcher";
-import FileSystemManager from
-"@site/src/components/Playground/Workspace/FileSystemManager";
-import Editor from
-"@site/src/components/Playground/Workspace/Editor";
+import BrowserOnly from '@docusaurus/BrowserOnly';
 import MuiThemeProvider from "@site/src/components/common/MuiThemeProvider";
 import ThemedButton from "@site/src/components/common/ThemedButton";
 import ThemedIconButton from "@site/src/components/common/ThemedIconButton";
@@ -26,7 +21,12 @@ development!
 
 :::
 
-<Playground />
+<BrowserOnly>
+  {() => {
+    const Playground = require('@site/src/components/Playground').default;
+    return <Playground/>
+  }}
+</BrowserOnly>
 
 <div style={{ height: 32 }} />
 
@@ -48,7 +48,12 @@ The assets are downloaded automatically when you enter the Playground. You can
 choose to use multithreading version instead by click on the switch:
 
 <MuiThemeProvider>
-  <CoreSwitcher />
+  <BrowserOnly>
+  {() => {
+    const CoreSwitcher = require('@site/src/components/Playground/CoreSwitcher').default;
+    return <CoreSwitcher/>;
+  }}
+  </BrowserOnly>
 </MuiThemeProvider>
 
 #### Load files to in-memory File System
@@ -58,16 +63,23 @@ System to make sure these files can be consumed by the ffmpeg.wasm APIs:
 
 <div style={{ maxWidth: 260 }}>
   <MuiThemeProvider>
-    <FileSystemManager
-      nodes={[
-        {name: "..", isDir: true},
-        {name: "tmp", isDir: true},
-        {name: "home", isDir: true},
-        {name: "dev", isDir: true},
-        {name: "proc", isDir: true},
-        {name: "video.avi", isDir: false},
-      ]}
-    />
+    <BrowserOnly>
+    {() => {
+      const FileSystemManager = require('@site/src/components/Playground/Workspace/FileSystemManager').default;
+      return (
+        <FileSystemManager
+          nodes={[
+            {name: "..", isDir: true},
+            {name: "tmp", isDir: true},
+            {name: "home", isDir: true},
+            {name: "dev", isDir: true},
+            {name: "proc", isDir: true},
+            {name: "video.avi", isDir: false},
+          ]}
+        />
+      );
+    }}
+    </BrowserOnly>
   </MuiThemeProvider>
 </div>
 
@@ -92,7 +104,14 @@ and hit <ThemedButton variant="contained">Run</ThemedButton> afterward:
 
 <div style={{ maxWidth: 480 }}>
   <MuiThemeProvider>
-    <Editor args={JSON.stringify(["-i", "video.avi", "video.mp4"], null, 2)} />
+    <BrowserOnly>
+    {() => {
+      const Editor = require('@site/src/components/Playground/Workspace/Editor').default;
+      return (
+        <Editor args={JSON.stringify(["-i", "video.avi", "video.mp4"], null, 2)} />
+      );
+    }}
+    </BrowserOnly>
   </MuiThemeProvider>
 </div>
 
