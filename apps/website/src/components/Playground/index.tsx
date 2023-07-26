@@ -22,6 +22,7 @@ export default function Playground() {
   const ffmpeg = useRef(new FFmpeg());
 
   const load = async (mt: boolean = false) => {
+    setState(State.LOADING);
     const setProgress = ({ url: _url, received: _received }) => {
       setURL(_url as string);
       setReceived(_received);
@@ -48,7 +49,6 @@ export default function Playground() {
           setProgress
         )
       : "";
-    setState(State.LOADING);
     ffmpeg.current.terminate();
     await ffmpeg.current.load({
       coreURL,
