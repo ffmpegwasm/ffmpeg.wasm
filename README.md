@@ -14,6 +14,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Downloads Total](https://img.shields.io/npm/dt/@ffmpeg/ffmpeg.svg)](https://www.npmjs.com/package/@ffmpeg/ffmpeg)
 [![Downloads Month](https://img.shields.io/npm/dm/@ffmpeg/ffmpeg.svg)](https://www.npmjs.com/package/@ffmpeg/ffmpeg)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/1943b6d3-45ad-4b46-bfba-cb8d5716604c/deploy-status)](https://app.netlify.com/sites/ffmpegwasm/deploys)
 
 Join us on Discord!
 
@@ -23,9 +24,9 @@ ffmpeg.wasm is a pure Webassembly / Javascript port of FFmpeg. It enables video 
 
 ## Documentation
 
-- [Introduction](https://ffmpegwasm.netlify.app/docs/intro)
+- [Introduction](https://ffmpegwasm.netlify.app/docs/overview)
 - [Getting
     Started](https://ffmpegwasm.netlify.app/docs/getting-started/installation)
-- [API](https://ffmpegwasm.netlify.app/docs/api/classes/FFmpeg)
+- [API](https://ffmpegwasm.netlify.app/docs/api/ffmpeg/)
 - [FAQ](https://ffmpegwasm.netlify.app/docs/faq)
 - [Contribution](https://ffmpegwasm.netlify.app/contribution/core)
