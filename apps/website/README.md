@@ -4,6 +4,9 @@ This website is built using [Docusaurus 2](https://docusaurus.io/), a modern sta
 
 ### Installation
 
+When cloning the repository, make sure you have git-lfs installed. If you install git-lfs after cloning, simple run
+`git lfs pull` to download large files.
+
 ```
 $ npm install
 ```
