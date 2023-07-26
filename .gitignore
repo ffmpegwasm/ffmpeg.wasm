@@ -5,3 +5,6 @@ dist
 
 # ide
 .idea/
+
+# Local Netlify folder
+.netlify
