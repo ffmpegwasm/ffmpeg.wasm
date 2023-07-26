@@ -8,7 +8,7 @@ const NO_LOAD = Error('ffmpeg.wasm is not ready, make sure you have completed lo
 module.exports = (_options = {}) => {
   const {
     log: optLog,
-    logger,
+    logger: optLogger,
     progress: optProgress,
     ...options
   } = {
@@ -21,7 +21,7 @@ module.exports = (_options = {}) => {
   let runResolve = null;
   let runReject = null;
   let running = false;
-  let customLogger = () => {};
+  let customLogger = optLogger;
   let logging = optLog;
   let progress = optProgress;
   let duration = 0;
@@ -94,7 +94,7 @@ module.exports = (_options = {}) => {
    * In browser environment, the ffmpeg.wasm-core script is fetch from
    * CDN and can be assign to a local path by assigning `corePath`.
    * In node environment, we use dynamic require and the default `corePath`
-   * is `$ffmpeg/core`.
+   * is `@ffmpeg/core`.
    *
    * Typically the load() func might take few seconds to minutes to complete,
    * better to do it as early as possible.
@@ -115,6 +115,10 @@ module.exports = (_options = {}) => {
         wasmPath,
       } = await getCreateFFmpegCore(options);
       Core = await createFFmpegCore({
+        /*
+         * Avoid automatic exit after main is run
+         */
+        noExitRuntime: true,
         /*
          * Assign mainScriptUrlOrBlob fixes chrome extension web worker issue
          * as there is no document.currentScript in the context of content_scripts
@@ -141,7 +145,7 @@ module.exports = (_options = {}) => {
           return prefix + path;
         },
       });
-      ffmpeg = Core.cwrap(options.mainName || 'proxy_main', 'number', ['number', 'number']);
+      ffmpeg = Core.cwrap(options.mainName || '_emscripten_proxy_main', 'number', ['number', 'number']);
       log('info', 'ffmpeg-core loaded');
     } else {
       throw Error('ffmpeg.wasm was loaded, you should not load it again, use ffmpeg.isLoaded() to check next time.');
@@ -237,7 +241,7 @@ module.exports = (_options = {}) => {
       }
       running = false;
       try {
-        Core.exit(1);
+        Core.exit(0);
       } catch (err) {
         log(err.message);
         if (runReject) {
