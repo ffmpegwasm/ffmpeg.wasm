@@ -1,0 +1,52 @@
+---
+slug: release-ffmpeg.wasm-0.12.0
+title: Release ffmpeg.wasm 0.12.0
+authors: [jeromewu]
+tags: [ffmpeg.wasm]
+---
+
+Finally, a new start. :tada:
+
+<!--truncate-->
+
+I started to work on ffmpeg.wasm around Oct. 2019, it was the time
+WebAssembly is still in very early stage and transpiling FFmpeg to ffmpeg.wasm
+was very challenging. (but possible as there was a pioneer project
+[ffmpeg.js](https://github.com/Kagami/ffmpeg.js/)) Over these years, I
+have been trying to make ffmpeg.wasm to be production-grade, but failed
+as FFmpeg is such a powerful framework and WebAssembly is still evolving.
+It wasn't easy to support even one requirements (ex. RTSP) from the community
+and I found it really hard to continue sometimes. In the end, I decided to
+pause a little while and rethink what should be done in the next stage.
+
+That's why I started to work on ffmpeg.wasm 0.12.0, it is a major version and
+not backward compatible with 0.11.0. Massive issues are fixed in this version,
+including:
+
+- Upgrade Emscripten to 3.1.40
+- Upgrade FFmpeg to n5.1.3
+- Docker build with cache (reduce time to build a new version)
+- Support timeout(), terminate() and other fundamental operations
+- Split libraries to multiple small libraries
+- Rewrite the whole library with TypeScript
+- Merge multiple repositories into one monorepo
+- Offical Web Worker support
+- Offical single thread and multi thread version support
+- Enhanced documentation
+- Official domain name
+
+Lots of features are still in the backlog and it requires lots effort to
+even just compelete one of them, such as:
+
+- Speed up ffmpeg.wasm using WebAssembly intrinsic
+- Support RTSP protocol
+- Support more popular libraries
+
+I believe there is still a long way to go for ffmpeg.wasm to really become
+a production-grade library, but it is defintely a gamechanger and a chance
+to see the potential of WebAssembly and web technologies in general. That's
+why I am working on it and welcome to join us.
+
+Hope you enjoy this release :smile:
+
+\- Jerome
