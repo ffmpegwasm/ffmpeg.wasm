@@ -39,7 +39,7 @@ Install ffmpeg.wasm with minimal setup via installing it via CDN.
 ```html
 <html>
   <head>
-    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.0/dist/umd/ffmpeg.js"></script>
+    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.1/dist/umd/ffmpeg.js"></script>
     <script src="https://unpkg.com/@ffmpeg/util@0.12.0/dist/umd/index.js"></script>
     <script>
       const { FFmpeg } = FFmpegWASM;
@@ -56,7 +56,7 @@ Install ffmpeg.wasm with minimal setup via installing it via CDN.
 <html>
   <head>
     <script type="module">
-      import { FFmpeg } from "https://unpkg.com/@ffmpeg/ffmpeg@0.12.0/dist/esm/ffmpeg.js";
+      import { FFmpeg } from "https://unpkg.com/@ffmpeg/ffmpeg@0.12.1/dist/esm/ffmpeg.js";
       import { fetchFile } from "https://unpkg.com/@ffmpeg/util@0.12.0/dist/esm/index.js";
     </script>
   </head>
