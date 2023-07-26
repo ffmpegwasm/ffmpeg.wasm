@@ -17,6 +17,7 @@ a ~31 MB ffmpeg-core.wasm.
 // import { FFmpeg } from '@ffmpeg/ffmpeg';
 // import { fetchFile } from '@ffmpeg/util';
 function() {
+    const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.1/dist/umd'
     const [loaded, setLoaded] = useState(false);
     const ffmpegRef = useRef(new FFmpeg());
     const videoRef = useRef(null);
@@ -27,7 +28,10 @@ function() {
         ffmpeg.on("log", ({ message }) => {
             messageRef.current.innerHTML = message;
         });
-        await ffmpeg.load();
+        await ffmpeg.load({
+            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`),
+            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`),
+        });
         setLoaded(true);
     }
 
