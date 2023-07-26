@@ -53,7 +53,7 @@ module.exports = (_options = {}) => {
         const ts = message.split(', ')[0].split(': ')[1];
         const d = ts2sec(ts);
         prog({ duration: d, ratio });
-        if (duration === 0 || duration > d) {
+        if ((duration === 0 || duration > d) && d >= 1) {
           duration = d;
           readFrames = true;
         }
