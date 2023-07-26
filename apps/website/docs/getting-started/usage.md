@@ -17,17 +17,19 @@ a ~31 MB ffmpeg-core.wasm.
 // import { FFmpeg } from '@ffmpeg/ffmpeg';
 // import { fetchFile } from '@ffmpeg/util';
 function() {
-    const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.1/dist/umd'
     const [loaded, setLoaded] = useState(false);
     const ffmpegRef = useRef(new FFmpeg());
     const videoRef = useRef(null);
     const messageRef = useRef(null);
 
     const load = async () => {
+        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.1/dist/umd'
         const ffmpeg = ffmpegRef.current;
         ffmpeg.on("log", ({ message }) => {
             messageRef.current.innerHTML = message;
         });
+        // toBlobURL is used to bypass CORS issue, urls with the same
+        // domain can be used directly.
         await ffmpeg.load({
             coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`),
             wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`),
@@ -138,11 +140,17 @@ function() {
     const messageRef = useRef(null);
 
     const load = async () => {
+        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.1/dist/umd'
         const ffmpeg = ffmpegRef.current;
         ffmpeg.on("log", ({ message }) => {
             messageRef.current.innerHTML = message;
         });
-        await ffmpeg.load();
+        // toBlobURL is used to bypass CORS issue, urls with the same
+        // domain can be used directly.
+        await ffmpeg.load({
+            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`),
+            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`),
+        });
         setLoaded(true);
     }
 
@@ -186,12 +194,18 @@ function() {
     const messageRef = useRef(null);
 
     const load = async () => {
+        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.1/dist/umd'
         const ffmpeg = ffmpegRef.current;
         // Listen to progress event instead of log.
         ffmpeg.on("progress", ({ progress }) => {
             messageRef.current.innerHTML = `${progress * 100} %`;
         });
-        await ffmpeg.load();
+        // toBlobURL is used to bypass CORS issue, urls with the same
+        // domain can be used directly.
+        await ffmpeg.load({
+            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`),
+            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`),
+        });
         setLoaded(true);
     }
 
