@@ -5,7 +5,7 @@ import {
 import { HeaderContentLength } from "./const.js";
 import { ProgressCallback } from "./types.js";
 
-export const readFromBlobOrFile = (blob: Blob | File): Promise<Uint8Array> =>
+const readFromBlobOrFile = (blob: Blob | File): Promise<Uint8Array> =>
   new Promise((resolve, reject) => {
     const fileReader = new FileReader();
     fileReader.onload = () => {

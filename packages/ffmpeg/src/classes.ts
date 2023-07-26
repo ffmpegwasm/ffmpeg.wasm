@@ -109,9 +109,6 @@ export class FFmpeg {
    * })
    * ```
    *
-   * @remarks
-   * log includes output to stdout and stderr.
-   *
    * @example
    * ```ts
    * ffmpeg.on("progress", ({ progress, time }) => {
@@ -120,7 +117,8 @@ export class FFmpeg {
    * ```
    *
    * @remarks
-   * The progress events are accurate only when the length of
+   * - log includes output to stdout and stderr.
+   * - The progress events are accurate only when the length of
    * input and output video/audio file are the same.
    *
    * @category FFmpeg

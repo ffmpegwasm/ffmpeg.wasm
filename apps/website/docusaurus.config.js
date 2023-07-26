@@ -135,10 +135,27 @@ const config = {
     [
       "docusaurus-plugin-typedoc",
       {
+        id: "ffmpeg",
         entryPoints: ["../../packages/ffmpeg/src/index.ts"],
         tsconfig: "../../packages/ffmpeg/tsconfig.json",
         readme: "none",
+        out: "api/ffmpeg",
         sidebar: {
+          indexLabel: "@ffmpeg/ffmpeg",
+          fullNames: true,
+        },
+      },
+    ],
+    [
+      "docusaurus-plugin-typedoc",
+      {
+        id: "util",
+        entryPoints: ["../../packages/util/src/index.ts"],
+        tsconfig: "../../packages/util/tsconfig.json",
+        readme: "none",
+        out: "api/util",
+        sidebar: {
+          indexLabel: "@ffmpeg/util",
           fullNames: true,
         },
       },
