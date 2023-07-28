@@ -5,7 +5,7 @@ export const CORE_VERSION = "0.12.1";
 export const CORE_URL = `https://unpkg.com/@ffmpeg/core@${CORE_VERSION}/dist/umd/ffmpeg-core.js`;
 
 export enum FFMessageType {
-  LOAD = "load",
+  LOAD = "LOAD",
   EXEC = "EXEC",
   WRITE_FILE = "WRITE_FILE",
   READ_FILE = "READ_FILE",
