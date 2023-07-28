@@ -22,13 +22,6 @@ export interface FFMessageLoadConfig {
    * @defaultValue `https://unpkg.com/@ffmpeg/core-mt@${CORE_VERSION}/dist/umd/ffmpeg-core.worker.js`;
    */
   workerURL?: string;
-  /**
-   * When `thread` is true, ffmpeg imports `ffmpeg-core.worker.js` and thus
-   * makes multi-threaded core work.
-   *
-   * @defaultValue `false`
-   */
-  thread?: boolean;
 }
 
 export interface FFMessageExecData {

@@ -17,7 +17,8 @@
     "clean": "rimraf dist",
     "build:esm": "tsc -p tsconfig.esm.json",
     "build:umd": "tsc -p tsconfig.cjs.json && webpack",
-    "build": "npm run clean && npm run build:esm && npm run build:umd"
+    "build": "npm run clean && npm run build:esm && npm run build:umd",
+    "prepublishOnly": "npm run build"
   },
   "files": [
     "dist"

@@ -1,6 +1,6 @@
 {
   "name": "@ffmpeg/ffmpeg",
-  "version": "0.12.1",
+  "version": "0.12.2",
   "description": "FFmpeg WebAssembly version for browser",
   "main": "./dist/umd/ffmpeg.js",
   "types": "./dist/esm/index.d.ts",
@@ -17,7 +17,8 @@
     "clean": "rimraf dist",
     "build:esm": "tsc -p tsconfig.esm.json",
     "build:umd": "webpack",
-    "build": "npm run clean && npm run build:esm && npm run build:umd"
+    "build": "npm run clean && npm run build:esm && npm run build:umd",
+    "prepublishOnly": "npm run build"
   },
   "files": [
     "dist",

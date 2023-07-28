@@ -22,7 +22,11 @@ import type {
   FileData,
 } from "./types";
 import { CORE_URL, FFMessageType } from "./const.js";
-import { ERROR_UNKNOWN_MESSAGE_TYPE, ERROR_NOT_LOADED } from "./errors.js";
+import {
+  ERROR_UNKNOWN_MESSAGE_TYPE,
+  ERROR_NOT_LOADED,
+  ERROR_IMPORT_FAILURE,
+} from "./errors.js";
 
 declare global {
   interface WorkerGlobalScope {
@@ -51,13 +55,17 @@ const load = async ({
   try {
     // when web worker type is `classic`.
     importScripts(coreURL);
-  } catch (e: unknown) {
+  } catch {
     // when web worker type is `module`.
-    if (e instanceof TypeError && e.toString().includes("Module scripts")) {
-      (self as WorkerGlobalScope).createFFmpegCore = (
-        (await import(coreURL)) as ImportedFFmpegCoreModuleFactory
-      ).default;
-    } else throw e;
+    (self as WorkerGlobalScope).createFFmpegCore = (
+      (await import(
+        /* @vite-ignore */ coreURL
+      )) as ImportedFFmpegCoreModuleFactory
+    ).default;
+
+    if (!(self as WorkerGlobalScope).createFFmpegCore) {
+      throw ERROR_IMPORT_FAILURE;
+    }
   }
 
   ffmpeg = await (self as WorkerGlobalScope).createFFmpegCore({
