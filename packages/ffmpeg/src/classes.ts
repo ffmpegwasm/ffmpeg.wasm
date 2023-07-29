@@ -141,6 +141,8 @@ export class FFmpeg {
    *
    * @category FFmpeg
    */
+  public off(event: "log", callback: LogEventCallback): void;
+  public off(event: "progress", callback: ProgressEventCallback): void;
   public off(
     event: "log" | "progress",
     callback: LogEventCallback | ProgressEventCallback
