@@ -54,8 +54,7 @@
     "rimraf": "^5.0.1",
     "ts-loader": "^9.4.4",
     "typescript": "^5.1.6",
-    "webpack-cli": "^5.1.4",
-    "worker-loader": "^3.0.8"
+    "webpack-cli": "^5.1.4"
   },
   "dependencies": {
     "@ffmpeg/types": "^0.12.0"

@@ -8,8 +8,8 @@
     <input type="file" id="uploader">
     <p id="message"></p>
     <script type="module">
-      import { FFmpeg } from "../../packages/ffmpeg/dist/esm/index.js";
-      import { fetchFile } from "../../packages/util/dist/esm/index.js";
+      import { FFmpeg } from "/assets/ffmpeg/package/dist/esm/index.js";
+      import { fetchFile } from "/assets/util/package/dist/esm/index.js";
       let ffmpeg = null;
 
       const transcode = async ({ target: { files } }) => {
@@ -23,7 +23,7 @@
             message.innerHTML = `${progress * 100} %`;
           });
           await ffmpeg.load({
-            coreURL: "/packages/core/dist/esm/ffmpeg-core.js",
+            coreURL: "/assets/core/package/dist/esm/ffmpeg-core.js",
           });
         }
         const { name } = files[0];

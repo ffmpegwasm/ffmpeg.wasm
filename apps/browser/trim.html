@@ -1,8 +1,8 @@
 <html>
   <head>
     <link rel="stylesheet" href="style.css">
-    <script src="../../packages/ffmpeg/dist/umd/ffmpeg.js"></script>
-    <script src="../../packages/util/dist/umd/index.js"></script>
+    <script src="/assets/ffmpeg/package/dist/umd/ffmpeg.js"></script>
+    <script src="/assets/util/package/dist/umd/index.js"></script>
   </head>
   <body>
     <h3>Upload a mp4 (x264) video and trim its first 1 seconds and play!</h3>
@@ -25,7 +25,7 @@
             message.innerHTML = `${progress * 100} %`;
           });
           await ffmpeg.load({
-            coreURL: "/packages/core/dist/umd/ffmpeg-core.js",
+            coreURL: "/assets/core/package/dist/umd/ffmpeg-core.js",
           });
         }
         const { name } = files[0];
