@@ -24,8 +24,7 @@ const downloadAndUntar = async (url, tgzName, dst) => {
   await tar.x({ file: tgzName, C: dst });
 };
 
-(async () => {
-  await downloadAndUntar(FFMPEG_TGZ_URL, FFMPEG_TGZ, 'assets/ffmpeg');
-  await downloadAndUntar(UTIL_TGZ_URL, UTIL_TGZ, 'assets/util');
-  await downloadAndUntar(CORE_TGZ_URL, CORE_TGZ, 'assets/core');
-})();
+fs.mkdirSync('assets');
+downloadAndUntar(FFMPEG_TGZ_URL, FFMPEG_TGZ, 'assets/ffmpeg');
+downloadAndUntar(UTIL_TGZ_URL, UTIL_TGZ, 'assets/util');
+downloadAndUntar(CORE_TGZ_URL, CORE_TGZ, 'assets/core');
