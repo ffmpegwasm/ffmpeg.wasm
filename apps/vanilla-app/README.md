@@ -1,4 +1,4 @@
-# Browser Examples
+# Vanilla / Browser Examples
 
 ## Setup
 
@@ -12,7 +12,7 @@ $ npm run download
 
 To run this example, execute:
 
-```
+```bash
 $ npm start
 ```
 
