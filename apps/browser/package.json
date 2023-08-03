@@ -4,8 +4,12 @@
   "description": "browser example",
   "private": true,
   "scripts": {
-    "start": "npx http-server -c-1 ../../"
+    "download": "node download-assets.js",
+    "start": "npx http-server -c-1"
   },
   "author": "Jerome Wu <jeromewus@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "tar": "^6.1.15"
+  }
 }
