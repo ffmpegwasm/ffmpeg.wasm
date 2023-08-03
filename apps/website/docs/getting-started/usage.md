@@ -3,7 +3,7 @@
 Learn the basics of using ffmpeg.wasm.
 
 :::note
-It is recommended to read [overview](/docs/overview) first.
+It is recommended to read [Overview](/docs/overview) first.
 :::
 
 ## Transcoding video
