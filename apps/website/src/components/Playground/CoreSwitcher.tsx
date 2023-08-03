@@ -23,14 +23,8 @@ export default function CoreSwitcher({ checked, onChange }: CoreSwitcherProps) {
             disabled={typeof SharedArrayBuffer !== "function"}
           />
         </FormGroup>
-        <Tooltip title="Multi-threaded core is faster, but unstable and not supported by all browsers. Click here for more details.">
-          <IconButton
-            aria-label="help"
-            size="small"
-            onClick={() => {
-              location.href = "/docs/getting-started/multi-thread";
-            }}
-          >
+        <Tooltip title="Multi-threaded core is faster, but unstable and not supported by all browsers.">
+          <IconButton aria-label="help" size="small">
             <HelpIcon fontSize="small" />
           </IconButton>
         </Tooltip>
