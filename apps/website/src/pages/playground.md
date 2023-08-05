@@ -37,7 +37,7 @@ ffmpeg.wasm fundamentals.
 
 Demo Video:
 <video width="100%" controls>
-  <source src="/video/playground-how-to.webm" type="video/webm" />
+  <source src="/video/playground-how-to.mp4" type="video/mp4" />
 </video>
 
 A typical flow to use ffmpeg.wasm is:
