@@ -6,6 +6,11 @@ import ExampleCard from "@site/src/components/common/ExampleCard";
 
 You can find how to use ffmpeg.wasm with frameworks here. :smile:
 
+:::caution
+Do remember to run `npm run build` in the root of the repository before trying
+any of the example.
+:::
+
 <MuiThemeProvider>
   <Grid container rowSpacing={1} columnSpacing={1}>
     <Grid xs={12} sm={6} md={6} lg={6} xl={4}>
