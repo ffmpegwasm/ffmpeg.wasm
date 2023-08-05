@@ -36,7 +36,7 @@ development!
 ffmpeg.wasm fundamentals.
 
 Demo Video:
-<iframe style={{"aspect-ratio": "16 / 9", width: "100%"}} src="https://www.youtube.com/embed/F01B0fV20QA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/F01B0fV20QA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 A typical flow to use ffmpeg.wasm is:
 
