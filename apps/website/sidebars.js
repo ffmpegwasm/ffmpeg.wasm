@@ -40,6 +40,11 @@ const sidebars = {
       label: "Contribution",
       items: ["contribution/core", "contribution/ffmpeg", "contribution/util"],
     },
+    {
+      type: "doc",
+      label: "Privacy Policy",
+      id: "privacy-policy",
+    },
   ],
 };
 
