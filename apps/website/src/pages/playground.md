@@ -6,6 +6,7 @@ import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import UploadIcon from "@mui/icons-material/Upload";
+import YouTube from "react-youtube";
 
 # Playground
 
@@ -36,7 +37,8 @@ development!
 ffmpeg.wasm fundamentals.
 
 Demo Video:
-<iframe style={{"aspect-ratio": "16 / 9", width: "100%"}} src="https://youtube.com/embed/F01B0fV20QA" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+
+<YouTube videoId="F01B0fV20QA" />
 
 [YouTube Video Link](https://www.youtube.com/watch?v=F01B0fV20QA)
 
