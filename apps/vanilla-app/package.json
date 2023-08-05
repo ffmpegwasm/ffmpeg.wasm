@@ -5,11 +5,13 @@
   "private": true,
   "scripts": {
     "download": "node download-assets.js",
-    "start": "npx http-server -c-1"
+    "start": "node server.js"
   },
   "author": "Jerome Wu <jeromewus@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "express": "^4.18.2",
+    "serve-index": "^1.9.1",
     "tar": "^6.1.15"
   }
 }
