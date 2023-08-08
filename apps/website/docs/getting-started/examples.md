@@ -25,7 +25,7 @@ any of the example.
       <ExampleCard
         img="/img/react-vite.png"
         title="React + Vite"
-        desc="React with Vite"
+        desc="React with Vite (single thread version only)"
         url="https://github.com/ffmpegwasm/ffmpeg.wasm/tree/main/apps/react-vite-app"
       />
     </Grid>
@@ -33,7 +33,7 @@ any of the example.
       <ExampleCard
         img="/img/vue-vite.png"
         title="Vue + Vite"
-        desc="Vue with Vite"
+        desc="Vue with Vite (single thread version only)"
         url="https://github.com/ffmpegwasm/ffmpeg.wasm/tree/main/apps/vue-vite-app"
       />
     </Grid>
