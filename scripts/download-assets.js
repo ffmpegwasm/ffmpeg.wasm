@@ -23,12 +23,18 @@ const mkdir = (dir) => {
 };
 
 const downloadAndUntar = async (url, tgzName, dst) => {
+  const dir = `${ROOT}/${dst}`;
+  if (fs.existsSync(dir)) {
+    console.log(`found @ffmpeg/${dst} assets.`);
+    return;
+  }
   console.log(`download and untar ${url}`);
-  mkdir(`${ROOT}/${dst}`);
+  mkdir(dir);
   const data = Buffer.from(await (await fetch(url)).arrayBuffer());
   fs.writeFileSync(tgzName, data);
 
   await tar.x({ file: tgzName, C: `${ROOT}/${dst}` });
+  fs.unlinkSync(tgzName);
 };
 
 mkdir(ROOT);
