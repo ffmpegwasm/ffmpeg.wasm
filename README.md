@@ -1,6 +1,6 @@
 <p align="center">
   <a href="#">
-    <img alt="ffmpeg.wasm" width="128px" height="128px" src="https://github.com/ffmpegwasm/ffmpeg.wasm/raw/main/docs/images/ffmpegwasm-icon.png"></img>
+    <img alt="ffmpeg.wasm" width="128px" height="128px" src="https://github.com/ffmpegwasm/ffmpeg.wasm/blob/main/apps/website/static/img/logo192.png"></img>
   </a>
 </p>
 
