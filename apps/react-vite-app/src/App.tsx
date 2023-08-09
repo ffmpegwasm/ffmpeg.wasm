@@ -9,7 +9,7 @@ function App() {
   const messageRef = useRef(null);
 
   const load = async () => {
-    const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.1/dist/esm";
+    const baseURL = "https://unpkg.com/@ffmpeg/core-mt@0.12.2/dist/esm";
     const ffmpeg = ffmpegRef.current;
     ffmpeg.on("log", ({ message }) => {
       messageRef.current.innerHTML = message;
@@ -21,6 +21,10 @@ function App() {
       wasmURL: await toBlobURL(
         `${baseURL}/ffmpeg-core.wasm`,
         "application/wasm"
+      ),
+      workerURL: await toBlobURL(
+        `${baseURL}/ffmpeg-core.worker.js`,
+        "text/javascript"
       ),
     });
     setLoaded(true);
