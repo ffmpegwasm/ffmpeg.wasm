@@ -70,12 +70,10 @@ const load = async ({
 
   ffmpeg = await (self as WorkerGlobalScope).createFFmpegCore({
     // Fix `Overload resolution failed.` when using multi-threaded ffmpeg-core.
-    mainScriptUrlOrBlob: coreURL,
-    locateFile: (path: string, prefix: string): string => {
-      if (path.endsWith(".wasm")) return wasmURL;
-      if (path.endsWith(".worker.js")) return workerURL;
-      return prefix + path;
-    },
+    // Encoded wasmURL and workerURL in the URL as a hack to fix locateFile issue.
+    mainScriptUrlOrBlob: `${coreURL}#${btoa(
+      JSON.stringify({ wasmURL, workerURL })
+    )}`,
   });
   ffmpeg.setLogger((data) =>
     self.postMessage({ type: FFMessageType.LOG, data })
