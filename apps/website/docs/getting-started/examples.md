@@ -17,7 +17,7 @@ any of the example.
       <ExampleCard
         img="/img/vanilla.png"
         title="Vanilla JavaScript"
-        desc="Plain JavaScript without any additional library"
+        desc="Plain JavaScript"
         url="https://github.com/ffmpegwasm/ffmpeg.wasm/tree/main/apps/vanilla-app"
       />
     </Grid>
