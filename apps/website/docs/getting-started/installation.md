@@ -30,6 +30,6 @@ yarn add @ffmpeg/ffmpeg @ffmpeg/util
 </Tabs>
 
 :::info
-As ffmpeg.wasm spawns a web worker, you cannot import ffmpeg.wasm from CDN like
+As `@ffmpeg/ffmpeg` spawns a web worker, you cannot import `@ffmpeg/ffmpeg` from CDN like
 unpkg. It is recommended to download it and self-hosted most of the time.
 :::
