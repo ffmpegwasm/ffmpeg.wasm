@@ -4,7 +4,8 @@
   "description": "browser example",
   "private": true,
   "scripts": {
-    "prestart": "node ../../scripts/download-assets.js",
+    "download": "node ../../scripts/download-assets.js",
+    "prestart": "npm run download",
     "start": "node server.js"
   },
   "author": "Jerome Wu <jeromewus@gmail.com>",
