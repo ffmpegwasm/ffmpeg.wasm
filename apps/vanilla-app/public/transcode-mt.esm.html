@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <h3>Upload a video to transcode to mp4 (x264) and play!</h3>
+    <video id="output-video" controls></video><br/>
+    <input type="file" id="uploader">
+    <p id="message"></p>
+    <script type="module">
+      import { FFmpeg } from "/assets/ffmpeg/package/dist/esm/index.js";
+      import { fetchFile } from "/assets/util/package/dist/esm/index.js";
+      let ffmpeg = null;
+
+      const transcode = async ({ target: { files } }) => {
+        const message = document.getElementById('message');
+        if (ffmpeg === null) {
+          ffmpeg = new FFmpeg();
+          ffmpeg.on("log", ({ message }) => {
+            console.log(message);
+          })
+          ffmpeg.on("progress", ({ progress }) => {
+            message.innerHTML = `${progress * 100} %`;
+          });
+          await ffmpeg.load({
+            coreURL: "/assets/core-mt/package/dist/esm/ffmpeg-core.js",
+          });
+        }
+        const { name } = files[0];
+        await ffmpeg.writeFile(name, await fetchFile(files[0]));
+        message.innerHTML = 'Start transcoding';
+        await ffmpeg.exec(['-i', name,  'output.mp4']);
+        message.innerHTML = 'Complete transcoding';
+        const data = await ffmpeg.readFile('output.mp4');
+
+        const video = document.getElementById('output-video');
+        video.src = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
+      }
+      const elm = document.getElementById('uploader');
+      elm.addEventListener('change', transcode);
+    </script>
+  </body>
+</html>
