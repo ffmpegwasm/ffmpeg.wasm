@@ -17,7 +17,7 @@ any of the example.
       <ExampleCard
         img="/img/vanilla.png"
         title="Vanilla JavaScript"
-        desc="Plain JavaScript without any libraries"
+        desc="Plain JavaScript without any additional library"
         url="https://github.com/ffmpegwasm/ffmpeg.wasm/tree/main/apps/vanilla-app"
       />
     </Grid>
@@ -25,7 +25,7 @@ any of the example.
       <ExampleCard
         img="/img/react-vite.png"
         title="React + Vite"
-        desc="React with Vite (single thread version only)"
+        desc="React with Vite (multithread version)"
         url="https://github.com/ffmpegwasm/ffmpeg.wasm/tree/main/apps/react-vite-app"
       />
     </Grid>
@@ -33,7 +33,7 @@ any of the example.
       <ExampleCard
         img="/img/vue-vite.png"
         title="Vue + Vite"
-        desc="Vue with Vite (single thread version only)"
+        desc="Vue with Vite (multithread version)"
         url="https://github.com/ffmpegwasm/ffmpeg.wasm/tree/main/apps/vue-vite-app"
       />
     </Grid>
