@@ -23,7 +23,7 @@ function() {
     const messageRef = useRef(null);
 
     const load = async () => {
-        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.1/dist/umd'
+        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.2/dist/umd'
         const ffmpeg = ffmpegRef.current;
         ffmpeg.on("log", ({ message }) => {
             messageRef.current.innerHTML = message;
@@ -87,7 +87,7 @@ function() {
     const messageRef = useRef(null);
 
     const load = async () => {
-        const baseURL = 'https://unpkg.com/@ffmpeg/core-mt@0.12.1/dist/umd'
+        const baseURL = 'https://unpkg.com/@ffmpeg/core-mt@0.12.2/dist/umd'
         const ffmpeg = ffmpegRef.current;
         ffmpeg.on("log", ({ message }) => {
             messageRef.current.innerHTML = message;
@@ -155,7 +155,7 @@ function() {
     const messageRef = useRef(null);
 
     const load = async () => {
-        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.1/dist/umd'
+        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.2/dist/umd'
         const ffmpeg = ffmpegRef.current;
         ffmpeg.on("log", ({ message }) => {
             messageRef.current.innerHTML = message;
@@ -215,7 +215,7 @@ function() {
     const messageRef = useRef(null);
 
     const load = async () => {
-        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.1/dist/umd'
+        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.2/dist/umd'
         const ffmpeg = ffmpegRef.current;
         // Listen to progress event instead of log.
         ffmpeg.on("progress", ({ progress }) => {
