@@ -177,7 +177,11 @@ self.onmessage = async ({
         throw ERROR_UNKNOWN_MESSAGE_TYPE;
     }
   } catch (e) {
-    self.postMessage({ id, type: FFMessageType.ERROR, data: e as Error });
+    self.postMessage({
+      id,
+      type: FFMessageType.ERROR,
+      data: (e as Error).toString(),
+    });
     return;
   }
   if (data instanceof Uint8Array) {
