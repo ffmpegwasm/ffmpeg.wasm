@@ -1,6 +1,6 @@
 {
   "name": "@ffmpeg/ffmpeg",
-  "version": "0.12.3",
+  "version": "0.12.4",
   "description": "FFmpeg WebAssembly version for browser",
   "main": "./dist/umd/ffmpeg.js",
   "types": "./dist/esm/index.d.ts",
