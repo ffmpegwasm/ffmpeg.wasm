@@ -31,4 +31,4 @@ Join us on Discord!
 - [FAQ](https://ffmpegwasm.netlify.app/docs/faq)
 - [Contribution](https://ffmpegwasm.netlify.app/contribution/core)
 
-Please consider to sponsor ffmpeg.wasm to make it sustainable. :heart:
+Please sponsor ffmpeg.wasm to make it sustainable. :heart:
