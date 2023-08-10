@@ -1,0 +1,40 @@
+<html>
+  <body>
+    <h3>Quick Test</h3>
+    <video id="output-video" controls></video><br/>
+    <input type="file" id="uploader">
+    <p id="message"></p>
+    <script type="module">
+      import { FFmpeg } from "/packages/ffmpeg/dist/esm/index.js";
+      import { fetchFile } from "/packages/util/dist/esm/index.js";
+      let ffmpeg = null;
+
+      const transcode = async ({ target: { files } }) => {
+        const message = document.getElementById('message');
+        if (ffmpeg === null) {
+          ffmpeg = new FFmpeg();
+          ffmpeg.on("log", ({ message }) => {
+            console.log(message);
+          })
+          ffmpeg.on("progress", ({ progress }) => {
+            message.innerHTML = `${progress * 100} %`;
+          });
+          await ffmpeg.load({
+            coreURL: "/packages/core/dist/esm/ffmpeg-core.js",
+          });
+        }
+        const { name } = files[0];
+        await ffmpeg.writeFile(name, await fetchFile(files[0]));
+        message.innerHTML = 'Start transcoding';
+        await ffmpeg.exec(['-i', name,  'output.mp4']);
+        message.innerHTML = 'Complete transcoding';
+        const data = await ffmpeg.readFile('output.mp4');
+
+        const video = document.getElementById('output-video');
+        video.src = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
+      }
+      const elm = document.getElementById('uploader');
+      elm.addEventListener('change', transcode);
+    </script>
+  </body>
+</html>

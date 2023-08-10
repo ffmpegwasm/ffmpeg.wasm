@@ -17,14 +17,6 @@ describe(genName("new FFmpeg()"), () => {
   });
 });
 
-describe(genName("FFmpeg.load()"), function () {
-  // it("should work without any args", async () => {
-  //   const ffmpeg = new FFmpeg();
-  //   await ffmpeg.load();
-  //   expect(ffmpeg).to.be.ok;
-  // });
-});
-
 describe(
   genName(
     "FFmpeg directory APIs (createDir(), listDir(), deleteDir(), rename())"
