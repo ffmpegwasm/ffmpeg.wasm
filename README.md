@@ -6,6 +6,8 @@
 
 # ffmpeg.wasm
 
+ffmpeg.wasm is a pure Webassembly / Javascript port of FFmpeg. It enables video & audio record, convert and stream right inside browsers.
+
 [![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://github.com/emersion/stability-badges#experimental)
 [![Node Version](https://img.shields.io/node/v/@ffmpeg/ffmpeg.svg)](https://img.shields.io/node/v/@ffmpeg/ffmpeg.svg)
 [![Actions Status](https://github.com/ffmpegwasm/ffmpeg.wasm/workflows/CI/badge.svg)](https://github.com/ffmpegwasm/ffmpeg.wasm/actions)
@@ -20,8 +22,6 @@ Join us on Discord!
 
 [![Discord](https://dcbadge.vercel.app/api/server/NjGMaqqfm5)](https://discord.gg/NjGMaqqfm5)
 
-ffmpeg.wasm is a pure Webassembly / Javascript port of FFmpeg. It enables video & audio record, convert and stream right inside browsers.
-
 ## Documentation
 
 - [Introduction](https://ffmpegwasm.netlify.app/docs/overview)
@@ -30,3 +30,7 @@ ffmpeg.wasm is a pure Webassembly / Javascript port of FFmpeg. It enables video 
 - [API](https://ffmpegwasm.netlify.app/docs/api/ffmpeg/)
 - [FAQ](https://ffmpegwasm.netlify.app/docs/faq)
 - [Contribution](https://ffmpegwasm.netlify.app/contribution/core)
+
+---
+
+Please consider to sponsor this project to make it sustainable. :heart
