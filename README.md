@@ -29,6 +29,6 @@ Join us on Discord!
     Started](https://ffmpegwasm.netlify.app/docs/getting-started/installation)
 - [API](https://ffmpegwasm.netlify.app/docs/api/ffmpeg/)
 - [FAQ](https://ffmpegwasm.netlify.app/docs/faq)
-- [Contribution](https://ffmpegwasm.netlify.app/contribution/core)
+- [Contribution](https://ffmpegwasm.netlify.app/docs/contribution/core)
 
 Please sponsor ffmpeg.wasm to make it sustainable. :heart:
