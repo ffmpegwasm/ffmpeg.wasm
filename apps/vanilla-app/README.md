@@ -4,7 +4,7 @@
 
 You need to download assets from npm before running the examples:
 
-```bash
+```
 $ npm run download
 ```
 
@@ -12,11 +12,11 @@ $ npm run download
 
 To run this example, execute:
 
-```bash
+```
 $ npm start
 ```
 
-Visit http://localhost:8080 to check avaiable examples.
+Visit http://localhost:8080 to check available examples.
 
 ## Examples
 
@@ -25,5 +25,5 @@ Visit http://localhost:8080 to check avaiable examples.
 | transcode.html | Transcoding example |
 | transcode-mt.html | Transcoding example using multi-thread |
 | transcode.esm.html | Transcoding example using module |
-| trim.html | Video trimming exmple |
-| concatDemuxer.html | Video concat exmple |
+| trim.html | Video trimming example |
+| concatDemuxer.html | Video concat example |
