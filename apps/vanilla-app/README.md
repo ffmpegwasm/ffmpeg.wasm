@@ -4,7 +4,7 @@
 
 You need to download assets from npm before running the examples:
 
-```
+```bash
 $ npm run download
 ```
 
@@ -12,7 +12,7 @@ $ npm run download
 
 To run this example, execute:
 
-```
+```bash
 $ npm start
 ```
 
