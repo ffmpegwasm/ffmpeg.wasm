@@ -37,5 +37,13 @@ any of the example.
         url="https://github.com/ffmpegwasm/ffmpeg.wasm/tree/main/apps/vue-vite-app"
       />
     </Grid>
+    <Grid xs={12} sm={6} md={6} lg={6} xl={4}>
+      <ExampleCard
+        img="/img/nextjs.png"
+        title="Next.js"
+        desc="Next.js (single thread version)"
+        url="https://github.com/ffmpegwasm/ffmpeg.wasm/tree/main/apps/nextjs-app"
+      />
+    </Grid>
   </Grid>
 </MuiThemeProvider>
