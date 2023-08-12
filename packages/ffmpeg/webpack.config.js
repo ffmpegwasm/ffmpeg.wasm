@@ -8,6 +8,8 @@ module.exports = {
     extensions: [".js"],
   },
   output: {
+    // disable automatic publicPath
+    publicPath: "",
     path: path.resolve(__dirname, "dist/umd"),
     filename: "ffmpeg.js",
     library: "FFmpegWASM",
