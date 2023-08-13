@@ -12,6 +12,9 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
+  optimizeDeps: {
+    exclude: ['@ffmpeg/ffmpeg', '@ffmpeg/util']
+  },
   server: {
     headers: {
       'Cross-Origin-Opener-Policy': 'same-origin',
