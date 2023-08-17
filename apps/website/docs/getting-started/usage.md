@@ -107,7 +107,6 @@ function() {
                 `${baseURL}/ffmpeg-core.worker.js`,
                 "text/javascript",
             ),
-            thread: true,
         });
         setLoaded(true);
     }

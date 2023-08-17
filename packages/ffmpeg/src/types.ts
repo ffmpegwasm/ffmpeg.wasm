@@ -17,7 +17,7 @@ export interface FFMessageLoadConfig {
    */
   wasmURL?: string;
   /**
-   * `ffmpeg-core.worker.js` URL, only being loaded when `thread` is `true`.
+   * `ffmpeg-core.worker.js` URL.
    *
    * @defaultValue `https://unpkg.com/@ffmpeg/core-mt@${CORE_VERSION}/dist/umd/ffmpeg-core.worker.js`;
    */
