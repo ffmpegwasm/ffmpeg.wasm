@@ -148,9 +148,9 @@ export class FFmpeg {
     callback: LogEventCallback | ProgressEventCallback
   ) {
     if (event === "log") {
-      this.#logEventCallbacks.filter((f) => f !== callback);
+      this.#logEventCallbacks = this.#logEventCallbacks.filter((f) => f !== callback);
     } else if (event === "progress") {
-      this.#progressEventCallbacks.filter((f) => f !== callback);
+      this.#progressEventCallbacks = this.#progressEventCallbacks.filter((f) => f !== callback);
     }
   }
 
