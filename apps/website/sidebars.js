@@ -28,6 +28,7 @@ const sidebars = {
         "getting-started/examples",
       ],
     },
+    "performance",
     "migration",
     "faq",
     {

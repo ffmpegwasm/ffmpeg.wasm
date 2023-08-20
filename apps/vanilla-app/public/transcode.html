@@ -31,7 +31,9 @@
         const { name } = files[0];
         await ffmpeg.writeFile(name, await fetchFile(files[0]));
         message.innerHTML = 'Start transcoding';
+        console.time('exec');
         await ffmpeg.exec(['-i', name,  'output.mp4']);
+        console.timeEnd('exec');
         message.innerHTML = 'Complete transcoding';
         const data = await ffmpeg.readFile('output.mp4');
 
