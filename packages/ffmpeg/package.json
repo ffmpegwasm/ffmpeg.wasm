@@ -1,6 +1,6 @@
 {
   "name": "@ffmpeg/ffmpeg",
-  "version": "0.12.4",
+  "version": "0.12.5",
   "description": "FFmpeg WebAssembly version for browser",
   "main": "./dist/umd/ffmpeg.js",
   "types": "./dist/esm/index.d.ts",
@@ -52,7 +52,6 @@
     "@typescript-eslint/parser": "^6.1.0",
     "eslint": "^8.45.0",
     "rimraf": "^5.0.1",
-    "ts-loader": "^9.4.4",
     "typescript": "^5.1.6",
     "webpack-cli": "^5.1.4"
   },
