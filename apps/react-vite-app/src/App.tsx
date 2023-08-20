@@ -5,14 +5,14 @@ import { toBlobURL, fetchFile } from "@ffmpeg/util";
 function App() {
   const [loaded, setLoaded] = useState(false);
   const ffmpegRef = useRef(new FFmpeg());
-  const videoRef = useRef(null);
-  const messageRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null)
+  const messageRef = useRef<HTMLParagraphElement | null>(null)
 
   const load = async () => {
     const baseURL = "https://unpkg.com/@ffmpeg/core-mt@0.12.2/dist/esm";
     const ffmpeg = ffmpegRef.current;
     ffmpeg.on("log", ({ message }) => {
-      messageRef.current.innerHTML = message;
+      if (messageRef.current) messageRef.current.innerHTML = message;
     });
     // toBlobURL is used to bypass CORS issue, urls with the same
     // domain can be used directly.
@@ -35,10 +35,13 @@ function App() {
     const ffmpeg = ffmpegRef.current;
     await ffmpeg.writeFile("input.avi", await fetchFile(videoURL));
     await ffmpeg.exec(["-i", "input.avi", "output.mp4"]);
-    const data = await ffmpeg.readFile("output.mp4");
-    videoRef.current.src = URL.createObjectURL(
-      new Blob([data.buffer], { type: "video/mp4" })
-    );
+    const fileData = await ffmpeg.readFile('output.mp4');
+    const data = new Uint8Array(fileData as ArrayBuffer);
+    if (videoRef.current) {
+      videoRef.current.src = URL.createObjectURL(
+        new Blob([data.buffer], { type: 'video/mp4' })
+      )
+    }
   };
 
   return loaded ? (
