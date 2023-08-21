@@ -6,11 +6,12 @@ Learn the basics of using ffmpeg.wasm.
 It is recommended to read [Overview](/docs/overview) first.
 :::
 
-## Transcoding video
+## Transcode avi to mp4 video
 
-:::tip
-`Load ffmpeg-core` might take a few minutes to complete as it downloads
-a ~31 MB ffmpeg-core.wasm.
+:::caution
+If you are a [vite](https://vitejs.dev/) user, use `esm` in **baseURL** instead of `umd`:
+
+~~https://unpkg.com/@ffmpeg/core@0.12.2/dist/umd~~ => https://unpkg.com/@ffmpeg/core@0.12.2/dist/esm
 :::
 
 ```jsx live
@@ -27,28 +28,20 @@ function() {
         const ffmpeg = ffmpegRef.current;
         ffmpeg.on("log", ({ message }) => {
             messageRef.current.innerHTML = message;
+            console.log(message);
         });
         // toBlobURL is used to bypass CORS issue, urls with the same
         // domain can be used directly.
         await ffmpeg.load({
-            coreURL: await toBlobURL(
-                `${baseURL}/ffmpeg-core.js`,
-                "text/javascript",
-            ),
-            wasmURL: await toBlobURL(
-                `${baseURL}/ffmpeg-core.wasm`,
-                "application/wasm",
-            ),
+            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
+            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, "application/wasm"),
         });
         setLoaded(true);
     }
 
     const transcode = async () => {
         const ffmpeg = ffmpegRef.current;
-        await ffmpeg.writeFile(
-            "input.avi",
-            await fetchFile('/video/video-15s.avi')
-        );
+        await ffmpeg.writeFile("input.avi", await fetchFile('/video/video-15s.avi'));
         await ffmpeg.exec(['-i', 'input.avi', 'output.mp4']);
         const data = await ffmpeg.readFile('output.mp4');
         videoRef.current.src =
@@ -61,20 +54,21 @@ function() {
                 <video ref={videoRef} controls></video><br/>
                 <button onClick={transcode}>Transcode avi to mp4</button>
                 <p ref={messageRef}></p>
+                <p>Open Developer Tools (Ctrl+Shift+I) to View Logs</p>
             </>
         )
         : (
-            <button onClick={load}>Load ffmpeg-core</button>
+            <button onClick={load}>Load ffmpeg-core (~31 MB)</button>
         )
     );
 }
 ```
 
-## Transcoding video (multi-thread)
+## Transcode avi to mp4 video (multi-thread)
 
-:::tip
-`Load ffmpeg-core` might take a few minutes to complete as it downloads
-a ~31 MB ffmpeg-core.wasm.
+:::caution
+As SharedArrayBuffer is required for multithread version, make sure
+you have have fulfilled [Security Requirements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer#security_requirements).
 :::
 
 ```jsx live
@@ -91,32 +85,21 @@ function() {
         const ffmpeg = ffmpegRef.current;
         ffmpeg.on("log", ({ message }) => {
             messageRef.current.innerHTML = message;
+            console.log(message);
         });
         // toBlobURL is used to bypass CORS issue, urls with the same
         // domain can be used directly.
         await ffmpeg.load({
-            coreURL: await toBlobURL(
-                `${baseURL}/ffmpeg-core.js`,
-                "text/javascript",
-            ),
-            wasmURL: await toBlobURL(
-                `${baseURL}/ffmpeg-core.wasm`,
-                "application/wasm",
-            ),
-            workerURL: await toBlobURL(
-                `${baseURL}/ffmpeg-core.worker.js`,
-                "text/javascript",
-            ),
+            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
+            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, "application/wasm"),
+            workerURL: await toBlobURL(`${baseURL}/ffmpeg-core.worker.js`, "text/javascript"),
         });
         setLoaded(true);
     }
 
     const transcode = async () => {
         const ffmpeg = ffmpegRef.current;
-        await ffmpeg.writeFile(
-            "input.avi",
-            await fetchFile('/video/video-15s.avi')
-        );
+        await ffmpeg.writeFile("input.avi", await fetchFile('/video/video-15s.avi'));
         await ffmpeg.exec(['-i', 'input.avi', 'output.mp4']);
         const data = await ffmpeg.readFile('output.mp4');
         videoRef.current.src =
@@ -129,20 +112,17 @@ function() {
                 <video ref={videoRef} controls></video><br/>
                 <button onClick={transcode}>Transcode avi to mp4</button>
                 <p ref={messageRef}></p>
+                <p>Open Developer Tools (Ctrl+Shift+I) to View Logs</p>
             </>
         )
         : (
-            <button onClick={load}>Load ffmpeg-core</button>
+            <button onClick={load}>Load ffmpeg-core (~31 MB)</button>
         )
     );
 }
 ```
-:::caution
-As SharedArrayBuffer is required for multithread version, make sure
-you have have fulfilled [Security Requirements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer#security_requirements).
-:::
 
-## Transcoding video with timeout
+## Transcode video with timeout
 
 ```jsx live
 // import { FFmpeg } from '@ffmpeg/ffmpeg';
@@ -158,28 +138,20 @@ function() {
         const ffmpeg = ffmpegRef.current;
         ffmpeg.on("log", ({ message }) => {
             messageRef.current.innerHTML = message;
+            console.log(message);
         });
         // toBlobURL is used to bypass CORS issue, urls with the same
         // domain can be used directly.
         await ffmpeg.load({
-            coreURL: await toBlobURL(
-                `${baseURL}/ffmpeg-core.js`,
-                "text/javascript",
-            ),
-            wasmURL: await toBlobURL(
-                `${baseURL}/ffmpeg-core.wasm`,
-                "application/wasm",
-            ),
+            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
+            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, "application/wasm"),
         });
         setLoaded(true);
     }
 
     const transcode = async () => {
         const ffmpeg = ffmpegRef.current;
-        await ffmpeg.writeFile(
-            "input.avi",
-            await fetchFile('/video/video-15s.avi')
-        );
+        await ffmpeg.writeFile("input.avi", await fetchFile('/video/video-15s.avi'));
         // The exec should stop after 1 second.
         await ffmpeg.exec(['-i', 'input.avi', 'output.mp4'], 1000);
         const data = await ffmpeg.readFile('output.mp4');
@@ -193,16 +165,22 @@ function() {
                 <video ref={videoRef} controls></video><br/>
                 <button onClick={transcode}>Transcode avi to mp4</button>
                 <p ref={messageRef}></p>
+                <p>Open Developer Tools (Ctrl+Shift+I) to View Logs</p>
             </>
         )
         : (
-            <button onClick={load}>Load ffmpeg-core</button>
+            <button onClick={load}>Load ffmpeg-core (~31 MB)</button>
         )
     );
 }
 ```
 
-## Transcoding video with progress
+## Transcode video with progress (experimental)
+
+:::danger
+`progress` is an experimental feature and might not work for many cases
+(ex. concat video files, convert image files, ...). Please use with caution.
+:::
 
 ```jsx live
 // import { FFmpeg } from '@ffmpeg/ffmpeg';
@@ -217,30 +195,21 @@ function() {
         const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.2/dist/umd'
         const ffmpeg = ffmpegRef.current;
         // Listen to progress event instead of log.
-        ffmpeg.on("progress", ({ progress }) => {
-            messageRef.current.innerHTML = `${progress * 100} %`;
+        ffmpeg.on("progress", ({ progress, time }) => {
+            messageRef.current.innerHTML = `${progress * 100} % (transcoded time: ${time / 1000000} s)`;
         });
         // toBlobURL is used to bypass CORS issue, urls with the same
         // domain can be used directly.
         await ffmpeg.load({
-            coreURL: await toBlobURL(
-                `${baseURL}/ffmpeg-core.js`,
-                "text/javascript",
-            ),
-            wasmURL: await toBlobURL(
-                `${baseURL}/ffmpeg-core.wasm`,
-                "application/wasm",
-            ),
+            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
+            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, "application/wasm"),
         });
         setLoaded(true);
     }
 
     const transcode = async () => {
         const ffmpeg = ffmpegRef.current;
-        await ffmpeg.writeFile(
-            "input.avi",
-            await fetchFile('/video/video-15s.avi')
-        );
+        await ffmpeg.writeFile("input.avi", await fetchFile('/video/video-15s.avi'));
         await ffmpeg.exec(['-i', 'input.avi', 'output.mp4']);
         const data = await ffmpeg.readFile('output.mp4');
         videoRef.current.src =
@@ -256,13 +225,73 @@ function() {
             </>
         )
         : (
-            <button onClick={load}>Load ffmpeg-core</button>
+            <button onClick={load}>Load ffmpeg-core (~31 MB)</button>
         )
     );
 }
 ```
 
-:::caution
-`progress` is an experimental feature and might not work for many cases
-(ex. concat video files, convert image files, ...). Please use with caution.
-:::
+## Split video into segments of equal duration
+
+```jsx live
+// import { FFmpeg } from '@ffmpeg/ffmpeg';
+// import { fetchFile } from '@ffmpeg/util';
+function() {
+    const [loaded, setLoaded] = useState(false);
+    const ffmpegRef = useRef(new FFmpeg());
+    const videoRef = useRef(null);
+    const messageRef = useRef(null);
+
+    const load = async () => {
+        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.2/dist/umd'
+        const ffmpeg = ffmpegRef.current;
+        ffmpeg.on("log", ({ message }) => {
+            messageRef.current.innerHTML = message;
+            console.log(message);
+        });
+        // toBlobURL is used to bypass CORS issue, urls with the same
+        // domain can be used directly.
+        await ffmpeg.load({
+            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
+            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, "application/wasm"),
+        });
+        setLoaded(true);
+    }
+
+    const transcode = async () => {
+        const ffmpeg = ffmpegRef.current;
+        await ffmpeg.writeFile("input.avi", await fetchFile('/video/video-15s.avi'));
+        await ffmpeg.exec([
+            '-i',
+            'input.avi',
+            '-f',
+            'segment',
+            '-segment_time',
+            '3',
+            '-reset_timestamps',
+            '1',
+            '-map',
+            '0:0',
+            '-an',
+            'output_%d.mp4'
+        ]);
+        const data = await ffmpeg.readFile('output_2.mp4');
+        videoRef.current.src =
+            URL.createObjectURL(new Blob([data.buffer], {type: 'video/mp4'}));
+    }
+
+    return (loaded
+        ? (
+            <>
+                <video ref={videoRef} controls></video><br/>
+                <button onClick={transcode}>Split video to segments of 3 sec. and plays 3rd segment</button>
+                <p ref={messageRef}></p>
+                <p>Open Developer Tools (Ctrl+Shift+I) to View Logs</p>
+            </>
+        )
+        : (
+            <button onClick={load}>Load ffmpeg-core (~31 MB)</button>
+        )
+    );
+}
+```
