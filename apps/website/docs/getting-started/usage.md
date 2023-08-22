@@ -64,7 +64,7 @@ function() {
 }
 ```
 
-## Transcode avi to mp4 video (multi-thread)
+## Transcode webm to mp4 video (multi-thread)
 
 :::caution
 As SharedArrayBuffer is required for multithread version, make sure
@@ -348,7 +348,7 @@ function() {
         ? (
             <>
                 <video ref={videoRef} controls></video><br/>
-                <button onClick={transcode}>Transcode avi to mp4 with text</button>
+                <button onClick={transcode}>Transcode webm to mp4 with text</button>
                 <p ref={messageRef}></p>
                 <p>Open Developer Tools (Ctrl+Shift+I) to View Logs</p>
             </>
