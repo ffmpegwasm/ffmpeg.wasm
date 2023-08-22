@@ -6,7 +6,7 @@ Learn the basics of using ffmpeg.wasm.
 It is recommended to read [Overview](/docs/overview) first.
 :::
 
-## Transcode avi to mp4 video
+## Transcode webm to mp4 video
 
 :::caution
 If you are a [vite](https://vitejs.dev/) user, use `esm` in **baseURL** instead of `umd`:
@@ -26,23 +26,23 @@ function() {
     const load = async () => {
         const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.2/dist/umd'
         const ffmpeg = ffmpegRef.current;
-        ffmpeg.on("log", ({ message }) => {
+        ffmpeg.on('log', ({ message }) => {
             messageRef.current.innerHTML = message;
             console.log(message);
         });
         // toBlobURL is used to bypass CORS issue, urls with the same
         // domain can be used directly.
         await ffmpeg.load({
-            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
-            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, "application/wasm"),
+            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
         });
         setLoaded(true);
     }
 
     const transcode = async () => {
         const ffmpeg = ffmpegRef.current;
-        await ffmpeg.writeFile("input.avi", await fetchFile('/video/video-15s.avi'));
-        await ffmpeg.exec(['-i', 'input.avi', 'output.mp4']);
+        await ffmpeg.writeFile('input.webm', await fetchFile('https://raw.githubusercontent.com/ffmpegwasm/testdata/master/Big_Buck_Bunny_180_10s.webm'));
+        await ffmpeg.exec(['-i', 'input.webm', 'output.mp4']);
         const data = await ffmpeg.readFile('output.mp4');
         videoRef.current.src =
             URL.createObjectURL(new Blob([data.buffer], {type: 'video/mp4'}));
@@ -52,7 +52,7 @@ function() {
         ? (
             <>
                 <video ref={videoRef} controls></video><br/>
-                <button onClick={transcode}>Transcode avi to mp4</button>
+                <button onClick={transcode}>Transcode webm to mp4</button>
                 <p ref={messageRef}></p>
                 <p>Open Developer Tools (Ctrl+Shift+I) to View Logs</p>
             </>
@@ -83,24 +83,24 @@ function() {
     const load = async () => {
         const baseURL = 'https://unpkg.com/@ffmpeg/core-mt@0.12.2/dist/umd'
         const ffmpeg = ffmpegRef.current;
-        ffmpeg.on("log", ({ message }) => {
+        ffmpeg.on('log', ({ message }) => {
             messageRef.current.innerHTML = message;
             console.log(message);
         });
         // toBlobURL is used to bypass CORS issue, urls with the same
         // domain can be used directly.
         await ffmpeg.load({
-            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
-            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, "application/wasm"),
-            workerURL: await toBlobURL(`${baseURL}/ffmpeg-core.worker.js`, "text/javascript"),
+            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+            workerURL: await toBlobURL(`${baseURL}/ffmpeg-core.worker.js`, 'text/javascript'),
         });
         setLoaded(true);
     }
 
     const transcode = async () => {
         const ffmpeg = ffmpegRef.current;
-        await ffmpeg.writeFile("input.avi", await fetchFile('/video/video-15s.avi'));
-        await ffmpeg.exec(['-i', 'input.avi', 'output.mp4']);
+        await ffmpeg.writeFile('input.webm', await fetchFile('https://raw.githubusercontent.com/ffmpegwasm/testdata/master/Big_Buck_Bunny_180_10s.webm'));
+        await ffmpeg.exec(['-i', 'input.webm', 'output.mp4']);
         const data = await ffmpeg.readFile('output.mp4');
         videoRef.current.src =
             URL.createObjectURL(new Blob([data.buffer], {type: 'video/mp4'}));
@@ -110,7 +110,7 @@ function() {
         ? (
             <>
                 <video ref={videoRef} controls></video><br/>
-                <button onClick={transcode}>Transcode avi to mp4</button>
+                <button onClick={transcode}>Transcode webm to mp4</button>
                 <p ref={messageRef}></p>
                 <p>Open Developer Tools (Ctrl+Shift+I) to View Logs</p>
             </>
@@ -136,24 +136,24 @@ function() {
     const load = async () => {
         const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.2/dist/umd'
         const ffmpeg = ffmpegRef.current;
-        ffmpeg.on("log", ({ message }) => {
+        ffmpeg.on('log', ({ message }) => {
             messageRef.current.innerHTML = message;
             console.log(message);
         });
         // toBlobURL is used to bypass CORS issue, urls with the same
         // domain can be used directly.
         await ffmpeg.load({
-            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
-            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, "application/wasm"),
+            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
         });
         setLoaded(true);
     }
 
     const transcode = async () => {
         const ffmpeg = ffmpegRef.current;
-        await ffmpeg.writeFile("input.avi", await fetchFile('/video/video-15s.avi'));
+        await ffmpeg.writeFile('input.webm', await fetchFile('https://raw.githubusercontent.com/ffmpegwasm/testdata/master/Big_Buck_Bunny_180_10s.webm'));
         // The exec should stop after 1 second.
-        await ffmpeg.exec(['-i', 'input.avi', 'output.mp4'], 1000);
+        await ffmpeg.exec(['-i', 'input.webm', 'output.mp4'], 1000);
         const data = await ffmpeg.readFile('output.mp4');
         videoRef.current.src =
             URL.createObjectURL(new Blob([data.buffer], {type: 'video/mp4'}));
@@ -163,7 +163,7 @@ function() {
         ? (
             <>
                 <video ref={videoRef} controls></video><br/>
-                <button onClick={transcode}>Transcode avi to mp4</button>
+                <button onClick={transcode}>Transcode webm to mp4</button>
                 <p ref={messageRef}></p>
                 <p>Open Developer Tools (Ctrl+Shift+I) to View Logs</p>
             </>
@@ -195,22 +195,22 @@ function() {
         const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.2/dist/umd'
         const ffmpeg = ffmpegRef.current;
         // Listen to progress event instead of log.
-        ffmpeg.on("progress", ({ progress, time }) => {
+        ffmpeg.on('progress', ({ progress, time }) => {
             messageRef.current.innerHTML = `${progress * 100} % (transcoded time: ${time / 1000000} s)`;
         });
         // toBlobURL is used to bypass CORS issue, urls with the same
         // domain can be used directly.
         await ffmpeg.load({
-            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
-            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, "application/wasm"),
+            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
         });
         setLoaded(true);
     }
 
     const transcode = async () => {
         const ffmpeg = ffmpegRef.current;
-        await ffmpeg.writeFile("input.avi", await fetchFile('/video/video-15s.avi'));
-        await ffmpeg.exec(['-i', 'input.avi', 'output.mp4']);
+        await ffmpeg.writeFile('input.webm', await fetchFile('https://raw.githubusercontent.com/ffmpegwasm/testdata/master/Big_Buck_Bunny_180_10s.webm'));
+        await ffmpeg.exec(['-i', 'input.webm', 'output.mp4']);
         const data = await ffmpeg.readFile('output.mp4');
         videoRef.current.src =
             URL.createObjectURL(new Blob([data.buffer], {type: 'video/mp4'}));
@@ -220,7 +220,7 @@ function() {
         ? (
             <>
                 <video ref={videoRef} controls></video><br/>
-                <button onClick={transcode}>Transcode avi to mp4</button>
+                <button onClick={transcode}>Transcode webm to mp4</button>
                 <p ref={messageRef}></p>
             </>
         )
@@ -245,37 +245,42 @@ function() {
     const load = async () => {
         const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.2/dist/umd'
         const ffmpeg = ffmpegRef.current;
-        ffmpeg.on("log", ({ message }) => {
+        ffmpeg.on('log', ({ message }) => {
             messageRef.current.innerHTML = message;
             console.log(message);
         });
         // toBlobURL is used to bypass CORS issue, urls with the same
         // domain can be used directly.
         await ffmpeg.load({
-            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
-            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, "application/wasm"),
+            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
         });
         setLoaded(true);
     }
 
     const transcode = async () => {
         const ffmpeg = ffmpegRef.current;
-        await ffmpeg.writeFile("input.avi", await fetchFile('/video/video-15s.avi'));
+        await ffmpeg.writeFile('input.webm', await fetchFile('https://raw.githubusercontent.com/ffmpegwasm/testdata/master/Big_Buck_Bunny_180_10s.webm'));
         await ffmpeg.exec([
             '-i',
-            'input.avi',
+            'input.webm',
             '-f',
             'segment',
             '-segment_time',
             '3',
+            '-g',
+            '9',
+            '-sc_threshold',
+            '0',
+            '-force_key_frames',
+            'expr:gte(t,n_forced*9)',
             '-reset_timestamps',
             '1',
             '-map',
-            '0:0',
-            '-an',
+            '0',
             'output_%d.mp4'
         ]);
-        const data = await ffmpeg.readFile('output_2.mp4');
+        const data = await ffmpeg.readFile('output_1.mp4');
         videoRef.current.src =
             URL.createObjectURL(new Blob([data.buffer], {type: 'video/mp4'}));
     }
@@ -284,7 +289,7 @@ function() {
         ? (
             <>
                 <video ref={videoRef} controls></video><br/>
-                <button onClick={transcode}>Split video to segments of 3 sec. and plays 3rd segment</button>
+                <button onClick={transcode}>Split video to segments of 3 sec. and plays 2nd segment</button>
                 <p ref={messageRef}></p>
                 <p>Open Developer Tools (Ctrl+Shift+I) to View Logs</p>
             </>
@@ -310,26 +315,26 @@ function() {
     const load = async () => {
         const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.2/dist/umd'
         const ffmpeg = ffmpegRef.current;
-        ffmpeg.on("log", ({ message }) => {
+        ffmpeg.on('log', ({ message }) => {
             messageRef.current.innerHTML = message;
             console.log(message);
         });
         // toBlobURL is used to bypass CORS issue, urls with the same
         // domain can be used directly.
         await ffmpeg.load({
-            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
-            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, "application/wasm"),
+            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
         });
         setLoaded(true);
     }
 
     const transcode = async () => {
         const ffmpeg = ffmpegRef.current;
-        await ffmpeg.writeFile("input.avi", await fetchFile('/video/video-15s.avi'));
-        await ffmpeg.writeFile("arial.ttf", await fetchFile('/asset/arial.ttf'));
+        await ffmpeg.writeFile('input.webm', await fetchFile('https://raw.githubusercontent.com/ffmpegwasm/testdata/master/Big_Buck_Bunny_180_10s.webm'));
+        await ffmpeg.writeFile('arial.ttf', await fetchFile('https://raw.githubusercontent.com/ffmpegwasm/testdata/master/arial.ttf'));
         await ffmpeg.exec([
             '-i',
-            'input.avi',
+            'input.webm',
             '-vf',
             'drawtext=fontfile=/arial.ttf:text=\'ffmpeg.wasm\':x=10:y=10:fontsize=24:fontcolor=white',
             'output.mp4',
