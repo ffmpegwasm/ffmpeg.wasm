@@ -360,7 +360,7 @@ function() {
 }
 ```
 
-## Interlaced 2 Videos
+## Interlace 2 Videos
 
 ```jsx live
 // import { FFmpeg } from '@ffmpeg/ffmpeg';
