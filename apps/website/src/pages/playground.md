@@ -30,15 +30,14 @@ development!
 
 <div style={{ height: 32 }} />
 
+:::tip
+Demo Video: [https://youtu.be/F01B0fV20QA](https://youtu.be/F01B0fV20QA)
+:::
+
 ## How to Use :rocket:
 
 > It is recommended to read [Overview](/docs/overview) first to learn
 ffmpeg.wasm fundamentals.
-
-Demo Video:
-<video width="100%" controls>
-  <source src="/video/playground-how-to.mp4" type="video/mp4" />
-</video>
 
 A typical flow to use ffmpeg.wasm is:
 

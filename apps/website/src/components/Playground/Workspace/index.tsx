@@ -14,7 +14,7 @@ import FileSystemManager from "./FileSystemManager";
 import { SAMPLE_FILES } from "../const";
 import Editor from "./Editor";
 
-const defaultArgs = JSON.stringify(["-i", "video.avi", "video.mp4"], null, 2);
+const defaultArgs = JSON.stringify(["-i", "video.webm", "video.mp4"], null, 2);
 
 interface WorkspaceProps {
   ffmpeg: MutableRefObject<FFmpeg>;

@@ -12,6 +12,6 @@ export const CORE_SIZE = {
 };
 
 export const SAMPLE_FILES = {
-  "video.avi":
-    "https://raw.githubusercontent.com/ffmpegwasm/testdata/master/video-3s.avi",
+  "video.webm":
+    "https://raw.githubusercontent.com/ffmpegwasm/testdata/master/Big_Buck_Bunny_180_10s.webm",
 };
