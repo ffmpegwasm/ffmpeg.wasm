@@ -343,7 +343,7 @@ function() {
         ? (
             <>
                 <video ref={videoRef} controls></video><br/>
-                <button onClick={transcode}>Transcode avi to mp4</button>
+                <button onClick={transcode}>Transcode avi to mp4 with text</button>
                 <p ref={messageRef}></p>
                 <p>Open Developer Tools (Ctrl+Shift+I) to View Logs</p>
             </>
