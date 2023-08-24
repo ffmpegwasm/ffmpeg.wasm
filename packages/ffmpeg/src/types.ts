@@ -22,6 +22,12 @@ export interface FFMessageLoadConfig {
    * @defaultValue `https://unpkg.com/@ffmpeg/core-mt@${CORE_VERSION}/dist/umd/ffmpeg-core.worker.js`;
    */
   workerURL?: string;
+  /**
+   * `worker.js` URL.
+   *
+   * @defaultValue `new URL('./worker.js')`;
+   */
+   workerLoadURL?: string;
 }
 
 export interface FFMessageExecData {
