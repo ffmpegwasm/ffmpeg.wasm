@@ -39,7 +39,7 @@
     "url": "https://github.com/ffmpegwasm/ffmpeg.wasm/issues"
   },
   "engines": {
-    "node": ">=18.17.0"
+    "node": ">=18.x"
   },
   "homepage": "https://github.com/ffmpegwasm/ffmpeg.wasm#readme",
   "publishConfig": {
