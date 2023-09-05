@@ -93,6 +93,15 @@ ADD https://github.com/ffmpegwasm/libwebp.git#$LIBWEBP_BRANCH /src
 COPY build/libwebp.sh /src/build.sh
 RUN bash -x /src/build.sh
 
+# Build libxml2
+FROM emsdk-base AS libxml2-builder
+#COPY --from=zlib-builder $INSTALL_DIR $INSTALL_DIR
+ENV XML2_BRANCH=v2.11.5
+ADD https://github.com/GNOME/libxml2.git#$XML2_BRANCH /src
+COPY build/libxml2.sh /src/build.sh
+RUN bash -x /src/build.sh
+
+
 # Build freetype2
 FROM emsdk-base AS freetype2-builder
 ENV FREETYPE2_BRANCH=VER-2-10-4
@@ -137,6 +146,7 @@ COPY --from=theora-builder $INSTALL_DIR $INSTALL_DIR
 COPY --from=vorbis-builder $INSTALL_DIR $INSTALL_DIR
 COPY --from=libwebp-builder $INSTALL_DIR $INSTALL_DIR
 COPY --from=libass-builder $INSTALL_DIR $INSTALL_DIR
+COPY --from=libxml2-builder $INSTALL_DIR $INSTALL_DIR
 
 # Build ffmpeg
 FROM ffmpeg-base AS ffmpeg-builder
@@ -154,7 +164,8 @@ RUN bash -x /src/build.sh \
       --enable-libwebp \
       --enable-libfreetype \
       --enable-libfribidi \
-      --enable-libass
+      --enable-libass \
+      --enable-libxml2
 
 # Build ffmpeg.wasm
 FROM ffmpeg-builder AS ffmpeg-wasm-builder
@@ -178,7 +189,8 @@ ENV FFMPEG_LIBS \
       -lfreetype \
       -lfribidi \
       -lharfbuzz \
-      -lass
+      -lass \
+      -lxml2
 RUN mkdir -p /src/dist/umd && bash -x /src/build.sh \
       ${FFMPEG_LIBS} \
       -o dist/umd/ffmpeg-core.js

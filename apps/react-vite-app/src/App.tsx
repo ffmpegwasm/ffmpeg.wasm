@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
-import { toBlobURL, fetchFile } from "@ffmpeg/util";
+import { toBlobURL } from "@ffmpeg/util";
 
 function App() {
   const [loaded, setLoaded] = useState(false);
@@ -9,7 +9,7 @@ function App() {
   const messageRef = useRef<HTMLParagraphElement | null>(null)
 
   const load = async () => {
-    const baseURL = "https://unpkg.com/@ffmpeg/core-mt@0.12.2/dist/esm";
+    const baseURL = "public/dist/esm";
     const ffmpeg = ffmpegRef.current;
     ffmpeg.on("log", ({ message }) => {
       if (messageRef.current) messageRef.current.innerHTML = message;
@@ -21,20 +21,17 @@ function App() {
       wasmURL: await toBlobURL(
         `${baseURL}/ffmpeg-core.wasm`,
         "application/wasm"
-      ),
-      workerURL: await toBlobURL(
-        `${baseURL}/ffmpeg-core.worker.js`,
-        "text/javascript"
-      ),
+      )
     });
     setLoaded(true);
   };
 
   const transcode = async () => {
-    const videoURL = "https://ffmpegwasm.netlify.app/video/video-15s.avi";
+    const videoURL = "http://localhost:5174/public/test.mpd";
     const ffmpeg = ffmpegRef.current;
-    await ffmpeg.writeFile("input.avi", await fetchFile(videoURL));
-    await ffmpeg.exec(["-i", "input.avi", "output.mp4"]);
+    console.log("starting")
+    await ffmpeg.exec(["-i", videoURL, "output.mp4"], 10);
+    console.log("never finishes")
     const fileData = await ffmpeg.readFile('output.mp4');
     const data = new Uint8Array(fileData as ArrayBuffer);
     if (videoRef.current) {
