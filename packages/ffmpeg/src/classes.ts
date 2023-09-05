@@ -102,7 +102,13 @@ export class FFmpeg {
       this.#resolves[id] = resolve;
       this.#rejects[id] = reject;
 
-      signal?.addEventListener("abort", reject, { once: true });
+      signal?.addEventListener(
+        "abort",
+        () => {
+          reject(new DOMException(`Message # ${id} was aborted`, "AbortError"));
+        },
+        { once: true }
+      );
     });
   };
 
@@ -155,9 +161,13 @@ export class FFmpeg {
     callback: LogEventCallback | ProgressEventCallback
   ) {
     if (event === "log") {
-      this.#logEventCallbacks = this.#logEventCallbacks.filter((f) => f !== callback);
+      this.#logEventCallbacks = this.#logEventCallbacks.filter(
+        (f) => f !== callback
+      );
     } else if (event === "progress") {
-      this.#progressEventCallbacks = this.#progressEventCallbacks.filter((f) => f !== callback);
+      this.#progressEventCallbacks = this.#progressEventCallbacks.filter(
+        (f) => f !== callback
+      );
     }
   }
 
