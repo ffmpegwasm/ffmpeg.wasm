@@ -124,6 +124,13 @@ ADD https://github.com/libass/libass.git#$LIBASS_BRANCH /src
 COPY build/libass.sh /src/build.sh
 RUN bash -x /src/build.sh
 
+# Build libzimg
+FROM emsdk-base AS libzimg-builder
+ENV LIBZIMG_BRANCH=v3.0
+ADD https://github.com/sekrit-twc/zimg.git#$LIBZIMG_BRANCH /src
+COPY build/libzimg.sh /src/build.sh
+RUN bash -x /src/build.sh
+
 # Base ffmpeg image with dependencies and source code populated.
 FROM emsdk-base AS ffmpeg-base
 RUN embuilder build sdl2 sdl2-mt
@@ -137,6 +144,7 @@ COPY --from=theora-builder $INSTALL_DIR $INSTALL_DIR
 COPY --from=vorbis-builder $INSTALL_DIR $INSTALL_DIR
 COPY --from=libwebp-builder $INSTALL_DIR $INSTALL_DIR
 COPY --from=libass-builder $INSTALL_DIR $INSTALL_DIR
+COPY --from=libzimg-builder $INSTALL_DIR $INSTALL_DIR
 
 # Build ffmpeg
 FROM ffmpeg-base AS ffmpeg-builder
@@ -154,7 +162,8 @@ RUN bash -x /src/build.sh \
       --enable-libwebp \
       --enable-libfreetype \
       --enable-libfribidi \
-      --enable-libass
+      --enable-libass \
+      --enable-libzimg
 
 # Build ffmpeg.wasm
 FROM ffmpeg-builder AS ffmpeg-wasm-builder
