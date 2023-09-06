@@ -138,7 +138,7 @@ COPY --from=vorbis-builder $INSTALL_DIR $INSTALL_DIR
 COPY --from=libwebp-builder $INSTALL_DIR $INSTALL_DIR
 COPY --from=libass-builder $INSTALL_DIR $INSTALL_DIR
 
-# Build ffmpeg
+# Build ffmpeg with --enable-libzimg
 FROM ffmpeg-base AS ffmpeg-builder
 COPY build/ffmpeg.sh /src/build.sh
 RUN bash -x /src/build.sh \
