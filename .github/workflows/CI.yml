@@ -14,34 +14,19 @@ jobs:
     steps:
     - name: Checkout Source Code
       uses: actions/checkout@v2
-    - name: Install zimg dependencies
-      run: sudo apt-get update && sudo apt-get install -y autoconf automake libtool pkg-config
-    - name: Install zimg
-      run: |
-        git clone https://github.com/sekrit-twc/zimg.git
-        cd zimg
-        git submodule update --init --recursive
-        ./autogen.sh
-        ./configure
-        make
-        sudo make install
     - name: Update pkg-config database
       run: sudo ldconfig
     - name: Setup Docker Buildx
       id: buildx
       uses: docker/setup-buildx-action@v2
-    - name: Check zimg availability
-      run: pkg-config --exists zimg && echo "zimg is available" || echo "zimg is not available"
-    - name: Get zimg version
-      run: pkg-config --modversion zimg
     - name: Cache build
       id: cache-build
       uses: actions/cache@v2
       with:
         path: build-cache-st
-        key: build-cache-st-v2-${{ hashFiles('Dockerfile', 'Makefile', 'build/*') }}
+        key: build-cache-st-v1-${{ hashFiles('Dockerfile', 'Makefile', 'build/*') }}
         restore-keys: |
-          build-cache-st-v2-
+          build-cache-st-v1-
     - name: Build ffmpeg-core
       run: make prd EXTRA_ARGS="--cache-from=type=local,src=build-cache-st --cache-to=type=local,dest=build-cache-st,mode=max"
     - name: Upload core
@@ -57,31 +42,14 @@ jobs:
     - name: Setup Docker Buildx
       id: buildx
       uses: docker/setup-buildx-action@v2
-    - name: Install zimg dependencies
-      run: sudo apt-get update && sudo apt-get install -y autoconf automake libtool pkg-config
-    - name: Install zimg
-      run: |
-        git clone https://github.com/sekrit-twc/zimg.git
-        cd zimg
-        git submodule update --init --recursive
-        ./autogen.sh
-        ./configure
-        make
-        sudo make install
-    - name: Update pkg-config database
-      run: sudo ldconfig
-    - name: Check zimg availability
-      run: pkg-config --exists zimg && echo "zimg is available" || echo "zimg is not available"
-    - name: Get zimg version
-      run: pkg-config --modversion zimg
     - name: Cache build
       id: cache-build
       uses: actions/cache@v2
       with:
         path: build-cache-mt
-        key: build-cache-mt-v2-${{ hashFiles('Dockerfile', 'Makefile', 'build/*') }}
+        key: build-cache-mt-v1-${{ hashFiles('Dockerfile', 'Makefile', 'build/*') }}
         restore-keys: |
-          build-cache-v2-
+          build-cache-v1-
     - name: Build ffmpet-core-mt
       run: make prd-mt EXTRA_ARGS="--cache-from=type=local,src=build-cache-mt --cache-to=type=local,dest=build-cache-mt,mode=max"
     - name: Upload core-mt
