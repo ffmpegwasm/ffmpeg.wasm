@@ -39,9 +39,9 @@ jobs:
       uses: actions/cache@v2
       with:
         path: build-cache-st
-        key: build-cache-st-v1-${{ hashFiles('Dockerfile', 'Makefile', 'build/*') }}
+        key: build-cache-st-v2-${{ hashFiles('Dockerfile', 'Makefile', 'build/*') }}
         restore-keys: |
-          build-cache-st-v1-
+          build-cache-st-v2-
     - name: Build ffmpeg-core
       run: make prd EXTRA_ARGS="--cache-from=type=local,src=build-cache-st --cache-to=type=local,dest=build-cache-st,mode=max"
     - name: Upload core
@@ -63,6 +63,7 @@ jobs:
       run: |
         git clone https://github.com/sekrit-twc/zimg.git
         cd zimg
+        git submodule update --init --recursive
         ./autogen.sh
         ./configure
         make
@@ -78,9 +79,9 @@ jobs:
       uses: actions/cache@v2
       with:
         path: build-cache-mt
-        key: build-cache-mt-v1-${{ hashFiles('Dockerfile', 'Makefile', 'build/*') }}
+        key: build-cache-mt-v2-${{ hashFiles('Dockerfile', 'Makefile', 'build/*') }}
         restore-keys: |
-          build-cache-v1-
+          build-cache-v2-
     - name: Build ffmpet-core-mt
       run: make prd-mt EXTRA_ARGS="--cache-from=type=local,src=build-cache-mt --cache-to=type=local,dest=build-cache-mt,mode=max"
     - name: Upload core-mt
