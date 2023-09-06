@@ -14,11 +14,21 @@ jobs:
     steps:
     - name: Checkout Source Code
       uses: actions/checkout@v2
+    - name: Install zimg dependencies
+      run: sudo apt-get update && sudo apt-get install -y autoconf automake libtool pkg-config
+    - name: Install zimg
+      run: |
+        git clone https://github.com/sekrit-twc/zimg.git
+        cd zimg
+        ./autogen.sh
+        ./configure
+        make
+        sudo make install
+    - name: Update pkg-config database
+      run: sudo ldconfig
     - name: Setup Docker Buildx
       id: buildx
       uses: docker/setup-buildx-action@v2
-    - name: Install zimg
-      run: sudo apt-get update && sudo apt-get install -y libzimg-dev
     - name: Cache build
       id: cache-build
       uses: actions/cache@v2
@@ -42,8 +52,18 @@ jobs:
     - name: Setup Docker Buildx
       id: buildx
       uses: docker/setup-buildx-action@v2
+    - name: Install zimg dependencies
+      run: sudo apt-get update && sudo apt-get install -y autoconf automake libtool pkg-config
     - name: Install zimg
-      run: sudo apt-get update && sudo apt-get install -y libzimg-dev
+      run: |
+        git clone https://github.com/sekrit-twc/zimg.git
+        cd zimg
+        ./autogen.sh
+        ./configure
+        make
+        sudo make install
+    - name: Update pkg-config database
+      run: sudo ldconfig
     - name: Cache build
       id: cache-build
       uses: actions/cache@v2
