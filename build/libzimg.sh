@@ -7,7 +7,7 @@ CONF_FLAGS=(
   --host=i686-gnu        # use i686 linux
   --disable-shared       # build static libraries
   --enable-static        # enable static libraries
-  # Add any other libzimg specific flags here
+  --disable-asm          # disable assembly optimizations
 )
 
 # Build and install libzimg
