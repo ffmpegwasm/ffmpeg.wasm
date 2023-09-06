@@ -30,6 +30,10 @@ jobs:
     - name: Setup Docker Buildx
       id: buildx
       uses: docker/setup-buildx-action@v2
+    - name: Check zimg availability
+      run: pkg-config --exists zimg && echo "zimg is available" || echo "zimg is not available"
+    - name: Get zimg version
+      run: pkg-config --modversion zimg
     - name: Cache build
       id: cache-build
       uses: actions/cache@v2
@@ -65,6 +69,10 @@ jobs:
         sudo make install
     - name: Update pkg-config database
       run: sudo ldconfig
+    - name: Check zimg availability
+      run: pkg-config --exists zimg && echo "zimg is available" || echo "zimg is not available"
+    - name: Get zimg version
+      run: pkg-config --modversion zimg
     - name: Cache build
       id: cache-build
       uses: actions/cache@v2
