@@ -154,7 +154,8 @@ RUN bash -x /src/build.sh \
       --enable-libwebp \
       --enable-libfreetype \
       --enable-libfribidi \
-      --enable-libass
+      --enable-libass \
+      --enable-libzimg 
 
 # Build ffmpeg.wasm
 FROM ffmpeg-builder AS ffmpeg-wasm-builder
