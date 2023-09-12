@@ -13,6 +13,7 @@ import {
   LogEventCallback,
   ProgressEventCallback,
   FileData,
+  WorkerFSMountData,
 } from "./types.js";
 import { getMessageID } from "./utils.js";
 import { ERROR_TERMINATED, ERROR_NOT_LOADED } from "./errors.js";
@@ -268,17 +269,6 @@ export class FFmpeg {
 
   public mount = (path: string, data: WorkerFSMountData): Promise<OK> => {
     const trans: Transferable[] = [];
-    // TODO - handle transferables
-    if (data.blobs){
-      for(let blob in data.blobs){
-        trans.push(data.buffer);
-      }
-    }
-    if (data.files){
-      for(let file in data.files){
-        
-      }
-    }
     return this.#send(
       {
         type: FFMessageType.MOUNT,
