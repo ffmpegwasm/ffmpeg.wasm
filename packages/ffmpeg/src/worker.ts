@@ -14,6 +14,8 @@ import type {
   FFMessageCreateDirData,
   FFMessageListDirData,
   FFMessageDeleteDirData,
+  FFMessageMountData,
+  FFMessageUnmountData,
   CallbackData,
   IsFirst,
   OK,
