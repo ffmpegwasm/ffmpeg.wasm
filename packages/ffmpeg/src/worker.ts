@@ -137,6 +137,16 @@ const deleteDir = ({ path }: FFMessageDeleteDirData): OK => {
   return true;
 };
 
+const mount = ({ path, data }: FFMessageMountData): OK => {
+  ffmpeg.FS.mount(ffmpeg.FS.WORKERFS, data, path);
+  return true;
+};
+
+const unmount = ({ path }: FFMessageUnmountData): OK => {
+  ffmpeg.FS.unmount(path);
+  return true;
+};
+
 self.onmessage = async ({
   data: { id, type, data: _data },
 }: FFMessageEvent): Promise<void> => {
@@ -172,6 +182,12 @@ self.onmessage = async ({
         break;
       case FFMessageType.DELETE_DIR:
         data = deleteDir(_data as FFMessageDeleteDirData);
+        break;
+      case FFMessageType.MOUNT:
+        data = mount(_data as FFMessageMountData);
+        break;
+      case FFMessageType.UNMOUNT:
+        data = unmount(_data as FFMessageUnmountData);
         break;
       default:
         throw ERROR_UNKNOWN_MESSAGE_TYPE;

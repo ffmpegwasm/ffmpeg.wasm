@@ -52,6 +52,8 @@ export class FFmpeg {
             this.loaded = true;
             this.#resolves[id](data);
             break;
+          case FFMessageType.MOUNT:
+          case FFMessageType.UNMOUNT:
           case FFMessageType.EXEC:
           case FFMessageType.WRITE_FILE:
           case FFMessageType.READ_FILE:
@@ -171,7 +173,7 @@ export class FFmpeg {
         this.#worker = new Worker(config.workerLoadURL, {
           type: "module",
         });
-      }      
+      }
       this.#registerHandlers();
     }
     return this.#send({
@@ -259,6 +261,39 @@ export class FFmpeg {
       {
         type: FFMessageType.WRITE_FILE,
         data: { path, data },
+      },
+      trans
+    ) as Promise<OK>;
+  };
+
+  public mount = (path: string, data: WorkerFSMountData): Promise<OK> => {
+    const trans: Transferable[] = [];
+    // TODO - handle transferables
+    if (data.blobs){
+      for(let blob in data.blobs){
+        trans.push(data.buffer);
+      }
+    }
+    if (data.files){
+      for(let file in data.files){
+        
+      }
+    }
+    return this.#send(
+      {
+        type: FFMessageType.MOUNT,
+        data: { path, data },
+      },
+      trans
+    ) as Promise<OK>;
+  };
+
+  public unmount = (path: string): Promise<OK> => {
+    const trans: Transferable[] = [];
+    return this.#send(
+      {
+        type: FFMessageType.UNMOUNT,
+        data: { path },
       },
       trans
     ) as Promise<OK>;

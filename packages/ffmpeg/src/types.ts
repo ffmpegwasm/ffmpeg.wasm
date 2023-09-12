@@ -22,12 +22,12 @@ export interface FFMessageLoadConfig {
    * @defaultValue `https://unpkg.com/@ffmpeg/core-mt@${CORE_VERSION}/dist/umd/ffmpeg-core.worker.js`;
    */
   workerURL?: string;
-    /**
-   * `worker.js` URL.
-   *
-   * @defaultValue `new URL('./worker.js')`;
-   */
-    workerLoadURL?: string;
+  /**
+ * `worker.js` URL.
+ *
+ * @defaultValue `new URL('./worker.js')`;
+ */
+  workerLoadURL?: string;
 }
 
 export interface FFMessageExecData {
@@ -70,6 +70,28 @@ export interface FFMessageDeleteDirData {
   path: FFFSPath;
 }
 
+export type WorkerFSFileEntry =
+  | File;
+
+export interface WorkerFSBlobEntry {
+  name: string;
+  data: Blob;
+}
+
+export interface WorkerFSMountData {
+  blobs?: WorkerFSBlobEntry[];
+  files?: WorkerFSFileEntry[];
+}
+
+export interface FFMessageMountData {
+  path: FFFSPath;
+  data: WorkerFSMountData;
+}
+
+export interface FFMessageUnmountData {
+  path: FFFSPath;
+}
+
 export type FFMessageData =
   | FFMessageLoadConfig
   | FFMessageExecData
@@ -79,7 +101,9 @@ export type FFMessageData =
   | FFMessageRenameData
   | FFMessageCreateDirData
   | FFMessageListDirData
-  | FFMessageDeleteDirData;
+  | FFMessageDeleteDirData
+  | FFMessageMountData
+  | FFMessageUnmountData;
 
 export interface Message {
   type: string;
