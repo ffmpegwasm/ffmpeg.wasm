@@ -75,24 +75,6 @@ jobs:
         name: ffmpeg-core-mt
         path: packages/core-mt/dist
 
-    - name: Deploy core
-      uses: s0/git-publish-subdir-action@master
-      env:
-        REPO: self
-        BRANCH: latest-build
-        FOLDER: packages/core/dist/
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
-        TARGET_DIR: packages/core/dist/
-
-    - name: Deploy core-mt
-      uses: s0/git-publish-subdir-action@master
-      env:
-        REPO: self
-        BRANCH: latest-build
-        FOLDER: packages/core-mt/dist/
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
-        TARGET_DIR: packages/core-mt/dist/
-
     - name: Use Node.js 18
       uses: actions/setup-node@v3
       with:
