@@ -91,6 +91,23 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: ffmpeg
-        path: packages/ffmpeg/dist/*            
+        path: packages/ffmpeg/dist/*     
+
+    - name: Unify ffmpeg-umd dist package
+      run: |
+        mkdir umd
+        mkdir umd/ffmpeg
+        mkdir umd/core
+        mkdir umd/core-mt
+        cp packages/ffmpeg/dist/umd/* umd/ffmpeg/
+        cp packages/core/dist/umd/* umd/core/
+        cp packages/core-mt/dist/umd/* umd/core-mt/
+
+    - name: Upload ffmpeg-umd
+      uses: actions/upload-artifact@v3
+      with:
+        name: ffmpeg-umd
+        path: umd/*     
+
     - name: Run tests
       run: npm test
