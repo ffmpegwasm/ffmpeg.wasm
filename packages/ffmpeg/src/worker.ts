@@ -2,7 +2,14 @@
 /// <reference lib="esnext" />
 /// <reference lib="webworker" />
 
-import type { FFmpegCoreModule, FFmpegCoreModuleFactory } from "@ffmpeg/types";
+import type { 
+  FFmpegCoreModule, 
+  FFmpegCoreModuleFactory,
+  FSFilesystem,
+  FSFilesystemWORKERFS,
+  FSFilesystemMEMFS,
+  FSFilesystems,
+} from "@ffmpeg/types";
 import type {
   FFMessageEvent,
   FFMessageLoadConfig,
@@ -140,7 +147,7 @@ const deleteDir = ({ path }: FFMessageDeleteDirData): OK => {
 };
 
 const mount = ({ path, data }: FFMessageMountData): OK => {
-  ffmpeg.FS.mount(ffmpeg.FS.WORKERFS, data, path);
+  ffmpeg.FS.mount(ffmpeg.FS.filesystems.WORKERFS, data, path);
   return true;
 };
 

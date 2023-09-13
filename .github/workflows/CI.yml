@@ -91,11 +91,6 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: ffmpeg
-        path: packages/ffmpeg/dist/*  
-    - name: Deploy packages 🚀
-      uses: JamesIves/github-pages-deploy-action@v4
-      with:
-        branch: latest-build # The branch the action should deploy to.
-        folder: packages # The folder the action should deploy.            
+        path: packages/ffmpeg/dist/*            
     - name: Run tests
       run: npm test

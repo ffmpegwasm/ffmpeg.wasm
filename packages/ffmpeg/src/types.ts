@@ -165,3 +165,20 @@ export interface FFMessageEventCallback {
     data: CallbackData;
   };
 }
+
+// export type FSFilesystem =
+// | FSFilesystemWORKERFS
+// | FSFilesystemMEMFS;
+
+// export interface FSFilesystemWORKERFS {
+  
+// }
+
+// export interface FSFilesystemMEMFS {
+  
+// }
+
+// export interface FSFilesystems {
+//   WORKERFS?: FSFilesystemWORKERFS;
+//   MEMFS?: FSFilesystemMEMFS;
+// }
