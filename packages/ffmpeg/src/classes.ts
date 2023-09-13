@@ -166,11 +166,9 @@ export class FFmpeg {
    */
   public load = (config: FFMessageLoadConfig = {}): Promise<IsFirst> => {
     if (!this.#worker) {
-      if (config.workerLoadURL) {
-        this.#worker = new Worker(config.workerLoadURL);
-      } else {
-        this.#worker = new Worker(new URL("./worker.js", import.meta.url));
-      }
+      this.#worker = new Worker(new URL("./worker.js", import.meta.url), {
+        type: "module",
+      });
       this.#registerHandlers();
     }
     return this.#send({
