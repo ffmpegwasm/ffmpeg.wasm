@@ -139,13 +139,16 @@ const deleteDir = ({ path }: FFMessageDeleteDirData): OK => {
   return true;
 };
 
-const mount = ({ path, data }: FFMessageMountData): OK => {
-  ffmpeg.FS.mount(ffmpeg.FS.filesystems.WORKERFS, data, path);
+const mount = ({ fsType, options, mountPoint }: FFMessageMountData): OK => {
+  let str = fsType as keyof typeof ffmpeg.FS.filesystems;
+  let fs = ffmpeg.FS.filesystems[str];
+  if (!fs) return false;
+  ffmpeg.FS.mount(fs, options, mountPoint);
   return true;
 };
 
-const unmount = ({ path }: FFMessageUnmountData): OK => {
-  ffmpeg.FS.unmount(path);
+const unmount = ({ mountPoint }: FFMessageUnmountData): OK => {
+  ffmpeg.FS.unmount(mountPoint);
   return true;
 };
 
