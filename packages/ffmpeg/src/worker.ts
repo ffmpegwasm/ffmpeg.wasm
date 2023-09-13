@@ -2,14 +2,7 @@
 /// <reference lib="esnext" />
 /// <reference lib="webworker" />
 
-import type { 
-  FFmpegCoreModule, 
-  FFmpegCoreModuleFactory,
-  FSFilesystem,
-  FSFilesystemWORKERFS,
-  FSFilesystemMEMFS,
-  FSFilesystems,
-} from "@ffmpeg/types";
+import type { FFmpegCoreModule, FFmpegCoreModuleFactory } from "@ffmpeg/types";
 import type {
   FFMessageEvent,
   FFMessageLoadConfig,
