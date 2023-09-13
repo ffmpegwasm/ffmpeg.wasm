@@ -21,5 +21,4 @@ export enum FFMessageType {
   LOG = "LOG",
   MOUNT = "MOUNT",
   UNMOUNT = "UNMOUNT",
-  FILESYSTEMS = "FILESYSTEMS",
 }
