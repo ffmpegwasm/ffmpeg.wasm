@@ -28,7 +28,7 @@ Setup:
 
 ### $ ffmpeg -i [input.webm](https://test-videos.co.uk/vids/bigbuckbunny/webm/vp8/720/Big_Buck_Bunny_720_10s_1MB.webm) output.mp4
 
-|  #  | FFmpeg | core v0.12.2 | core-mt v0.12.2 |
+|  #  | FFmpeg | core v0.12.3 | core-mt v0.12.3 |
 | --- | ------ | ------------ | --------------- |
 | Avg | 5.2 sec | 128.8 sec (0.04x) | 60.4 sec (0.08x) |
 | Max | 5.3 sec | 130.7 sec | 63.9 sec |
