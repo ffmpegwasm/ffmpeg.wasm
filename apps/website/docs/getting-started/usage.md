@@ -420,3 +420,23 @@ function() {
     );
 }
 ```
+
+## Use WORKERFS
+
+:::note
+Required:
+- @ffmpeg/ffmpeg@0.12.7+
+- @ffmpeg/core@0.12.4+
+:::
+
+Please Check this PR: [Add WORKERFS support](https://github.com/ffmpegwasm/ffmpeg.wasm/pull/581)
+
+## Abort exec() with signal
+
+:::note
+Required:
+- @ffmpeg/ffmpeg@0.12.7+
+- @ffmpeg/core@0.12.4+
+:::
+
+Please check this PR: [abort signal](https://github.com/ffmpegwasm/ffmpeg.wasm/pull/573)
