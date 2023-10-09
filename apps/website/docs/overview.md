@@ -104,6 +104,7 @@ ffmpeg.wasm is built with toolchains / libraries:
             {name: "fribidi", version: "v1.0.9", note: "FriBidi is a library for handling bidirectional text (text containing both left-to-right and right-to-left scripts) and is often used in text layout and rendering."},
             {name: "harfbuzz", version: "5.2.0", note: "HarfBuzz is a text shaping engine that allows complex script text to be rendered correctly. It's used in conjunction with font rendering libraries."},
             {name: "libass", version: "0.15.0", note: "libass is a library for rendering and formatting subtitles in multimedia applications, making it essential for displaying subtitles alongside video content."},
+            {name: "zimg", version: "3.0.5", note: "zimg implements the commonly required image processing basics of scaling, colorspace conversion, and depth conversion."}
            ].map((row) => (
             <TableRow
               key={row.name}
