@@ -1,4 +1,4 @@
-export const CORE_VERSION = "0.12.2";
+export const CORE_VERSION = "0.12.3";
 
 export const CORE_URL = `https://unpkg.com/@ffmpeg/core@${CORE_VERSION}/dist/umd/ffmpeg-core.js`;
 export const CORE_MT_URL = `https://unpkg.com/@ffmpeg/core-mt@${CORE_VERSION}/dist/umd/ffmpeg-core.js`;
