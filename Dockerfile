@@ -20,6 +20,14 @@ ENV FFMPEG_MT=$FFMPEG_MT
 RUN apt-get update && \
       apt-get install -y pkg-config autoconf automake libtool ragel
 
+# Build zimg
+FROM emsdk-base AS zimg-builder
+ENV ZIMG_BRANCH=release-3.0.5
+RUN apt-get update && apt-get install -y git
+RUN git clone --recursive -b $ZIMG_BRANCH https://github.com/sekrit-twc/zimg.git /src
+COPY build/zimg.sh /src/build.sh
+RUN bash -x /src/build.sh
+
 # Build x264
 FROM emsdk-base AS x264-builder
 ENV X264_BRANCH=4-cores
@@ -137,8 +145,9 @@ COPY --from=theora-builder $INSTALL_DIR $INSTALL_DIR
 COPY --from=vorbis-builder $INSTALL_DIR $INSTALL_DIR
 COPY --from=libwebp-builder $INSTALL_DIR $INSTALL_DIR
 COPY --from=libass-builder $INSTALL_DIR $INSTALL_DIR
+COPY --from=zimg-builder $INSTALL_DIR $INSTALL_DIR
 
-# Build ffmpeg
+# Build ffmpeg with --enable-libzimg
 FROM ffmpeg-base AS ffmpeg-builder
 COPY build/ffmpeg.sh /src/build.sh
 RUN bash -x /src/build.sh \
@@ -154,7 +163,8 @@ RUN bash -x /src/build.sh \
       --enable-libwebp \
       --enable-libfreetype \
       --enable-libfribidi \
-      --enable-libass
+      --enable-libass \
+      --enable-libzimg 
 
 # Build ffmpeg.wasm
 FROM ffmpeg-builder AS ffmpeg-wasm-builder
@@ -178,7 +188,8 @@ ENV FFMPEG_LIBS \
       -lfreetype \
       -lfribidi \
       -lharfbuzz \
-      -lass
+      -lass \
+      -lzimg
 RUN mkdir -p /src/dist/umd && bash -x /src/build.sh \
       ${FFMPEG_LIBS} \
       -o dist/umd/ffmpeg-core.js
