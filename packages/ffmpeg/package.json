@@ -7,8 +7,11 @@
   "exports": {
     ".": {
       "types": "./dist/esm/index.d.ts",
-      "import": "./dist/esm/index.js",
-      "require": "./dist/umd/ffmpeg.js"
+      "node": "./dist/esm/empty.mjs",
+      "default": {
+        "import": "./dist/esm/index.js",
+        "require": "./dist/umd/ffmpeg.js"
+      }
     }
   },
   "scripts": {
