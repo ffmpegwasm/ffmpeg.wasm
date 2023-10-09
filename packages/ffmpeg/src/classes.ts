@@ -13,6 +13,10 @@ import {
   LogEventCallback,
   ProgressEventCallback,
   FileData,
+  WorkerFSMountData,
+  FFFSType,
+  FFFSMountOptions,
+  FFFSPath,
 } from "./types.js";
 import { getMessageID } from "./utils.js";
 import { ERROR_TERMINATED, ERROR_NOT_LOADED } from "./errors.js";
@@ -56,6 +60,8 @@ export class FFmpeg {
             this.loaded = true;
             this.#resolves[id](data);
             break;
+          case FFMessageType.MOUNT:
+          case FFMessageType.UNMOUNT:
           case FFMessageType.EXEC:
           case FFMessageType.WRITE_FILE:
           case FFMessageType.READ_FILE:
@@ -289,6 +295,28 @@ export class FFmpeg {
       },
       trans,
       signal
+    ) as Promise<OK>;
+  };
+
+  public mount = (fsType: FFFSType, options: FFFSMountOptions, mountPoint: FFFSPath, ): Promise<OK> => {
+    const trans: Transferable[] = [];
+    return this.#send(
+      {
+        type: FFMessageType.MOUNT,
+        data: { fsType, options, mountPoint },
+      },
+      trans
+    ) as Promise<OK>;
+  };
+
+  public unmount = (mountPoint: FFFSPath): Promise<OK> => {
+    const trans: Transferable[] = [];
+    return this.#send(
+      {
+        type: FFMessageType.UNMOUNT,
+        data: { mountPoint },
+      },
+      trans
     ) as Promise<OK>;
   };
 

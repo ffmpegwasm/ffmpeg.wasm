@@ -19,4 +19,6 @@ export enum FFMessageType {
   DOWNLOAD = "DOWNLOAD",
   PROGRESS = "PROGRESS",
   LOG = "LOG",
+  MOUNT = "MOUNT",
+  UNMOUNT = "UNMOUNT",
 }

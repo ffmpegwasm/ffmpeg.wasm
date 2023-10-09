@@ -39,6 +39,23 @@ export interface Stat {
   blocks: number;
 }
 
+export interface FSFilesystemWORKERFS {
+  
+}
+
+export interface FSFilesystemMEMFS {
+  
+}
+
+export interface FSFilesystems {
+  WORKERFS: FSFilesystemWORKERFS;
+  MEMFS: FSFilesystemMEMFS;
+}
+
+export type FSFilesystem =
+| FSFilesystemWORKERFS
+| FSFilesystemMEMFS;
+
 /**
  * Functions to interact with Emscripten FS library.
  *
@@ -58,6 +75,9 @@ export interface FS {
   isFile: (mode: number) => boolean;
   /** mode is a numeric notation of permission, @see [Numeric Notation](https://en.wikipedia.org/wiki/File-system_permissions#Numeric_notation) */
   isDir: (mode: number) => boolean;
+  mount: (fileSystemType: FSFilesystem, data: WorkerFSMountConfig, path: string) => void;
+  unmount: (path: string) => void;
+  filesystems: FSFilesystems;
 }
 
 /**

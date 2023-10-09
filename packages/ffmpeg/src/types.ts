@@ -64,6 +64,41 @@ export interface FFMessageDeleteDirData {
   path: FFFSPath;
 }
 
+export enum FFFSType {
+  MEMFS = "MEMFS",
+  NODEFS = "NODEFS",
+  NODERAWFS = "NODERAWFS",
+  IDBFS  = "IDBFS",
+  WORKERFS = "WORKERFS",
+  PROXYFS = "PROXYFS",
+}
+
+export type WorkerFSFileEntry =
+  | File;
+
+export interface WorkerFSBlobEntry {
+  name: string;
+  data: Blob;
+}
+
+export interface WorkerFSMountData {
+  blobs?: WorkerFSBlobEntry[];
+  files?: WorkerFSFileEntry[];
+}
+
+export type FFFSMountOptions =
+  | WorkerFSMountData;
+
+export interface FFMessageMountData {
+  fsType: FFFSType;
+  options: FFFSMountOptions;
+  mountPoint: FFFSPath;
+}
+
+export interface FFMessageUnmountData {
+  mountPoint: FFFSPath;
+}
+
 export type FFMessageData =
   | FFMessageLoadConfig
   | FFMessageExecData
@@ -73,7 +108,9 @@ export type FFMessageData =
   | FFMessageRenameData
   | FFMessageCreateDirData
   | FFMessageListDirData
-  | FFMessageDeleteDirData;
+  | FFMessageDeleteDirData
+  | FFMessageMountData
+  | FFMessageUnmountData;
 
 export interface Message {
   type: string;
