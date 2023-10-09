@@ -135,4 +135,18 @@ describe(genName("FFmpeg.exec()"), function () {
     const ret = await ffmpeg.exec(["-i", "video.mp4", "video.avi"], 1);
     expect(ret).to.equal(1);
   });
+
+  it("should abort", () => {
+    const controller = new AbortController();
+    const { signal } = controller;
+
+    const promise = ffmpeg.exec(["-i", "video.mp4", "video.avi"], undefined, {
+      signal,
+    });
+    controller.abort();
+
+    return promise.catch((err) => {
+      expect(err.name).to.equal("AbortError");
+    });
+  });
 });
