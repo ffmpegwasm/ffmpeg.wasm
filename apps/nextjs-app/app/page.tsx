@@ -13,7 +13,7 @@ export default function Home() {
 
   const load = async () => {
     setIsLoading(true)
-    const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.3/dist/umd'
+    const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.4/dist/umd'
     const ffmpeg = ffmpegRef.current
     ffmpeg.on('log', ({ message }) => {
       if (messageRef.current) messageRef.current.innerHTML = message
