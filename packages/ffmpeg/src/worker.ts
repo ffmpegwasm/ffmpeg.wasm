@@ -43,25 +43,22 @@ interface ImportedFFmpegCoreModuleFactory {
 let ffmpeg: FFmpegCoreModule;
 
 const load = async ({
-  coreURL: _coreURL = CORE_URL,
+  coreURL: _coreURL,
   wasmURL: _wasmURL,
   workerURL: _workerURL,
 }: FFMessageLoadConfig): Promise<IsFirst> => {
   const first = !ffmpeg;
-  const coreURL = _coreURL;
-  const wasmURL = _wasmURL ? _wasmURL : _coreURL.replace(/.js$/g, ".wasm");
-  const workerURL = _workerURL
-    ? _workerURL
-    : _coreURL.replace(/.js$/g, ".worker.js");
 
   try {
+    if (!_coreURL) _coreURL = CORE_URL;
     // when web worker type is `classic`.
-    importScripts(coreURL);
+    importScripts(_coreURL);
   } catch {
+    if (!_coreURL) _coreURL = CORE_URL.replace('/umd/', '/esm/');
     // when web worker type is `module`.
     (self as WorkerGlobalScope).createFFmpegCore = (
       (await import(
-        /* @vite-ignore */ coreURL
+        /* @vite-ignore */ _coreURL
       )) as ImportedFFmpegCoreModuleFactory
     ).default;
 
@@ -69,6 +66,12 @@ const load = async ({
       throw ERROR_IMPORT_FAILURE;
     }
   }
+
+  const coreURL = _coreURL;
+  const wasmURL = _wasmURL ? _wasmURL : _coreURL.replace(/.js$/g, ".wasm");
+  const workerURL = _workerURL
+    ? _workerURL
+    : _coreURL.replace(/.js$/g, ".worker.js");
 
   ffmpeg = await (self as WorkerGlobalScope).createFFmpegCore({
     // Fix `Overload resolution failed.` when using multi-threaded ffmpeg-core.
