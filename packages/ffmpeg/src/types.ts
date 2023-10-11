@@ -153,7 +153,7 @@ export type CallbackData =
   | LogEvent
   | ProgressEvent
   | IsFirst
-  | OK
+  | OK // eslint-disable-line
   | Error
   | FSNode[]
   | undefined;

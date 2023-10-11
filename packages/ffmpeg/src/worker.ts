@@ -140,8 +140,8 @@ const deleteDir = ({ path }: FFMessageDeleteDirData): OK => {
 };
 
 const mount = ({ fsType, options, mountPoint }: FFMessageMountData): OK => {
-  let str = fsType as keyof typeof ffmpeg.FS.filesystems;
-  let fs = ffmpeg.FS.filesystems[str];
+  const str = fsType as keyof typeof ffmpeg.FS.filesystems;
+  const fs = ffmpeg.FS.filesystems[str];
   if (!fs) return false;
   ffmpeg.FS.mount(fs, options, mountPoint);
   return true;
@@ -158,7 +158,7 @@ self.onmessage = async ({
   const trans = [];
   let data: CallbackData;
   try {
-    if (type !== FFMessageType.LOAD && !ffmpeg) throw ERROR_NOT_LOADED;
+    if (type !== FFMessageType.LOAD && !ffmpeg) throw ERROR_NOT_LOADED; // eslint-disable-line
 
     switch (type) {
       case FFMessageType.LOAD:

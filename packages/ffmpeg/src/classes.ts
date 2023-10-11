@@ -13,7 +13,6 @@ import {
   LogEventCallback,
   ProgressEventCallback,
   FileData,
-  WorkerFSMountData,
   FFFSType,
   FFFSMountOptions,
   FFFSPath,
