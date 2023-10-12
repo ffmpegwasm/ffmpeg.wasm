@@ -50,9 +50,11 @@ const load = async ({
   const first = !ffmpeg;
 
   try {
-    if (!_coreURL) _coreURL = CORE_URL;
+    let tempCoreURL = _coreURL;
+    if (!tempCoreURL) tempCoreURL = CORE_URL;
     // when web worker type is `classic`.
-    importScripts(_coreURL);
+    importScripts(tempCoreURL);
+    _coreURL = tempCoreURL;
   } catch {
     if (!_coreURL) _coreURL = CORE_URL.replace('/umd/', '/esm/');
     // when web worker type is `module`.
