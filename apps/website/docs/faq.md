@@ -14,7 +14,7 @@ Of course, it is still highly welcome to contribute a nodejs version of ffmpeg.w
 ### Why ffmpeg.wasm is so slow comparing to ffmpeg?
 
 As of now, WebAssembly is still a lot slower than native, it is possible to further speed up using
-WebAssembly intrinsic, which basically wrting assembly code. It is something we are investigating
+WebAssembly intrinsic, which is basically writing assembly code. It is something we are investigating
 and hope to introduce in the future.
 
 If you are OK with more unstable version of ffmpeg.wasm, using ffmpeg.wasm multithread (mt) version
