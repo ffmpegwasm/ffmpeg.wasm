@@ -58,7 +58,7 @@ const load = async ({
     // when web worker type is `module`.
     (self as WorkerGlobalScope).createFFmpegCore = (
       (await import(
-        /* @vite-ignore */ _coreURL
+        /* webpackIgnore: true *//* @vite-ignore */ _coreURL
       )) as ImportedFFmpegCoreModuleFactory
     ).default;
 
