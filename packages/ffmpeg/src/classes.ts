@@ -188,9 +188,15 @@ export class FFmpeg {
     { signal }: FFMessageOptions = {}
   ): Promise<IsFirst> => {
     if (!this.#worker) {
-      this.#worker = new Worker(new URL("./worker.js", import.meta.url), {
-        type: "module",
-      });
+      if( config.workerURL ){
+        this.#worker = new Worker( config.workerURL, {
+          type: "module"
+        });
+      } else {
+        this.#worker = new Worker(new URL("./worker.js", import.meta.url), {
+          type: "module",
+        });
+      }
       this.#registerHandlers();
     }
     return this.#send(
