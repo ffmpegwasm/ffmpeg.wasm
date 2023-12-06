@@ -7,6 +7,10 @@
     ".": {
       "import": "./dist/esm/ffmpeg-core.js",
       "require": "./dist/umd/ffmpeg-core.js"
+    },
+    "./wasm": {
+      "import": "./dist/esm/ffmpeg-core.wasm",
+      "require": "./dist/umd/ffmpeg-core.wasm"
     }
   },
   "files": [
