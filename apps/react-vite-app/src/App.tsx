@@ -31,7 +31,7 @@ function App() {
   };
 
   const transcode = async () => {
-    const videoURL = "https://ffmpegwasm.netlify.app/video/video-15s.avi";
+    const videoURL = "https://raw.githubusercontent.com/ffmpegwasm/testdata/master/video-15s.avi";
     const ffmpeg = ffmpegRef.current;
     await ffmpeg.writeFile("input.avi", await fetchFile(videoURL));
     await ffmpeg.exec(["-i", "input.avi", "output.mp4"]);
