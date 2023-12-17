@@ -16,7 +16,7 @@ If you are a [vite](https://vitejs.dev/) user, use `esm` in **baseURL** instead 
 
 ```jsx live
 // import { FFmpeg } from '@ffmpeg/ffmpeg';
-// import { fetchFile } from '@ffmpeg/util';
+// import { fetchFile, toBlobURL } from '@ffmpeg/util';
 function() {
     const [loaded, setLoaded] = useState(false);
     const ffmpegRef = useRef(new FFmpeg());
