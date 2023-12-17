@@ -89,7 +89,7 @@ ffmpeg.wasm is built with toolchains / libraries:
         <TableBody>
           {[
             {name: "Emscripten", version: "3.1.40", note: "Emscripten is a toolchain for compiling C and C++ code into WebAssembly and JavaScript, making it possible to run applications written in these languages in web browsers."},
-            {name: "FFmpeg", version: "n5.1.3", note: "FFmpeg is a powerful multimedia framework that can decode, encode, transcode, and stream audio and video files. It's widely used for media manipulation and streaming."},
+            {name: "FFmpeg", version: "n5.1.4", note: "FFmpeg is a powerful multimedia framework that can decode, encode, transcode, and stream audio and video files. It's widely used for media manipulation and streaming."},
             {name: "x264", version: "0.164.x", note: "x264 is a popular video encoding library that provides high-quality H.264 video compression. It's commonly used for video encoding and transcoding."},
             {name: "x265", version: "3.4", note: "x265 is a video encoding library that specializes in encoding videos using the H.265/HEVC codec, offering high compression efficiency for video content."},
             {name: "libvpx", version: "v1.9.0", note: "libvpx is an open-source video codec library used for encoding and decoding VP8 and VP9 video formats, commonly used for web-based video streaming."},
