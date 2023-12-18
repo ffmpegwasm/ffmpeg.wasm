@@ -184,7 +184,9 @@ ENV FFMPEG_LIBS \
       -lvorbisfile \
       -lopus \
       -lz \
+      -lwebpmux \
       -lwebp \
+      -lsharpyuv \
       -lfreetype \
       -lfribidi \
       -lharfbuzz \
