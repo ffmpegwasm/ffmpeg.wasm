@@ -36,7 +36,7 @@ RUN bash -x /src/build.sh
 
 # Build libvpx
 FROM emsdk-base AS libvpx-builder
-ENV LIBVPX_BRANCH=v1.9.0
+ENV LIBVPX_BRANCH=v1.13.1
 ADD https://github.com/ffmpegwasm/libvpx.git#$LIBVPX_BRANCH /src
 COPY build/libvpx.sh /src/build.sh
 RUN bash -x /src/build.sh
@@ -88,7 +88,7 @@ RUN bash -x /src/build.sh
 # Build libwebp
 FROM emsdk-base AS libwebp-builder
 COPY --from=zlib-builder $INSTALL_DIR $INSTALL_DIR
-ENV LIBWEBP_BRANCH=v1.1.0
+ENV LIBWEBP_BRANCH=v1.3.2
 ADD https://github.com/ffmpegwasm/libwebp.git#$LIBWEBP_BRANCH /src
 COPY build/libwebp.sh /src/build.sh
 RUN bash -x /src/build.sh
@@ -184,7 +184,9 @@ ENV FFMPEG_LIBS \
       -lvorbisfile \
       -lopus \
       -lz \
+      -lwebpmux \
       -lwebp \
+      -lsharpyuv \
       -lfreetype \
       -lfribidi \
       -lharfbuzz \
