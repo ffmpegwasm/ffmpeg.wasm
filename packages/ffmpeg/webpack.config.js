@@ -13,4 +13,7 @@ module.exports = {
     library: "FFmpegWASM",
     libraryTarget: "umd",
   },
+  stats: {
+    warnings:false
+  }
 };
