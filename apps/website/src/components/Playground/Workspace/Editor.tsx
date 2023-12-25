@@ -72,7 +72,7 @@ export default function Editor({
             highlightActiveLine={true}
             value={args}
             onChange={onArgsUpdate}
-            setOptions={{ tabSize: 2 }}
+            setOptions={{ tabSize: 2, useWorker: false }}
           />
         </Stack>
         <AceEditor
@@ -87,7 +87,7 @@ export default function Editor({
           readOnly
           highlightActiveLine={false}
           value={genFFmpegText(args)}
-          setOptions={{ tabSize: 2 }}
+          setOptions={{ tabSize: 2, useWorker: false }}
         />
         <Typography>Console Output:</Typography>
         <AceEditor
@@ -102,7 +102,7 @@ export default function Editor({
           showPrintMargin={true}
           highlightActiveLine={false}
           value={logs.join("\n")}
-          setOptions={{ tabSize: 2 }}
+          setOptions={{ tabSize: 2, useWorker: false }}
           onLoad={(editor) => setOutput(editor)}
         />
         <Typography>Transcoding Progress:</Typography>
