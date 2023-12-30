@@ -54,7 +54,7 @@ const load = async ({
     // when web worker type is `classic`.
     importScripts(_coreURL);
   } catch {
-    if (!_coreURL) _coreURL = CORE_URL.replace('/umd/', '/esm/');
+    if (!_coreURL || _coreURL === CORE_URL) _coreURL = CORE_URL.replace('/umd/', '/esm/');
     // when web worker type is `module`.
     (self as WorkerGlobalScope).createFFmpegCore = (
       (await import(
