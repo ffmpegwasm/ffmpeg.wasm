@@ -11,13 +11,10 @@
     "test": "server-test test:browser:server 3000 test:all",
     "test:all": "npm-run-all test:browser:*:*",
     "test:browser": "mocha-headless-chrome -a enable-features=SharedArrayBuffer",
-    "test:browser:core:mt": "npm run test:browser -- -f http://localhost:3000/tests/ffmpeg-core-mt.test.html",
     "test:browser:core:st": "npm run test:browser -- -f http://localhost:3000/tests/ffmpeg-core-st.test.html",
-    "test:browser:ffmpeg:mt": "npm run test:browser -- -f http://localhost:3000/tests/ffmpeg-mt.test.html",
     "test:browser:ffmpeg:st": "npm run test:browser -- -f http://localhost:3000/tests/ffmpeg-st.test.html",
     "test:browser:server": "npm run serve",
     "test:node": "mocha --exit --bail -t 60000",
-    "test:node:core:mt": "npm run test:node -- --require tests/test-helper-mt.js tests/ffmpeg-core.test.js",
     "test:node:core:st": "npm run test:node -- --require tests/test-helper-st.js tests/ffmpeg-core.test.js",
     "prepublishOnly": "npm run build",
     "postinstall": "npm run build"
