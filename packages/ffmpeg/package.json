@@ -1,5 +1,5 @@
 {
-  "name": "@ffmpeg/ffmpeg",
+  "name": "@youfoundation/ffmpeg",
   "version": "0.12.10",
   "description": "FFmpeg WebAssembly version for browser",
   "main": "./dist/umd/ffmpeg.js",
