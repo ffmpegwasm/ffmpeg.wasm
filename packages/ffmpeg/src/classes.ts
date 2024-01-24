@@ -1,4 +1,4 @@
-import { FFMessageType } from "./const.js";
+import { FFMessageType } from './const.js';
 import {
   CallbackData,
   Callbacks,
@@ -16,9 +16,10 @@ import {
   FFFSType,
   FFFSMountOptions,
   FFFSPath,
-} from "./types.js";
-import { getMessageID } from "./utils.js";
-import { ERROR_TERMINATED, ERROR_NOT_LOADED } from "./errors.js";
+} from './types.js';
+import { getMessageID } from './utils.js';
+import { ERROR_TERMINATED, ERROR_NOT_LOADED } from './errors.js';
+import theWorker from './worker.js?worker&inline';
 
 type FFMessageOptions = {
   signal?: AbortSignal;
@@ -51,9 +52,7 @@ export class FFmpeg {
    */
   #registerHandlers = () => {
     if (this.#worker) {
-      this.#worker.onmessage = ({
-        data: { id, type, data },
-      }: FFMessageEventCallback) => {
+      this.#worker.onmessage = ({ data: { id, type, data } }: FFMessageEventCallback) => {
         switch (type) {
           case FFMessageType.LOAD:
             this.loaded = true;
@@ -75,9 +74,7 @@ export class FFmpeg {
             this.#logEventCallbacks.forEach((f) => f(data as LogEvent));
             break;
           case FFMessageType.PROGRESS:
-            this.#progressEventCallbacks.forEach((f) =>
-              f(data as ProgressEvent)
-            );
+            this.#progressEventCallbacks.forEach((f) => f(data as ProgressEvent));
             break;
           case FFMessageType.ERROR:
             this.#rejects[id](data);
@@ -108,9 +105,9 @@ export class FFmpeg {
       this.#rejects[id] = reject;
 
       signal?.addEventListener(
-        "abort",
+        'abort',
         () => {
-          reject(new DOMException(`Message # ${id} was aborted`, "AbortError"));
+          reject(new DOMException(`Message # ${id} was aborted`, 'AbortError'));
         },
         { once: true }
       );
@@ -141,15 +138,12 @@ export class FFmpeg {
    *
    * @category FFmpeg
    */
-  public on(event: "log", callback: LogEventCallback): void;
-  public on(event: "progress", callback: ProgressEventCallback): void;
-  public on(
-    event: "log" | "progress",
-    callback: LogEventCallback | ProgressEventCallback
-  ) {
-    if (event === "log") {
+  public on(event: 'log', callback: LogEventCallback): void;
+  public on(event: 'progress', callback: ProgressEventCallback): void;
+  public on(event: 'log' | 'progress', callback: LogEventCallback | ProgressEventCallback) {
+    if (event === 'log') {
       this.#logEventCallbacks.push(callback as LogEventCallback);
-    } else if (event === "progress") {
+    } else if (event === 'progress') {
       this.#progressEventCallbacks.push(callback as ProgressEventCallback);
     }
   }
@@ -159,20 +153,13 @@ export class FFmpeg {
    *
    * @category FFmpeg
    */
-  public off(event: "log", callback: LogEventCallback): void;
-  public off(event: "progress", callback: ProgressEventCallback): void;
-  public off(
-    event: "log" | "progress",
-    callback: LogEventCallback | ProgressEventCallback
-  ) {
-    if (event === "log") {
-      this.#logEventCallbacks = this.#logEventCallbacks.filter(
-        (f) => f !== callback
-      );
-    } else if (event === "progress") {
-      this.#progressEventCallbacks = this.#progressEventCallbacks.filter(
-        (f) => f !== callback
-      );
+  public off(event: 'log', callback: LogEventCallback): void;
+  public off(event: 'progress', callback: ProgressEventCallback): void;
+  public off(event: 'log' | 'progress', callback: LogEventCallback | ProgressEventCallback) {
+    if (event === 'log') {
+      this.#logEventCallbacks = this.#logEventCallbacks.filter((f) => f !== callback);
+    } else if (event === 'progress') {
+      this.#progressEventCallbacks = this.#progressEventCallbacks.filter((f) => f !== callback);
     }
   }
 
@@ -188,15 +175,7 @@ export class FFmpeg {
     { signal }: FFMessageOptions = {}
   ): Promise<IsFirst> => {
     if (!this.#worker) {
-      this.#worker = classWorkerURL ?
-        new Worker(new URL(classWorkerURL, import.meta.url), {
-          type: "module",
-        }) :
-        // We need to duplicated the code here to enable webpack
-        // to bundle worekr.js here.
-        new Worker(new URL("./worker.js", import.meta.url), {
-          type: "module",
-        });
+      this.#worker = new theWorker();
       this.#registerHandlers();
     }
     return this.#send(
@@ -303,7 +282,11 @@ export class FFmpeg {
     ) as Promise<OK>;
   };
 
-  public mount = (fsType: FFFSType, options: FFFSMountOptions, mountPoint: FFFSPath, ): Promise<OK> => {
+  public mount = (
+    fsType: FFFSType,
+    options: FFFSMountOptions,
+    mountPoint: FFFSPath
+  ): Promise<OK> => {
     const trans: Transferable[] = [];
     return this.#send(
       {
@@ -346,7 +329,7 @@ export class FFmpeg {
      *
      * @defaultValue binary
      */
-    encoding = "binary",
+    encoding = 'binary',
     { signal }: FFMessageOptions = {}
   ): Promise<FileData> =>
     this.#send(
@@ -363,10 +346,7 @@ export class FFmpeg {
    *
    * @category File System
    */
-  public deleteFile = (
-    path: string,
-    { signal }: FFMessageOptions = {}
-  ): Promise<OK> =>
+  public deleteFile = (path: string, { signal }: FFMessageOptions = {}): Promise<OK> =>
     this.#send(
       {
         type: FFMessageType.DELETE_FILE,
@@ -400,10 +380,7 @@ export class FFmpeg {
    *
    * @category File System
    */
-  public createDir = (
-    path: string,
-    { signal }: FFMessageOptions = {}
-  ): Promise<OK> =>
+  public createDir = (path: string, { signal }: FFMessageOptions = {}): Promise<OK> =>
     this.#send(
       {
         type: FFMessageType.CREATE_DIR,
@@ -418,10 +395,7 @@ export class FFmpeg {
    *
    * @category File System
    */
-  public listDir = (
-    path: string,
-    { signal }: FFMessageOptions = {}
-  ): Promise<FSNode[]> =>
+  public listDir = (path: string, { signal }: FFMessageOptions = {}): Promise<FSNode[]> =>
     this.#send(
       {
         type: FFMessageType.LIST_DIR,
@@ -436,10 +410,7 @@ export class FFmpeg {
    *
    * @category File System
    */
-  public deleteDir = (
-    path: string,
-    { signal }: FFMessageOptions = {}
-  ): Promise<OK> =>
+  public deleteDir = (path: string, { signal }: FFMessageOptions = {}): Promise<OK> =>
     this.#send(
       {
         type: FFMessageType.DELETE_DIR,
