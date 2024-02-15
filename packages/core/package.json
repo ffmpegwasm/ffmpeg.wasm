@@ -28,7 +28,7 @@
     "transcode"
   ],
   "author": "Jerome Wu <jeromewus@gmail.com>",
-  "license": "MIT",
+  "license": "GPL-2.0-or-later",
   "bugs": {
     "url": "https://github.com/ffmpegwasm/ffmpeg.wasm/issues"
   },
