@@ -23,6 +23,9 @@ interface WorkspaceProps {
 export default function Workspace({ ffmpeg: _ffmpeg }: WorkspaceProps) {
   const [path, setPath] = useState("/");
   const [nodes, setNodes] = useState<Node[]>([]);
+  const [oldName, setOldName] = useState("");
+  const [newName, setNewName] = useState("");
+  const [renameOpen, setRenameOpen] = useState(false);
   const [args, setArgs] = useState(defaultArgs);
   const [progress, setProgress] = useState(0);
   const [time, setTime] = useState(0);
@@ -36,6 +39,14 @@ export default function Workspace({ ffmpeg: _ffmpeg }: WorkspaceProps) {
         (await ffmpeg.listDir(curPath)).filter(({ name }) => name !== ".")
       );
     }
+  };
+
+  const onNewNameChange = () => async (event: ChangeEvent<HTMLInputElement>) => {
+    setNewName(event.target.value);
+  };
+
+  const onCloseRenameModal = () => async () => {
+    setRenameOpen(false);
   };
 
   const onFileUpload =
@@ -53,6 +64,11 @@ export default function Workspace({ ffmpeg: _ffmpeg }: WorkspaceProps) {
   const onFileClick = (name: string) => async (option: string) => {
     const fullPath = `${path}/${name}`;
     switch (option) {
+      case "rename":
+        setOldName(name);
+        setNewName("");
+        setRenameOpen(true);
+        break;
       case "download":
         downloadFile(
           name,
@@ -93,6 +109,14 @@ export default function Workspace({ ffmpeg: _ffmpeg }: WorkspaceProps) {
     refreshDir(path);
   };
 
+  const onRename = (old_name: string, new_name: string) => async () => {
+    if (old_name !== "" && new_name !== "") {
+      await ffmpeg.rename(`${path}/${old_name}`, `${path}/${new_name}`);
+    }
+    setRenameOpen(false);
+    refreshDir(path);
+  };
+
   const onLoadSamples = async () => {
     for (const name of Object.keys(SAMPLE_FILES)) {
       await ffmpeg.writeFile(name, await fetchFile(SAMPLE_FILES[name]));
@@ -130,10 +154,16 @@ export default function Workspace({ ffmpeg: _ffmpeg }: WorkspaceProps) {
           <FileSystemManager
             path={path}
             nodes={nodes}
+            oldName={oldName}
+            newName={newName}
+            renameOpen={renameOpen}
+            onNewNameChange={onNewNameChange}
+            onCloseRenameModal={onCloseRenameModal}
             onFileUpload={onFileUpload}
             onFileClick={onFileClick}
             onDirClick={onDirClick}
             onDirCreate={onDirCreate}
+            onRename={onRename}
             onLoadSamples={onLoadSamples}
             onRefresh={() => refreshDir(path)}
           />
