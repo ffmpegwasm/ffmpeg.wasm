@@ -3,6 +3,7 @@
   "version": "0.12.1",
   "description": "browser utils for @ffmpeg/*",
   "main": "./dist/cjs/index.js",
+  "type": "module",
   "types": "./dist/cjs/index.d.ts",
   "exports": {
     ".": {
