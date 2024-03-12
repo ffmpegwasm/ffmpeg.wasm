@@ -11,6 +11,10 @@
     "./wasm": {
       "import": "./dist/esm/ffmpeg-core.wasm",
       "require": "./dist/umd/ffmpeg-core.wasm"
+    },
+    "./worker": {
+      "import": "./dist/esm/ffmpeg-core.worker.js",
+      "require": "./dist/umd/ffmpeg-core.worker.js"
     }
   },
   "files": [
