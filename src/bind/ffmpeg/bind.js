@@ -62,6 +62,18 @@ function exec(..._args) {
   return Module["ret"];
 }
 
+function probe(..._args) {
+  const args = [..._args];
+  try {
+    Module["_ffprobe"](args.length, stringsToPtr(args));
+  } catch (e) {
+    if (!e.message.startsWith("Aborted")) {
+      throw e;
+    }
+  }
+  return Module["ret"];
+}
+
 function setLogger(logger) {
   Module["logger"] = logger;
 }
@@ -121,6 +133,7 @@ Module["printErr"] = printErr;
 Module["locateFile"] = _locateFile;
 
 Module["exec"] = exec;
+Module["probe"] = probe;
 Module["setLogger"] = setLogger;
 Module["setTimeout"] = setTimeout;
 Module["setProgress"] = setProgress;

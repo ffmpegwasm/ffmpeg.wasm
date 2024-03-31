@@ -62,6 +62,7 @@ export class FFmpeg {
           case FFMessageType.MOUNT:
           case FFMessageType.UNMOUNT:
           case FFMessageType.EXEC:
+          case FFMessageType.PROBE:
           case FFMessageType.WRITE_FILE:
           case FFMessageType.READ_FILE:
           case FFMessageType.DELETE_FILE:
@@ -243,6 +244,47 @@ export class FFmpeg {
     this.#send(
       {
         type: FFMessageType.EXEC,
+        data: { args, timeout },
+      },
+      undefined,
+      signal
+    ) as Promise<number>;
+
+
+  /**
+   * Execute ffmpeg command.
+   *
+   * @remarks
+   * To avoid common I/O issues, ["-nostdin", "-y"] are prepended to the args
+   * by default.
+   *
+   * @example
+   * ```ts
+   * const ffmpeg = new FFmpeg();
+   * await ffmpeg.load();
+   * await ffmpeg.writeFile("video.avi", ...);
+   * // ffmpeg -i video.avi video.mp4
+   * await ffmpeg.exec(["-i", "video.avi", "video.mp4"]);
+   * const data = ffmpeg.readFile("video.mp4");
+   * ```
+   *
+   * @returns `0` if no error, `!= 0` if timeout (1) or error.
+   * @category FFmpeg
+   */
+  public probe = (
+    /** ffmpeg command line args */
+    args: string[],
+    /**
+     * milliseconds to wait before stopping the command execution.
+     *
+     * @defaultValue -1
+     */
+    timeout = -1,
+    { signal }: FFMessageOptions = {}
+  ): Promise<number> =>
+    this.#send(
+      {
+        type: FFMessageType.PROBE,
         data: { args, timeout },
       },
       undefined,

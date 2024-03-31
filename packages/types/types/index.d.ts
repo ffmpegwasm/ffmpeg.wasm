@@ -115,6 +115,7 @@ export interface FFmpegCoreModule {
   mainScriptUrlOrBlob: string;
 
   exec: (...args: string[]) => number;
+  probe: (...args: string[]) => number;
   reset: () => void;
   setLogger: (logger: (log: Log) => void) => void;
   setTimeout: (timeout: number) => void;

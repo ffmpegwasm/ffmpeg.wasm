@@ -100,6 +100,14 @@ const exec = ({ args, timeout = -1 }: FFMessageExecData): ExitCode => {
   return ret;
 };
 
+const probe = ({ args, timeout = -1 }: FFMessageExecData): ExitCode => {
+  ffmpeg.setTimeout(timeout);
+  ffmpeg.probe(...args);
+  const ret = ffmpeg.ret;
+  ffmpeg.reset();
+  return ret;
+};
+
 const writeFile = ({ path, data }: FFMessageWriteFileData): OK => {
   ffmpeg.FS.writeFile(path, data);
   return true;
@@ -169,6 +177,9 @@ self.onmessage = async ({
         break;
       case FFMessageType.EXEC:
         data = exec(_data as FFMessageExecData);
+        break;
+      case FFMessageType.PROBE:
+        data = probe(_data as FFMessageExecData);
         break;
       case FFMessageType.WRITE_FILE:
         data = writeFile(_data as FFMessageWriteFileData);

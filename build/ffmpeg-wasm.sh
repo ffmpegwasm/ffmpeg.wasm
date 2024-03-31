@@ -42,13 +42,21 @@ CONF_FLAGS=(
   -lworkerfs.js
   --pre-js src/bind/ffmpeg/bind.js        # extra bindings, contains most of the ffmpeg.wasm javascript code
   # ffmpeg source code
-  src/fftools/cmdutils.c 
-  src/fftools/ffmpeg.c 
+  src/fftools/ffmpeg_dec.c
+  src/fftools/ffmpeg_demux.c
+  src/fftools/ffmpeg_enc.c
   src/fftools/ffmpeg_filter.c 
   src/fftools/ffmpeg_hw.c 
   src/fftools/ffmpeg_mux.c 
+  src/fftools/ffmpeg_mux_init.c 
   src/fftools/ffmpeg_opt.c 
+  src/fftools/objpool.c 
+  src/fftools/sync_queue.c 
+  src/fftools/thread_queue.c 
+  src/fftools/ffmpeg.c 
+  src/fftools/cmdutils.c 
   src/fftools/opt_common.c 
+  src/fftools/ffprobe.c 
 )
 
 emcc "${CONF_FLAGS[@]}" $@

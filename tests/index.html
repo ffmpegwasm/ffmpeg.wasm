@@ -14,13 +14,13 @@
         if (ffmpeg === null) {
           ffmpeg = new FFmpeg();
           ffmpeg.on("log", ({ message }) => {
-            console.log(message);
+            console.log('log: ', message);
           })
           ffmpeg.on("progress", ({ progress }) => {
             message.innerHTML = `${progress * 100} %`;
           });
           await ffmpeg.load({
-            coreURL: "/packages/core/dist/esm/ffmpeg-core.js",
+            coreURL: "/packages/core-mt/dist/esm/ffmpeg-core.js",
           });
         }
         const { name } = files[0];
@@ -32,6 +32,8 @@
 
         const video = document.getElementById('output-video');
         video.src = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
+
+        await ffmpeg.probe(['-output_format=json', name]);
       }
       const elm = document.getElementById('uploader');
       elm.addEventListener('change', transcode);

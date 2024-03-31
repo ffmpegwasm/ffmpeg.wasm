@@ -55,6 +55,23 @@ describe(genName("exec()"), () => {
   });
 });
 
+describe(genName("probe()"), () => {
+  beforeEach(reset);
+
+  it("should exist", () => {
+    console.log(core);
+    expect("probe" in core).to.be.true;
+  });
+
+  it("should output help", () => {
+    expect(core.probe("-h")).to.equal(0);
+  });
+
+  it("should transcode", () => {
+    expect(core.probe("video.mp4")).to.equal(0);
+  });
+});
+
 describe(genName("setTimeout()"), () => {
   beforeEach(reset);
 
