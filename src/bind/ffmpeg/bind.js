@@ -100,7 +100,7 @@ function reset() {
  *
  *   http://example.com/ffmpeg-core.js#{btoa(JSON.stringify({"wasmURL": "...", "workerURL": "..."}))}
  *
- * Thus, we can successfully extract custom URLs using _locateFile funciton.
+ * Thus, we can successfully extract custom URLs using _locateFile function.
  */
 function _locateFile(path, prefix) {
   const mainScriptUrlOrBlob = Module["mainScriptUrlOrBlob"];
