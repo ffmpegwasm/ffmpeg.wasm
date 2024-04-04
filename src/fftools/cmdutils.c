@@ -101,11 +101,11 @@ void exit_program(int ret)
      * terminates ffmpeg but also the whole node.js program, which 
      * is not ideal.
      *
-     * abort() terminiates the ffmpeg with an JS exception
+     * abort() terminates the ffmpeg with an JS exception
      *
      *   RuntimeError: Aborted...
      *
-     * This excpetion is catch and not visible to users.
+     * This exception is catch and not visible to users.
      *
      */
     EM_ASM({
