@@ -155,7 +155,7 @@ export class FFmpeg {
   }
 
   /**
-   * Unlisten to log or prgress events from `ffmpeg.exec()`.
+   * Unlisten to log or progress events from `ffmpeg.exec()`.
    *
    * @category FFmpeg
    */
