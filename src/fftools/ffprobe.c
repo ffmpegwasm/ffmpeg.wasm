@@ -90,8 +90,8 @@ typedef struct InputFile {
     int       nb_streams;
 } InputFile;
 
-const char program_name[] = "ffprobe";
-const int program_birth_year = 2007;
+const char program_name_ffprobe[] = "ffprobe";
+const int program_birth_year_ffprobe = 2007;
 
 static int do_bitexact = 0;
 static int do_count_frames = 0;
@@ -3491,7 +3491,7 @@ end:
 static void show_usage(void)
 {
     av_log(NULL, AV_LOG_INFO, "Simple multimedia streams analyzer\n");
-    av_log(NULL, AV_LOG_INFO, "usage: %s [OPTIONS] INPUT_FILE\n", program_name);
+    av_log(NULL, AV_LOG_INFO, "usage: %s [OPTIONS] INPUT_FILE\n", program_name_ffprobe);
     av_log(NULL, AV_LOG_INFO, "\n");
 }
 
@@ -3503,7 +3503,7 @@ static void ffprobe_show_program_version(WriterContext *w)
     writer_print_section_header(w, SECTION_ID_PROGRAM_VERSION);
     print_str("version", FFMPEG_VERSION);
     print_fmt("copyright", "Copyright (c) %d-%d the FFmpeg developers",
-              program_birth_year, CONFIG_THIS_YEAR);
+              program_birth_year_ffprobe, CONFIG_THIS_YEAR);
     print_str("compiler_ident", CC_IDENT);
     print_str("configuration", FFMPEG_CONFIGURATION);
     writer_print_section_footer(w);
@@ -3740,7 +3740,7 @@ static int opt_print_filename(void *optctx, const char *opt, const char *arg)
     return 0;
 }
 
-void show_help_default(const char *opt, const char *arg)
+void show_help_default_ffprobe(const char *opt, const char *arg)
 {
     av_log_set_callback(log_callback_help);
     show_usage();
@@ -4142,7 +4142,7 @@ int ffprobe(int argc, char **argv)
              (!do_show_program_version && !do_show_library_versions && !do_show_pixel_formats))) {
             show_usage();
             av_log(NULL, AV_LOG_ERROR, "You have to specify one input file.\n");
-            av_log(NULL, AV_LOG_ERROR, "Use -h to get full help or, even better, run 'man %s'.\n", program_name);
+            av_log(NULL, AV_LOG_ERROR, "Use -h to get full help or, even better, run 'man %s'.\n", program_name_ffprobe);
             ret = AVERROR(EINVAL);
         } else if (input_filename) {
             ret = probe_file(wctx, input_filename, print_input_filename);
