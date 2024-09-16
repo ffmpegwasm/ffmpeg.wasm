@@ -58,7 +58,7 @@ any of the examples.
         img="/img/sveltekit-vite.png"
         title="SvelteKit + Vite"
         desc="SvelteKit with Vite (multithread version)"
-        url="https://github.com/ffmpegwasm/ffmpeg.wasm/tree/main/apps/sveltekit-vite-app"
+        url="https://github.com/ffmpegwasm/ffmpeg.wasm/tree/main/apps/sveltekit-app"
       />
     </Grid>
   </Grid>
