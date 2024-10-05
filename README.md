@@ -1,3 +1,6 @@
+This project is looking for maintainers. If you are interested to give it a go, please email me to further discuss maintenance.
+
+---
 <p align="center">
   <a href="#">
     <img alt="ffmpeg.wasm" width="128px" height="128px" src="https://github.com/ffmpegwasm/ffmpeg.wasm/blob/main/apps/website/static/img/logo192.png"></img>
