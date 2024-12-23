@@ -5,12 +5,10 @@
 const NULL = 0;
 const SIZE_I32 = Uint32Array.BYTES_PER_ELEMENT;
 const DEFAULT_ARGS = ["./ffmpeg", "-nostdin", "-y"];
-const DEFAULT_ARGS_FFPROBE = ["./ffprobe"];
 
 Module["NULL"] = NULL;
 Module["SIZE_I32"] = SIZE_I32;
 Module["DEFAULT_ARGS"] = DEFAULT_ARGS;
-Module["DEFAULT_ARGS_FFPROBE"] = DEFAULT_ARGS_FFPROBE;
 
 /**
  * Variables
@@ -56,18 +54,6 @@ function exec(..._args) {
   const args = [...Module["DEFAULT_ARGS"], ..._args];
   try {
     Module["_ffmpeg"](args.length, stringsToPtr(args));
-  } catch (e) {
-    if (!e.message.startsWith("Aborted")) {
-      throw e;
-    }
-  }
-  return Module["ret"];
-}
-
-function ffprobe(..._args) {
-  const args = [...Module["DEFAULT_ARGS_FFPROBE"], ..._args];
-  try {
-    Module["_ffprobe"](args.length, stringsToPtr(args));
   } catch (e) {
     if (!e.message.startsWith("Aborted")) {
       throw e;
@@ -135,7 +121,6 @@ Module["printErr"] = printErr;
 Module["locateFile"] = _locateFile;
 
 Module["exec"] = exec;
-Module["ffprobe"] = ffprobe;
 Module["setLogger"] = setLogger;
 Module["setTimeout"] = setTimeout;
 Module["setProgress"] = setProgress;

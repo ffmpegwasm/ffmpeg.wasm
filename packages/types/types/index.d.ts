@@ -39,28 +39,22 @@ export interface Stat {
   blocks: number;
 }
 
-export interface FSFilesystemWORKERFS {}
+export interface FSFilesystemWORKERFS {
+  
+}
 
-export interface FSFilesystemMEMFS {}
+export interface FSFilesystemMEMFS {
+  
+}
 
 export interface FSFilesystems {
   WORKERFS: FSFilesystemWORKERFS;
   MEMFS: FSFilesystemMEMFS;
 }
 
-export type FSFilesystem = FSFilesystemWORKERFS | FSFilesystemMEMFS;
-
-export interface OptionReadFile {
-  encoding: string;
-}
-
-export interface WorkerFSMountConfig {
-  blobs?: {
-    name: string;
-    data: Blob;
-  }[];
-  files?: File[];
-}
+export type FSFilesystem =
+| FSFilesystemWORKERFS
+| FSFilesystemMEMFS;
 
 /**
  * Functions to interact with Emscripten FS library.
@@ -81,11 +75,7 @@ export interface FS {
   isFile: (mode: number) => boolean;
   /** mode is a numeric notation of permission, @see [Numeric Notation](https://en.wikipedia.org/wiki/File-system_permissions#Numeric_notation) */
   isDir: (mode: number) => boolean;
-  mount: (
-    fileSystemType: FSFilesystem,
-    data: WorkerFSMountConfig,
-    path: string
-  ) => void;
+  mount: (fileSystemType: FSFilesystem, data: WorkerFSMountConfig, path: string) => void;
   unmount: (path: string) => void;
   filesystems: FSFilesystems;
 }
@@ -125,7 +115,6 @@ export interface FFmpegCoreModule {
   mainScriptUrlOrBlob: string;
 
   exec: (...args: string[]) => number;
-  ffprobe: (...args: string[]) => number;
   reset: () => void;
   setLogger: (logger: (log: Log) => void) => void;
   setTimeout: (timeout: number) => void;
