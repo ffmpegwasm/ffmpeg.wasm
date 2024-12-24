@@ -1,14 +1,3 @@
-const isMTSupported = typeof SharedArrayBuffer !== "undefined";
-const isIsolated = window.crossOriginIsolated;
-
-if (FFMPEG_TYPE === "mt" && !isMTSupported) {
-  console.warn("SharedArrayBuffer not available, skipping MT tests");
-}
-
-if (FFMPEG_TYPE === "mt" && !isIsolated) {
-  console.warn("Cross-origin isolation not available, skipping MT tests");
-}
-
 let core;
 
 const genName = (name) => `[ffmpeg-core][${FFMPEG_TYPE}] ${name}`;
