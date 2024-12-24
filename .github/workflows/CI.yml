@@ -79,6 +79,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 18.x
+      - name: Install Chrome
+        uses: browser-actions/setup-chrome@latest
+        with:
+          chrome-version: stable
       - name: Cache dependencies
         id: cache-dependencies
         uses: actions/cache@v2
@@ -90,4 +94,8 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Run tests
+        env:
+          CHROME_HEADLESS: 1
+          CHROME_PATH: chrome
+          CHROME_FLAGS: "--headless --disable-gpu --no-sandbox --enable-features=SharedArrayBuffer,CrossOriginIsolation"
         run: npm test
