@@ -79,10 +79,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 18.x
-      - name: Install Chrome
-        uses: browser-actions/setup-chrome@latest
-        with:
-          chrome-version: stable
       - name: Cache dependencies
         id: cache-dependencies
         uses: actions/cache@v2
@@ -91,22 +87,28 @@ jobs:
           key: node-modules-${{ hashFiles('package-lock.json') }}
           restore-keys: |
             node-modules-
+      - name: Install dependencies
+        run: npm install
+      - name: Install Chrome
+        uses: browser-actions/setup-chrome@latest
+        with:
+          chrome-version: stable
       - name: Run tests
         env:
           CHROME_HEADLESS: 1
           CHROME_PATH: chrome
           CHROME_FLAGS: "--headless --disable-gpu --no-sandbox --enable-features=SharedArrayBuffer,CrossOriginIsolation"
-          HEADERS: '{"Cross-Origin-Opener-Policy":"same-origin","Cross-Origin-Embedder-Policy":"require-corp","Cross-Origin-Resource-Policy":"cross-origin","Origin-Agent-Cluster":"?1"}'
+          HEADERS: '{"Cross-Origin-Opener-Policy": "same-origin", "Cross-Origin-Embedder-Policy": "require-corp"}'
         run: |
-          # Start test server with proper headers
-          npm run serve -- --headers "${HEADERS}" &
+          # Start test server with proper headers for all tests
+          npm run serve -- --headers "$HEADERS" &
 
           # Increase wait time to ensure server is ready
           sleep 15
 
           # Verify headers and isolation status
           echo "Checking security headers and isolation status..."
-          curl -I http://localhost:3000/tests/ffmpeg-core-st.test.html
+          curl -v http://localhost:3000/tests/ffmpeg-core-st.test.html 2>&1 | grep -i "cross-origin"
 
           # Run verification script first
           echo "Verifying browser environment..."
@@ -162,18 +164,18 @@ jobs:
           # Run the verification in Chrome
           echo "Verifying browser environment..."
           npx mocha-headless-chrome \
-            --args="$CHROME_FLAGS --enable-features=SharedArrayBuffer,CrossOriginIsolation --disable-web-security --allow-insecure-localhost" \
+            --args="$CHROME_FLAGS --enable-features=SharedArrayBuffer,CrossOriginIsolation" \
             -a no-sandbox \
             -f http://localhost:3000/verify-browser.html
 
           # Run MT tests with verified configuration
           npx mocha-headless-chrome \
-            --args="$CHROME_FLAGS --enable-features=SharedArrayBuffer,CrossOriginIsolation --disable-web-security --allow-insecure-localhost" \
+            --args="$CHROME_FLAGS --enable-features=SharedArrayBuffer,CrossOriginIsolation" \
             -a no-sandbox \
             -f http://localhost:3000/tests/ffmpeg-core-mt.test.html 2>&1 | tee mt-core-test.log
 
           npx mocha-headless-chrome \
-            --args="$CHROME_FLAGS --enable-features=SharedArrayBuffer,CrossOriginIsolation --disable-web-security --allow-insecure-localhost" \
+            --args="$CHROME_FLAGS --enable-features=SharedArrayBuffer,CrossOriginIsolation" \
             -a no-sandbox \
             -f http://localhost:3000/tests/ffmpeg-mt.test.html 2>&1 | tee mt-test.log
 
