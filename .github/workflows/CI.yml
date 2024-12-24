@@ -136,7 +136,7 @@ jobs:
           CHROME_PATH: chrome
         run: |
           # Start test server with proper headers
-          npm run serve &
+          npm run serve -- --headers '{"Cross-Origin-Opener-Policy": "same-origin", "Cross-Origin-Embedder-Policy": "require-corp"}' &
 
           # Run tests with configured Chrome flags
           npx mocha-headless-chrome \
