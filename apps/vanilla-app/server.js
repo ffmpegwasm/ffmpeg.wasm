@@ -8,6 +8,7 @@ const ROOT = path.join(__dirname, "public");
 app.use((_, res, next) => {
   res.append("Cross-Origin-Opener-Policy", "same-origin");
   res.append("Cross-Origin-Embedder-Policy", "require-corp");
+  res.append("Cross-Origin-Resource-Policy", "cross-origin");
   next();
 });
 
