@@ -93,37 +93,66 @@ jobs:
         uses: browser-actions/setup-chrome@latest
         with:
           chrome-version: stable
-        env:
-          CHROME_FLAGS: "--enable-features=SharedArrayBuffer,CrossOriginIsolation --enable-experimental-web-platform-features --cross-origin-isolated --allow-file-access-from-files --disable-web-security --allow-insecure-localhost --no-sandbox --disable-setuid-sandbox --enable-unsafe-webgpu --disable-gpu-sandbox"
       - name: Run tests
         env:
           CHROME_HEADLESS: 1
           CHROME_PATH: chrome
+          CHROME_FLAGS: "--enable-features=SharedArrayBuffer --headless --disable-gpu --no-sandbox --enable-experimental-web-platform-features --enable-features=SharedArrayBuffer"
           HEADERS: '{"Cross-Origin-Opener-Policy": "same-origin", "Cross-Origin-Embedder-Policy": "require-corp", "Cross-Origin-Resource-Policy": "cross-origin", "Origin-Agent-Cluster": "?1"}'
         run: |
           # Start test server with proper headers for all tests
           npm run serve &
 
-          # Wait for server to start
-          sleep 5
+          # Wait for server to start and ensure headers are properly set
+          sleep 10
 
-          # Run all tests with proper headers
+          # Verify headers are set correctly
+          echo "Checking security headers..."
+          curl -I http://localhost:3000/tests/ffmpeg-core-st.test.html
+
+          # Check if cross-origin isolation is working
+          echo "Adding debug script to test files to check crossOriginIsolated status..."
+          for test_file in tests/ffmpeg-*.test.html; do
+            sed -i '/<\/head>/ i\<script>console.log("crossOriginIsolated status:", crossOriginIsolated);</script>' $test_file
+          done
+
+          # Run single-threaded tests first
+          echo "Running single-threaded tests..."
           npx mocha-headless-chrome \
             --args="$CHROME_FLAGS" \
             -a no-sandbox \
-            -f http://localhost:3000/tests/ffmpeg-core-mt.test.html
+            -f http://localhost:3000/tests/ffmpeg-core-st.test.html 2>&1 | tee st-core-test.log
 
           npx mocha-headless-chrome \
             --args="$CHROME_FLAGS" \
             -a no-sandbox \
-            -f http://localhost:3000/tests/ffmpeg-core-st.test.html
+            -f http://localhost:3000/tests/ffmpeg-st.test.html 2>&1 | tee st-test.log
+
+          # Run multi-threaded tests with additional SharedArrayBuffer flags
+          echo "Running multi-threaded tests..."
+          CHROME_FLAGS="$CHROME_FLAGS --enable-features=SharedArrayBuffer,CrossOriginIsolation --cross-origin-isolated"
+
+          # Debug SharedArrayBuffer availability
+          echo "Testing SharedArrayBuffer availability..."
+          cat << EOF > debug-sab.js
+          console.log('SharedArrayBuffer available:', typeof SharedArrayBuffer !== 'undefined');
+          console.log('crossOriginIsolated:', crossOriginIsolated);
+          EOF
+          node debug-sab.js
 
           npx mocha-headless-chrome \
             --args="$CHROME_FLAGS" \
             -a no-sandbox \
-            -f http://localhost:3000/tests/ffmpeg-mt.test.html
+            -f http://localhost:3000/tests/ffmpeg-core-mt.test.html 2>&1 | tee mt-core-test.log
 
           npx mocha-headless-chrome \
             --args="$CHROME_FLAGS" \
             -a no-sandbox \
-            -f http://localhost:3000/tests/ffmpeg-st.test.html
+            -f http://localhost:3000/tests/ffmpeg-mt.test.html 2>&1 | tee mt-test.log
+
+          # Display all logs for debugging
+          echo "=== Test Logs ==="
+          for log in *-test.log; do
+            echo "Contents of $log:"
+            cat $log
+          done
