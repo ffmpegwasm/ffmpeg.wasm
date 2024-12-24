@@ -95,57 +95,39 @@ jobs:
           chrome-version: stable
         env:
           CHROME_FLAGS: "--enable-features=SharedArrayBuffer,CrossOriginIsolation --enable-experimental-web-platform-features --cross-origin-isolated --allow-file-access-from-files --disable-web-security --allow-insecure-localhost --no-sandbox --disable-setuid-sandbox --enable-unsafe-webgpu --disable-gpu-sandbox"
-      - name: Install Chrome dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libgbm-dev \
-            libasound2t64 \
-            libatk1.0-0 \
-            libc6 \
-            libcairo2 \
-            libcups2 \
-            libdbus-1-3 \
-            libexpat1 \
-            libfontconfig1 \
-            libgcc1 \
-            libgdk-pixbuf2.0-0 \
-            libglib2.0-0 \
-            libgtk-3-0 \
-            libnspr4 \
-            libpango-1.0-0 \
-            libpangocairo-1.0-0 \
-            libstdc++6 \
-            libx11-6 \
-            libx11-xcb1 \
-            libxcb1 \
-            libxcomposite1 \
-            libxcursor1 \
-            libxdamage1 \
-            libxext6 \
-            libxfixes3 \
-            libxi6 \
-            libxrandr2 \
-            libxrender1 \
-            libxss1 \
-            libxtst6 \
-            libgbm1
       - name: Run tests
         env:
           CHROME_HEADLESS: 1
           CHROME_PATH: chrome
+          HEADERS: '{"Cross-Origin-Opener-Policy": "same-origin", "Cross-Origin-Embedder-Policy": "require-corp"}'
         run: |
-          # Start test server with proper headers
-          npm run serve -- --headers '{"Cross-Origin-Opener-Policy": "same-origin", "Cross-Origin-Embedder-Policy": "require-corp"}' &
+          # Start test server with proper headers for all tests
+          npm run serve -- --headers "$HEADERS" &
 
-          # Run tests with configured Chrome flags
+          # Wait for server to start
+          sleep 5
+
+          # Run all tests with proper headers
           npx mocha-headless-chrome \
             --args="$CHROME_FLAGS" \
             -a no-sandbox \
             --chrome-path="$(which chrome)" \
             -f http://localhost:3000/tests/ffmpeg-core-mt.test.html
 
-          # Run remaining tests
-          npm run test:browser:core:st
-          npm run test:browser:ffmpeg:mt
-          npm run test:browser:ffmpeg:st
+          npx mocha-headless-chrome \
+            --args="$CHROME_FLAGS" \
+            -a no-sandbox \
+            --chrome-path="$(which chrome)" \
+            -f http://localhost:3000/tests/ffmpeg-core-st.test.html
+
+          npx mocha-headless-chrome \
+            --args="$CHROME_FLAGS" \
+            -a no-sandbox \
+            --chrome-path="$(which chrome)" \
+            -f http://localhost:3000/tests/ffmpeg-mt.test.html
+
+          npx mocha-headless-chrome \
+            --args="$CHROME_FLAGS" \
+            -a no-sandbox \
+            --chrome-path="$(which chrome)" \
+            -f http://localhost:3000/tests/ffmpeg-st.test.html
