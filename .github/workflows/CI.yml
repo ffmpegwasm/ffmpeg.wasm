@@ -128,25 +128,39 @@ jobs:
             -a no-sandbox \
             -f http://localhost:3000/tests/ffmpeg-st.test.html 2>&1 | tee st-test.log
 
-          # Run multi-threaded tests with additional SharedArrayBuffer flags
+          # Run multi-threaded tests
           echo "Running multi-threaded tests..."
-          CHROME_FLAGS="$CHROME_FLAGS --enable-features=SharedArrayBuffer,CrossOriginIsolation --cross-origin-isolated"
-
-          # Debug SharedArrayBuffer availability
-          echo "Testing SharedArrayBuffer availability..."
-          cat << EOF > debug-sab.js
-          console.log('SharedArrayBuffer available:', typeof SharedArrayBuffer !== 'undefined');
-          console.log('crossOriginIsolated:', window.crossOriginIsolated);
+          # Create a test script to verify browser environment
+          cat << EOF > verify-browser.html
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>Browser Environment Test</title>
+          </head>
+          <body>
+            <script>
+              console.log('SharedArrayBuffer available:', typeof SharedArrayBuffer !== 'undefined');
+              console.log('crossOriginIsolated:', window.crossOriginIsolated);
+            </script>
+          </body>
+          </html>
           EOF
-          node debug-sab.js
 
+          # Run the verification in Chrome
+          echo "Verifying browser environment..."
           npx mocha-headless-chrome \
-            --args="$CHROME_FLAGS" \
+            --args="$CHROME_FLAGS --enable-features=SharedArrayBuffer,CrossOriginIsolation" \
+            -a no-sandbox \
+            -f http://localhost:3000/verify-browser.html
+
+          # Run MT tests with verified configuration
+          npx mocha-headless-chrome \
+            --args="$CHROME_FLAGS --enable-features=SharedArrayBuffer,CrossOriginIsolation" \
             -a no-sandbox \
             -f http://localhost:3000/tests/ffmpeg-core-mt.test.html 2>&1 | tee mt-core-test.log
 
           npx mocha-headless-chrome \
-            --args="$CHROME_FLAGS" \
+            --args="$CHROME_FLAGS --enable-features=SharedArrayBuffer,CrossOriginIsolation" \
             -a no-sandbox \
             -f http://localhost:3000/tests/ffmpeg-mt.test.html 2>&1 | tee mt-test.log
 
