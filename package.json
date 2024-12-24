@@ -10,7 +10,7 @@
     "serve": "http-server -c-1 -s -p 3000 .",
     "test": "server-test test:browser:server 3000 test:all",
     "test:all": "npm-run-all test:browser:*:*",
-    "test:browser": "mocha-headless-chrome -a enable-features=SharedArrayBuffer -a no-sandbox",
+    "test:browser": "mocha-headless-chrome --args=\"--enable-features=SharedArrayBuffer --enable-experimental-web-platform-features --cross-origin-isolated --allow-file-access-from-files\" -a no-sandbox -f http://localhost:3000/tests/ffmpeg-core-mt.test.html",
     "test:browser:core:mt": "npm run test:browser -- -f http://localhost:3000/tests/ffmpeg-core-mt.test.html",
     "test:browser:core:st": "npm run test:browser -- -f http://localhost:3000/tests/ffmpeg-core-st.test.html",
     "test:browser:ffmpeg:mt": "npm run test:browser -- -f http://localhost:3000/tests/ffmpeg-mt.test.html",

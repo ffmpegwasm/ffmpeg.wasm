@@ -6,7 +6,7 @@ const createFFmpeg = async () => {
   const ffmpeg = new FFmpeg();
   await ffmpeg.load({
     coreURL: CORE_URL,
-    thread: FFMPEG_TYPE === "mt",
+    thread: FFMPEG_TYPE === "mt" && crossOriginIsolated,
   });
   return ffmpeg;
 };
