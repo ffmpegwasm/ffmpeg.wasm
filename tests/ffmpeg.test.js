@@ -1,6 +1,4 @@
-import { FFmpegWASM } from "@ffmpeg/ffmpeg";
-
-const { FFmpeg } = FFmpegWASM;
+const { FFmpeg } = window.FFmpegWASM;
 
 const genName = (name) => `[ffmpeg][${FFMPEG_TYPE}] ${name}`;
 
