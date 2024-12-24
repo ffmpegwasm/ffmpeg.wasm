@@ -97,24 +97,39 @@ jobs:
         env:
           CHROME_HEADLESS: 1
           CHROME_PATH: chrome
-          CHROME_FLAGS: "--enable-features=SharedArrayBuffer --headless --disable-gpu --no-sandbox --enable-experimental-web-platform-features --enable-features=SharedArrayBuffer"
-          HEADERS: '{"Cross-Origin-Opener-Policy": "same-origin", "Cross-Origin-Embedder-Policy": "require-corp", "Cross-Origin-Resource-Policy": "cross-origin", "Origin-Agent-Cluster": "?1"}'
+          CHROME_FLAGS: "--headless --disable-gpu --no-sandbox --enable-features=SharedArrayBuffer,CrossOriginIsolation"
+          HEADERS: '{"Cross-Origin-Opener-Policy": "same-origin", "Cross-Origin-Embedder-Policy": "require-corp"}'
         run: |
           # Start test server with proper headers for all tests
           npm run serve -- --headers "$HEADERS" &
 
-          # Wait for server to start and ensure headers are properly set
-          sleep 10
+          # Increase wait time to ensure server is ready
+          sleep 15
 
-          # Verify headers are set correctly
-          echo "Checking security headers..."
-          curl -I http://localhost:3000/tests/ffmpeg-core-st.test.html
+          # Verify headers and isolation status
+          echo "Checking security headers and isolation status..."
+          curl -v http://localhost:3000/tests/ffmpeg-core-st.test.html 2>&1 | grep -i "cross-origin"
 
-          # Check if cross-origin isolation is working
-          echo "Adding debug script to test files to check crossOriginIsolated status..."
-          for test_file in tests/ffmpeg-*.test.html; do
-            sed -i '/<\/head>/ i\<script>console.log("crossOriginIsolated status:", crossOriginIsolated);</script>' $test_file
-          done
+          # Run verification script first
+          echo "Verifying browser environment..."
+          cat << EOF > verify-browser.html
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin">
+            <meta http-equiv="Cross-Origin-Embedder-Policy" content="require-corp">
+          </head>
+          <body>
+            <script>
+              console.log('SharedArrayBuffer available:', typeof SharedArrayBuffer !== 'undefined');
+              console.log('crossOriginIsolated:', window.crossOriginIsolated);
+              if (!window.crossOriginIsolated || typeof SharedArrayBuffer === 'undefined') {
+                throw new Error('Browser environment not properly configured for SharedArrayBuffer');
+              }
+            </script>
+          </body>
+          </html>
+          EOF
 
           # Run single-threaded tests first
           echo "Running single-threaded tests..."
