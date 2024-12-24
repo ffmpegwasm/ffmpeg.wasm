@@ -98,17 +98,17 @@ jobs:
           CHROME_HEADLESS: 1
           CHROME_PATH: chrome
           CHROME_FLAGS: "--headless --disable-gpu --no-sandbox --enable-features=SharedArrayBuffer,CrossOriginIsolation"
-          HEADERS: '{"Cross-Origin-Opener-Policy": "same-origin", "Cross-Origin-Embedder-Policy": "require-corp"}'
+          HEADERS: '{"Cross-Origin-Opener-Policy":"same-origin","Cross-Origin-Embedder-Policy":"require-corp","Cross-Origin-Resource-Policy":"cross-origin","Origin-Agent-Cluster":"?1"}'
         run: |
-          # Start test server with proper headers for all tests
-          npm run serve -- --headers "$HEADERS" &
+          # Start test server with proper headers
+          npm run serve -- --headers "${HEADERS}" &
 
           # Increase wait time to ensure server is ready
           sleep 15
 
           # Verify headers and isolation status
           echo "Checking security headers and isolation status..."
-          curl -v http://localhost:3000/tests/ffmpeg-core-st.test.html 2>&1 | grep -i "cross-origin"
+          curl -I http://localhost:3000/tests/ffmpeg-core-st.test.html
 
           # Run verification script first
           echo "Verifying browser environment..."
