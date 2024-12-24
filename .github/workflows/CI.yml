@@ -136,7 +136,7 @@ jobs:
           echo "Testing SharedArrayBuffer availability..."
           cat << EOF > debug-sab.js
           console.log('SharedArrayBuffer available:', typeof SharedArrayBuffer !== 'undefined');
-          console.log('crossOriginIsolated:', crossOriginIsolated);
+          console.log('crossOriginIsolated:', window.crossOriginIsolated);
           EOF
           node debug-sab.js
 
