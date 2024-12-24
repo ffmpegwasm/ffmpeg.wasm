@@ -27,6 +27,11 @@ jobs:
           key: build-cache-st-v1-${{ hashFiles('Dockerfile', 'Makefile', 'build/*') }}
           restore-keys: |
             build-cache-st-v1-
+      - name: Configure sandbox permissions
+        run: |
+          sudo chown root:root chrome_sandbox
+          sudo chmod 4755 chrome_sandbox
+          export CHROME_DEVEL_SANDBOX="$PWD/chrome_sandbox"
       - name: Build ffmpeg-core
         run: make prd EXTRA_ARGS="--cache-from=type=local,src=build-cache-st --cache-to=type=local,dest=build-cache-st,mode=max"
       - name: Upload core
@@ -50,6 +55,11 @@ jobs:
           key: build-cache-mt-v1-${{ hashFiles('Dockerfile', 'Makefile', 'build/*') }}
           restore-keys: |
             build-cache-v1-
+      - name: Configure sandbox permissions
+        run: |
+          sudo chown root:root chrome_sandbox
+          sudo chmod 4755 chrome_sandbox
+          export CHROME_DEVEL_SANDBOX="$PWD/chrome_sandbox"
       - name: Build ffmpet-core-mt
         run: make prd-mt EXTRA_ARGS="--cache-from=type=local,src=build-cache-mt --cache-to=type=local,dest=build-cache-mt,mode=max"
       - name: Upload core-mt
@@ -75,6 +85,11 @@ jobs:
         with:
           name: ffmpeg-core-mt
           path: packages/core-mt/dist
+      - name: Configure sandbox permissions
+        run: |
+          sudo chown root:root chrome_sandbox
+          sudo chmod 4755 chrome_sandbox
+          export CHROME_DEVEL_SANDBOX="$PWD/chrome_sandbox"
       - name: Use Node.js 18
         uses: actions/setup-node@v2
         with:
