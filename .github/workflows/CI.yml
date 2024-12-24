@@ -93,6 +93,8 @@ jobs:
         uses: browser-actions/setup-chrome@latest
         with:
           chrome-version: stable
+        env:
+          CHROME_FLAGS: "--enable-features=SharedArrayBuffer,CrossOriginIsolation --enable-experimental-web-platform-features --cross-origin-isolated --allow-file-access-from-files --disable-web-security --allow-insecure-localhost --no-sandbox --disable-setuid-sandbox --enable-unsafe-webgpu --disable-gpu-sandbox"
       - name: Install Chrome dependencies
         run: |
           sudo apt-get update
@@ -128,9 +130,6 @@ jobs:
             libxss1 \
             libxtst6 \
             libgbm1
-      - name: Set Chrome flags
-        run: |
-          echo "CHROME_FLAGS=--enable-features=SharedArrayBuffer,CrossOriginIsolation --enable-experimental-web-platform-features --cross-origin-isolated --allow-file-access-from-files --disable-web-security --allow-insecure-localhost --no-sandbox --disable-setuid-sandbox --enable-unsafe-webgpu --disable-gpu-sandbox" >> $GITHUB_ENV
       - name: Run tests
         env:
           CHROME_HEADLESS: 1
@@ -138,9 +137,6 @@ jobs:
         run: |
           # Start test server with proper headers
           npm run serve &
-
-          # Wait for server to be ready
-          npx wait-on http://localhost:3000
 
           # Run tests with configured Chrome flags
           npx mocha-headless-chrome \
