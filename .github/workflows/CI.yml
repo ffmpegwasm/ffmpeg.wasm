@@ -99,10 +99,10 @@ jobs:
         env:
           CHROME_HEADLESS: 1
           CHROME_PATH: chrome
-          HEADERS: '{"Cross-Origin-Opener-Policy": "same-origin", "Cross-Origin-Embedder-Policy": "require-corp"}'
+          HEADERS: '{"Cross-Origin-Opener-Policy": "same-origin", "Cross-Origin-Embedder-Policy": "require-corp", "Cross-Origin-Resource-Policy": "cross-origin", "Origin-Agent-Cluster": "?1"}'
         run: |
           # Start test server with proper headers for all tests
-          npm run serve -- --headers "$HEADERS" &
+          npm run serve &
 
           # Wait for server to start
           sleep 5
@@ -111,23 +111,19 @@ jobs:
           npx mocha-headless-chrome \
             --args="$CHROME_FLAGS" \
             -a no-sandbox \
-            --chrome-path="$(which chrome)" \
             -f http://localhost:3000/tests/ffmpeg-core-mt.test.html
 
           npx mocha-headless-chrome \
             --args="$CHROME_FLAGS" \
             -a no-sandbox \
-            --chrome-path="$(which chrome)" \
             -f http://localhost:3000/tests/ffmpeg-core-st.test.html
 
           npx mocha-headless-chrome \
             --args="$CHROME_FLAGS" \
             -a no-sandbox \
-            --chrome-path="$(which chrome)" \
             -f http://localhost:3000/tests/ffmpeg-mt.test.html
 
           npx mocha-headless-chrome \
             --args="$CHROME_FLAGS" \
             -a no-sandbox \
-            --chrome-path="$(which chrome)" \
             -f http://localhost:3000/tests/ffmpeg-st.test.html
