@@ -27,11 +27,6 @@ jobs:
           key: build-cache-st-v1-${{ hashFiles('Dockerfile', 'Makefile', 'build/*') }}
           restore-keys: |
             build-cache-st-v1-
-      - name: Configure sandbox permissions
-        run: |
-          sudo chown root:root chrome_sandbox
-          sudo chmod 4755 chrome_sandbox
-          export CHROME_DEVEL_SANDBOX="$PWD/chrome_sandbox"
       - name: Build ffmpeg-core
         run: make prd EXTRA_ARGS="--cache-from=type=local,src=build-cache-st --cache-to=type=local,dest=build-cache-st,mode=max"
       - name: Upload core
@@ -55,11 +50,6 @@ jobs:
           key: build-cache-mt-v1-${{ hashFiles('Dockerfile', 'Makefile', 'build/*') }}
           restore-keys: |
             build-cache-v1-
-      - name: Configure sandbox permissions
-        run: |
-          sudo chown root:root chrome_sandbox
-          sudo chmod 4755 chrome_sandbox
-          export CHROME_DEVEL_SANDBOX="$PWD/chrome_sandbox"
       - name: Build ffmpet-core-mt
         run: make prd-mt EXTRA_ARGS="--cache-from=type=local,src=build-cache-mt --cache-to=type=local,dest=build-cache-mt,mode=max"
       - name: Upload core-mt
@@ -85,11 +75,6 @@ jobs:
         with:
           name: ffmpeg-core-mt
           path: packages/core-mt/dist
-      - name: Configure sandbox permissions
-        run: |
-          sudo chown root:root chrome_sandbox
-          sudo chmod 4755 chrome_sandbox
-          export CHROME_DEVEL_SANDBOX="$PWD/chrome_sandbox"
       - name: Use Node.js 18
         uses: actions/setup-node@v2
         with:
@@ -104,5 +89,9 @@ jobs:
             node-modules-
       - name: Install dependencies
         run: npm install
+      - name: Install Chrome dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgbm-dev libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 libgbm1
       - name: Run tests
         run: npm test
