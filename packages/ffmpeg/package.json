@@ -12,6 +12,10 @@
         "import": "./dist/esm/index.js",
         "require": "./dist/umd/ffmpeg.js"
       }
+    },
+    "./worker": {
+      "types": "./dist/esm/worker.d.ts",
+      "default": "./dist/esm/worker.js"
     }
   },
   "scripts": {
