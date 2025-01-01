@@ -4,7 +4,7 @@ const fs = require("fs");
 const NPM_URL = "https://registry.npmjs.org";
 const ROOT = "public/assets";
 
-const FFMPEG_VERSION = "0.12.7";
+const FFMPEG_VERSION = "0.12.6";
 const UTIL_VERSION = "0.12.0";
 const CORE_VERSION = "0.12.8";
 const CORE_MT_VERSION = "0.12.8";
