@@ -1,0 +1,23 @@
+{
+  "name": "solidstart-ffmpeg",
+  "type": "module",
+  "scripts": {
+    "dev": "vinxi dev",
+    "build": "vinxi build",
+    "start": "vinxi start"
+  },
+  "dependencies": {
+    "@ffmpeg/ffmpeg": "^0.12.10",
+    "@ffmpeg/util": "^0.12.1",
+    "@solidjs/router": "^0.14.1",
+    "@solidjs/start": "^1.0.4",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "solid-js": "^1.8.18",
+    "tailwindcss": "^3.4.3",
+    "vinxi": "^0.3.14"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
