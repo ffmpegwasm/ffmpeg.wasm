@@ -14,7 +14,7 @@ const FeatureList: FeatureItem[] = [
     Svg: require("@site/static/img/safety-icon.svg").default,
     description: (
       <>
-        ffmpeg.wasm runs only inside your browser, data security is gaurantee as
+        ffmpeg.wasm runs only inside your browser, data security is guaranteed as
         no data is sent to remote server.
       </>
     ),
