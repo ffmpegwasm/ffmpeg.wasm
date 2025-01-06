@@ -59,6 +59,6 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "@ffmpeg/types": "^0.12.3"
+    "@ffmpeg/types": "^0.12.4"
   }
 }

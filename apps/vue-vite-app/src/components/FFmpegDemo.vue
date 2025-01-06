@@ -11,7 +11,7 @@ import type { LogEvent } from '@ffmpeg/ffmpeg/dist/esm/types'
 import { fetchFile, toBlobURL } from '@ffmpeg/util'
 import { defineComponent, ref } from 'vue'
 
-const baseURL = 'https://unpkg.com/@ffmpeg/core-mt@0.12.7/dist/esm'
+const baseURL = 'https://unpkg.com/@ffmpeg/core-mt@0.12.9/dist/esm'
 const videoURL = 'https://raw.githubusercontent.com/ffmpegwasm/testdata/master/video-15s.avi'
 
 export default defineComponent({
@@ -36,7 +36,9 @@ export default defineComponent({
       await ffmpeg.exec(['-i', 'test.avi', 'test.mp4'])
       message.value = 'Complete transcoding'
       const data = await ffmpeg.readFile('test.mp4')
-      video.value = URL.createObjectURL(new Blob([(data as Uint8Array).buffer], { type: 'video/mp4' }))
+      video.value = URL.createObjectURL(
+        new Blob([(data as Uint8Array).buffer], { type: 'video/mp4' })
+      )
     }
     return {
       video,
