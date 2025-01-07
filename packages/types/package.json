@@ -1,6 +1,6 @@
 {
   "name": "@ffmpeg/types",
-  "version": "0.12.2",
+  "version": "0.12.4",
   "description": "ffmpeg.wasm types",
   "types": "types",
   "files": [
