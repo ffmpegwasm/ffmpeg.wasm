@@ -11,7 +11,7 @@ It is recommended to read [Overview](/docs/overview) first.
 :::caution
 If you are a [vite](https://vitejs.dev/) user, use `esm` in **baseURL** instead of `umd`:
 
-~~https://unpkg.com/@ffmpeg/core@0.12.9/dist/umd~~ => https://unpkg.com/@ffmpeg/core@0.12.9/dist/esm
+~~https://unpkg.com/@ffmpeg/core@0.12.10/dist/umd~~ => https://unpkg.com/@ffmpeg/core@0.12.10/dist/esm
 :::
 
 ```jsx live
