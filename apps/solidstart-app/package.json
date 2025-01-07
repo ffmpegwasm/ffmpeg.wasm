@@ -7,8 +7,8 @@
     "start": "vinxi start"
   },
   "dependencies": {
-    "@ffmpeg/ffmpeg": "^0.12.10",
-    "@ffmpeg/util": "^0.12.1",
+    "@ffmpeg/ffmpeg": "^0.12.15",
+    "@ffmpeg/util": "^0.12.2",
     "@solidjs/router": "^0.14.1",
     "@solidjs/start": "^1.0.4",
     "autoprefixer": "^10.4.19",
