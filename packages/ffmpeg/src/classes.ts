@@ -19,7 +19,6 @@ import {
 } from './types.js';
 import { getMessageID } from './utils.js';
 import { ERROR_TERMINATED, ERROR_NOT_LOADED } from './errors.js';
-import theWorker from './worker.js?worker&inline';
 
 type FFMessageOptions = {
   signal?: AbortSignal;
@@ -176,7 +175,12 @@ export class FFmpeg {
     { signal }: FFMessageOptions = {}
   ): Promise<IsFirst> => {
     if (!this.#worker) {
-      this.#worker = new theWorker();
+      if (!classWorkerURL) {
+        throw new Error('classWorkerURL is required');
+      }
+      this.#worker = new Worker(classWorkerURL, {
+        type: 'module',
+      });
       this.#registerHandlers();
     }
     return this.#send(

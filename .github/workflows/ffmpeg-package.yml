@@ -1,4 +1,4 @@
-name: Publish @youfoundation/ffmpeg
+name: Publish @homebase-id/ffmpeg
 on:
   workflow_dispatch:
 jobs:
