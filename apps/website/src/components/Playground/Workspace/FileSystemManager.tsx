@@ -25,12 +25,18 @@ import { Node } from "./types";
 interface FileSystemManagerProps {
   path: string;
   nodes: Node[];
+  oldName: string;
+  newName: string;
+  renameOpen: boolean;
+  onNewNameChange: () => (event: ChangeEvent<HTMLInputElement>) => Promise<void>;
+  onCloseRenameModal: () => () => Promise<void>;
   onFileUpload: (
     isText: boolean
   ) => (event: ChangeEvent<HTMLInputElement>) => Promise<void>;
   onDirClick: (name: string) => () => Promise<void>;
   onFileClick: (name: string) => (option: string) => Promise<void>;
   onDirCreate: (name: string) => () => Promise<void>;
+  onRename: (old_name: string, new_name: string) => () => Promise<void>;
   onRefresh: () => Promise<void>;
   onLoadSamples: () => Promise<void>;
 }
@@ -46,6 +52,7 @@ const modalStyle = {
 };
 
 export const options = [
+  { text: "Rename", key: "rename" },
   { text: "Download", key: "download" },
   { text: "Download as Text File", key: "download-text" },
   { text: "Delete", key: "delete" },
@@ -54,17 +61,23 @@ export const options = [
 export default function FileSystemManager({
   path = "/",
   nodes = [],
+  oldName = "",
+  newName = "",
+  renameOpen = false,
+  onNewNameChange = () => () => Promise.resolve(),
+  onCloseRenameModal = () => () => Promise.resolve(),
   onFileUpload = () => () => Promise.resolve(),
   onFileClick = () => () => Promise.resolve(),
   onDirClick = () => () => Promise.resolve(),
   onDirCreate = () => () => Promise.resolve(),
+  onRename = () => () => Promise.resolve(),
   onRefresh = () => Promise.resolve(),
   onLoadSamples = () => Promise.resolve(),
 }: FileSystemManagerProps) {
-  const [open, setOpen] = useState(false);
+  const [newFolderOpen, setNewFolderOpen] = useState(false);
   const [dirName, setDirName] = useState("");
-  const handleModalOpen = () => setOpen(true);
-  const handleModalClose = () => setOpen(false);
+  const handleNewFolderModalOpen = () => setNewFolderOpen(true);
+  const handleNewFolderModalClose = () => setNewFolderOpen(false);
 
   return (
     <>
@@ -113,7 +126,7 @@ export default function FileSystemManager({
                   <IconButton
                     onClick={() => {
                       setDirName("");
-                      handleModalOpen();
+                      handleNewFolderModalOpen();
                     }}
                     aria-label="create-a-new-folder"
                     size="small"
@@ -165,8 +178,8 @@ export default function FileSystemManager({
         </Stack>
       </Paper>
       <Modal
-        open={open}
-        onClose={handleModalClose}
+        open={newFolderOpen}
+        onClose={handleNewFolderModalClose}
         aria-labelledby="new-folder-name"
         aria-describedby="new-folder-name-description"
       >
@@ -183,15 +196,45 @@ export default function FileSystemManager({
               onChange={(event) => setDirName(event.target.value)}
             />
             <Stack direction="row" justifyContent="flex-end">
-              <Button onClick={handleModalClose}>Cancel</Button>
+              <Button onClick={handleNewFolderModalClose}>Cancel</Button>
               <Button
                 variant="contained"
                 onClick={() => {
                   onDirCreate(dirName);
-                  handleModalClose();
+                  handleNewFolderModalClose();
                 }}
               >
                 Create
+              </Button>
+            </Stack>
+          </Stack>
+        </Box>
+      </Modal>
+      <Modal
+        open={renameOpen}
+        onClose={onCloseRenameModal()}
+        aria-labelledby="new-name"
+        aria-describedby="new-name-description"
+      >
+        <Box sx={modalStyle}>
+          <Stack spacing={4}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              New Name:
+            </Typography>
+            <TextField
+              id="outlined-basic"
+              label="my-file"
+              variant="outlined"
+              value={newName}
+              onChange={onNewNameChange()}
+            />
+            <Stack direction="row" justifyContent="flex-end">
+              <Button onClick={onCloseRenameModal()}>Cancel</Button>
+              <Button
+                variant="contained"
+                onClick={onRename(oldName, newName)}
+              >
+                Rename
               </Button>
             </Stack>
           </Stack>

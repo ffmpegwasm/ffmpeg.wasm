@@ -53,5 +53,21 @@ any of the examples.
         url="https://github.com/ffmpegwasm/ffmpeg.wasm/tree/main/apps/nextjs-app"
       />
     </Grid>
+    <Grid xs={12} sm={6} md={6} lg={6} xl={4}>
+      <ExampleCard
+        img="/img/sveltekit-vite.png"
+        title="SvelteKit + Vite"
+        desc="SvelteKit with Vite (multithread version)"
+        url="https://github.com/ffmpegwasm/ffmpeg.wasm/tree/main/apps/sveltekit-app"
+      />
+    </Grid>
+    <Grid xs={12} sm={6} md={6} lg={6} xl={4}>
+      <ExampleCard
+        img="/img/solidstart-vite.png"
+        title="SolidStart + Vite"
+        desc="SolidStart with Vite (multithread version)"
+        url="https://github.com/ffmpegwasm/ffmpeg.wasm/tree/main/apps/solidstart-app"
+      />
+    </Grid>
   </Grid>
 </MuiThemeProvider>

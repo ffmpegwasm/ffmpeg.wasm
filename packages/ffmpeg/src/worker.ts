@@ -54,7 +54,7 @@ const load = async ({
     // when web worker type is `classic`.
     importScripts(_coreURL);
   } catch {
-    if (!_coreURL) _coreURL = CORE_URL.replace('/umd/', '/esm/');
+    if (!_coreURL || _coreURL === CORE_URL) _coreURL = CORE_URL.replace('/umd/', '/esm/');
     // when web worker type is `module`.
     (self as WorkerGlobalScope).createFFmpegCore = (
       (await import(
@@ -95,6 +95,14 @@ const load = async ({
 const exec = ({ args, timeout = -1 }: FFMessageExecData): ExitCode => {
   ffmpeg.setTimeout(timeout);
   ffmpeg.exec(...args);
+  const ret = ffmpeg.ret;
+  ffmpeg.reset();
+  return ret;
+};
+
+const ffprobe = ({ args, timeout = -1 }: FFMessageExecData): ExitCode => {
+  ffmpeg.setTimeout(timeout);
+  ffmpeg.ffprobe(...args);
   const ret = ffmpeg.ret;
   ffmpeg.reset();
   return ret;
@@ -169,6 +177,9 @@ self.onmessage = async ({
         break;
       case FFMessageType.EXEC:
         data = exec(_data as FFMessageExecData);
+        break;
+      case FFMessageType.FFPROBE:
+        data = ffprobe(_data as FFMessageExecData);
         break;
       case FFMessageType.WRITE_FILE:
         data = writeFile(_data as FFMessageWriteFileData);

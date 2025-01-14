@@ -1,6 +1,6 @@
 {
   "name": "@ffmpeg/core",
-  "version": "0.12.6",
+  "version": "0.12.10",
   "description": "FFmpeg WebAssembly version (single thread)",
   "main": "./dist/umd/ffmpeg-core.js",
   "exports": {
@@ -28,7 +28,7 @@
     "transcode"
   ],
   "author": "Jerome Wu <jeromewus@gmail.com>",
-  "license": "MIT",
+  "license": "GPL-2.0-or-later",
   "bugs": {
     "url": "https://github.com/ffmpegwasm/ffmpeg.wasm/issues"
   },

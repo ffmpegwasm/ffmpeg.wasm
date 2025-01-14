@@ -1,6 +1,6 @@
 {
   "name": "@ffmpeg/core-mt",
-  "version": "0.12.6",
+  "version": "0.12.10",
   "description": "FFmpeg WebAssembly version (multi thread)",
   "main": "./dist/umd/ffmpeg-core.js",
   "exports": {
@@ -11,6 +11,10 @@
     "./wasm": {
       "import": "./dist/esm/ffmpeg-core.wasm",
       "require": "./dist/umd/ffmpeg-core.wasm"
+    },
+    "./worker": {
+      "import": "./dist/esm/ffmpeg-core.worker.js",
+      "require": "./dist/umd/ffmpeg-core.worker.js"
     }
   },
   "files": [
@@ -28,7 +32,7 @@
     "transcode"
   ],
   "author": "Jerome Wu <jeromewus@gmail.com>",
-  "license": "MIT",
+  "license": "GPL-2.0-or-later",
   "bugs": {
     "url": "https://github.com/ffmpegwasm/ffmpeg.wasm/issues"
   },

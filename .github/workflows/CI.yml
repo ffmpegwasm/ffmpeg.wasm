@@ -8,15 +8,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Source Code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Update pkg-config database
       run: sudo ldconfig
     - name: Setup Docker Buildx
       id: buildx
-      uses: docker/setup-buildx-action@v2
+      uses: docker/setup-buildx-action@v4
     - name: Cache build
       id: cache-build
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: build-cache-st
         key: build-cache-st-v1-${{ hashFiles('Dockerfile', 'Makefile', 'build/*') }}
@@ -25,7 +25,7 @@ jobs:
     - name: Build ffmpeg-core
       run: make prd EXTRA_ARGS="--cache-from=type=local,src=build-cache-st --cache-to=type=local,dest=build-cache-st,mode=max"
     - name: Upload core
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: ffmpeg-core
         path: packages/core/dist/*
@@ -36,19 +36,19 @@ jobs:
       - build-core
     steps:
     - name: Checkout Source Code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Download ffmpeg-core
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4
       with:
         name: ffmpeg-core
         path: packages/core/dist
     - name: Use Node.js 18
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
         node-version: 18.x
     - name: Cache dependencies
       id: cache-dependencies
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: node_modules
         key: node-modules-${{ hashFiles('package-lock.json') }}

@@ -7,7 +7,7 @@
     "lint:root": "eslint tests",
     "build": "npm run build --workspace=packages --if-present",
     "pretest": "npm run build",
-    "serve": "http-server -c-1 -s -p 3000 .",
+    "serve": "http-server -c-1 -s -p 3000 . --cors --headers '{\"Cross-Origin-Embedder-Policy\":\"require-corp\",\"Cross-Origin-Opener-Policy\":\"same-origin\",\"Cross-Origin-Resource-Policy\":\"cross-origin\",\"Origin-Agent-Cluster\":\"?1\"}'",
     "test": "server-test test:browser:server 3000 test:all",
     "test:all": "npm-run-all test:browser:*:*",
     "test:browser": "mocha-headless-chrome -a enable-features=SharedArrayBuffer",

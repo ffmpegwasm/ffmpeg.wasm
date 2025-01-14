@@ -11,7 +11,7 @@ It is recommended to read [Overview](/docs/overview) first.
 :::caution
 If you are a [vite](https://vitejs.dev/) user, use `esm` in **baseURL** instead of `umd`:
 
-~~https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd~~ => https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm
+~~https://unpkg.com/@ffmpeg/core@0.12.10/dist/umd~~ => https://unpkg.com/@ffmpeg/core@0.12.10/dist/esm
 :::
 
 ```jsx live
@@ -425,9 +425,10 @@ function() {
 
 :::note
 Required:
-- @ffmpeg/ffmpeg@0.12.7+
+
+- @ffmpeg/ffmpeg@0.12.6+
 - @ffmpeg/core@0.12.4+
-:::
+  :::
 
 Please Check this PR: [Add WORKERFS support](https://github.com/ffmpegwasm/ffmpeg.wasm/pull/581)
 
@@ -435,8 +436,9 @@ Please Check this PR: [Add WORKERFS support](https://github.com/ffmpegwasm/ffmpe
 
 :::note
 Required:
-- @ffmpeg/ffmpeg@0.12.7+
+
+- @ffmpeg/ffmpeg@0.12.6+
 - @ffmpeg/core@0.12.4+
-:::
+  :::
 
 Please check this PR: [abort signal](https://github.com/ffmpegwasm/ffmpeg.wasm/pull/573)

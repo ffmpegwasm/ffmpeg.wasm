@@ -6,8 +6,16 @@ const PORT = 8080;
 const ROOT = path.join(__dirname, "public");
 
 app.use((_, res, next) => {
-  res.append("Cross-Origin-Opener-Policy", "same-origin");
-  res.append("Cross-Origin-Embedder-Policy", "require-corp");
+  res.set({
+    "Cross-Origin-Opener-Policy": "same-origin",
+    "Cross-Origin-Embedder-Policy": "require-corp",
+    "Cross-Origin-Resource-Policy": "cross-origin",
+    "Origin-Agent-Cluster": "?1",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers":
+      "Origin, X-Requested-With, Content-Type, Accept, Range",
+  });
   next();
 });
 
