@@ -1,0 +1,31 @@
+name: Publish @youfoundation/ffmpeg
+on:
+  workflow_dispatch:
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          registry-url: 'https://npm.pkg.github.com'
+          # Defaults to the user or organization that owns the workflow file
+          scope: '@octocat'
+
+      - name: Set git User
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+      - run: npm ci
+
+      - name: Build JS Lib
+        run: npm run build --w ./packages/ffmpeg
+
+      - name: Publish JS Lib
+        run: npm publish --w ./packages/ffmpeg
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
