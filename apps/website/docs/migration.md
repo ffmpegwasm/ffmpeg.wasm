@@ -30,7 +30,7 @@ table to transform 0.11.x to 0.12+
             {"0.11.x": "await ffmpeg.run(...args)", "0.12+": "await ffmpeg.exec([...args])", note: ""},
             {"0.11.x": "ffmpeg.FS.writeFile()", "0.12+": "await ffmpeg.writeFile()", note: ""},
             {"0.11.x": "ffmpeg.FS.readFile()", "0.12+": "await ffmpeg.readFile()", note: ""},
-            {"0.11.x": "ffmpeg.exit()", "0.12+": "await ffmpeg.terminate()", note: ""},
+            {"0.11.x": "ffmpeg.exit()", "0.12+": "ffmpeg.terminate()", note: ""},
             {"0.11.x": "ffmpeg.setLogger()", "0.12+": "ffmpeg.on(\"log\", () => {})", note: ""},
             {"0.11.x": "ffmpeg.setProgress()", "0.12+": "ffmpeg.on(\"progress\", () => {})", note: ""},
             {"0.11.x": "import { fetchFile } from '@ffmpeg/ffmpeg'", "0.12+": "import { fetchFile } from '@ffmpeg/util'", note: ""},
