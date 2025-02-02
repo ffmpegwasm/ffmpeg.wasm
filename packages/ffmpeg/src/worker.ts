@@ -2,7 +2,7 @@
 /// <reference lib="esnext" />
 /// <reference lib="webworker" />
 
-import type { FFmpegCoreModule, FFmpegCoreModuleFactory } from "@ffmpeg/types";
+import type { FFmpegCoreModule, FFmpegCoreModuleFactory, FSStream } from "@ffmpeg/types";
 import type {
   FFMessageEvent,
   FFMessageLoadConfig,
@@ -22,12 +22,19 @@ import type {
   ExitCode,
   FSNode,
   FileData,
+  FD,
+  FFMessageOpenData,
+  FFMessageCloseData,
+  FFMessageReadData,
+  FFMessageWriteData,
+  FileReadData,
 } from "./types";
 import { CORE_URL, FFMessageType } from "./const.js";
 import {
   ERROR_UNKNOWN_MESSAGE_TYPE,
   ERROR_NOT_LOADED,
   ERROR_IMPORT_FAILURE,
+  ERROR_FS_STREAM_NOT_FOUND
 } from "./errors.js";
 
 declare global {
@@ -116,6 +123,42 @@ const writeFile = ({ path, data }: FFMessageWriteFileData): OK => {
 const readFile = ({ path, encoding }: FFMessageReadFileData): FileData =>
   ffmpeg.FS.readFile(path, { encoding });
 
+const open = ({ path, flags, mode }: FFMessageOpenData): FD => {
+  return ffmpeg.FS.open(path, flags, mode).fd;
+}
+
+const close = ({ fd }: FFMessageCloseData): OK => {
+  const stream = ffmpeg.FS.getStream(fd);
+  if (stream) {
+    ffmpeg.FS.close(stream);
+  }
+  return true;
+}
+
+const getStream = (fd: number): FSStream => {
+  const stream = ffmpeg.FS.getStream(fd);
+  if (!stream) throw ERROR_FS_STREAM_NOT_FOUND;
+  return stream;
+}
+
+const read = ({ fd, offset, length, position }: FFMessageReadData): FileReadData => {
+  const stream = getStream(fd);
+  const data = new Uint8Array(length);
+  const current = ffmpeg.FS.read(stream, data, offset, length, position)
+  if (current == 0) {
+    return { done: true }
+  } else if (current < data.length) {
+    return { data: data.subarray(0, current), done: false }
+  }
+  return { data, done: false }
+}
+
+const write = ({ fd, buffer, offset, length, position }: FFMessageWriteData): OK => {
+  const stream = getStream(fd);
+  ffmpeg.FS.write(stream, buffer, offset, length, position);
+  return true;
+}
+
 // TODO: check if deletion works.
 const deleteFile = ({ path }: FFMessageDeleteFileData): OK => {
   ffmpeg.FS.unlink(path);
@@ -180,6 +223,19 @@ self.onmessage = async ({
         break;
       case FFMessageType.FFPROBE:
         data = ffprobe(_data as FFMessageExecData);
+        break;
+      case FFMessageType.OPEN:
+        data = open(_data as FFMessageOpenData);
+        break;
+      case FFMessageType.CLOSE:
+        data = close(_data as FFMessageCloseData);
+        break;
+      case FFMessageType.READ:
+        data = read(_data as FFMessageReadData);
+        if (data.data) trans.push(data.data.buffer)
+        break;
+      case FFMessageType.WRITE:
+        data = write(_data as FFMessageWriteData);
         break;
       case FFMessageType.WRITE_FILE:
         data = writeFile(_data as FFMessageWriteFileData);
