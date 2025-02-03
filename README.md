@@ -1,37 +1,32 @@
-This project is looking for maintainers. If you are interested to give it a go, please email [me](mailto:jeromewus@gmail.com) to further discuss maintenance.
+# ffmpeg.wasm (Homebase Fork)
 
----
-<p align="center">
-  <a href="#">
-    <img alt="ffmpeg.wasm" width="128px" height="128px" src="https://github.com/ffmpegwasm/ffmpeg.wasm/blob/main/apps/website/static/img/logo192.png"></img>
-  </a>
-</p>
+This repository is a fork of [ffmpeg.wasm](https://github.com/ffmpegwasm/ffmpeg.wasm), a WebAssembly-powered FFmpeg library that enables video and audio processing in the browser.
 
-# ffmpeg.wasm
+## Why This Fork?
 
-ffmpeg.wasm is a pure Webassembly / Javascript port of FFmpeg. It enables video & audio record, convert and stream right inside browsers.
+We maintain this fork to override the loading implementation, ensuring compatibility with [`homebase-id/odin-js`](https://github.com/homebase-id/odin-js). This allows seamless integration with the Homebase ecosystem while retaining the full power of FFmpeg in a WebAssembly environment.
 
-[![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://github.com/emersion/stability-badges#experimental)
-[![Node Version](https://img.shields.io/node/v/@ffmpeg/ffmpeg.svg)](https://img.shields.io/node/v/@ffmpeg/ffmpeg.svg)
-[![Actions Status](https://github.com/ffmpegwasm/ffmpeg.wasm/workflows/CI/badge.svg)](https://github.com/ffmpegwasm/ffmpeg.wasm/actions)
-![npm (tag)](https://img.shields.io/npm/v/@ffmpeg/ffmpeg/latest)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/ffmpegwasm/ffmpeg.wasm/graphs/commit-activity)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Downloads Total](https://img.shields.io/npm/dt/@ffmpeg/ffmpeg.svg)](https://www.npmjs.com/package/@ffmpeg/ffmpeg)
-[![Downloads Month](https://img.shields.io/npm/dm/@ffmpeg/ffmpeg.svg)](https://www.npmjs.com/package/@ffmpeg/ffmpeg)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/1943b6d3-45ad-4b46-bfba-cb8d5716604c/deploy-status)](https://app.netlify.com/sites/ffmpegwasm/deploys)
+The only modified package is the root ffmpeg package `./packages/ffmpeg`, the core package upon loading is still referencing the version of ffmpegwasm
 
-Join us on Discord!
+## Publishing the NPM Package to github packages
 
-[![Discord](https://dcbadge.vercel.app/api/server/NjGMaqqfm5)](https://discord.gg/NjGMaqqfm5)
+The ffmpeg package within this repository is located in `./packages/ffmpeg`. If you need to publish a new version to Github packages, follow these steps:
 
-## Documentation
+1. Navigate to the package directory:
+   ```sh
+   cd packages/ffmpeg
+   ```
 
-- [Introduction](https://ffmpegwasm.netlify.app/docs/overview)
-- [Getting
-    Started](https://ffmpegwasm.netlify.app/docs/getting-started/installation)
-- [API](https://ffmpegwasm.netlify.app/docs/api/ffmpeg/)
-- [FAQ](https://ffmpegwasm.netlify.app/docs/faq)
-- [Contribution](https://ffmpegwasm.netlify.app/docs/contribution/core)
+2. Build the package:
+   ```sh
+   npm run build
+   ```
 
-Please sponsor ffmpeg.wasm to make it sustainable. :heart:
+3. Publish the package:
+   ```sh
+   npm publish
+   ```
+
+Ensure you have the necessary permissions and are authenticated with Github before publishing. (You'll need a PAT wtih write:packages permissions)
+
+You will only need to publish a new version if notable changes were made to the ffmpeg package on the originally repo.
