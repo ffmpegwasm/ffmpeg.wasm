@@ -7,7 +7,7 @@
     "lint:root": "eslint tests",
     "build": "npm run build --workspace=packages --if-present",
     "pretest": "npm run build",
-    "serve": "http-server -c-1 -s -p 3000 .",
+    "serve": "http-server -c-1 -s -p 3000 . --coop",
     "test": "server-test test:browser:server 3000 test:all",
     "test:all": "npm-run-all test:browser:*:*",
     "test:browser": "mocha-headless-chrome -a enable-features=SharedArrayBuffer -a no-sandbox",
@@ -20,7 +20,7 @@
     "test:node:core:mt": "npm run test:node -- --require tests/test-helper-mt.js tests/ffmpeg-core.test.js",
     "test:node:core:st": "npm run test:node -- --require tests/test-helper-st.js tests/ffmpeg-core.test.js",
     "prepublishOnly": "npm run build",
-    "postinstall": "npm run build"
+    "postinstall": "patch-package && npm run build"
   },
   "workspaces": [
     "packages/*",
@@ -32,6 +32,7 @@
     "mocha": "^10.2.0",
     "mocha-headless-chrome": "^4.0.0",
     "npm-run-all": "^4.1.5",
+    "patch-package": "^8.0.0",
     "start-server-and-test": "^2.0.3"
   }
 }
