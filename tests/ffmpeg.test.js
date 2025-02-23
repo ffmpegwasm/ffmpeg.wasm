@@ -1,4 +1,4 @@
-const { FFmpeg } = window.FFmpegWASM;
+const { FFmpeg } = FFmpegWASM;
 
 const genName = (name) => `[ffmpeg][${FFMPEG_TYPE}] ${name}`;
 
