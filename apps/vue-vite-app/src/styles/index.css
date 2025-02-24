@@ -1,0 +1,30 @@
+@import 'reset.css';
+
+body {
+  color: #e3e3e3;
+  background-color: #1b1b1d;
+  font-family: Arial, sans-serif;
+}
+
+button {
+  padding: 0.5em 1em;
+  color: inherit;
+  background-color: #272727;
+  border: none;
+  border-radius: 100vmax;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    background-color: #3d3d3d;
+  }
+
+  &:active {
+    background-color: #505050;
+  }
+}
+
+video {
+  border-radius: 12px;
+}
