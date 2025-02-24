@@ -1,61 +1,51 @@
-<template>
-  <video :src="video" controls />
-  <br />
-  <button @click="transcode">Start</button>
-  <p>{{ message }}</p>
-</template>
+<script setup lang="ts">
+import { ref } from 'vue';
+import { FFmpeg, type LogEvent } from '@ffmpeg/ffmpeg';
+import { fetchFile, toBlobURL } from '@ffmpeg/util';
 
-<script lang="ts">
-import { FFmpeg } from '@ffmpeg/ffmpeg'
-import type { LogEvent } from '@ffmpeg/ffmpeg/dist/esm/types'
-import { fetchFile, toBlobURL } from '@ffmpeg/util'
-import { defineComponent, ref } from 'vue'
+const FFMPEG_BASE_URL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core-mt@0.12.9/dist/esm';
+const VIDEO_URL = 'https://raw.githubusercontent.com/ffmpegwasm/testdata/master/video-15s.avi';
 
-const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core-mt@0.12.9/dist/esm'
-const videoURL = 'https://raw.githubusercontent.com/ffmpegwasm/testdata/master/video-15s.avi'
+const ffmpeg = new FFmpeg();
+const message = ref('');
+const videoSrc = ref<string>();
 
-export default defineComponent({
-  name: 'App',
-  setup() {
-    const ffmpeg = new FFmpeg()
-    const message = ref('Click Start to Transcode')
-    let video = ref('')
+ffmpeg.on('log', (logEvent: LogEvent) => {
+  message.value = logEvent.message;
+});
 
-    async function transcode() {
-      message.value = 'Loading ffmpeg-core.js'
-      ffmpeg.on('log', ({ message: msg }: LogEvent) => {
-        message.value = msg
-      })
-      await ffmpeg.load({
-        coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-        wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
-        workerURL: await toBlobURL(`${baseURL}/ffmpeg-core.worker.js`, 'text/javascript')
-      })
-      message.value = 'Start transcoding'
-      await ffmpeg.writeFile('test.avi', await fetchFile(videoURL))
-      await ffmpeg.exec(['-i', 'test.avi', 'test.mp4'])
-      message.value = 'Complete transcoding'
-      const data = await ffmpeg.readFile('test.mp4')
-      video.value = URL.createObjectURL(
-        new Blob([(data as Uint8Array).buffer], { type: 'video/mp4' })
-      )
-    }
-    return {
-      video,
-      message,
-      transcode
-    }
-  }
-})
+await ffmpeg.load({
+  coreURL: await toBlobURL(`${FFMPEG_BASE_URL}/ffmpeg-core.js`, 'text/javascript'),
+  wasmURL: await toBlobURL(`${FFMPEG_BASE_URL}/ffmpeg-core.wasm`, 'application/wasm'),
+  workerURL: await toBlobURL(`${FFMPEG_BASE_URL}/ffmpeg-core.worker.js`, 'text/javascript')
+});
+
+async function transcodeVideo() {
+  message.value = 'Start video transcoding…';
+
+  await ffmpeg.writeFile('test.avi', await fetchFile(VIDEO_URL));
+  await ffmpeg.exec(['-i', 'test.avi', 'test.mp4']);
+
+  const data = await ffmpeg.readFile('test.mp4');
+  videoSrc.value = URL.createObjectURL(new Blob([(data as Uint8Array).buffer], { type: 'video/mp4' }));
+
+  message.value = 'Video transcoding completed';
+}
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<template>
+  <div class="ffmpeg-demo">
+    <video :src="videoSrc" controls></video>
+    <button @click="transcodeVideo">Transcode video</button>
+    <p>{{ message }}</p>
+  </div>
+</template>
+
+<style scoped>
+.ffmpeg-demo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }
 </style>
