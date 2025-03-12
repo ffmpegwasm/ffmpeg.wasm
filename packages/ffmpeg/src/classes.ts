@@ -188,7 +188,7 @@ export class FFmpeg {
     { classWorkerURL, trustedTypePolicy, ...config }: FFMessageLoadConfig = { },
     { signal }: FFMessageOptions = {}
   ): Promise<IsFirst> => {
-    const createScriptURL = ((url: string) => (trustedTypePolicy ?? window.trustedTypes?.defaultPolicy)?.createScriptURL?.(url) ?? url)
+    const createScriptURL = ((url: string) => ((trustedTypePolicy ?? window.trustedTypes?.defaultPolicy)?.createScriptURL?.(url) ?? url) as unknown as string)
     if (!this.#worker) {
       this.#worker = classWorkerURL ?
         new Worker(createScriptURL(new URL(classWorkerURL, import.meta.url).toString()), {
