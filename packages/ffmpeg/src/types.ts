@@ -30,6 +30,11 @@ export interface FFMessageLoadConfig {
    * @defaultValue `./worker.js`
    */
   classWorkerURL?: string;
+
+  /**
+   * Trusted type policy to use on workers
+   */
+  trustedTypePolicy?: TrustedTypePolicy
 }
 
 export interface FFMessageExecData {
