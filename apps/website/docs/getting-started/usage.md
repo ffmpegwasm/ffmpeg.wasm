@@ -11,7 +11,7 @@ It is recommended to read [Overview](/docs/overview) first.
 :::caution
 If you are a [vite](https://vitejs.dev/) user, use `esm` in **baseURL** instead of `umd`:
 
-~~https://unpkg.com/@ffmpeg/core@0.12.10/dist/umd~~ => https://unpkg.com/@ffmpeg/core@0.12.10/dist/esm
+~~https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/umd~~ => https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm
 :::
 
 ```jsx live
@@ -24,7 +24,7 @@ function() {
     const messageRef = useRef(null);
 
     const load = async () => {
-        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd'
+        const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd'
         const ffmpeg = ffmpegRef.current;
         ffmpeg.on('log', ({ message }) => {
             messageRef.current.innerHTML = message;
@@ -81,7 +81,7 @@ function() {
     const messageRef = useRef(null);
 
     const load = async () => {
-        const baseURL = 'https://unpkg.com/@ffmpeg/core-mt@0.12.6/dist/umd'
+        const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core-mt@0.12.6/dist/umd'
         const ffmpeg = ffmpegRef.current;
         ffmpeg.on('log', ({ message }) => {
             messageRef.current.innerHTML = message;
@@ -134,7 +134,7 @@ function() {
     const messageRef = useRef(null);
 
     const load = async () => {
-        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd'
+        const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd'
         const ffmpeg = ffmpegRef.current;
         ffmpeg.on('log', ({ message }) => {
             messageRef.current.innerHTML = message;
@@ -192,7 +192,7 @@ function() {
     const messageRef = useRef(null);
 
     const load = async () => {
-        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd'
+        const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd'
         const ffmpeg = ffmpegRef.current;
         // Listen to progress event instead of log.
         ffmpeg.on('progress', ({ progress, time }) => {
@@ -243,7 +243,7 @@ function() {
     const messageRef = useRef(null);
 
     const load = async () => {
-        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd'
+        const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd'
         const ffmpeg = ffmpegRef.current;
         ffmpeg.on('log', ({ message }) => {
             messageRef.current.innerHTML = message;
@@ -313,7 +313,7 @@ function() {
     const messageRef = useRef(null);
 
     const load = async () => {
-        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd'
+        const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd'
         const ffmpeg = ffmpegRef.current;
         ffmpeg.on('log', ({ message }) => {
             messageRef.current.innerHTML = message;
@@ -372,7 +372,7 @@ function() {
     const messageRef = useRef(null);
 
     const load = async () => {
-        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd'
+        const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd'
         const ffmpeg = ffmpegRef.current;
         ffmpeg.on('log', ({ message }) => {
             messageRef.current.innerHTML = message;
