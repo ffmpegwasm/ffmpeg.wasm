@@ -1,5 +1,6 @@
 {
   "name": "solidstart-ffmpeg",
+  "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vinxi dev",
@@ -10,12 +11,12 @@
     "@ffmpeg/ffmpeg": "^0.12.15",
     "@ffmpeg/util": "^0.12.2",
     "@solidjs/router": "^0.14.1",
-    "@solidjs/start": "^1.0.4",
+    "@solidjs/start": "^1.1.1",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",
     "solid-js": "^1.8.18",
     "tailwindcss": "^3.4.3",
-    "vinxi": "^0.3.14"
+    "vinxi": "^0.5.3"
   },
   "engines": {
     "node": ">=18"

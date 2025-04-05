@@ -1,0 +1,117 @@
+diff --git a/node_modules/http-server/bin/http-server b/node_modules/http-server/bin/http-server
+index 7c597fa..b397c72 100755
+--- a/node_modules/http-server/bin/http-server
++++ b/node_modules/http-server/bin/http-server
+@@ -33,6 +33,8 @@ if (argv.h || argv.help) {
+     '               If both brotli and gzip are enabled, brotli takes precedence',
+     '  -e --ext     Default file extension if none supplied [none]',
+     '  -s --silent  Suppress log messages from output',
++    '  --coop[=mode]   Enable COOP via the "Cross-Origin-Opener-Policy" header',
++    '                  Optionally provide COOP mode.',
+     '  --cors[=headers]   Enable CORS via the "Access-Control-Allow-Origin" header',
+     '                     Optionally provide CORS headers list separated by commas',
+     '  -o [path]    Open browser window after starting the server.',
+@@ -98,16 +100,16 @@ if (!argv.s && !argv.silent) {
+           : '';
+       if (error) {
+         logger.info(
+-          '[%s] %s "%s %s" Error (%s): "%s"',
+-          date, ip, chalk.red(req.method), chalk.red(req.url),
+-          chalk.red(error.status.toString()), chalk.red(error.message)
++            '[%s] %s "%s %s" Error (%s): "%s"',
++            date, ip, chalk.red(req.method), chalk.red(req.url),
++            chalk.red(error.status.toString()), chalk.red(error.message)
+         );
+       }
+       else {
+         logger.info(
+-          '[%s] %s "%s %s" "%s"',
+-          date, ip, chalk.cyan(req.method), chalk.cyan(req.url),
+-          req.headers['user-agent']
++            '[%s] %s "%s %s" "%s"',
++            date, ip, chalk.cyan(req.method), chalk.cyan(req.url),
++            req.headers['user-agent']
+         );
+       }
+     }
+@@ -156,6 +158,13 @@ function listen(port) {
+     password: argv.password || process.env.NODE_HTTP_SERVER_PASSWORD
+   };
+
++  if (argv.coop) {
++    options.coop = true;
++    if (typeof argv.coop === 'string') {
++      options.coopHeader = argv.coop;
++    }
++  }
++
+   if (argv.cors) {
+     options.cors = true;
+     if (typeof argv.cors === 'string') {
+@@ -209,6 +218,7 @@ function listen(port) {
+
+     logger.info([
+       chalk.yellow('\nhttp-server settings: '),
++      ([chalk.yellow('COOP: '), argv.coop ? chalk.cyan(argv.coop) : chalk.red('disabled')].join('')),
+       ([chalk.yellow('CORS: '), argv.cors ? chalk.cyan(argv.cors) : chalk.red('disabled')].join('')),
+       ([chalk.yellow('Cache: '), argv.c ? (argv.c === '-1' ? chalk.red('disabled') : chalk.cyan(argv.c + ' seconds')) : chalk.cyan('3600 seconds')].join('')),
+       ([chalk.yellow('Connection Timeout: '), argv.t === '0' ? chalk.red('disabled') : (argv.t ? chalk.cyan(argv.t + ' seconds') : chalk.cyan('120 seconds'))].join('')),
+diff --git a/node_modules/http-server/lib/core/aliases.json b/node_modules/http-server/lib/core/aliases.json
+index 53a22a5..229a16d 100644
+--- a/node_modules/http-server/lib/core/aliases.json
++++ b/node_modules/http-server/lib/core/aliases.json
+@@ -6,6 +6,7 @@
+   "hidePermissions": ["hidePermissions", "hidepermissions", "hide-permissions"],
+   "si": [ "si", "index" ],
+   "handleError": [ "handleError", "handleerror" ],
++  "coop": [ "coop", "COOP" ],
+   "cors": [ "cors", "CORS" ],
+   "headers": [ "H", "header", "headers" ],
+   "contentType": [ "contentType", "contenttype", "content-type" ],
+diff --git a/node_modules/http-server/lib/core/defaults.json b/node_modules/http-server/lib/core/defaults.json
+index d919f29..63a1a9a 100644
+--- a/node_modules/http-server/lib/core/defaults.json
++++ b/node_modules/http-server/lib/core/defaults.json
+@@ -6,6 +6,7 @@
+   "hidePermissions": false,
+   "si": false,
+   "cache": "max-age=3600",
++  "coop": false,
+   "cors": false,
+   "gzip": true,
+   "brotli": false,
+diff --git a/node_modules/http-server/lib/core/opts.js b/node_modules/http-server/lib/core/opts.js
+index ec1b2cb..097ab18 100644
+--- a/node_modules/http-server/lib/core/opts.js
++++ b/node_modules/http-server/lib/core/opts.js
+@@ -117,6 +117,14 @@ module.exports = (opts) => {
+       return false;
+     });
+
++    aliases.coop.forEach((k) => {
++      if (isDeclared(k) && opts[k]) {
++        handleOptionsMethod = true;
++        headers['Cross-Origin-Opener-Policy'] = 'same-origin';
++        headers['Cross-Origin-Embedder-Policy'] = 'require-corp';
++      }
++    });
++
+     aliases.cors.forEach((k) => {
+       if (isDeclared(k) && opts[k]) {
+         handleOptionsMethod = true;
+diff --git a/node_modules/http-server/lib/http-server.js b/node_modules/http-server/lib/http-server.js
+index dfe4c47..301fb0b 100644
+--- a/node_modules/http-server/lib/http-server.js
++++ b/node_modules/http-server/lib/http-server.js
+@@ -98,6 +98,11 @@ function HttpServer(options) {
+     });
+   }
+
++  if (options.coop) {
++    this.headers['Cross-Origin-Opener-Policy'] = options.coopHeader || 'same-origin';
++    this.headers['Cross-Origin-Embedder-Policy'] = 'require-corp';
++  }
++
+   if (options.cors) {
+     this.headers['Access-Control-Allow-Origin'] = '*';
+     this.headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Range';
