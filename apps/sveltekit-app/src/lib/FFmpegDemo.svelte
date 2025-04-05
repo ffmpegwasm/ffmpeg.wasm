@@ -6,7 +6,7 @@
 
 	let videoEl: HTMLVideoElement;
 
-	const baseURL = 'https://unpkg.com/@ffmpeg/core-mt@0.12.6/dist/esm';
+	const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core-mt@0.12.6/dist/esm';
 	const videoURL = 'https://raw.githubusercontent.com/ffmpegwasm/testdata/master/video-15s.avi';
 
 	let message = 'Click Start to Transcode';

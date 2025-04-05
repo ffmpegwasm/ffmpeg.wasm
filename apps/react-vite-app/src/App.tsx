@@ -9,7 +9,7 @@ function App() {
   const messageRef = useRef<HTMLParagraphElement | null>(null);
 
   const load = async () => {
-    const baseURL = "https://unpkg.com/@ffmpeg/core-mt@0.12.10/dist/esm";
+    const baseURL = "https://cdn.jsdelivr.net/npm/@ffmpeg/core-mt@0.12.10/dist/esm";
     const ffmpeg = ffmpegRef.current;
     ffmpeg.on("log", ({ message }) => {
       if (messageRef.current) messageRef.current.innerHTML = message;
