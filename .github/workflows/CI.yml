@@ -98,10 +98,9 @@ jobs:
           CHROME_HEADLESS: 1
           CHROME_PATH: chrome
           CHROME_FLAGS: "--headless --disable-gpu --no-sandbox --enable-features=SharedArrayBuffer,CrossOriginIsolation"
-          HEADERS: '{"Cross-Origin-Opener-Policy": "same-origin", "Cross-Origin-Embedder-Policy": "require-corp"}'
         run: |
           # Start test server with proper headers for all tests
-          npm run serve -- --headers "$HEADERS" &
+          npm run serve &
 
           # Increase wait time to ensure server is ready
           sleep 15
