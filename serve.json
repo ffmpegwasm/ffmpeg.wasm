@@ -1,4 +1,5 @@
 {
+    "cleanUrls": false,
     "headers": [
     {
       "source" : "**/*.*",
