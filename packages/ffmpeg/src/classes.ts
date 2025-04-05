@@ -16,6 +16,7 @@ import {
   FFFSType,
   FFFSMountOptions,
   FFFSPath,
+  FileReadData,
 } from "./types.js";
 import { getMessageID } from "./utils.js";
 import { ERROR_TERMINATED, ERROR_NOT_LOADED } from "./errors.js";
@@ -63,6 +64,10 @@ export class FFmpeg {
           case FFMessageType.UNMOUNT:
           case FFMessageType.EXEC:
           case FFMessageType.FFPROBE:
+          case FFMessageType.OPEN:
+          case FFMessageType.CLOSE:
+          case FFMessageType.READ:
+          case FFMessageType.WRITE:
           case FFMessageType.WRITE_FILE:
           case FFMessageType.READ_FILE:
           case FFMessageType.DELETE_FILE:
@@ -361,6 +366,120 @@ export class FFmpeg {
       trans
     ) as Promise<OK>;
   };
+
+  /**
+   * Opens a file with the specified path, flags, and mode.
+   *
+   * @returns A file descriptor number.
+   * @category File System
+   */
+  public open = (
+    /** The path to the file. */
+    path: string,
+    /** 
+     * Mode for opening the file (e.g., 'r', 'w', 'a')
+     * @see [FS read and write flags](https://emscripten.org/docs/api_reference/Filesystem-API.html#fs-read-and-write-flags) 
+     * */
+    flags: string,
+    /** 
+     * Permissions for creating a new file.
+     * @defaultValue 0666
+     * */
+    mode?: number
+  ): Promise<number> => {
+    return this.#send(
+      {
+        type: FFMessageType.OPEN,
+        data: { path, flags, mode },
+      }
+    ) as Promise<number>;
+  }
+
+  /**
+    * Closes an open file descriptor.
+    *
+    * @returns Resolves when the file is successfully closed.
+    * @category File System
+    */
+  public close = (
+    /** The file descriptor to close. */
+    fd: number
+  ): Promise<OK> => {
+    return this.#send(
+      {
+        type: FFMessageType.CLOSE,
+        data: { fd },
+      }
+    ) as Promise<OK>;
+  }
+
+  /**
+   * Reads data from an open file descriptor.
+   * @example
+   * ```ts
+   * const ffmpeg = new FFmpeg();
+   * await ffmpeg.load();
+   * const fd = await ffmpeg.open("../video.avi");
+   * const CHUNK_SIZE = 1024;
+   * const { data, done } = await ffmpeg.read(fd, 0, CHUNK_SIZE)
+   * await ffmpeg.close(fd);
+   * ```
+   * @category File System
+   */
+  public read = (
+    /** The file descriptor to read from. */
+    fd: number,
+    /** The offset in the buffer to start writing data. */
+    offset: number,
+    /** The number of bytes to read. */
+    length: number,
+    /** The offset within the stream to read. By default this is the stream’s current offset. */
+    position?: number
+  ): Promise<FileReadData> => {
+    return this.#send(
+      {
+        type: FFMessageType.READ,
+        data: { fd, offset, length, position },
+      }
+    ) as Promise<FileReadData>;
+  }
+
+  /**
+   * Writes data to an open file descriptor.
+   *
+   * @example
+   * ```ts
+   * const ffmpeg = new FFmpeg();
+   * await ffmpeg.load();
+   * const data = new Uint8Array(32);
+   * const fd = await ffmpeg.open("../video.avi", "w+");
+   * await ffmpeg.write(fd, data, 0, data.length, 0);
+   * await ffmpeg.close(fd);
+   * ```
+   * @category File System
+   */
+  public write = (
+    /** The file descriptor to write to. */
+    fd: number,
+    /** The buffer containing the data to write. */
+    buffer: Uint8Array,
+    /** The offset in the buffer to start writing from. */
+    offset: number,
+    /** The number of bytes to write. */
+    length: number,
+    /** The offset within the stream to write. By default this is the stream’s current offset. */
+    position?: number
+  ): Promise<OK> => {
+    const trans: Transferable[] = [buffer.buffer];
+
+    return this.#send(
+      {
+        type: FFMessageType.WRITE,
+        data: { fd, buffer, offset, length, position },
+      },
+      trans
+    ) as Promise<OK>;
+  }
 
   /**
    * Read data from ffmpeg.wasm.
