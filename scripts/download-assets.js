@@ -7,7 +7,7 @@ const ROOT = "public/assets";
 const FFMPEG_VERSION = "0.12.15";
 const UTIL_VERSION = "0.12.2";
 const CORE_VERSION = "0.12.10";
-const CORE_MT_VERSION = "0.12.10";
+const CORE_MT_VERSION = "0.12.9";
 
 const FFMPEG_TGZ = `ffmpeg-${FFMPEG_VERSION}.tgz`;
 const UTIL_TGZ = `util-${UTIL_VERSION}.tgz`;
