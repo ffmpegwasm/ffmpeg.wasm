@@ -11,7 +11,7 @@
   "author": "Jerome Wu <jeromewus@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.18.2",
+    "express": "^4.19.2",
     "serve-index": "^1.9.1",
     "tar": "^6.1.15"
   }
