@@ -2,7 +2,7 @@ const path = require("path");
 
 module.exports = {
   mode: "production",
-  entry: "./dist/cjs/index.js",
+  entry: "./dist/esm/index.js",
   output: {
     library: "FFmpegUtil",
     libraryTarget: "umd",
