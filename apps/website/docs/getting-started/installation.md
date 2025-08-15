@@ -31,5 +31,5 @@ yarn add @ffmpeg/ffmpeg @ffmpeg/util
 
 :::info
 As `@ffmpeg/ffmpeg` spawns a web worker, you cannot import `@ffmpeg/ffmpeg` from CDN like
-unpkg. It is recommended to download it and host it on your server most of the time.
+jsdelivr. It is recommended to download it and host it on your server most of the time.
 :::
