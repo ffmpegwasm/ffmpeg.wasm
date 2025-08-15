@@ -101,7 +101,7 @@ jobs:
           HEADERS: '{"Cross-Origin-Opener-Policy": "same-origin", "Cross-Origin-Embedder-Policy": "require-corp"}'
         run: |
           # Start test server with proper headers for all tests
-          npm run serve -- --headers "$HEADERS" &
+          npm run serve &
 
           # Increase wait time to ensure server is ready
           sleep 15
