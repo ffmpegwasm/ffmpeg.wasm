@@ -30,4 +30,4 @@ CONF_FLAGS=(
 )
 
 emconfigure ./configure "${CONF_FLAGS[@]}" $@
-emmake make -j
+emmake make -j2
