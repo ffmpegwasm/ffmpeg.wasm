@@ -106,6 +106,7 @@ export const downloadWithProgress = async (
   cb?: ProgressCallback
 ): Promise<ArrayBuffer> => {
   const resp = await fetch(url);
+  const fallback = resp.clone();
   let buf;
 
   try {
@@ -143,7 +144,7 @@ export const downloadWithProgress = async (
   } catch (e) {
     console.log(`failed to send download progress event: `, e);
     // Fetch arrayBuffer directly when it is not possible to get progress.
-    buf = await resp.arrayBuffer();
+    buf = await fallback.arrayBuffer();
     cb &&
       cb({
         url,
