@@ -7,20 +7,20 @@ export interface FFMessageLoadConfig {
   /**
    * `ffmpeg-core.js` URL.
    *
-   * @defaultValue `https://unpkg.com/@ffmpeg/core@${CORE_VERSION}/dist/umd/ffmpeg-core.js`;
+   * @defaultValue `https://cdn.jsdelivr.net/npm/@ffmpeg/core@${CORE_VERSION}/dist/umd/ffmpeg-core.js`;
    */
   coreURL?: string;
   /**
    * `ffmpeg-core.wasm` URL.
    *
-   * @defaultValue `https://unpkg.com/@ffmpeg/core@${CORE_VERSION}/dist/umd/ffmpeg-core.wasm`;
+   * @defaultValue `https://cdn.jsdelivr.net/npm/@ffmpeg/core@${CORE_VERSION}/dist/umd/ffmpeg-core.wasm`;
    */
   wasmURL?: string;
   /**
    * `ffmpeg-core.worker.js` URL. This worker is spawned when using multithread version of ffmpeg-core.
    *
    * @ref: https://ffmpegwasm.netlify.app/docs/overview#architecture
-   * @defaultValue `https://unpkg.com/@ffmpeg/core-mt@${CORE_VERSION}/dist/umd/ffmpeg-core.worker.js`;
+   * @defaultValue `https://cdn.jsdelivr.net/npm/@ffmpeg/core-mt@${CORE_VERSION}/dist/umd/ffmpeg-core.worker.js`;
    */
   workerURL?: string;
   /**
