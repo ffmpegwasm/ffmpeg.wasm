@@ -37,6 +37,26 @@ export interface FFMessageExecData {
   timeout?: number;
 }
 
+export interface FFMessageOpenData {
+  path: string;
+  flags: string;
+  mode?: number;
+}
+
+export interface FFMessageCloseData {
+  fd: number;
+}
+
+export interface FFMessageReadData {
+  fd: number;
+  buffer: Uint8Array;
+  offset: number;
+  length: number;
+  position?: number;
+}
+
+export type FFMessageWriteData = FFMessageReadData;
+
 export interface FFMessageWriteFileData {
   path: FFFSPath;
   data: FileData;
@@ -110,6 +130,10 @@ export interface FFMessageUnmountData {
 export type FFMessageData =
   | FFMessageLoadConfig
   | FFMessageExecData
+  | FFMessageOpenData
+  | FFMessageCloseData
+  | FFMessageReadData
+  | FFMessageWriteData // eslint-disable-line
   | FFMessageWriteFileData
   | FFMessageReadFileData
   | FFMessageDeleteFileData
@@ -146,6 +170,7 @@ export interface ProgressEvent {
 export type ExitCode = number;
 export type ErrorMessage = string;
 export type FileData = Uint8Array | string;
+export type FD = number;
 export type IsFirst = boolean;
 export type OK = boolean;
 
@@ -154,9 +179,16 @@ export interface FSNode {
   isDir: boolean;
 }
 
+export interface FileReadData {
+  data?: Uint8Array,
+  done: boolean
+} 
+
 export type CallbackData =
   | FileData
   | ExitCode
+  | FD // eslint-disable-line
+  | FileReadData
   | ErrorMessage
   | LogEvent
   | ProgressEvent
