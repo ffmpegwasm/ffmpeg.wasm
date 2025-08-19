@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^2.2.0",
+    "@easyops-cn/docusaurus-search-local": "^0.34.0",
     "@tsconfig/docusaurus": "^1.0.5",
     "@types/ace": "^0.0.48",
     "docusaurus-plugin-typedoc": "^0.17.5",
