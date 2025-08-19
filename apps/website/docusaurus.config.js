@@ -137,6 +137,11 @@ const config = {
       },
     }),
   plugins: [
+    [require.resolve('@easyops-cn/docusaurus-search-local'), {
+      indexDocs: true,
+      indexBlog: true,
+      hashed: true,
+    }],
     [
       "docusaurus-plugin-typedoc",
       {
