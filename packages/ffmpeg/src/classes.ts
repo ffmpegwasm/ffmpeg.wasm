@@ -119,7 +119,7 @@ export class FFmpeg {
   };
 
   /**
-   * Listen to log or prgress events from `ffmpeg.exec()`.
+   * Listen to log or progress events from `ffmpeg.exec()`.
    *
    * @example
    * ```ts
