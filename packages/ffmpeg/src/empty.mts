@@ -1,4 +1,4 @@
-// File to be imported in node enviroments
+// File to be imported in node environments
 
 export class FFmpeg {
   constructor() {

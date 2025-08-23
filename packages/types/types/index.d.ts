@@ -14,7 +14,7 @@ export type DateString = string;
  */
 export interface ReadFileOptions {
   /** encoding of the file, must be `binary` or `utf8` */
-  encdoing: string;
+  encoding: string;
 }
 
 /**
