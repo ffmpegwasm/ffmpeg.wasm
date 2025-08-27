@@ -32,6 +32,8 @@ FROM emsdk-base AS x265-builder
 ENV X265_BRANCH=3.4
 ADD https://github.com/ffmpegwasm/x265.git#$X265_BRANCH /src
 COPY build/x265.sh /src/build.sh
+# Workaround for x265 not generating pkg-config unless on the latest Git tag
+RUN git tag | xargs -r git tag -d && git tag "$X265_BRANCH"
 RUN bash -x /src/build.sh
 
 # Build libvpx
