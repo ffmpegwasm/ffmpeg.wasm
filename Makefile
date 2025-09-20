@@ -20,6 +20,7 @@ build:
 	FFMPEG_ST="$(FFMPEG_ST)" \
 	FFMPEG_MT="$(FFMPEG_MT)" \
 		docker buildx build \
+			--platform linux/amd64 \
 			--build-arg EXTRA_CFLAGS \
 			--build-arg EXTRA_LDFLAGS \
 			--build-arg FFMPEG_MT \
