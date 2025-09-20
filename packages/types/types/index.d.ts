@@ -62,6 +62,10 @@ export interface WorkerFSMountConfig {
   files?: File[];
 }
 
+export interface FSStream {
+  fd: number;
+}
+
 /**
  * Functions to interact with Emscripten FS library.
  *
@@ -72,6 +76,11 @@ export interface FS {
   mkdir: (path: string) => void;
   rmdir: (path: string) => void;
   rename: (oldPath: string, newPath: string) => void;
+  open: (path: string, flags: string, mode?: number) => FSStream;
+  getStream: (fd: number) => FSStream | undefined;
+  close: (stream: FSStream) => void;
+  read: (stream: FSStream, buffer: Uint8Array, offset: number, length: number, position?: number) => number;
+  write: (stream: FSStream, buffer: Uint8Array, offset: number, length: number, position?: number) => void;
   writeFile: (path: string, data: Uint8Array | string) => void;
   readFile: (path: string, opts: OptionReadFile) => Uint8Array | string;
   readdir: (path: string) => string[];
