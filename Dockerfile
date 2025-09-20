@@ -172,7 +172,7 @@ COPY src/bind /src/src/bind
 COPY src/fftools /src/src/fftools
 COPY build/ffmpeg-wasm.sh build.sh
 # libraries to link
-ENV FFMPEG_LIBS \
+ENV FFMPEG_LIBS="\
       -lx264 \
       -lx265 \
       -lvpx \
@@ -191,7 +191,7 @@ ENV FFMPEG_LIBS \
       -lfribidi \
       -lharfbuzz \
       -lass \
-      -lzimg
+      -lzimg"
 RUN mkdir -p /src/dist/umd && bash -x /src/build.sh \
       ${FFMPEG_LIBS} \
       -o dist/umd/ffmpeg-core.js
