@@ -1,0 +1,50 @@
+plans/
+├── Core Documentation
+│   ├── README.md ★ START HERE - Complete index
+│   ├── QUICK_START_IMPLEMENTATION.md ★ Quick start guide
+│   ├── TODO.md ★ Master checklist (34 steps)
+│   ├── IMPLEMENTATION_PLAN.md - Complete overview
+│   ├── PLAN_SUMMARY.md - What's been created
+│   │
+│   ├── improvements.md - All 22 improvements detailed
+│   ├── AUDIO_OPTIMIZATION_ROADMAP.md - Strategic roadmap
+│   ├── DOCKER_WSL2_SETUP.md - Environment setup
+│   └── QUICK_START.md - Repository quick start
+│
+├── Phase 0: Baseline & Validation (Days 1-2)
+│   ├── README.md - Phase overview
+│   ├── STEP_01_build_current.md - Build baseline ✓
+│   ├── STEP_02_measure_baseline.md - Measure & document ✓
+│   └── BASELINE_METRICS.md - Created during execution
+│
+├── Phase 1: Critical Mass Reduction (Days 3-7)
+│   ├── README.md - Phase overview ✓
+│   ├── STEP_01_remove_video.md - Remove video codecs ✓
+│   ├── STEP_02_remove_subtitles.md - To be created
+│   ├── STEP_03_remove_images.md - To be created
+│   ├── STEP_04_audio_only_config.md - To be created ⚠️ Complex
+│   ├── STEP_05_replace_zlib.md - To be created
+│   ├── STEP_06_add_wavpack.md - To be created
+│   ├── STEP_07_add_speex.md - To be created
+│   ├── STEP_08_memory_config.md - To be created
+│   └── STEP_09_validate.md - To be created
+│
+├── Phase 2: Library Updates & Optimization (Week 2)
+│   └── To be created (7 steps)
+│
+├── Phase 3: Safety & UX (Week 3)
+│   └── To be created (7 steps)
+│
+├── Phase 4: Build Strategy & Polish (Week 4)
+│   └── To be created (5 steps)
+│
+└── Phase 5: Delivery & Scale (Weeks 5-6)
+    └── To be created (4 steps)
+
+Legend:
+  ★ - Critical starting documents
+  ✓ - Fully documented and ready
+  ⚠️ - Complex step requiring extra attention
+  
+Current Status: Ready for Phase 0, Step 1
+Next Action: Read QUICK_START_IMPLEMENTATION.md, then execute STEP_01_build_current.md
