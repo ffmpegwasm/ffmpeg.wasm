@@ -8,14 +8,14 @@
 
 ## 🎯 Overall Progress
 
-- [ ] **Phase 0:** Baseline & Validation (0/2 steps)
+- [x] **Phase 0:** Baseline & Validation (2/2 steps) ✅
 - [ ] **Phase 1:** Critical Mass Reduction (0/9 steps)
 - [ ] **Phase 2:** Library Updates & Optimization (0/7 steps)
 - [ ] **Phase 3:** Safety & UX (0/7 steps)
 - [ ] **Phase 4:** Build Strategy & Polish (0/5 steps)
 - [ ] **Phase 5:** Delivery & Scale (0/4 steps)
 
-**Total:** 0/34 steps complete
+**Total:** 2/34 steps complete
 
 ---
 
@@ -25,17 +25,17 @@
 **Duration:** 1-2 days
 **Directory:** `plans/phase-0/`
 
-- [ ] **STEP_01:** Build current production versions (ST & MT)
+- [x] **STEP_01:** Build current production versions (ST & MT) ✅
   - File: `plans/phase-0/STEP_01_build_current.md`
   - Output: Working `packages/core/dist/` and `packages/core-mt/dist/`
-  - Commit: `chore: establish baseline build for audio optimization`
+  - Commit: `chore: establish baseline build for audio optimization` (b8560fe)
 
-- [ ] **STEP_02:** Measure and document baseline metrics
+- [x] **STEP_02:** Measure and document baseline metrics ✅
   - File: `plans/phase-0/STEP_02_measure_baseline.md`
   - Output: `plans/phase-0/BASELINE_METRICS.md`
-  - Commit: `docs: add baseline metrics for audio optimization`
+  - Commit: `docs: add baseline metrics for audio optimization` (f9f5b45)
 
-**Phase 0 Complete:** [ ]
+**Phase 0 Complete:** [x] ✅
 **Checkpoint branch:** `phase-0-complete`
 
 ---
@@ -281,6 +281,20 @@ Example:
 
 ---
 
-**Last Updated:** 2025-10-09
-**Current Step:** Phase 0, Step 1
-**Status:** Ready to begin
+---
+
+**Notes Added:**
+
+```
+2025-10-09 Phase-0-01 Docker buildx build took ~32 minutes for ST, ~32 minutes for MT
+2025-10-09 Phase-0-01 Baseline sizes: ST 9.79MB gzipped, MT 9.84MB gzipped
+2025-10-09 Phase-0-02 npm install failed (esbuild conflict), but builds successful
+2025-10-09 Phase-0-02 Baseline documented in BASELINE_METRICS.md
+```
+
+---
+
+**Last Updated:** 2025-10-09 21:19 CEST
+**Current Phase:** Phase 1 - Critical Mass Reduction
+**Current Step:** Phase 1, Step 1
+**Status:** Phase 0 complete ✅ - Ready to begin Phase 1
