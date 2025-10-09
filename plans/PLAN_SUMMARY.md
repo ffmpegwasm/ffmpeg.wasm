@@ -15,7 +15,6 @@
 - ✅ `improvements.md` - All 22 improvements detailed (pre-existing)
 - ✅ `AUDIO_OPTIMIZATION_ROADMAP.md` - Strategic roadmap (pre-existing)
 - ✅ `DOCKER_WSL2_SETUP.md` - Environment setup (pre-existing)
-- ✅ `QUICK_START.md` - Repository quick start (pre-existing)
 
 ### Phase Directories (6 created)
 - ✅ `phase-0/` - Baseline & Validation (2 steps)
