@@ -31,6 +31,8 @@ FLAGS_MAIN=(
   -DLINKED_12BIT=ON
 )
 
+PARALLEL_BUILD_JOBS=$(nproc)
+
 cd source
 rm -rf build
 mkdir -p build
@@ -39,17 +41,17 @@ mkdir -p main 10bit 12bit
 
 cd 12bit
 emmake cmake ../.. -DCMAKE_CXX_FLAGS="$CXXFLAGS" ${FLAGS_12BIT[@]}
-emmake make -j
+emmake make -j ${PARALLEL_BUILD_JOBS}
 
 cd ../10bit 
 emmake cmake ../.. -DCMAKE_CXX_FLAGS="$CXXFLAGS" ${FLAGS_10BIT[@]}
-emmake make -j
+emmake make -j ${PARALLEL_BUILD_JOBS}
 
 cd ../main
 ln -sf ../10bit/libx265.a libx265_main10.a
 ln -sf ../12bit/libx265.a libx265_main12.a
 emmake cmake ../.. -DCMAKE_CXX_FLAGS="$CXXFLAGS" ${FLAGS_MAIN[@]}
-emmake make -j
+emmake make -j ${PARALLEL_BUILD_JOBS}
 mv libx265.a libx265_main.a
 
 # Merge static libraries
