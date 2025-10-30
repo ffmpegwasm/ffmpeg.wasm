@@ -45,7 +45,7 @@ are asynchronous and it is recommended to use **async** / **await** syntax.
 
 `ffmpeg.worker` downloads WebAssembly code (`ffmpeg-core`) from CDN
 and initialized it in WorkerGlobalScope. For any input video file you would like
-to process, you need to first populated them inside ffmpeg-core File System and
+to process, you need to first populate them inside ffmpeg-core File System and
 also read result from `ffmpeg-core` File System once it is done.
 
 If you are using a multi-thread version of `ffmpeg-core`, more web workers will
