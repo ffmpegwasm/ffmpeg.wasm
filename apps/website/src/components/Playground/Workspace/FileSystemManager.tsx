@@ -89,7 +89,7 @@ export default function FileSystemManager({
               justifyContent="space-between"
               alignItems="center"
             >
-              <Typography>File System:</Typography>
+              <Typography variant="h6" component="h2">File System:</Typography>
               <Box>
                 <Tooltip title="Upload a media file">
                   <IconButton
