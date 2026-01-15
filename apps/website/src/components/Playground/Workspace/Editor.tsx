@@ -7,6 +7,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import LinearProgressWithLabel from "@site/src/components/common/LinearProgressWithLabel";
+import Presets from "./Presets";
 import { useColorMode } from "@docusaurus/theme-common";
 import "ace-builds/src-noconflict/mode-json";
 import "ace-builds/src-noconflict/mode-javascript";
@@ -58,7 +59,8 @@ export default function Editor({
       <Stack spacing={1}>
         <Stack>
           <Typography variant="h5" component="h2" >Editor</Typography>
-          <Typography>Edit arguments below to update command:</Typography>
+          <Typography>Edit arguments below to update command, or click a preset:</Typography>
+          <Presets onSelectPreset={onArgsUpdate} currentArgs={args} />
           <AceEditor
             mode="json"
             theme={theme}
