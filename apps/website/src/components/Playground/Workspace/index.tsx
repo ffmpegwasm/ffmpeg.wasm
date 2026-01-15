@@ -2,6 +2,7 @@ import React, {
   ChangeEvent,
   useState,
   useEffect,
+  useCallback,
   MutableRefObject,
 } from "react";
 import { useMediaQuery, useTheme } from "@mui/material";
@@ -56,12 +57,71 @@ export default function Workspace({ ffmpeg: _ffmpeg }: WorkspaceProps) {
   const [progress, setProgress] = useState(0);
   const [time, setTime] = useState(0);
   const [logs, setLogs] = useState<string[]>([]);
+  const [selectedFile, setSelectedFile] = useState<string | null>(null);
+  const [waveformUrl, setWaveformUrl] = useState<string | null>(null);
+  const [waveformLoading, setWaveformLoading] = useState(false);
 
   const ffmpeg = _ffmpeg.current;
   
   useEffect(() => {
     setAccordionExpanded(!isSmallScreen);
   }, [isSmallScreen]);
+
+  const generateWaveform = useCallback(async (fileName: string) => {
+    if (!ffmpeg.loaded) return;
+
+    setWaveformLoading(true);
+    // Clean up previous waveform URL
+    if (waveformUrl) {
+      URL.revokeObjectURL(waveformUrl);
+      setWaveformUrl(null);
+    }
+
+    try {
+      const pathWithSlash = path === "/" ? "/" : `${path}/`;
+      const fullPath = `${pathWithSlash}${fileName}`;
+      const outputFile = "_waveform_temp.png";
+
+      // Use showwaves filter to generate an audio waveform visualization
+      // showwaves creates a waveform display of audio, output as video frames
+      console.log("Generating waveform for", fullPath);
+      await ffmpeg.exec([
+        "-i", fullPath,
+        "-filter_complex", "showwavespic=s=640x120",
+        "-frames:v", "1",
+        "-y",
+        outputFile
+      ]);
+
+      // Read the generated waveform image
+      const data = await ffmpeg.readFile(outputFile) as Uint8Array;
+      const blob = new Blob([data.buffer], { type: "image/png" });
+      const url = URL.createObjectURL(blob);
+      setWaveformUrl(url);
+
+      // Clean up temp file
+      await ffmpeg.deleteFile(outputFile);
+    } catch (error) {
+      console.error("Failed to generate waveform:", error);
+      setWaveformUrl(null);
+    } finally {
+      setWaveformLoading(false);
+    }
+  }, [ffmpeg, path, waveformUrl]);
+
+  const onFileSelect = useCallback(async (name: string) => {
+    if (selectedFile === name) {
+      // Deselect if clicking the same file
+      setSelectedFile(null);
+      if (waveformUrl) {
+        URL.revokeObjectURL(waveformUrl);
+        setWaveformUrl(null);
+      }
+    } else {
+      setSelectedFile(name);
+      await generateWaveform(name);
+    }
+  }, [selectedFile, waveformUrl, generateWaveform]);
 
   const refreshDir = async (curPath: string) => {
     if (ffmpeg.loaded) {
@@ -241,10 +301,14 @@ export default function Workspace({ ffmpeg: _ffmpeg }: WorkspaceProps) {
                 oldName={oldName}
                 newName={newName}
                 renameOpen={renameOpen}
+                selectedFile={selectedFile}
+                waveformUrl={waveformUrl}
+                waveformLoading={waveformLoading}
                 onNewNameChange={onNewNameChange}
                 onCloseRenameModal={onCloseRenameModal}
                 onFileUpload={onFileUpload}
                 onFileClick={onFileClick}
+                onFileSelect={onFileSelect}
                 onDirClick={onDirClick}
                 onDirCreate={onDirCreate}
                 onRename={onRename}

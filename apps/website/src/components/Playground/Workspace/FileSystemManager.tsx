@@ -1,6 +1,8 @@
 import React, { useState, ChangeEvent } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -19,6 +21,7 @@ import UploadFileIcon from "@mui/icons-material/UploadFile";
 import UploadIcon from "@mui/icons-material/Upload";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreButton from "./MoreButton";
 import { Node } from "./types";
 
@@ -28,6 +31,9 @@ interface FileSystemManagerProps {
   oldName: string;
   newName: string;
   renameOpen: boolean;
+  selectedFile: string | null;
+  waveformUrl: string | null;
+  waveformLoading: boolean;
   onNewNameChange: () => (event: ChangeEvent<HTMLInputElement>) => Promise<void>;
   onCloseRenameModal: () => () => Promise<void>;
   onFileUpload: (
@@ -35,6 +41,7 @@ interface FileSystemManagerProps {
   ) => (event: ChangeEvent<HTMLInputElement>) => Promise<void>;
   onDirClick: (name: string) => () => Promise<void>;
   onFileClick: (name: string) => (option: string) => Promise<void>;
+  onFileSelect: (name: string) => Promise<void>;
   onDirCreate: (name: string) => () => Promise<void>;
   onRename: (old_name: string, new_name: string) => () => Promise<void>;
   onRefresh: () => Promise<void>;
@@ -64,10 +71,14 @@ export default function FileSystemManager({
   oldName = "",
   newName = "",
   renameOpen = false,
+  selectedFile = null,
+  waveformUrl = null,
+  waveformLoading = false,
   onNewNameChange = () => () => Promise.resolve(),
   onCloseRenameModal = () => () => Promise.resolve(),
   onFileUpload = () => () => Promise.resolve(),
   onFileClick = () => () => Promise.resolve(),
+  onFileSelect = () => Promise.resolve(),
   onDirClick = () => () => Promise.resolve(),
   onDirCreate = () => () => Promise.resolve(),
   onRename = () => () => Promise.resolve(),
@@ -156,20 +167,84 @@ export default function FileSystemManager({
                     <ListItemText primary={name} />
                   </ListItemButton>
                 ) : (
-                  <ListItem
-                    key={index}
-                    secondaryAction={
-                      <MoreButton
-                        options={options}
-                        onItemClick={onFileClick(name)}
-                      />
-                    }
-                  >
-                    <ListItemIcon>
-                      <InsertDriveFileIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={name} />
-                  </ListItem>
+                  <Box key={index}>
+                    <ListItem
+                      sx={{
+                        backgroundColor: selectedFile === name ? "action.selected" : "transparent",
+                        borderRadius: 1,
+                        cursor: "pointer",
+                        "&:hover": {
+                          backgroundColor: selectedFile === name ? "action.selected" : "action.hover",
+                        },
+                      }}
+                      secondaryAction={
+                        <Stack direction="row" alignItems="center" spacing={0.5}>
+                          <ExpandMoreIcon
+                            sx={{
+                              transform: selectedFile === name ? "rotate(180deg)" : "rotate(0deg)",
+                              transition: "transform 0.2s",
+                              color: "action.active",
+                            }}
+                          />
+                          <MoreButton
+                            options={options}
+                            onItemClick={onFileClick(name)}
+                          />
+                        </Stack>
+                      }
+                      onClick={() => onFileSelect(name)}
+                    >
+                      <ListItemIcon>
+                        <InsertDriveFileIcon />
+                      </ListItemIcon>
+                      <ListItemText primary={name} />
+                    </ListItem>
+                    <Collapse in={selectedFile === name} timeout="auto" unmountOnExit>
+                      <Box
+                        sx={{
+                          px: 2,
+                          py: 1,
+                          backgroundColor: "background.default",
+                          borderLeft: "3px solid",
+                          borderColor: "primary.main",
+                          ml: 2,
+                          mr: 1,
+                          mb: 1,
+                        }}
+                      >
+                        {waveformLoading ? (
+                          <Stack
+                            direction="row"
+                            alignItems="center"
+                            justifyContent="center"
+                            spacing={1}
+                            sx={{ py: 2 }}
+                          >
+                            <CircularProgress size={20} />
+                            <Typography variant="body2" color="text.secondary">
+                              Generating waveform...
+                            </Typography>
+                          </Stack>
+                        ) : waveformUrl ? (
+                          <Box
+                            component="img"
+                            src={waveformUrl}
+                            alt="Audio waveform"
+                            sx={{
+                              width: "100%",
+                              height: "auto",
+                              display: "block",
+                              borderRadius: 1,
+                            }}
+                          />
+                        ) : (
+                          <Typography variant="body2" color="text.secondary" sx={{ py: 1 }}>
+                            No waveform available for this file
+                          </Typography>
+                        )}
+                      </Box>
+                    </Collapse>
+                  </Box>
                 )
               )}
             </List>
