@@ -23,6 +23,7 @@ import { SAMPLE_FILES } from "../const";
 import Editor from "./Editor";
 import Typography from "@mui/material/Typography/Typography";
 import { Container, Stack } from "@mui/material";
+import AskAIDialog from "./AskAIDialog";
 
 const defaultArgs = JSON.stringify(["-i", "video.webm", "video.mp4"], null, 2);
 
@@ -60,6 +61,7 @@ export default function Workspace({ ffmpeg: _ffmpeg }: WorkspaceProps) {
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [waveformUrl, setWaveformUrl] = useState<string | null>(null);
   const [waveformLoading, setWaveformLoading] = useState(false);
+  const [askAIOpen, setAskAIOpen] = useState(false);
 
   const ffmpeg = _ffmpeg.current;
   
@@ -246,6 +248,14 @@ export default function Workspace({ ffmpeg: _ffmpeg }: WorkspaceProps) {
     refreshDir(path);
   };
 
+  const handleAskAI = () => {
+    setAskAIOpen(true);
+  };
+
+  const handleAICommandGenerated = (command: string) => {
+    setArgs(command);
+  };
+
   useEffect(() => {
     refreshDir(path);
   }, []);
@@ -326,9 +336,15 @@ export default function Workspace({ ffmpeg: _ffmpeg }: WorkspaceProps) {
             time={time}
             onArgsUpdate={(_args) => setArgs(_args)}
             onExec={onExec}
+            onAskAI={handleAskAI}
           />
         </Grid>
       </Grid>
+      <AskAIDialog
+        open={askAIOpen}
+        onClose={() => setAskAIOpen(false)}
+        onCommandGenerated={handleAICommandGenerated}
+      />
     </Box>
   );
 }

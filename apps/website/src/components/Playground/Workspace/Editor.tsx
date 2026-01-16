@@ -6,6 +6,7 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import LinearProgressWithLabel from "@site/src/components/common/LinearProgressWithLabel";
 import Presets from "./Presets";
 import { useColorMode } from "@docusaurus/theme-common";
@@ -34,6 +35,7 @@ interface EditorProps {
   time: number;
   onArgsUpdate: (args: string) => void;
   onExec: () => Promise<void>;
+  onAskAI?: () => void;
 }
 
 export default function Editor({
@@ -43,6 +45,7 @@ export default function Editor({
   time = 0,
   onArgsUpdate,
   onExec,
+  onAskAI,
 }: EditorProps) {
   const { colorMode } = useColorMode();
   const [output, setOutput] = useState<Ace.Editor>();
@@ -76,6 +79,16 @@ export default function Editor({
             onChange={onArgsUpdate}
             setOptions={{ tabSize: 2, useWorker: false }}
           />
+          {onAskAI && (
+            <Button
+              variant="outlined"
+              startIcon={<AutoAwesomeIcon />}
+              onClick={onAskAI}
+              sx={{ mt: 1 }}
+            >
+              Ask AI
+            </Button>
+          )}
         </Stack>
         <AceEditor
           mode="javascript"
