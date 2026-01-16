@@ -4,8 +4,15 @@ import React, {
   useEffect,
   MutableRefObject,
 } from "react";
+import { useMediaQuery, useTheme } from "@mui/material";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile } from "@ffmpeg/util";
 import { downloadFile } from "@site/src/util";
@@ -13,14 +20,33 @@ import { Node } from "./types";
 import FileSystemManager from "./FileSystemManager";
 import { SAMPLE_FILES } from "../const";
 import Editor from "./Editor";
+import Typography from "@mui/material/Typography/Typography";
+import { Container, Stack } from "@mui/material";
 
 const defaultArgs = JSON.stringify(["-i", "video.webm", "video.mp4"], null, 2);
+
+function findInputPathIdx(argsJson: string): number {
+  try {
+    const argsArray = JSON.parse(argsJson);
+    const inputFlagIdx = argsArray.findIndex((arg: string) => arg === "-i");
+    if (inputFlagIdx !== -1 && inputFlagIdx < argsArray.length - 1) {
+      return inputFlagIdx + 1;
+    }
+  } catch (e) {
+    // Invalid JSON, return -1
+  }
+  return -1;
+}
 
 interface WorkspaceProps {
   ffmpeg: MutableRefObject<FFmpeg>;
 }
 
 export default function Workspace({ ffmpeg: _ffmpeg }: WorkspaceProps) {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+
+  const [accordionExpanded, setAccordionExpanded] = useState(false);
   const [path, setPath] = useState("/");
   const [nodes, setNodes] = useState<Node[]>([]);
   const [oldName, setOldName] = useState("");
@@ -32,6 +58,10 @@ export default function Workspace({ ffmpeg: _ffmpeg }: WorkspaceProps) {
   const [logs, setLogs] = useState<string[]>([]);
 
   const ffmpeg = _ffmpeg.current;
+  
+  useEffect(() => {
+    setAccordionExpanded(!isSmallScreen);
+  }, [isSmallScreen]);
 
   const refreshDir = async (curPath: string) => {
     if (ffmpeg.loaded) {
@@ -52,13 +82,25 @@ export default function Workspace({ ffmpeg: _ffmpeg }: WorkspaceProps) {
   const onFileUpload =
     (isText: boolean) =>
     async ({ target: { files } }: ChangeEvent<HTMLInputElement>) => {
+      let lastFileName = "";
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         let data: Uint8Array | string = await fetchFile(file);
         if (isText) data = new TextDecoder().decode(data);
         await ffmpeg.writeFile(`${path}/${file.name}`, data);
+        lastFileName = file.name;
+      }
+      // Update args JSON to use the uploaded filename
+      if (!isText && lastFileName) {
+        const inputPathIdx = findInputPathIdx(args);
+        if (inputPathIdx !== -1) {
+          const argsArray = JSON.parse(args);
+          argsArray[inputPathIdx] = lastFileName;
+          setArgs(JSON.stringify(argsArray, null, 2));
+        }
       }
       refreshDir(path);
+      setAccordionExpanded(true);
     };
 
   const onFileClick = (name: string) => async (option: string) => {
@@ -122,6 +164,7 @@ export default function Workspace({ ffmpeg: _ffmpeg }: WorkspaceProps) {
       await ffmpeg.writeFile(name, await fetchFile(SAMPLE_FILES[name]));
     }
     refreshDir(path);
+    setAccordionExpanded(true);
   };
 
   const onExec = async () => {
@@ -151,22 +194,65 @@ export default function Workspace({ ffmpeg: _ffmpeg }: WorkspaceProps) {
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={{ xs: 1 }} columns={{ xs: 4, md: 12 }}>
         <Grid item xs={4}>
-          <FileSystemManager
-            path={path}
-            nodes={nodes}
-            oldName={oldName}
-            newName={newName}
-            renameOpen={renameOpen}
-            onNewNameChange={onNewNameChange}
-            onCloseRenameModal={onCloseRenameModal}
-            onFileUpload={onFileUpload}
-            onFileClick={onFileClick}
-            onDirClick={onDirClick}
-            onDirCreate={onDirCreate}
-            onRename={onRename}
-            onLoadSamples={onLoadSamples}
-            onRefresh={() => refreshDir(path)}
-          />
+          <Stack spacing={2} sx={{ mb: 2 }}>
+          <Button
+            variant="contained"
+            component="label"
+            size="large"
+            startIcon={<UploadFileIcon />}
+            sx={{
+              width: "100%",
+              mb: 0,
+              py: 2,
+              fontSize: "1.1rem",
+              backgroundColor: "#1976d2",
+              "&:hover": {
+                backgroundColor: "#1565c0",
+              },
+            }}
+          >
+            Upload Media
+            <input
+              hidden
+              multiple
+              type="file"
+              accept="video/*,audio/*,image/*"
+              onChange={onFileUpload(false)}
+            />
+          </Button>
+          <Typography variant="body1" align="center" sx={{mt: 0, py:0}}>or</Typography>
+          <Button onClick={onLoadSamples} sx={{mt: 0}}>Load Sample Files</Button>
+          </Stack>
+          <Accordion
+            expanded={accordionExpanded}
+            onChange={(_, isExpanded) => setAccordionExpanded(isExpanded)}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="file-system-content"
+              id="file-system-header"
+            >
+              <Typography variant="h6" component="h2">File System</Typography>
+            </AccordionSummary>
+            <AccordionDetails sx={{ p: 0 }}>
+              <FileSystemManager
+                path={path}
+                nodes={nodes}
+                oldName={oldName}
+                newName={newName}
+                renameOpen={renameOpen}
+                onNewNameChange={onNewNameChange}
+                onCloseRenameModal={onCloseRenameModal}
+                onFileUpload={onFileUpload}
+                onFileClick={onFileClick}
+                onDirClick={onDirClick}
+                onDirCreate={onDirCreate}
+                onRename={onRename}
+                onLoadSamples={onLoadSamples}
+                onRefresh={() => refreshDir(path)}
+              />
+            </AccordionDetails>
+          </Accordion>
         </Grid>
         <Grid item xs={8}>
           <Editor

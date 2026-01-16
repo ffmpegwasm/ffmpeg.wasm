@@ -15,9 +15,9 @@ development!
 :::tip Quick Start
 
 1. Wait for assets (~32 MB) downloading.
-2. Press <ThemedButton>Load Sample Files</ThemedButton> to download & add sample files.
+2. Upload your own files, or press <ThemedButton>Load Sample Files</ThemedButton> to download & add sample files.
 3. Press <ThemedButton variant="contained">Run</ThemedButton> to convert an AVI file to MP4 file.
-4. Download output files.
+4. Click the three-dots menu next to a file in the File Explorer to download output files.
 
 :::
 
@@ -96,7 +96,7 @@ System to make sure these files can be consumed by the ffmpeg.wasm APIs:
 > Press <ThemedButton>Load Sample Files</ThemedButton> to load a set of samples
 files.
 
-#### Run a command 
+#### Run a command
 
 With files are ready in the File System, you can update arguments in the Editor
 and hit <ThemedButton variant="contained">Run</ThemedButton> afterward:

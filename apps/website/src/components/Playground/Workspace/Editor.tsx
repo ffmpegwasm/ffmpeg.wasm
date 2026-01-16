@@ -57,7 +57,7 @@ export default function Editor({
     <Paper variant="outlined" style={{ padding: 8, height: "100%" }}>
       <Stack spacing={1}>
         <Stack>
-          <Typography>Editor:</Typography>
+          <Typography variant="h5" component="h2" >Editor</Typography>
           <Typography>Edit arguments below to update command:</Typography>
           <AceEditor
             mode="json"
