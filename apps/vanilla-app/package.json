@@ -13,6 +13,6 @@
   "dependencies": {
     "express": "^4.19.2",
     "serve-index": "^1.9.1",
-    "tar": "^6.2.1"
+    "tar": "^7.5.4"
   }
 }
