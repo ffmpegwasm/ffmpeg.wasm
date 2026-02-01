@@ -15,7 +15,7 @@
     "@types/react": "18.2.20",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.14",
-    "eslint": "8.46.0",
+    "eslint": "9.26.0",
     "eslint-config-next": "13.4.13",
     "next": "^14.0.4",
     "postcss": "8.4.31",
