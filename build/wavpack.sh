@@ -9,8 +9,8 @@ CONF_FLAGS=(
   --disable-man                                        # disable docs
   --disable-tests                                      # disable tests
   --disable-apps                                       # disable wavpack apps
-  --disable-dsd                                        # disalbe legacy
-  --enable-legacy                                      # enable compability for old version of wav
+  --disable-dsd                                        # disable legacy
+  --enable-legacy                                      # enable compatibility for old version of wav
   --disable-shared                                     # enable building static library
   --disable-dependency-tracking                        # speed up one-time build
   --disable-maintainer-mode
