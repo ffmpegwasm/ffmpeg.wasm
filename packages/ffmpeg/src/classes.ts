@@ -18,7 +18,7 @@ import {
   FFFSPath,
 } from "./types.js";
 import { getMessageID } from "./utils.js";
-import { ERROR_TERMINATED, ERROR_NOT_LOADED } from "./errors.js";
+import { ERROR_TERMINATED, ERROR_NOT_LOADED, ERROR_WORKER } from "./errors.js";
 
 type FFMessageOptions = {
   signal?: AbortSignal;
@@ -86,6 +86,16 @@ export class FFmpeg {
         }
         delete this.#resolves[id];
         delete this.#rejects[id];
+      };
+      this.#worker.onerror = () => {
+        const rejects = { ...this.#rejects };
+        this.#rejects = {};
+        this.#resolves = {};
+        this.#worker = null;
+        this.loaded = false;
+        for (const reject of Object.values(rejects)) {
+          reject(ERROR_WORKER);
+        }
       };
     }
   };
