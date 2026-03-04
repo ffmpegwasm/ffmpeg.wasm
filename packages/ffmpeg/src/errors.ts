@@ -6,3 +6,6 @@ export const ERROR_TERMINATED = new Error("called FFmpeg.terminate()");
 export const ERROR_IMPORT_FAILURE = new Error(
   "failed to import ffmpeg-core.js"
 );
+export const ERROR_WORKER = new Error(
+  "worker encountered an error, this is most likely caused by the worker script failing to load (CORP, network error, 404, etc.)"
+);
