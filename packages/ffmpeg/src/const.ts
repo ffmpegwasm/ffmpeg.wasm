@@ -17,6 +17,7 @@ export enum FFMessageType {
   DELETE_DIR = "DELETE_DIR",
   ERROR = "ERROR",
 
+  CANCEL = "CANCEL",
   DOWNLOAD = "DOWNLOAD",
   PROGRESS = "PROGRESS",
   LOG = "LOG",

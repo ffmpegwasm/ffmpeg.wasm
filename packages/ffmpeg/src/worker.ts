@@ -108,6 +108,19 @@ const ffprobe = ({ args, timeout = -1 }: FFMessageExecData): ExitCode => {
   return ret;
 };
 
+/**
+ * Interrupt any running exec/ffprobe by setting the ffmpeg timeout to 1 ms.
+ * This causes the WASM-side watchdog to fire almost immediately, stopping
+ * the current command and returning exit-code 1 (timeout).  The exec()
+ * call on the main thread has already been rejected with an AbortError by
+ * the time this message arrives, so the exit-code reply is simply discarded.
+ */
+const cancel = (): void => {
+  if (ffmpeg) {
+    ffmpeg.setTimeout(1);
+  }
+};
+
 const writeFile = ({ path, data }: FFMessageWriteFileData): OK => {
   ffmpeg.FS.writeFile(path, data);
   return true;
@@ -181,6 +194,10 @@ self.onmessage = async ({
       case FFMessageType.FFPROBE:
         data = ffprobe(_data as FFMessageExecData);
         break;
+      case FFMessageType.CANCEL:
+        cancel();
+        // CANCEL is fire-and-forget: no reply needed.
+        return;
       case FFMessageType.WRITE_FILE:
         data = writeFile(_data as FFMessageWriteFileData);
         break;

@@ -112,6 +112,20 @@ export class FFmpeg {
         "abort",
         () => {
           reject(new DOMException(`Message # ${id} was aborted`, "AbortError"));
+          // If we are aborting an exec or ffprobe, send a CANCEL message so
+          // the worker's ffmpeg timeout is set to 1 ms, causing the running
+          // command to stop as quickly as possible.  For other message types
+          // the cancel is a no-op on the worker side.
+          if (
+            (type === FFMessageType.EXEC ||
+              type === FFMessageType.FFPROBE) &&
+            this.#worker
+          ) {
+            this.#worker.postMessage({
+              id: getMessageID(),
+              type: FFMessageType.CANCEL,
+            });
+          }
         },
         { once: true }
       );
