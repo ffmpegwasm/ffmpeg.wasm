@@ -1,6 +1,13 @@
 export type FFFSPath = string;
 
 /**
+ * Binary file data that can be passed directly instead of a URL.
+ * When provided, a Blob URL is created internally so the worker
+ * can consume it as a regular URL.
+ */
+export type BinaryFileData = ArrayBuffer | Uint8Array | Blob;
+
+/**
  * ffmpeg-core loading configuration.
  */
 export interface FFMessageLoadConfig {
@@ -23,6 +30,21 @@ export interface FFMessageLoadConfig {
    * @defaultValue `https://cdn.jsdelivr.net/npm/@ffmpeg/core-mt@${CORE_VERSION}/dist/umd/ffmpeg-core.worker.js`;
    */
   workerURL?: string;
+  /**
+   * `ffmpeg-core.js` file content as binary data. When provided, takes
+   * precedence over `coreURL` and a Blob URL is created internally.
+   */
+  coreData?: BinaryFileData;
+  /**
+   * `ffmpeg-core.wasm` file content as binary data. When provided, takes
+   * precedence over `wasmURL` and a Blob URL is created internally.
+   */
+  wasmData?: BinaryFileData;
+  /**
+   * `ffmpeg-core.worker.js` file content as binary data. When provided,
+   * takes precedence over `workerURL` and a Blob URL is created internally.
+   */
+  workerData?: BinaryFileData;
   /**
    * `ffmpeg.worker.js` URL. This worker is spawned when FFmpeg.load() is called, it is an essential worker and usually you don't need to update this config.
    *
