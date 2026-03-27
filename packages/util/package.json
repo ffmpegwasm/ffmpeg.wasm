@@ -1,7 +1,7 @@
 {
   "name": "@ffmpeg/util",
   "version": "0.12.2",
-  "description": "browser utils for @ffmpeg/*",
+  "description": "Browser and Node.js utils for @ffmpeg/*",
   "main": "./dist/cjs/index.js",
   "type": "module",
   "types": "./dist/cjs/index.d.ts",
@@ -10,6 +10,11 @@
       "types": "./dist/cjs/index.d.ts",
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
+    },
+    "./node": {
+      "types": "./dist/esm/node.d.ts",
+      "node": "./dist/esm/node.js",
+      "default": "./dist/esm/node.js"
     }
   },
   "scripts": {
