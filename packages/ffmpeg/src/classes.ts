@@ -1,5 +1,6 @@
-import { FFMessageType } from "./const.js";
+import { FFMessageType, MIME_TYPE_JAVASCRIPT, MIME_TYPE_WASM } from "./const.js";
 import {
+  BinaryFileData,
   CallbackData,
   Callbacks,
   FSNode,
@@ -19,6 +20,16 @@ import {
 } from "./types.js";
 import { getMessageID } from "./utils.js";
 import { ERROR_TERMINATED, ERROR_NOT_LOADED } from "./errors.js";
+
+/**
+ * Convert binary file data (ArrayBuffer, Uint8Array, or Blob) to a Blob URL
+ * so the web worker can consume it as a regular URL string.
+ */
+const toBlobURL = (data: BinaryFileData, mimeType: string): string => {
+  const blob =
+    data instanceof Blob ? data : new Blob([data], { type: mimeType });
+  return URL.createObjectURL(blob);
+};
 
 type FFMessageOptions = {
   signal?: AbortSignal;
@@ -185,7 +196,13 @@ export class FFmpeg {
    * @returns `true` if ffmpeg core is loaded for the first time.
    */
   public load = (
-    { classWorkerURL, ...config }: FFMessageLoadConfig = {},
+    {
+      classWorkerURL,
+      coreData,
+      wasmData,
+      workerData,
+      ...config
+    }: FFMessageLoadConfig = {},
     { signal }: FFMessageOptions = {}
   ): Promise<IsFirst> => {
     if (!this.#worker) {
@@ -200,6 +217,12 @@ export class FFmpeg {
         });
       this.#registerHandlers();
     }
+    // Convert binary data to Blob URLs so the worker can load them as
+    // regular URL strings. Binary data takes precedence over URL strings.
+    if (coreData) config.coreURL = toBlobURL(coreData, MIME_TYPE_JAVASCRIPT);
+    if (wasmData) config.wasmURL = toBlobURL(wasmData, MIME_TYPE_WASM);
+    if (workerData)
+      config.workerURL = toBlobURL(workerData, MIME_TYPE_JAVASCRIPT);
     return this.#send(
       {
         type: FFMessageType.LOAD,
