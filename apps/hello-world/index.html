@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ffmpeg.wasm — Hello World</title>
+    <!-- Resolve bare specifiers used by packages/util/dist/esm/index.js -->
+    <script type="importmap">
+    {
+      "imports": {
+        "cos-resource-fetcher": "https://cdn.jsdelivr.net/npm/cos-resource-fetcher@0.1.2/src/index.js",
+        "npm-sha256-hash-fetcher": "https://cdn.jsdelivr.net/npm/npm-sha256-hash-fetcher@1.2.1/index.js"
+      }
+    }
+    </script>
+    <style>
+      body { font-family: monospace; max-width: 820px; margin: 2rem auto; padding: 0 1rem; }
+      h1 { font-size: 1.3rem; }
+      #status { font-size: 1rem; margin: 0.5rem 0 1rem; }
+      .ok   { color: #2a2; }
+      .warn { color: #b80; }
+      .err  { color: #c00; }
+      #progress { margin-bottom: 1rem; }
+      .progress-row { display: flex; align-items: center; gap: 0.5rem; margin: 0.25rem 0; font-size: 0.85rem; }
+      .progress-row label { width: 14rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .progress-row progress { flex: 1; }
+      .progress-row .pct { width: 3rem; text-align: right; }
+      #log {
+        background: #1e1e1e; color: #d4d4d4;
+        padding: 1rem; white-space: pre-wrap; word-break: break-all;
+        min-height: 160px; font-size: 0.85rem;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>ffmpeg.wasm — Hello World</h1>
+    <p id="status">Loading…</p>
+    <div id="progress"></div>
+    <pre id="log"></pre>
+
+    <script type="module">
+      import { FFmpeg } from '../../packages/ffmpeg/dist/esm/index.js';
+      import { toBlobURL } from '../../packages/util/dist/esm/index.js';
+
+      const status   = document.getElementById('status');
+      const log      = document.getElementById('log');
+      const progress = document.getElementById('progress');
+
+      const addLog = (msg) => { log.textContent += msg + '\n'; };
+
+      function makeProgressRow(filename) {
+        const row = document.createElement('div');
+        row.className = 'progress-row';
+        row.innerHTML =
+          `<label>${filename}</label>` +
+          `<progress value="0" max="100"></progress>` +
+          `<span class="pct">0%</span>`;
+        progress.appendChild(row);
+        const bar = row.querySelector('progress');
+        const pct = row.querySelector('.pct');
+        return ({ total, received, done }) => {
+          const p = total > 0 ? Math.round((received / total) * 100) : (done ? 100 : 0);
+          bar.value = p;
+          pct.textContent = `${p}%`;
+        };
+      }
+
+      const hasCOS = 'crossOriginStorage' in navigator;
+
+      const BASE = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm';
+
+      try {
+        addLog('Loading ffmpeg-core…');
+        addLog('');
+
+        const [coreURL, wasmURL] = await Promise.all([
+          toBlobURL(`${BASE}/ffmpeg-core.js`,   'text/javascript',  true, makeProgressRow('ffmpeg-core.js')),
+          toBlobURL(`${BASE}/ffmpeg-core.wasm`, 'application/wasm', true, makeProgressRow('ffmpeg-core.wasm')),
+        ]);
+
+        addLog('');
+        addLog('Calling ffmpeg.load()…');
+
+        const ffmpeg = new FFmpeg();
+        ffmpeg.on('log', ({ message }) => addLog(`[ffmpeg] ${message}`));
+        await ffmpeg.load({ coreURL, wasmURL });
+
+        addLog('');
+        addLog('Running: ffmpeg -version');
+        await ffmpeg.exec(['-version']);
+
+        status.innerHTML = hasCOS
+          ? '<span class="ok">✓ ffmpeg works — resources served from Cross-Origin Storage</span>'
+          : '<span class="ok">✓ ffmpeg works — resources cached in the Cache API</span>';
+      } catch (err) {
+        status.innerHTML = `<span class="err">✗ ${err.message}</span>`;
+        addLog(`\nError:\n${err.stack}`);
+      }
+    </script>
+  </body>
+</html>

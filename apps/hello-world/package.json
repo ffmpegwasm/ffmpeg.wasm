@@ -1,0 +1,9 @@
+{
+  "name": "hello-world",
+  "version": "0.0.1",
+  "description": "ffmpeg.wasm — Hello World",
+  "private": true,
+  "scripts": {
+    "start": "http-server -c-1 -s -p 3000 ../.. --cors --headers '{\"Cross-Origin-Embedder-Policy\":\"require-corp\",\"Cross-Origin-Opener-Policy\":\"same-origin\",\"Cross-Origin-Resource-Policy\":\"cross-origin\",\"Origin-Agent-Cluster\":\"?1\"}' --open /apps/hello-world/"
+  }
+}

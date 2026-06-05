@@ -53,5 +53,9 @@
     "rimraf": "^5.0.1",
     "typescript": "^5.1.6",
     "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "cos-resource-fetcher": "^0.1.2",
+    "npm-sha256-hash-fetcher": "^1.2.1"
   }
 }
