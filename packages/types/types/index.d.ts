@@ -94,7 +94,7 @@ export interface FS {
  * Arguments passed to setLogger callback function.
  */
 export interface Log {
-  /** file descriptor of the log, must be `stdout` or `stderr` */
+  /** type of the log message: `stdout` for stdout, `ffout` for informational stderr, `fferr` for error stderr */
   type: string;
   message: string;
 }
