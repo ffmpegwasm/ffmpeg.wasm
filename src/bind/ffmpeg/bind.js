@@ -47,9 +47,20 @@ function print(message) {
   Module["logger"]({ type: "stdout", message });
 }
 
+// Patterns that indicate a real error in FFmpeg stderr output.
+// FFmpeg writes most of its output (including informational messages) to
+// stderr, so we classify by content to distinguish errors from info. (#877)
+const FFMPEG_ERROR_PATTERNS = [
+  /^[s*(error|fatal)/i,
+  /: (error|failed|failure)/i,
+  /(could not|no such|not found|invalid|unsupported|denied|cannot|unable to|unknown|missing|unrecognized|aborted)/i,
+  /^Aborted/,
+];
+
 function printErr(message) {
-  if (!message.startsWith("Aborted(native code called abort())"))
-    Module["logger"]({ type: "stderr", message });
+  if (message.startsWith("Aborted(native code called abort())")) return;
+  const isError = FFMPEG_ERROR_PATTERNS.some((re) => re.test(message));
+  Module["logger"]({ type: isError ? "fferr" : "ffout", message });
 }
 
 function exec(..._args) {
