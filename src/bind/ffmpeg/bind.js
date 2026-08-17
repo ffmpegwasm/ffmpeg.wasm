@@ -52,26 +52,44 @@ function printErr(message) {
     Module["logger"]({ type: "stderr", message });
 }
 
+/**
+ * ffmpeg and ffprobe finish by calling exit(), which Emscripten implements by
+ * throwing. That exception unwinds the JavaScript frames, but nothing unwinds
+ * the WebAssembly stack, so the stack pointer is left wherever the C code
+ * happened to leave it and every call permanently consumes a little more of
+ * the stack. Once it runs out the module traps with "memory access out of
+ * bounds", and since the stack pointer is never reset the instance keeps
+ * trapping on every subsequent call.
+ *
+ * Saving the stack pointer before the call and restoring it afterwards is what
+ * Emscripten itself does in its invoke_* helpers, for exactly this situation.
+ */
 function exec(..._args) {
   const args = [...Module["DEFAULT_ARGS"], ..._args];
+  const sp = stackSave();
   try {
     Module["_ffmpeg"](args.length, stringsToPtr(args));
   } catch (e) {
     if (!e.message.startsWith("Aborted")) {
       throw e;
     }
+  } finally {
+    stackRestore(sp);
   }
   return Module["ret"];
 }
 
 function ffprobe(..._args) {
   const args = [...Module["DEFAULT_ARGS_FFPROBE"], ..._args];
+  const sp = stackSave();
   try {
     Module["_ffprobe"](args.length, stringsToPtr(args));
   } catch (e) {
     if (!e.message.startsWith("Aborted")) {
       throw e;
     }
+  } finally {
+    stackRestore(sp);
   }
   return Module["ret"];
 }
