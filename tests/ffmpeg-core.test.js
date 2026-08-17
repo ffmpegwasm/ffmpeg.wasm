@@ -55,6 +55,47 @@ describe(genName("exec()"), () => {
   });
 });
 
+describe(genName("wasm stack"), () => {
+  beforeEach(reset);
+
+  /*
+   * ffmpeg and ffprobe finish by calling exit(), which Emscripten implements
+   * by throwing. The exception unwinds the JavaScript frames but not the
+   * WebAssembly stack, so without an explicit stackRestore() every call leaks
+   * the stack space its C frames were using. Once the stack runs out the
+   * module traps with "memory access out of bounds" on every later call.
+   */
+  it("should not leak stack across exec()", () => {
+    const sp = core.stackSave();
+
+    expect(core.exec("-h")).to.equal(0);
+    expect(core.stackSave()).to.equal(sp);
+
+    expect(core.exec("-i", "video.mp4", "video.avi")).to.equal(0);
+    core.FS.unlink("video.avi");
+    expect(core.stackSave()).to.equal(sp);
+  });
+
+  it("should not leak stack across ffprobe()", () => {
+    const sp = core.stackSave();
+
+    expect(core.ffprobe("-h")).to.equal(0);
+    expect(core.stackSave()).to.equal(sp);
+
+    core.ffprobe("-i", "video.mp4", "-show_format", "-o", "format.txt");
+    core.FS.unlink("format.txt");
+    expect(core.stackSave()).to.equal(sp);
+  });
+
+  it("should not leak stack when a command fails", () => {
+    const sp = core.stackSave();
+
+    expect(core.exec("-i", "nonexistent.mp4", "out.avi")).to.not.equal(0);
+
+    expect(core.stackSave()).to.equal(sp);
+  });
+});
+
 describe(genName("setTimeout()"), () => {
   beforeEach(reset);
 
