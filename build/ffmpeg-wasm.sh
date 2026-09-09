@@ -35,7 +35,7 @@ CONF_FLAGS=(
   -sUSE_SDL=2                              # use emscripten SDL2 lib port
   -sSTACK_SIZE=5MB                         # increase stack size to support libopus
   -sMODULARIZE                             # modularized to use as a library
-  ${FFMPEG_MT:+ -sINITIAL_MEMORY=1024MB}   # ALLOW_MEMORY_GROWTH is not recommended when using threads, thus we use a large initial memory
+  ${FFMPEG_MT:+ -sINITIAL_MEMORY=1024MB -sALLOW_MEMORY_GROWTH -sMAXIMUM_MEMORY=2GB} # start with a large initial memory, but still allow growth (up to 2GB) so decoding high-resolution input (e.g. 4K) does not abort with OOM (#946)
   ${FFMPEG_MT:+ -sPTHREAD_POOL_SIZE=32}    # use 32 threads
   ${FFMPEG_ST:+ -sINITIAL_MEMORY=32MB -sALLOW_MEMORY_GROWTH} # Use just enough memory as memory usage can grow
   -sEXPORT_NAME="$EXPORT_NAME"             # required in browser env, so that user can access this module from window object
