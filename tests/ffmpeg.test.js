@@ -1,5 +1,19 @@
 const { FFmpeg } = window.FFmpegWASM;
 
+const CLASSIC_WORKER_SOURCE = `
+  importScripts();
+  self.onmessage = ({ data: { id, type } }) => {
+    self.postMessage({ id, type, data: true });
+  };
+`;
+const MODULE_WORKER_SOURCE = `
+  export {};
+  self.onmessage = ({ data: { id, type } }) => {
+    self.postMessage({ id, type, data: true });
+  };
+`;
+const JAVASCRIPT_MIME_TYPE = "text/javascript";
+
 const genName = (name) => `[ffmpeg][${FFMPEG_TYPE}] ${name}`;
 
 const createFFmpeg = async () => {
@@ -14,6 +28,39 @@ const createFFmpeg = async () => {
 describe(genName("new FFmpeg()"), () => {
   it("should be OK", () => {
     expect(new FFmpeg()).to.be.ok;
+  });
+});
+
+describe(genName("FFmpeg.load()"), () => {
+  it("should load a custom classic worker", async () => {
+    const classWorkerURL = URL.createObjectURL(
+      new Blob([CLASSIC_WORKER_SOURCE], { type: JAVASCRIPT_MIME_TYPE })
+    );
+    const ffmpeg = new FFmpeg();
+
+    try {
+      expect(await ffmpeg.load({ classWorkerURL })).to.be.true;
+    } finally {
+      ffmpeg.terminate();
+      URL.revokeObjectURL(classWorkerURL);
+    }
+  });
+
+  it("should load a custom module worker from the ESM build", async () => {
+    const { FFmpeg: ESMFFmpeg } = await import(
+      "../packages/ffmpeg/dist/esm/index.js"
+    );
+    const classWorkerURL = URL.createObjectURL(
+      new Blob([MODULE_WORKER_SOURCE], { type: JAVASCRIPT_MIME_TYPE })
+    );
+    const ffmpeg = new ESMFFmpeg();
+
+    try {
+      expect(await ffmpeg.load({ classWorkerURL })).to.be.true;
+    } finally {
+      ffmpeg.terminate();
+      URL.revokeObjectURL(classWorkerURL);
+    }
   });
 });
 
