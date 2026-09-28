@@ -30,7 +30,7 @@ CONF_FLAGS=(
   -lswscale 
   -Wno-deprecated-declarations 
   $LDFLAGS 
-  -sENVIRONMENT=web,worker                # web: tests/*.html run the core on the page
+  -sENVIRONMENT=web,worker,node           # node: the core tests run in Node.js
   -sWASM_BIGINT                            # enable big int support
   -sDEFAULT_TO_CXX                         # x265, zimg and harfbuzz are C++
   -sUSE_SDL=2                              # use emscripten SDL2 lib port

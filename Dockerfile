@@ -198,7 +198,8 @@ RUN mkdir -p /src/dist/umd && bash -x /src/build.sh \
 RUN mkdir -p /src/dist/esm && bash -x /src/build.sh \
       ${FFMPEG_LIBS} \
       -sEXPORT_ES6 \
-      -o dist/esm/ffmpeg-core.js
+      -o dist/esm/ffmpeg-core.js && \
+    echo '{"type": "module"}' > dist/esm/package.json
 
 # Export ffmpeg-core.wasm to dist/, use `docker buildx build -o . .` to get assets
 FROM scratch AS exportor
