@@ -86,6 +86,13 @@ void init_dynload(void)
 
 static void (*program_exit)(int ret);
 
+void reset_log(void)
+{
+    av_log_set_callback(av_log_default_callback);
+    av_log_set_level(AV_LOG_INFO);
+    av_log_set_flags(0);
+}
+
 void register_exit(void (*cb)(int ret))
 {
     program_exit = cb;
