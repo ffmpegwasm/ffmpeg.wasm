@@ -47,7 +47,9 @@ const load = async ({
   coreURL: _coreURL,
   wasmURL: _wasmURL,
 }: FFMessageLoadConfig): Promise<IsFirst> => {
-  const first = !ffmpeg;
+  // A second core would leak the first one's memory and threads (#494);
+  // terminate() and load() again to switch cores.
+  if (ffmpeg) return false;
 
   try {
     if (!_coreURL) _coreURL = CORE_URL;
@@ -77,6 +79,8 @@ const load = async ({
       coreURL.startsWith("file:") ? {} : { mainScriptUrlOrBlob }
     );
   } catch (e) {
+    // e.g. an HTML 404 page or SPA fallback served instead of the wasm (#609)
+    if (String(e).includes("magic word")) throw new Error(`${wasmURL} is not a WebAssembly file (${e})`);
     // @ffmpeg/core-mt's shared memory needs a cross-origin isolated page.
     if (String(e).includes("not cross-origin isolated")) throw ERROR_NOT_ISOLATED;
     throw e;
@@ -90,7 +94,7 @@ const load = async ({
       data,
     })
   );
-  return first;
+  return true;
 };
 
 const exec = ({ args, timeout = -1 }: FFMessageExecData): ExitCode => {
