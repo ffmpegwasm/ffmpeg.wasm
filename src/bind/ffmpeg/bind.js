@@ -95,7 +95,8 @@ function setLogger(logger) {
   Module["logger"] = logger;
 }
 
-function setTimeout(timeout) {
+// Not named setTimeout: that would shadow the global inside the core (#611).
+function setExecTimeout(timeout) {
   Module["timeout"] = timeout;
 }
 
@@ -146,7 +147,7 @@ Module["locateFile"] = _locateFile;
 Module["exec"] = exec;
 Module["ffprobe"] = ffprobe;
 Module["setLogger"] = setLogger;
-Module["setTimeout"] = setTimeout;
+Module["setTimeout"] = setExecTimeout;
 Module["setProgress"] = setProgress;
 Module["reset"] = reset;
 Module["terminateThreads"] = terminateThreads;

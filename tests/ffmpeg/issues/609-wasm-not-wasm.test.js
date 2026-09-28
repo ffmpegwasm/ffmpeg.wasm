@@ -5,7 +5,7 @@
 import { expect } from "vitest";
 import { test, coreURL } from "../../helpers/ffmpeg.js";
 
-test.fails("names the URL when the wasm file is not WebAssembly (#609)", async ({ unloaded }) => {
+test("names the URL when the wasm file is not WebAssembly", async ({ unloaded }) => {
   const wasmURL = `${location.origin}/tests/README.md`;
   const loading = unloaded.load({ coreURL: coreURL(), wasmURL });
   await expect(loading).rejects.toThrow(wasmURL);
