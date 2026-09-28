@@ -14,7 +14,9 @@
     "postinstall": "pnpm build",
     "pretest": "pnpm build",
     "test": "vitest run",
-    "test:install": "playwright install --with-deps chromium"
+    "test:install": "playwright install --with-deps chromium",
+    "test:heavy": "vitest run --config tests/heavy/vitest.config.js",
+    "bench": "vitest bench --run --config tests/heavy/vitest.config.js"
   },
   "devDependencies": {
     "@ffmpeg/ffmpeg": "workspace:*",
