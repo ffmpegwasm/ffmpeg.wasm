@@ -1,3 +1,5 @@
+import type { FFMessageType } from "./const.js";
+
 export type FFFSPath = string;
 
 /**
@@ -119,7 +121,7 @@ export type FFMessageData =
   | FFMessageUnmountData;
 
 export interface Message {
-  type: string;
+  type: FFMessageType;
   data?: FFMessageData;
 }
 
@@ -132,7 +134,7 @@ export interface FFMessageEvent extends MessageEvent {
 }
 
 export interface LogEvent {
-  type: string;
+  type: FFMessageType;
   message: string;
 }
 
@@ -172,7 +174,7 @@ export type ProgressEventCallback = (event: ProgressEvent) => void;
 export interface FFMessageEventCallback {
   data: {
     id: number;
-    type: string;
+    type: FFMessageType;
     data: CallbackData;
   };
 }

@@ -11,7 +11,7 @@ class NodeWorker {
 
   constructor(url: URL) {
     this.#worker = new ThreadWorker(url);
-    this.#worker.on("message", (data) => this.onmessage?.({ data }));
+    this.#worker.on("message", (data: unknown) => this.onmessage?.({ data }));
     this.#worker.on("error", (error) => this.onerror?.({ error, preventDefault() {} }));
   }
 

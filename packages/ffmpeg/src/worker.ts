@@ -80,7 +80,7 @@ const load = async ({
     );
   } catch (e) {
     // e.g. an HTML 404 page or SPA fallback served instead of the wasm (#609)
-    if (String(e).includes("magic word")) throw new Error(`${wasmURL} is not a WebAssembly file (${e})`);
+    if (String(e).includes("magic word")) throw new Error(`${wasmURL} is not a WebAssembly file (${String(e)})`);
     // @ffmpeg/core-mt's shared memory needs a cross-origin isolated page.
     if (String(e).includes("not cross-origin isolated")) throw ERROR_NOT_ISOLATED;
     throw e;
