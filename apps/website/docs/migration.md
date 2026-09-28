@@ -7,6 +7,20 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
+# Migrating from 0.12.x to 0.13
+
+- Both cores are FFmpeg 9 (0.12 was FFmpeg 5.1).
+- `@ffmpeg/core` is single-threaded and needs no special headers.
+  `@ffmpeg/core-mt` is faster, but needs a cross-origin isolated page
+  (`Cross-Origin-Opener-Policy: same-origin` and
+  `Cross-Origin-Embedder-Policy: require-corp` or `credentialless`); without
+  it `ffmpeg.load()` rejects with an explanation.
+- There is no `ffmpeg-core.worker.js` any more, and the `workerURL` option of
+  `load()` is ignored.
+- `exec()` and `ffprobe()` return FFmpeg's exit code: `0` on success, `1` on
+  timeout, and otherwise a non-zero value (often a negative error code) instead
+  of always `1`. A command that crashes now rejects instead of resolving.
+
 # Migrating from 0.11.x to 0.12+
 
 As 0.12+ is not backward compatible with 0.11.x, below is a quick mapping

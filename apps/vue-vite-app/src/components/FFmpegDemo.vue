@@ -11,7 +11,7 @@ import type { LogEvent } from '@ffmpeg/ffmpeg'
 import { fetchFile, toBlobURL } from '@ffmpeg/util'
 import { defineComponent, ref } from 'vue'
 
-const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm'
+const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.13.0/dist/esm'
 const videoURL = 'https://raw.githubusercontent.com/ffmpegwasm/testdata/master/video-15s.avi'
 
 export default defineComponent({
