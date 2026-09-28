@@ -86,7 +86,7 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm test --project 'core-*' # core-jspi on Node.js 24+
+      - run: pnpm test --project 'core-*' --project node # core-jspi on Node.js 24+
   browser:
     # @ffmpeg/ffmpeg and @ffmpeg/util in Chromium.
     runs-on: ubuntu-latest

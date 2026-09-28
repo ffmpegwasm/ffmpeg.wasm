@@ -1,13 +1,13 @@
 {
   "name": "@ffmpeg/ffmpeg",
   "version": "0.12.15",
-  "description": "FFmpeg WebAssembly version for browser",
+  "description": "FFmpeg WebAssembly version for browsers and Node.js",
   "main": "./dist/umd/ffmpeg.js",
   "types": "./dist/esm/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/esm/index.d.ts",
-      "node": "./dist/esm/empty.mjs",
+      "node": "./dist/esm/node/index.js",
       "default": {
         "import": "./dist/esm/index.js",
         "require": "./dist/umd/ffmpeg.js"
@@ -22,7 +22,7 @@
     "dev": "webpack -w --mode development",
     "lint": "eslint src",
     "clean": "rimraf dist",
-    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:esm": "tsc -p tsconfig.esm.json && node -e \"require('fs').writeFileSync('dist/esm/package.json', '{\\\"type\\\": \\\"module\\\"}')\"",
     "build:umd": "webpack",
     "build": "pnpm clean && pnpm build:esm && pnpm build:umd",
     "prepublishOnly": "pnpm build"
@@ -48,13 +48,15 @@
     "url": "https://github.com/ffmpegwasm/ffmpeg.wasm/issues"
   },
   "engines": {
-    "node": ">=18.x"
+    "node": ">=22"
   },
   "homepage": "https://github.com/ffmpegwasm/ffmpeg.wasm#readme",
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
+    "@ffmpeg/core": "workspace:*",
+    "@types/node": "^22.20.4",
     "@typescript-eslint/eslint-plugin": "^6.1.0",
     "@typescript-eslint/parser": "^6.1.0",
     "eslint": "^8.45.0",
@@ -65,5 +67,13 @@
   },
   "dependencies": {
     "@ffmpeg/types": "workspace:*"
+  },
+  "peerDependencies": {
+    "@ffmpeg/core": "workspace:^"
+  },
+  "peerDependenciesMeta": {
+    "@ffmpeg/core": {
+      "optional": true
+    }
   }
 }
