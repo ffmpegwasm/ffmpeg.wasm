@@ -13,7 +13,13 @@ ARG FFMPEG_MT
 ENV FFMPEG_ST=$FFMPEG_ST
 ENV FFMPEG_MT=$FFMPEG_MT
 ENV INSTALL_DIR=/opt
-ENV CFLAGS="-I$INSTALL_DIR/include ${FFMPEG_MT:+-pthread} $EXTRA_CFLAGS"
+# zimg reports errors with C++ exceptions it catches itself, so everything is
+# built with exception support (and the matching setjmp/longjmp), chosen per
+# core by the Makefile: JavaScript exceptions for the Asyncify core, which
+# doesn't support wasm ones, wasm exceptions for the others (JSPI can't
+# suspend through the JavaScript frames of JavaScript exceptions).
+ARG FFMPEG_EXCEPTIONS
+ENV CFLAGS="-I$INSTALL_DIR/include ${FFMPEG_MT:+-pthread} $FFMPEG_EXCEPTIONS $EXTRA_CFLAGS"
 ENV CXXFLAGS="$CFLAGS"
 ENV LDFLAGS="-L$INSTALL_DIR/lib $CFLAGS $EXTRA_LDFLAGS"
 ENV EM_PKG_CONFIG_PATH=$INSTALL_DIR/lib/pkgconfig:/emsdk/upstream/emscripten/system/lib/pkgconfig
