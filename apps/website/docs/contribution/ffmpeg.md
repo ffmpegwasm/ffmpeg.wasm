@@ -5,7 +5,7 @@ The source code of @ffmpeg/ffmpeg locates at **/packages/ffmpeg**.
 ## Development
 
 ```bash
-$ npm run dev
+$ pnpm dev
 ```
 
 ## Build
@@ -13,13 +13,13 @@ $ npm run dev
 Transpile Typescript to JavaScript.
 
 ```bash
-$ npm run build
+$ pnpm build
 ```
 
 ## Lint
 
 ```bash
-$ npm run lint
+$ pnpm lint
 ```
 
 ## Publish
