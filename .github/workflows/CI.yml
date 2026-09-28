@@ -84,7 +84,7 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm test --project core-st --project core-mt --project node
+      - run: pnpm test:unit --project core-st --project core-mt --project node
   browser:
     # @ffmpeg/ffmpeg and @ffmpeg/util in Chromium.
     runs-on: ubuntu-latest
@@ -111,7 +111,8 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm test:install
-      - run: pnpm test --project browser-st --project browser-mt
+      - run: pnpm test:unit --project browser-st --project browser-mt
+      - run: pnpm test:e2e
   heavy:
     # FATE samples + benchmarks: nightly, on demand, or with the "heavy" PR label.
     if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'heavy')
