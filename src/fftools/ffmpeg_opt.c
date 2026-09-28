@@ -190,6 +190,50 @@ static int copy_unknown_streams = 0;
 static int recast_media = 0;
 static int find_stream_info = 1;
 
+/* ffmpeg.wasm runs ffmpeg() many times in one process: put every option
+ * global back to its default so one command's options don't leak into the
+ * next (e.g. -n made every later command fail). */
+void reset_options(void)
+{
+    vstats_filename = NULL;
+    sdp_filename = NULL;
+    audio_drift_threshold = 0.1;
+    dts_delta_threshold = 10;
+    dts_error_threshold = 3600*30;
+    audio_volume = 256;
+    audio_sync_method = 0;
+    video_sync_method = VSYNC_AUTO;
+    frame_drop_threshold = 0;
+    do_benchmark = 0;
+    do_benchmark_all = 0;
+    do_hex_dump = 0;
+    do_pkt_dump = 0;
+    copy_ts = 0;
+    start_at_zero = 0;
+    copy_tb = -1;
+    debug_ts = 0;
+    exit_on_error = 0;
+    abort_on_flags = 0;
+    print_stats = -1;
+    qp_hist = 0;
+    stdin_interaction = 1;
+    max_error_rate = 2.0/3;
+    filter_nbthreads = NULL;
+    filter_complex_nbthreads = 0;
+    vstats_version = 2;
+    auto_conversion_filters = 1;
+    stats_period = 500000;
+    file_overwrite = 0;
+    no_file_overwrite = 0;
+    do_psnr = 0;
+    input_stream_potentially_available = 0;
+    ignore_unknown_streams = 0;
+    copy_unknown_streams = 0;
+    recast_media = 0;
+    find_stream_info = 1;
+    hide_banner = 0;
+}
+
 static void uninit_options(OptionsContext *o)
 {
     const OptionDef *po = options;

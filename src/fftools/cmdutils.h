@@ -55,6 +55,12 @@ extern int hide_banner;
 void register_exit(void (*cb)(int ret));
 
 /**
+ * Restore libavutil's default log callback, level and flags, which options
+ * like -h, -loglevel or -report change for the rest of the process.
+ */
+void reset_log(void);
+
+/**
  * Wraps exit with a program-specific cleanup routine.
  */
 void exit_program(int ret) av_noreturn;

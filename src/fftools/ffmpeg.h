@@ -682,6 +682,7 @@ void sub2video_update(InputStream *ist, int64_t heartbeat_pts, AVSubtitle *sub);
 int ifilter_parameters_from_frame(InputFilter *ifilter, const AVFrame *frame);
 
 int ffmpeg_parse_options(int argc, char **argv);
+void reset_options(void);
 
 int videotoolbox_init(AVCodecContext *s);
 int qsv_init(AVCodecContext *s);

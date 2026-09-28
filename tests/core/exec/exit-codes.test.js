@@ -43,7 +43,7 @@ test("does not throw to the caller when ffmpeg aborts", ({ core }) => {
   expect(() => core.exec("-i")).to.not.throw();
 });
 
-test.fails("logs no \"Aborted()\" line after a successful run (no issue yet)", ({ core }) => {
+test("logs no \"Aborted()\" line after a successful run", ({ core }) => {
   const { logs } = exec(core, "-f", "lavfi", "-i", "nullsrc=s=16x16:d=0.1", "-f", "null", "-");
   expect(logs.map((l) => l.message).filter((m) => m.startsWith("Aborted("))).to.be.empty;
 });

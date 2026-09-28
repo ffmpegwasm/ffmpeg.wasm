@@ -432,6 +432,10 @@ static void ffprobe_cleanup(int ret)
     selected_streams = NULL;
     log_buffer = NULL;
     log_buffer_size = 0;
+    for (int i = 0; i < FF_ARRAY_ELEMS(sections); i++) {
+        sections[i].show_all_entries = 0;
+        av_dict_free(&sections[i].entries_to_show);
+    }
 
     av_log(NULL, AV_LOG_DEBUG, "FFprobe: Cleanup done.\n");
 }
@@ -4088,6 +4092,7 @@ int ffprobe(int argc, char **argv)
         goto end;
     }
 #endif
+    reset_log();
     av_log_set_flags(AV_LOG_SKIP_REPEATED);
     ffprobe_cleanup(0);
     register_exit(ffprobe_cleanup);
