@@ -41,7 +41,7 @@ CONF_FLAGS=(
   -lavutil
   $LDFLAGS
   -sDEFAULT_TO_CXX                         # x265, zimg and harfbuzz are C++
-  -sENVIRONMENT=web,worker,node           # node: the core tests run in Node.js
+  -sENVIRONMENT=web,worker,node           # node: @ffmpeg/ffmpeg's node export, and the core tests
   -sSTACK_SIZE=5MB                         # increase stack size to support libopus
   -sMODULARIZE                             # modularized to use as a library
   -sALLOW_MEMORY_GROWTH -sMAXIMUM_MEMORY=2GB # grow as needed, up to 2 GB (4K needs more than 1 GB, #946)
@@ -50,6 +50,7 @@ CONF_FLAGS=(
   -sEXPORTED_FUNCTIONS=$(node src/bind/ffmpeg/export.js) # exported functions
   -sEXPORTED_RUNTIME_METHODS=$(node src/bind/ffmpeg/export-runtime.js) # exported built-in functions
   -lworkerfs.js
+  -lnodefs.js                              # mount host directories in Node.js
   --pre-js src/bind/ffmpeg/bind.js        # extra bindings, contains most of the ffmpeg.wasm javascript code
   --js-library src/bind/ffmpeg/library.js # overrides of emscripten library functions
   "${OBJS[@]}"

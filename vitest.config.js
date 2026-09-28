@@ -15,6 +15,10 @@ const ISOLATED = {
   "Cross-Origin-Embedder-Policy": "require-corp",
 };
 
+const node = {
+  test: { name: "node", include: ["tests/node/**/*.test.js"] },
+};
+
 const browser = (name) => ({
   plugins: [testRoutes()],
   server: { headers: name === "mt" ? ISOLATED : {} },
@@ -37,6 +41,6 @@ export default defineConfig({
   test: {
     testTimeout: 60000,
     hookTimeout: 60000,
-    projects: [core("st"), core("mt"), browser("st"), browser("mt")],
+    projects: [core("st"), core("mt"), node, browser("st"), browser("mt")],
   },
 });
