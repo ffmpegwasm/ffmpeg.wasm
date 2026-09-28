@@ -43,6 +43,8 @@ export interface FFMessageLoadConfig {
 export interface FFMessageExecData {
   args: string[];
   timeout?: number;
+  /** Set to 1 by an AbortSignal; the core stops the command when it sees it. */
+  abortFlag?: Int32Array;
 }
 
 export interface FFMessageWriteFileData {

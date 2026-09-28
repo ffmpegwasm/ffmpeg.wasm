@@ -99,8 +99,9 @@ const load = async ({
   return true;
 };
 
-const exec = ({ args, timeout = -1 }: FFMessageExecData): ExitCode => {
+const exec = ({ args, timeout = -1, abortFlag }: FFMessageExecData): ExitCode => {
   ffmpeg.setTimeout(timeout);
+  if (abortFlag) ffmpeg.setAbortFlag(abortFlag);
   ffmpeg.exec(...args);
   const ret = ffmpeg.ret;
   ffmpeg.reset();

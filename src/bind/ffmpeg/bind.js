@@ -3,6 +3,7 @@ const DEFAULT_ARGS_FFPROBE = ["./ffprobe"];
 
 Module["ret"] = -1;
 Module["timeout"] = -1;
+Module["abortFlag"] = null;
 Module["logger"] = () => {};
 Module["progress"] = () => {};
 
@@ -48,6 +49,11 @@ function setThreads(n) {
   _set_max_threads(n);
 }
 
+/** Stop the command once flag[0] becomes non-zero (an Int32Array on a SharedArrayBuffer). */
+function setAbortFlag(flag) {
+  Module["abortFlag"] = flag;
+}
+
 function setProgress(handler) {
   Module["progress"] = handler;
 }
@@ -67,6 +73,7 @@ function terminateThreads() {
 function reset() {
   Module["ret"] = -1;
   Module["timeout"] = -1;
+  Module["abortFlag"] = null;
 }
 
 /**
@@ -95,6 +102,7 @@ Module["ffprobe"] = ffprobe;
 Module["setLogger"] = setLogger;
 Module["setTimeout"] = setExecTimeout;
 Module["setProgress"] = setProgress;
+Module["setAbortFlag"] = setAbortFlag;
 Module["setThreads"] = setThreads;
 Module["reset"] = reset;
 Module["terminateThreads"] = terminateThreads;

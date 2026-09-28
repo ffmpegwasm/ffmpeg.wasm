@@ -1,0 +1,28 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: "ffmpeg.wasm" <ffmpeg.wasm@users.noreply.github.com>
+Date: Mon, 28 Sep 2026 23:10:13 -0400
+Subject: [PATCH] fftools: stop ffmpeg when Module.abortFlag is set
+
+---
+ fftools/ffmpeg.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/fftools/ffmpeg.c b/fftools/ffmpeg.c
+index 068ae2a..d07e890 100644
+--- a/fftools/ffmpeg.c
++++ b/fftools/ffmpeg.c
+@@ -905,9 +905,12 @@ static int check_keyboard_interaction(int64_t cur_time)
+     return 0;
+ }
+ 
+-/* Returns 1 once Module.timeout (ms, -1 for none) has passed. */
++/* Returns 1 once Module.timeout (ms, -1 for none) has passed, or once the
++ * caller set Module.abortFlag (a SharedArrayBuffer, so it can be set while
++ * this command blocks the worker). */
+ EM_JS(int, is_timeout, (double elapsed_ms), {
+-    return Module.timeout !== -1 && Module.timeout <= elapsed_ms;
++    return (Module.timeout !== -1 && Module.timeout <= elapsed_ms) ||
++        (Module.abortFlag !== null && Atomics.load(Module.abortFlag, 0) !== 0);
+ });
+ 
+ static int timed_out;

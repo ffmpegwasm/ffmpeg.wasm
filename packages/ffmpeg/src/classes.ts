@@ -244,15 +244,22 @@ export class FFmpeg {
      */
     timeout = -1,
     { signal }: FFMessageOptions = {}
-  ): Promise<number> =>
-    this.#send(
+  ): Promise<number> => {
+    // The worker is busy running the command, so abort through shared memory
+    // the core checks while it runs (#719). Without cross-origin isolation
+    // there is no shared memory, and the abort only rejects the promise.
+    const abortFlag =
+      signal && typeof SharedArrayBuffer !== "undefined" ? new Int32Array(new SharedArrayBuffer(4)) : undefined;
+    if (abortFlag) signal?.addEventListener("abort", () => Atomics.store(abortFlag, 0, 1), { once: true });
+    return this.#send(
       {
         type: FFMessageType.EXEC,
-        data: { args, timeout },
+        data: { args, timeout, abortFlag },
       },
       undefined,
       signal
     ) as Promise<number>;
+  };
 
   /**
    * Execute ffprobe command.

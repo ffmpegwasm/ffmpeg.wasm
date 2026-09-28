@@ -73,3 +73,14 @@ test("terminate() rejects pending calls", async () => {
   other.terminate();
   await expect(pending).rejects.toThrow(/terminate/);
 });
+
+test("an aborted exec() stops the command (#719)", async ({ ffmpeg }) => {
+  const controller = new AbortController();
+  const running = ffmpeg.exec(["-f", "lavfi", "-i", "testsrc2=s=1280x720:d=600", "-c:v", "libx264", "-f", "null", "-"], -1, { signal: controller.signal });
+  setTimeout(() => controller.abort(), 500);
+  await expect(running).rejects.toHaveProperty("name", "AbortError");
+  const start = performance.now();
+  await Promise.race([ffmpeg.listDir("/"), new Promise((resolve) => setTimeout(resolve, 10000))]);
+  const elapsed = performance.now() - start;
+  expect(elapsed).toBeLessThan(10000);
+});

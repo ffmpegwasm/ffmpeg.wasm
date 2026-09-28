@@ -4,7 +4,7 @@
 import { expect } from "vitest";
 import { test } from "../../helpers/ffmpeg.js";
 
-test.fails("an aborted exec() stops running (#719)", { timeout: 120000 }, async ({ ffmpeg }) => {
+test.runIf(crossOriginIsolated)("an aborted exec() stops running", { timeout: 120000 }, async ({ ffmpeg }) => {
   const controller = new AbortController();
   const running = ffmpeg.exec(
     ["-f", "lavfi", "-i", "testsrc2=s=1280x720:d=600", "-c:v", "libx264", "-f", "null", "-"],
