@@ -55,6 +55,7 @@ const defaultCoreURL = (): string => {
 const load = async ({
   coreURL: _coreURL,
   wasmURL: _wasmURL,
+  threads,
 }: FFMessageLoadConfig): Promise<IsFirst> => {
   // A second core would leak the first one's memory and threads (#494);
   // terminate() and load() again to switch cores.
@@ -95,6 +96,7 @@ const load = async ({
     if (String(e).includes("not cross-origin isolated")) throw ERROR_NOT_ISOLATED;
     throw e;
   }
+  if (threads) ffmpeg.setThreads(threads);
   ffmpeg.setLogger((data) =>
     self.postMessage({ type: FFMessageType.LOG, data })
   );

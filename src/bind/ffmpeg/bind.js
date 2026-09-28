@@ -60,6 +60,11 @@ function setExecTimeout(timeout) {
   Module["timeout"] = timeout;
 }
 
+/** Most threads a codec or filter may use (default: min(cores, 4)). */
+function setThreads(n) {
+  _set_max_threads(n);
+}
+
 function setProgress(handler) {
   Module["progress"] = handler;
 }
@@ -107,6 +112,7 @@ Module["ffprobe"] = ffprobe;
 Module["setLogger"] = setLogger;
 Module["setTimeout"] = setExecTimeout;
 Module["setProgress"] = setProgress;
+Module["setThreads"] = setThreads;
 Module["reset"] = reset;
 Module["terminateThreads"] = terminateThreads;
 Module["receiveProgress"] = receiveProgress;

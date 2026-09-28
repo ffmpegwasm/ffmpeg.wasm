@@ -44,7 +44,7 @@ CONF_FLAGS=(
   -sENVIRONMENT=web,worker,node           # node: @ffmpeg/ffmpeg's node export, and the core tests
   -sSTACK_SIZE=5MB                         # increase stack size to support libopus
   -sMODULARIZE                             # modularized to use as a library
-  -sALLOW_MEMORY_GROWTH -sMAXIMUM_MEMORY=2GB # grow as needed, up to 2 GB (4K needs more than 1 GB, #946)
+  -sALLOW_MEMORY_GROWTH -sMAXIMUM_MEMORY=4GB # grow as needed, up to wasm32's 4 GB (#946, #623)
   -sINCOMING_MODULE_JS_API=locateFile,mainScriptUrlOrBlob,print,printErr # mainScriptUrlOrBlob: the script pthread workers load
   -sEXPORT_NAME="$EXPORT_NAME"             # required in browser env, so that user can access this module from window object
   -sEXPORTED_FUNCTIONS=$(node src/bind/ffmpeg/export.js) # exported functions
@@ -55,6 +55,7 @@ CONF_FLAGS=(
   --js-library src/bind/ffmpeg/library.js # overrides of emscripten library functions
   "${OBJS[@]}"
   src/bind/ffmpeg/run.c                    # ffmpeg() and ffprobe() for bind.js
+  src/bind/ffmpeg/threads.c                # the thread count FFmpeg sees
 )
 
 MT_FLAGS=(

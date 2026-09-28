@@ -30,6 +30,14 @@ export interface FFMessageLoadConfig {
    * @defaultValue `./worker.js`
    */
   classWorkerURL?: string;
+  /**
+   * Most threads a codec or filter may use. More threads can be faster on
+   * machines with many cores, but a complex command may then need more threads
+   * than the core's pool of 64 and fail.
+   *
+   * @defaultValue `Math.min(navigator.hardwareConcurrency, 4)`
+   */
+  threads?: number;
 }
 
 export interface FFMessageExecData {
