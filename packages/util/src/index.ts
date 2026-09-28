@@ -13,7 +13,7 @@ const readFromBlobOrFile = (blob: Blob | File): Promise<Uint8Array> =>
       if (result instanceof ArrayBuffer) {
         resolve(new Uint8Array(result));
       } else {
-        resolve(new Uint8Array());
+        resolve(new Uint8Array(0));
       }
     };
     fileReader.onerror = (event) => {
@@ -66,7 +66,7 @@ export const fetchFile = async (
   } else if (file instanceof File || file instanceof Blob) {
     data = await readFromBlobOrFile(file);
   } else {
-    return new Uint8Array();
+    return new Uint8Array(0);
   }
 
   return new Uint8Array(data);

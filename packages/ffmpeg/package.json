@@ -24,8 +24,8 @@
     "clean": "rimraf dist",
     "build:esm": "tsc -p tsconfig.esm.json",
     "build:umd": "webpack",
-    "build": "npm run clean && npm run build:esm && npm run build:umd",
-    "prepublishOnly": "npm run build"
+    "build": "pnpm clean && pnpm build:esm && pnpm build:umd",
+    "prepublishOnly": "pnpm build"
   },
   "files": [
     "dist",
@@ -60,9 +60,10 @@
     "eslint": "^8.45.0",
     "rimraf": "^5.0.1",
     "typescript": "^5.1.6",
+    "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "@ffmpeg/types": "^0.12.4"
+    "@ffmpeg/types": "workspace:*"
   }
 }

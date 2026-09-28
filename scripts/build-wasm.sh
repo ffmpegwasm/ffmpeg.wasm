@@ -10,4 +10,4 @@ fi
 
 make "${1:-prd}"
 make "${1:-prd}-mt"
-npm run build
+pnpm build
