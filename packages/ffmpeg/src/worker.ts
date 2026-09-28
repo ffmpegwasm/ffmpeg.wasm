@@ -152,9 +152,9 @@ const deleteDir = ({ path }: FFMessageDeleteDirData): OK => {
 };
 
 const mount = ({ fsType, options, mountPoint }: FFMessageMountData): OK => {
-  const str = fsType as keyof typeof ffmpeg.FS.filesystems;
-  const fs = ffmpeg.FS.filesystems[str];
-  if (!fs) return false;
+  // Only the file systems the core links; names like "__proto__" are not.
+  if (!Object.hasOwn(ffmpeg.FS.filesystems, fsType)) return false;
+  const fs = ffmpeg.FS.filesystems[fsType as keyof typeof ffmpeg.FS.filesystems];
   ffmpeg.FS.mount(fs, options, mountPoint);
   return true;
 };
