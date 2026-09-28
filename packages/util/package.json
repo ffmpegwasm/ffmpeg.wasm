@@ -1,13 +1,17 @@
 {
   "name": "@ffmpeg/util",
   "version": "0.12.2",
-  "description": "browser utils for @ffmpeg/*",
+  "description": "utils for @ffmpeg/*",
   "main": "./dist/cjs/index.js",
   "type": "module",
   "types": "./dist/cjs/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/cjs/index.d.ts",
+      "node": {
+        "import": "./dist/esm/node.js",
+        "require": "./dist/cjs/node.js"
+      },
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     }
@@ -17,7 +21,7 @@
     "lint": "eslint src",
     "clean": "rimraf dist",
     "build:esm": "tsc -p tsconfig.esm.json",
-    "build:umd": "tsc -p tsconfig.cjs.json && webpack",
+    "build:umd": "tsc -p tsconfig.cjs.json && node -e \"require('fs').writeFileSync('dist/cjs/package.json', '{\\\"type\\\": \\\"commonjs\\\"}')\" && webpack",
     "build": "pnpm clean && pnpm build:esm && pnpm build:umd",
     "prepublishOnly": "pnpm build"
   },
@@ -47,6 +51,7 @@
     "access": "public"
   },
   "devDependencies": {
+    "@types/node": "^22.20.4",
     "@typescript-eslint/eslint-plugin": "^6.1.0",
     "@typescript-eslint/parser": "^6.1.0",
     "eslint": "^8.45.0",
