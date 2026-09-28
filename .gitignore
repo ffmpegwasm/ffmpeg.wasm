@@ -10,3 +10,4 @@ dist
 .netlify
 .cache
 tests/heavy/results
+tests/fuzz/crashes

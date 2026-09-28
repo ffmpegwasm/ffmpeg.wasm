@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ffmpeg.wasm fuzzing</title>
+  </head>
+  <body>
+    <script type="module">
+      import { FFmpeg } from "/packages/ffmpeg/dist/esm/index.js";
+
+      const coreURL = `${location.origin}/packages/core/dist/esm/ffmpeg-core.js`;
+      let ffmpeg;
+
+      window.reload = async () => {
+        ffmpeg?.terminate();
+        ffmpeg = new FFmpeg();
+        await ffmpeg.load({ coreURL });
+      };
+
+      // Runs one case: a list of [method, ...args] calls on the FFmpeg class
+      // (byte arrays arrive as plain arrays) and returns each call's result
+      // or error. The runner decides which errors are crashes.
+      window.runCase = async (calls, timeout) => {
+        const results = [];
+        for (const [method, ...args] of calls) {
+          const real = args.map((a) => (Array.isArray(a) && typeof a[0] === "number" ? Uint8Array.from(a) : a));
+          const extra = method === "exec" || method === "ffprobe" ? [timeout] : [];
+          try {
+            const r = await ffmpeg[method](...real, ...extra);
+            results.push({ method, ok: r instanceof Uint8Array ? r.length : r });
+          } catch (e) {
+            results.push({ method, error: String(e?.message ?? e) });
+          }
+        }
+        return results;
+      };
+
+      // Whether the core still answers, i.e. the last case didn't kill it.
+      window.alive = () =>
+        Promise.race([
+          ffmpeg.listDir("/").then(() => true, () => false),
+          new Promise((r) => setTimeout(() => r(false), 5000)),
+        ]);
+
+      window.readBytes = async (path) => Array.from(await ffmpeg.readFile(path));
+
+      window.ready = true;
+    </script>
+  </body>
+</html>

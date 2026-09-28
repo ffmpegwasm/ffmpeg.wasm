@@ -19,7 +19,8 @@
     "test:docker": "docker build -f tests/Dockerfile -t ffmpeg-wasm-tests . && docker run --rm --ipc=host ffmpeg-wasm-tests",
     "test:install": "playwright install --with-deps chromium",
     "test:heavy": "vitest run --config tests/heavy/vitest.config.js",
-    "bench": "vitest bench --run --config tests/heavy/vitest.config.js"
+    "bench": "vitest bench --run --config tests/heavy/vitest.config.js",
+    "fuzz": "node tests/fuzz/fuzz.mjs"
   },
   "devDependencies": {
     "@ffmpeg/core": "workspace:*",
