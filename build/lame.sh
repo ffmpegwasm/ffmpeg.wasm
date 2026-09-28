@@ -11,5 +11,6 @@ CONF_FLAGS=(
   --disable-dependency-tracking                       # speed up one-time build
   --disable-gtktest
 )
-CFLAGS=$CFLAGS emconfigure ./configure "${CONF_FLAGS[@]}"
+# NDEBUG: a failed assert in LAME aborts the whole module (#899)
+CFLAGS="$CFLAGS -DNDEBUG" emconfigure ./configure "${CONF_FLAGS[@]}"
 emmake make install -j
