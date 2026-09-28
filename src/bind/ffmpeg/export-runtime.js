@@ -5,6 +5,7 @@ const EXPORTED_RUNTIME_METHODS = [
   "UTF8ToString",
   "lengthBytesUTF8",
   "stringToUTF8",
+  "stackSave",
 ];
 
 console.log(EXPORTED_RUNTIME_METHODS.join(","));

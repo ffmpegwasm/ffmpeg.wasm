@@ -26,7 +26,7 @@ const cases = [
 ];
 
 test.for(cases)("encodes with %s", ([name, input, opts, out, codec], { core, dir, skip }) => {
-  // #898: libx265 needs real threads and hangs the single-thread core.
+  // libx265 is only in core-mt, see issues/898.
   if (name === "libx265" && !isMT()) skip();
   const path = `${dir}/${out}`;
   const { ret, log } = exec(core, ...input, ...opts, path);

@@ -153,7 +153,7 @@ COPY build/ffmpeg.sh /src/build.sh
 RUN bash -x /src/build.sh \
       --enable-gpl \
       --enable-libx264 \
-      --enable-libx265 \
+      ${FFMPEG_MT:+--enable-libx265} \
       --enable-libvpx \
       --enable-libmp3lame \
       --enable-libtheora \
@@ -174,7 +174,7 @@ COPY build/ffmpeg-wasm.sh build.sh
 # libraries to link
 ENV FFMPEG_LIBS \
       -lx264 \
-      -lx265 \
+      ${FFMPEG_MT:+-lx265} \
       -lvpx \
       -lmp3lame \
       -logg \
