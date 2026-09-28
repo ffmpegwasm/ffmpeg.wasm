@@ -168,3 +168,30 @@ jobs:
           path: |
             tests/heavy/results
             tests/heavy/baseline
+  fuzz:
+    # Fuzzing: on demand, or on pull requests labelled "fuzz-test".
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.pull_request.labels.*.name, 'fuzz-test')
+    runs-on: ubuntu-latest
+    needs: [build-core]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: ffmpeg-core
+          path: packages/core/dist
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test:install
+      - name: Fuzz
+        run: pnpm fuzz --time=900 --seed=${{ github.run_id }}
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: failure()
+        with:
+          name: fuzz-crashes
+          path: tests/fuzz/crashes
