@@ -19,8 +19,9 @@ test("mounts Files and Blobs with WORKERFS and ffmpeg reads them", async ({ ffmp
   expect(unmounted).to.deep.equal([".", ".."]);
 });
 
-test("returns false for an unknown file system", async ({ ffmpeg, dir }) => {
-  await ffmpeg.createDir(`${dir}/m2`);
-  const ok = await ffmpeg.mount("NOPEFS", {}, `${dir}/m2`);
+// Only the file systems the core links; not arbitrary FS properties.
+test.for(["NOPEFS", "__proto__", "constructor"])("returns false for the file system %s", async (fsType, { ffmpeg, dir }) => {
+  await ffmpeg.createDir(`${dir}/m`);
+  const ok = await ffmpeg.mount(fsType, {}, `${dir}/m`);
   expect(ok).to.equal(false);
 });
