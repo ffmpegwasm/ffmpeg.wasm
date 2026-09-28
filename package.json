@@ -13,7 +13,10 @@
     "prepublishOnly": "pnpm build",
     "postinstall": "pnpm build",
     "pretest": "pnpm build",
-    "test": "vitest run",
+    "test": "vitest run && pnpm test:e2e",
+    "test:unit": "vitest run",
+    "test:e2e": "node tests/e2e/run.mjs",
+    "test:docker": "docker build -f tests/Dockerfile -t ffmpeg-wasm-tests . && docker run --rm --ipc=host ffmpeg-wasm-tests",
     "test:install": "playwright install --with-deps chromium",
     "test:heavy": "vitest run --config tests/heavy/vitest.config.js",
     "bench": "vitest bench --run --config tests/heavy/vitest.config.js"
@@ -25,6 +28,7 @@
     "@ffmpeg/util": "workspace:*",
     "@vitest/browser-playwright": "^5.0.2",
     "playwright": "^1.63.0",
+    "sirv": "^3.0.2",
     "vitest": "^5.0.2"
   }
 }

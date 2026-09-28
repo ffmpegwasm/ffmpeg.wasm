@@ -31,8 +31,6 @@ jobs:
             build-cache-st-v1-
       - name: Build ffmpeg-core
         run: make prd EXTRA_ARGS="--cache-from=type=local,src=build-cache-st --cache-to=type=local,dest=build-cache-st,mode=max"
-      - name: Build ffmpeg-core's JSPI build
-        run: make prd-jspi EXTRA_ARGS="--cache-from=type=local,src=build-cache-st"
       - name: Upload core
         uses: actions/upload-artifact@v4
         with:
@@ -86,7 +84,7 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm test --project 'core-*' --project node # core-jspi on Node.js 24+
+      - run: pnpm test:unit --project core-st --project core-mt --project node
   browser:
     # @ffmpeg/ffmpeg and @ffmpeg/util in Chromium.
     runs-on: ubuntu-latest
@@ -113,7 +111,8 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm test:install
-      - run: pnpm test --project 'browser-*'
+      - run: pnpm test:unit --project browser-st --project browser-mt
+      - run: pnpm test:e2e
   heavy:
     # FATE samples + benchmarks: nightly, on demand, or with the "heavy" PR label.
     if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'heavy')
