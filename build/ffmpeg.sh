@@ -14,6 +14,7 @@ CONF_FLAGS=(
   --disable-runtime-cpudetect   # disable cpu detection
   --disable-autodetect          # disable env auto detect
   --pkg-config-flags=--static   # static libraries also need their private dependencies
+  --disable-network             # no sockets in a browser; untrusted args could otherwise open WebSockets
 
   # assign toolchains and extra flags
   --nm=emnm
