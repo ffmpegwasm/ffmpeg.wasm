@@ -5,7 +5,7 @@ import { expect } from "vitest";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { test } from "../../helpers/ffmpeg.js";
 
-test.fails("works through a Proxy, like Vue's reactive() (#687)", () => {
+test("works through a Proxy, like Vue's reactive()", () => {
   const ffmpeg = new Proxy(new FFmpeg(), {});
   ffmpeg.on("log", () => {});
   ffmpeg.off("log", () => {});

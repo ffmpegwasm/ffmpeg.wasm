@@ -12,3 +12,4 @@ export const ERROR_NOT_ISOLATED = new Error(
 export const ERROR_WORKER = new Error(
   "ffmpeg worker failed, most likely its script could not be loaded (network, CORS/CORP or 404)"
 );
+export const ERROR_CRASHED = new Error("ffmpeg-core crashed; call load() to start a new one");
