@@ -12,10 +12,19 @@ const defaultCoreURL = () => {
   return pathToFileURL(umd.replace(/[\\/]umd[\\/]/, "/esm/")).href;
 };
 
+// Paths (including Windows ones) become file: URLs, which is what import()
+// and emscripten expect (#438).
+const toURL = (pathOrURL: string) =>
+  /^(file|https?|data|blob):/i.test(pathOrURL) ? pathOrURL : pathToFileURL(pathOrURL).href;
+
 parentPort!.on("message", (data: FFMessageEvent["data"]) => {
   if (data.type === "LOAD") {
-    const config = (data.data ?? {}) as FFMessageLoadConfig;
-    data.data = { ...config, coreURL: config.coreURL ?? defaultCoreURL() };
+    const { coreURL, wasmURL, ...config } = (data.data ?? {}) as FFMessageLoadConfig;
+    data.data = {
+      ...config,
+      coreURL: coreURL ? toURL(coreURL) : defaultCoreURL(),
+      ...(wasmURL && { wasmURL: toURL(wasmURL) }),
+    };
   }
   scope.onmessage({ data });
 });
