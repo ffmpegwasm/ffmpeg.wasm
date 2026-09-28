@@ -14,11 +14,19 @@ import "ace-builds/src-noconflict/mode-text";
 import "ace-builds/src-noconflict/theme-dracula";
 import "ace-builds/src-noconflict/theme-github";
 
-const genFFmpegText = (args: string) => {
-  let data: any = [];
+// The arguments as a list of strings, or [] while the JSON is incomplete or not
+// such a list (#791, #872).
+export const parseArgs = (args: string): string[] => {
   try {
-    data = JSON.parse(args);
-  } catch (e) {}
+    const data: unknown = JSON.parse(args);
+    return Array.isArray(data) && data.every((a) => typeof a === "string") ? data : [];
+  } catch {
+    return [];
+  }
+};
+
+const genFFmpegText = (args: string) => {
+  const data = parseArgs(args);
   return `// equivalent ffmpeg.wasm API call
 ffmpeg.exec(${JSON.stringify(data)});
 

@@ -12,7 +12,7 @@ import { downloadFile } from "@site/src/util";
 import { Node } from "./types";
 import FileSystemManager from "./FileSystemManager";
 import { SAMPLE_FILES } from "../const";
-import Editor from "./Editor";
+import Editor, { parseArgs } from "./Editor";
 
 const defaultArgs = JSON.stringify(["-i", "video.webm", "video.mp4"], null, 2);
 
@@ -136,7 +136,7 @@ export default function Workspace({ ffmpeg: _ffmpeg }: WorkspaceProps) {
     ffmpeg.on("log", logListener);
     ffmpeg.on("progress", progListener);
     const start = performance.now();
-    await ffmpeg.exec(JSON.parse(args));
+    await ffmpeg.exec(parseArgs(args));
     setTime(performance.now() - start);
     ffmpeg.off("log", logListener);
     ffmpeg.off("progress", progListener);
