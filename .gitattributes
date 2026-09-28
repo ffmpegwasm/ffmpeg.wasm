@@ -1,1 +1,2 @@
 . !text !filter !merge !diff
+tests/heavy/baseline/*.json linguist-generated=true
