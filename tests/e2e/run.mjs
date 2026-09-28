@@ -107,6 +107,17 @@ await test("playground: loads the core and runs the default command", async (pag
   await workspace.getByText("video.mp4", { exact: true }).waitFor();
 });
 
+await test("playground: survives arguments that aren't a list of strings (#791, #872)", async (page) => {
+  await page.goto(`${url}/playground`);
+  const editor = page.getByTestId("playground").locator("#input-args textarea");
+  for (const args of ["", "{", '["-i", {"toString": "1"}]', "42"]) {
+    await editor.focus();
+    await page.keyboard.press("ControlOrMeta+A");
+    await page.keyboard.insertText(args);
+    await page.getByTestId("playground").getByText("ffmpeg.exec([]);").waitFor();
+  }
+});
+
 await browser.close();
 server.close();
 process.exit(failures ? 1 : 0);
