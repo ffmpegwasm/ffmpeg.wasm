@@ -12,3 +12,9 @@ test("exports FS with the file systems mount() offers", async ({ core }) => {
   expect(core.FS.filesystems).toHaveProperty("MEMFS");
   expect(core.FS.filesystems).toHaveProperty("WORKERFS");
 });
+
+// Allocation and memory helpers stay inside the core.
+test.for(["_malloc", "_free", "_abort", "setValue", "getValue", "stringToUTF8", "stackSave"])(
+  "does not export %s",
+  (name, { core }) => expect(core[name]).toBeUndefined()
+);

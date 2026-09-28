@@ -62,7 +62,7 @@ MT_FLAGS=(
   -sDEFAULT_PTHREAD_STACK_SIZE=2MB         # the 64KB default overflows in x264 and decoder threads
   -sPTHREAD_POOL_SIZE=64                   # workers started with the module; FFmpeg 9 runs a thread per demuxer, decoder, filter, encoder and muxer
   -sPTHREAD_POOL_SIZE_STRICT=2             # fail instead of hanging when the pool runs out
-  '-sDEFAULT_LIBRARY_FUNCS_TO_INCLUDE=$holdRuntime,$checkIsolation' # see library.js
+  '-sDEFAULT_LIBRARY_FUNCS_TO_INCLUDE=$holdRuntime,$checkIsolation,$stackSave,$stackRestore,$stackAlloc,$stringToUTF8OnStack,$setValue' # library.js, and what bind.js uses
 )
 
 # FFmpeg's threads take turns on the main thread (src/green), so the core
@@ -71,6 +71,7 @@ ST_FLAGS=(
   -sINITIAL_MEMORY=32MB
   -sASYNCIFY                               # green threads switch stacks with Asyncify
   -Wl,--allow-multiple-definition          # src/green's pthread functions replace libc's single-threaded stubs
+  '-sDEFAULT_LIBRARY_FUNCS_TO_INCLUDE=$stackSave,$stackRestore,$stackAlloc,$stringToUTF8OnStack,$setValue' # what bind.js uses
   src/green/pthread.c
 )
 
@@ -82,7 +83,7 @@ JSPI_FLAGS=(
   -Wl,--allow-multiple-definition          # src/green's pthread functions replace libc's single-threaded stubs
   -DGREEN_JSPI src/green/pthread.c
   -sEXPORTED_FUNCTIONS=$(node src/bind/ffmpeg/export.js),_green_entry,_emscripten_stack_set_limits,_emscripten_stack_get_base,_emscripten_stack_get_end
-  '-sDEFAULT_LIBRARY_FUNCS_TO_INCLUDE=$stackSave,$stackRestore' # src/green's JavaScript
+  '-sDEFAULT_LIBRARY_FUNCS_TO_INCLUDE=$stackSave,$stackRestore,$stackAlloc,$stringToUTF8OnStack,$setValue' # src/green's JavaScript, and what bind.js uses
 )
 
 if [[ -n "${FFMPEG_MT:-}" ]]; then
