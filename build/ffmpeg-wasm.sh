@@ -30,14 +30,16 @@ CONF_FLAGS=(
   -lswscale 
   -Wno-deprecated-declarations 
   $LDFLAGS 
-  -sENVIRONMENT=worker
+  -sENVIRONMENT=web,worker                # web: tests/*.html run the core on the page
   -sWASM_BIGINT                            # enable big int support
+  -sDEFAULT_TO_CXX                         # x265, zimg and harfbuzz are C++
   -sUSE_SDL=2                              # use emscripten SDL2 lib port
   -sSTACK_SIZE=5MB                         # increase stack size to support libopus
   -sMODULARIZE                             # modularized to use as a library
   ${FFMPEG_MT:+ -sINITIAL_MEMORY=1024MB}   # ALLOW_MEMORY_GROWTH is not recommended when using threads, thus we use a large initial memory
   ${FFMPEG_MT:+ -sPTHREAD_POOL_SIZE=32}    # use 32 threads
   ${FFMPEG_ST:+ -sINITIAL_MEMORY=32MB -sALLOW_MEMORY_GROWTH} # Use just enough memory as memory usage can grow
+  -sINCOMING_MODULE_JS_API=locateFile,mainScriptUrlOrBlob,print,printErr # mainScriptUrlOrBlob: the script pthread workers load
   -sEXPORT_NAME="$EXPORT_NAME"             # required in browser env, so that user can access this module from window object
   -sEXPORTED_FUNCTIONS=$(node src/bind/ffmpeg/export.js) # exported functions
   -sEXPORTED_RUNTIME_METHODS=$(node src/bind/ffmpeg/export-runtime.js) # exported built-in functions

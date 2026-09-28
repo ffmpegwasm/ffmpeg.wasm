@@ -13,6 +13,7 @@ CONF_FLAGS=(
   --disable-debug               # disable debug mode
   --disable-runtime-cpudetect   # disable cpu detection
   --disable-autodetect          # disable env auto detect
+  --pkg-config-flags=--static   # static libraries also need their private dependencies
 
   # assign toolchains and extra flags
   --nm=emnm
@@ -24,6 +25,7 @@ CONF_FLAGS=(
   --dep-cc=emcc
   --extra-cflags="$CFLAGS"
   --extra-cxxflags="$CXXFLAGS"
+  --extra-ldflags="-sDEFAULT_TO_CXX"   # x265, zimg and harfbuzz are C++
 
   # disable thread when FFMPEG_ST is NOT defined
   ${FFMPEG_ST:+ --disable-pthreads --disable-w32threads --disable-os2threads}

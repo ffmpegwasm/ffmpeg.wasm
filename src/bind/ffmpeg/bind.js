@@ -98,32 +98,19 @@ function reset() {
 }
 
 /**
- * In multithread version of ffmpeg.wasm, the bootstrap process is like:
- * 1. Execute ffmpeg-core.js
- * 2. ffmpeg-core.js spawns workers by calling `new Worker("ffmpeg-core.worker.js")`
- * 3. ffmpeg-core.worker.js imports ffmpeg-core.js
- * 4. ffmpeg-core.js imports ffmpeg-core.wasm
+ * ffmpeg-core.wasm is expected next to ffmpeg-core.js. When it lives
+ * elsewhere (e.g. a Blob URL), @ffmpeg/ffmpeg passes its URL in the hash of
+ * mainScriptUrlOrBlob, the script the multi-threaded core starts its threads
+ * from:
  *
- * It is a straightforward process when all files are in the same location.
- * But when files are in different location (or Blob URL), #4 fails because
- * there is no way to pass custom ffmpeg-core.wasm URL to ffmpeg-core.worker.js
- * when it imports ffmpeg-core.js in #3.
- *
- * To fix this issue, a hack here is leveraging mainScriptUrlOrBlob variable by
- * adding wasmURL and workerURL in base64 format as query string. ex:
- *
- *   http://example.com/ffmpeg-core.js#{btoa(JSON.stringify({"wasmURL": "...", "workerURL": "..."}))}
- *
- * Thus, we can successfully extract custom URLs using _locateFile funciton.
+ *   http://example.com/ffmpeg-core.js#{btoa(JSON.stringify({ wasmURL: "..." }))}
  */
 function _locateFile(path, prefix) {
   const mainScriptUrlOrBlob = Module["mainScriptUrlOrBlob"];
-  if (mainScriptUrlOrBlob) {
-    const { wasmURL, workerURL } = JSON.parse(
-      atob(mainScriptUrlOrBlob.slice(mainScriptUrlOrBlob.lastIndexOf("#") + 1))
-    );
-    if (path.endsWith(".wasm")) return wasmURL;
-    if (path.endsWith(".worker.js")) return workerURL;
+  if (mainScriptUrlOrBlob && path.endsWith(".wasm")) {
+    const hash = mainScriptUrlOrBlob.slice(mainScriptUrlOrBlob.lastIndexOf("#") + 1);
+    const { wasmURL } = JSON.parse(atob(hash));
+    if (wasmURL) return wasmURL;
   }
   return prefix + path;
 }
