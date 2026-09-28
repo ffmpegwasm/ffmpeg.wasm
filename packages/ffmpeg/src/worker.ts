@@ -109,8 +109,9 @@ const load = async ({
   return true;
 };
 
-const exec = async ({ args, timeout = -1 }: FFMessageExecData): Promise<ExitCode> => {
+const exec = async ({ args, timeout = -1, abortFlag }: FFMessageExecData): Promise<ExitCode> => {
   ffmpeg.setTimeout(timeout);
+  if (abortFlag) ffmpeg.setAbortFlag(abortFlag);
   await ffmpeg.exec(...args); // a Promise with the JSPI core
   const ret = ffmpeg.ret;
   ffmpeg.reset();

@@ -132,6 +132,7 @@ export interface FFmpegCoreModule {
   setTimeout: (timeout: number) => void;
   setProgress: (handler: (progress: Progress) => void) => void;
   setThreads: (threads: number) => void;
+  setAbortFlag: (flag: Int32Array | null) => void;
 
   locateFile: (path: string, prefix: string) => string;
 }
