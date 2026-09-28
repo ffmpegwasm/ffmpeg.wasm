@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ffmpeg.wasm heavy tests</title>
+  </head>
+  <body>
+    <script type="module">
+      import { FFmpeg } from "/packages/ffmpeg/dist/esm/index.js";
+
+      const type = new URLSearchParams(location.search).get("type");
+      const coreURL = `${location.origin}/packages/core${type === "mt" ? "-mt" : ""}/dist/esm/ffmpeg-core.js`;
+      let ffmpeg;
+      const logs = [];
+
+      async function load() {
+        ffmpeg?.terminate();
+        ffmpeg = new FFmpeg();
+        ffmpeg.on("log", ({ message }) => logs.push(message));
+        await ffmpeg.load({ coreURL });
+      }
+
+      const hex = (buf) => [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+
+      // Runs `args` and returns the exit code, time, the last log lines and
+      // the SHA-256 of /out. `name` (default /in) is the fetched `input`, or
+      // what the untimed `setup` command wrote.
+      window.run = async ({ input, name = "/in", setup, args, timeout }) => {
+        if (!ffmpeg) await load();
+        if (input) await ffmpeg.writeFile(name, new Uint8Array(await (await fetch(input)).arrayBuffer()));
+        if (setup) await ffmpeg.exec(setup);
+        logs.length = 0;
+        const start = performance.now();
+        let ret;
+        let error;
+        try {
+          ret = await ffmpeg.exec(args, timeout);
+        } catch (e) {
+          error = String(e);
+        }
+        const ms = Math.round(performance.now() - start);
+        let out;
+        if (ret !== undefined) {
+          try {
+            out = await ffmpeg.readFile("/out");
+            await ffmpeg.deleteFile("/out");
+          } catch {
+            // no output
+          }
+          if (input || setup) await ffmpeg.deleteFile(name);
+        } else {
+          await load(); // the core threw or aborted; start over with a fresh one
+        }
+        return {
+          ret, error, ms,
+          tail: logs.filter((l) => l !== "Aborted()").slice(-3).join("\n"),
+          out: out && { bytes: out.length, sha256: hex(await crypto.subtle.digest("SHA-256", out)), text: out.length < 1e6 ? new TextDecoder().decode(out) : null },
+        };
+      };
+      window.reload = load;
+      window.ready = true;
+    </script>
+  </body>
+</html>

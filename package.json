@@ -14,7 +14,9 @@
     "postinstall": "pnpm build",
     "pretest": "pnpm build",
     "test": "vitest run",
-    "test:install": "playwright install --with-deps chromium"
+    "test:install": "playwright install --with-deps chromium",
+    "test:heavy": "node tests/heavy/fate.mjs",
+    "bench": "node tests/heavy/bench.mjs"
   },
   "devDependencies": {
     "@ffmpeg/ffmpeg": "workspace:*",

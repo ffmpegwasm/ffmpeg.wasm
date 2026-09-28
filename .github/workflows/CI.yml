@@ -5,6 +5,10 @@ on:
     branches:
       - main
   pull_request:
+    types: [opened, synchronize, reopened, labeled]
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
 
 jobs:
   build-core:
@@ -108,3 +112,39 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm test:install
       - run: pnpm test --project browser-st --project browser-mt
+  heavy:
+    # FATE samples + benchmarks: nightly, on demand, or with the "heavy" PR label.
+    if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'heavy')
+    runs-on: ubuntu-latest
+    needs: [build-core, build-core-mt]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: ffmpeg-core
+          path: packages/core/dist
+      - uses: actions/download-artifact@v4
+        with:
+          name: ffmpeg-core-mt
+          path: packages/core-mt/dist
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - uses: actions/cache@v4
+        with:
+          path: .cache/fate-suite
+          key: fate-suite-v1
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test:install
+      - name: FATE samples
+        run: pnpm test:heavy
+      - name: Benchmarks
+        if: always()
+        run: pnpm bench
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: heavy-results
+          path: tests/heavy/results
