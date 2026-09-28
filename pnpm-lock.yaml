@@ -172,6 +172,12 @@ importers:
 
   .:
     devDependencies:
+      '@ffmpeg/ffmpeg':
+        specifier: workspace:*
+        version: link:packages/ffmpeg
+      '@ffmpeg/util':
+        specifier: workspace:*
+        version: link:packages/util
       '@vitest/browser-playwright':
         specifier: ^5.0.2
         version: 5.0.2(playwright@1.63.0)(vite@6.4.3(jiti@2.7.0)(less@4.2.0)(sass@1.71.1)(terser@5.51.2)(yaml@2.9.1))(vitest@5.0.2)

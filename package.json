@@ -1,6 +1,7 @@
 {
   "name": "root",
   "private": true,
+  "type": "module",
   "packageManager": "pnpm@12.6.0",
   "engines": {
     "node": ">=22"
@@ -10,9 +11,14 @@
     "build": "pnpm -r --filter './packages/*' build",
     "build:wasm": "bash scripts/build-wasm.sh",
     "prepublishOnly": "pnpm build",
-    "postinstall": "pnpm build"
+    "postinstall": "pnpm build",
+    "pretest": "pnpm build",
+    "test": "vitest run",
+    "test:install": "playwright install --with-deps chromium"
   },
   "devDependencies": {
+    "@ffmpeg/ffmpeg": "workspace:*",
+    "@ffmpeg/util": "workspace:*",
     "@vitest/browser-playwright": "^5.0.2",
     "playwright": "^1.63.0",
     "vitest": "^5.0.2"
