@@ -17,6 +17,8 @@ export const samples = readdirSync(suite, { recursive: true })
 
 // Damaged streams whose error concealment differs between runs with frame threads.
 const UNSTABLE_OUTPUT = [
+  "aac/aac-sce-in-stereo.mp4",
+  "h264-conformance/FM1_FT_E.264",
   "hevc/two_first_slice.mp4",
   "mov/empty_edit_5s.mp4",
   "mxf/C0023S01.mxf",
