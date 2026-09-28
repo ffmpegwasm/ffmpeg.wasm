@@ -190,6 +190,9 @@ importers:
       playwright:
         specifier: ^1.63.0
         version: 1.63.0
+      sirv:
+        specifier: ^3.0.2
+        version: 3.0.2
       vitest:
         specifier: ^5.0.2
         version: 5.0.2(@types/node@22.20.4)(@vitest/browser-playwright@5.0.2)(@vitest/ui@5.0.2)(vite@6.4.3(@types/node@22.20.4)(jiti@2.7.0)(less@4.2.0)(sass@1.71.1)(terser@5.51.2)(yaml@2.9.1))
