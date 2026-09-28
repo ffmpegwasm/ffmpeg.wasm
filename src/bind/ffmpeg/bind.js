@@ -1,47 +1,10 @@
-/**
- * Constants
- */
-
-const NULL = 0;
-const SIZE_I32 = Uint32Array.BYTES_PER_ELEMENT;
 const DEFAULT_ARGS = ["./ffmpeg", "-nostdin", "-y"];
 const DEFAULT_ARGS_FFPROBE = ["./ffprobe"];
-
-Module["NULL"] = NULL;
-Module["SIZE_I32"] = SIZE_I32;
-Module["DEFAULT_ARGS"] = DEFAULT_ARGS;
-Module["DEFAULT_ARGS_FFPROBE"] = DEFAULT_ARGS_FFPROBE;
-
-/**
- * Variables
- */
 
 Module["ret"] = -1;
 Module["timeout"] = -1;
 Module["logger"] = () => {};
 Module["progress"] = () => {};
-
-/**
- * Functions
- */
-
-function stringToPtr(str) {
-  const len = Module["lengthBytesUTF8"](str) + 1;
-  const ptr = Module["_malloc"](len);
-  Module["stringToUTF8"](str, ptr, len);
-
-  return ptr;
-}
-
-function stringsToPtr(strs) {
-  const len = strs.length;
-  const ptr = Module["_malloc"](len * SIZE_I32);
-  for (let i = 0; i < len; i++) {
-    Module["setValue"](ptr + SIZE_I32 * i, stringToPtr(strs[i]), "i32");
-  }
-
-  return ptr;
-}
 
 function print(message) {
   Module["logger"]({ type: "stdout", message });
@@ -53,25 +16,22 @@ function printErr(message) {
 
 function runCommand(fn, args) {
   const sp = stackSave();
-  const argv = stringsToPtr(args);
   try {
-    Module[fn](args.length, argv); // sets Module["ret"] (run.c)
+    const argv = stackAlloc(args.length * 4);
+    args.forEach((arg, i) => setValue(argv + i * 4, stringToUTF8OnStack(arg), "*"));
+    fn(args.length, argv); // sets Module["ret"] (run.c)
   } finally {
     stackRestore(sp);
-    for (let i = 0; i < args.length; i++) {
-      Module["_free"](Module["getValue"](argv + SIZE_I32 * i, "i32"));
-    }
-    Module["_free"](argv);
   }
   return Module["ret"];
 }
 
-function exec(..._args) {
-  return runCommand("_run_ffmpeg", [...Module["DEFAULT_ARGS"], ..._args]);
+function exec(...args) {
+  return runCommand(_run_ffmpeg, [...DEFAULT_ARGS, ...args]);
 }
 
-function ffprobe(..._args) {
-  return runCommand("_run_ffprobe", [...Module["DEFAULT_ARGS_FFPROBE"], ..._args]);
+function ffprobe(...args) {
+  return runCommand(_run_ffprobe, [...DEFAULT_ARGS_FFPROBE, ...args]);
 }
 
 function setLogger(logger) {
@@ -121,8 +81,6 @@ function _locateFile(path, prefix) {
   return prefix + path;
 }
 
-Module["stringToPtr"] = stringToPtr;
-Module["stringsToPtr"] = stringsToPtr;
 Module["print"] = print;
 Module["printErr"] = printErr;
 Module["locateFile"] = _locateFile;
