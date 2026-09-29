@@ -45,7 +45,6 @@ let ffmpeg: FFmpegCoreModule;
 const load = async ({
   coreURL: _coreURL,
   wasmURL: _wasmURL,
-  workerURL: _workerURL,
 }: FFMessageLoadConfig): Promise<IsFirst> => {
   const first = !ffmpeg;
 
@@ -69,16 +68,11 @@ const load = async ({
 
   const coreURL = _coreURL;
   const wasmURL = _wasmURL ? _wasmURL : _coreURL.replace(/.js$/g, ".wasm");
-  const workerURL = _workerURL
-    ? _workerURL
-    : _coreURL.replace(/.js$/g, ".worker.js");
 
   ffmpeg = await (self as WorkerGlobalScope).createFFmpegCore({
-    // Fix `Overload resolution failed.` when using multi-threaded ffmpeg-core.
-    // Encoded wasmURL and workerURL in the URL as a hack to fix locateFile issue.
-    mainScriptUrlOrBlob: `${coreURL}#${btoa(
-      JSON.stringify({ wasmURL, workerURL })
-    )}`,
+    // Multi-threaded ffmpeg-core starts its threads from this script; the hash
+    // carries the wasm URL for _locateFile() in bind.js.
+    mainScriptUrlOrBlob: `${coreURL}#${btoa(JSON.stringify({ wasmURL }))}`,
   });
   ffmpeg.setLogger((data) =>
     self.postMessage({ type: FFMessageType.LOG, data })
