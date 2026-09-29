@@ -68,6 +68,10 @@ export class FFmpeg {
           case FFMessageType.UNMOUNT:
           case FFMessageType.EXEC:
           case FFMessageType.FFPROBE:
+          case FFMessageType.OPEN:
+          case FFMessageType.READ:
+          case FFMessageType.WRITE:
+          case FFMessageType.CLOSE:
           case FFMessageType.WRITE_FILE:
           case FFMessageType.READ_FILE:
           case FFMessageType.DELETE_FILE:
@@ -406,6 +410,60 @@ export class FFmpeg {
       undefined,
       signal
     ) as Promise<FileData>;
+
+  /**
+   * Open a file to read or write it in chunks, e.g. to stream a large download
+   * into the file system. `flags` are Node.js-style: "r", "r+", "w", "w+",
+   * "a", "a+". Resolves to a file descriptor for read(), write() and close().
+   *
+   * @example
+   * ```ts
+   * const fd = await ffmpeg.open("input.mp4", "w");
+   * for await (const chunk of response.body) await ffmpeg.write(fd, chunk);
+   * await ffmpeg.close(fd);
+   * ```
+   *
+   * @category File System
+   */
+  public open = (path: string, flags: string, { signal }: FFMessageOptions = {}): Promise<number> =>
+    this.#send({ type: FFMessageType.OPEN, data: { path, flags } }, undefined, signal) as Promise<number>;
+
+  /**
+   * Read up to `length` bytes, from `position` or where the last read or write
+   * ended. Resolves to the bytes read: fewer than `length`, and empty, at the
+   * end of the file.
+   *
+   * @category File System
+   */
+  public read = (fd: number, length: number, position?: number, { signal }: FFMessageOptions = {}): Promise<Uint8Array> =>
+    this.#send({ type: FFMessageType.READ, data: { fd, length, position } }, undefined, signal) as Promise<Uint8Array>;
+
+  /**
+   * Write `data` at `position` or where the last read or write ended.
+   * Resolves to the number of bytes written. Like writeFile(), `data` is
+   * transferred (left empty) unless `{ transfer: false }`.
+   *
+   * @category File System
+   */
+  public write = (
+    fd: number,
+    data: Uint8Array,
+    position?: number,
+    { signal, transfer = true }: FFMessageOptions & { transfer?: boolean } = {}
+  ): Promise<number> =>
+    this.#send(
+      { type: FFMessageType.WRITE, data: { fd, data, position } },
+      transfer ? [data.buffer] : [],
+      signal
+    ) as Promise<number>;
+
+  /**
+   * Close a file opened with open().
+   *
+   * @category File System
+   */
+  public close = (fd: number, { signal }: FFMessageOptions = {}): Promise<OK> =>
+    this.#send({ type: FFMessageType.CLOSE, data: { fd } }, undefined, signal) as Promise<OK>;
 
   /**
    * Delete a file.

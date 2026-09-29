@@ -7,6 +7,10 @@ import type {
   FFMessageEvent,
   FFMessageLoadConfig,
   FFMessageExecData,
+  FFMessageOpenData,
+  FFMessageReadData,
+  FFMessageWriteData,
+  FFMessageCloseData,
   FFMessageWriteFileData,
   FFMessageReadFileData,
   FFMessageDeleteFileData,
@@ -131,6 +135,22 @@ const writeFile = ({ path, data }: FFMessageWriteFileData): OK => {
   return true;
 };
 
+const open = ({ path, flags }: FFMessageOpenData): number => ffmpeg.FS.open(path, flags).fd;
+
+const read = ({ fd, length, position }: FFMessageReadData): Uint8Array => {
+  const buffer = new Uint8Array(length);
+  const count = ffmpeg.FS.read(ffmpeg.FS.getStreamChecked(fd), buffer, 0, length, position);
+  return buffer.subarray(0, count);
+};
+
+const write = ({ fd, data, position }: FFMessageWriteData): number =>
+  ffmpeg.FS.write(ffmpeg.FS.getStreamChecked(fd), data, 0, data.length, position);
+
+const close = ({ fd }: FFMessageCloseData): OK => {
+  ffmpeg.FS.close(ffmpeg.FS.getStreamChecked(fd));
+  return true;
+};
+
 const readFile = ({ path, encoding }: FFMessageReadFileData): FileData =>
   ffmpeg.FS.readFile(path, { encoding });
 
@@ -185,6 +205,7 @@ const unmount = ({ mountPoint }: FFMessageUnmountData): OK => {
 // carry an errno.
 const ERRNO: Record<number, string> = {
   2: "EACCES: permission denied",
+  8: "EBADF: bad file descriptor",
   10: "EBUSY: resource busy",
   20: "EEXIST: file already exists",
   28: "EINVAL: invalid argument",
@@ -217,6 +238,18 @@ self.onmessage = async ({
         break;
       case FFMessageType.FFPROBE:
         data = await ffprobe(_data as FFMessageExecData);
+        break;
+      case FFMessageType.OPEN:
+        data = open(_data as FFMessageOpenData);
+        break;
+      case FFMessageType.READ:
+        data = read(_data as FFMessageReadData);
+        break;
+      case FFMessageType.WRITE:
+        data = write(_data as FFMessageWriteData);
+        break;
+      case FFMessageType.CLOSE:
+        data = close(_data as FFMessageCloseData);
         break;
       case FFMessageType.WRITE_FILE:
         data = writeFile(_data as FFMessageWriteFileData);
