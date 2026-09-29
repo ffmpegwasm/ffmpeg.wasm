@@ -7,7 +7,7 @@ import { exec } from "../../helpers/run.js";
 const buildconf = (core) => exec(core, "-buildconf").log;
 
 const libs = ["gpl", "libx264", "libvpx", "libmp3lame", "libtheora", "libvorbis",
-  "libopus", "zlib", "libwebp", "libfreetype", "libfribidi", "libass", "libzimg"];
+  "libopus", "zlib", "libwebp", "libfreetype", "libfribidi", "libass", "libzimg", "libdav1d"];
 
 test.for(libs)("--enable-%s", (lib, { core }) => {
   expect(buildconf(core)).to.include(`--enable-${lib}`);

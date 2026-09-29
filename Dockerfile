@@ -141,6 +141,13 @@ ADD https://github.com/sekrit-twc/zimg.git#f819b14e8f39d1282400b0d9543e8ef73c1b2
 COPY build/zimg.sh /src/build.sh
 RUN bash -x /src/build.sh
 
+# Build dav1d (AV1 decoder)
+FROM emsdk-base AS dav1d-builder
+# 1.5.4
+ADD https://code.videolan.org/videolan/dav1d.git#54706fc6bc0cdecab7e9593974a4039cc038fca7 /src
+COPY build/dav1d.sh /src/build.sh
+RUN bash -x /src/build.sh
+
 # Base ffmpeg image with dependencies and source code populated.
 FROM emsdk-base AS ffmpeg-base
 # n9.0.2
@@ -155,6 +162,7 @@ COPY --from=vorbis-builder $INSTALL_DIR $INSTALL_DIR
 COPY --from=libwebp-builder $INSTALL_DIR $INSTALL_DIR
 COPY --from=libass-builder $INSTALL_DIR $INSTALL_DIR
 COPY --from=zimg-builder $INSTALL_DIR $INSTALL_DIR
+COPY --from=dav1d-builder $INSTALL_DIR $INSTALL_DIR
 
 # Build ffmpeg
 FROM ffmpeg-base AS ffmpeg-builder
@@ -174,7 +182,8 @@ RUN bash -x /src/build.sh \
       --enable-libfribidi \
       --enable-libharfbuzz \
       --enable-libass \
-      --enable-libzimg
+      --enable-libzimg \
+      --enable-libdav1d
 
 # Build ffmpeg.wasm: patch FFmpeg's fftools (patches/ffmpeg) and link them
 # with the libraries.
@@ -184,7 +193,7 @@ RUN git apply /patches/*.patch
 COPY src/green /src/src/green
 COPY src/bind /src/src/bind
 COPY build/ffmpeg-wasm.sh build.sh
-ENV FFMPEG_LIBS="-lx264 ${FFMPEG_MT:+-lx265} -lvpx -lmp3lame -logg -ltheora -lvorbis -lvorbisenc -lvorbisfile -lopus -lz -lwebpmux -lwebp -lsharpyuv -lfreetype -lfribidi -lharfbuzz -lass -lzimg"
+ENV FFMPEG_LIBS="-lx264 ${FFMPEG_MT:+-lx265} -lvpx -lmp3lame -logg -ltheora -lvorbis -lvorbisenc -lvorbisfile -lopus -lz -lwebpmux -lwebp -lsharpyuv -lfreetype -lfribidi -lharfbuzz -lass -lzimg -ldav1d"
 RUN mkdir -p /src/dist/umd && bash -x /src/build.sh \
       ${FFMPEG_LIBS} \
       -o dist/umd/ffmpeg-core.js
