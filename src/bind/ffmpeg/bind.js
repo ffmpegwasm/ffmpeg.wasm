@@ -51,18 +51,35 @@ function printErr(message) {
   Module["logger"]({ type: "stderr", message });
 }
 
+// Returns the exit code, or with the JSPI core a Promise of it. One command at
+// a time: two JSPI commands would interleave in the same module.
 function runCommand(fn, args) {
+  if (Module["running"]) throw new Error("ffmpeg-core runs one command at a time; await the previous one");
+  Module["running"] = true;
   const sp = stackSave();
   const argv = stringsToPtr(args);
-  try {
-    Module[fn](args.length, argv); // sets Module["ret"] (run.c)
-  } finally {
+  const cleanUp = () => {
+    Module["running"] = false;
     stackRestore(sp);
     for (let i = 0; i < args.length; i++) {
       Module["_free"](Module["getValue"](argv + SIZE_I32 * i, "i32"));
     }
     Module["_free"](argv);
+  };
+  let running;
+  try {
+    running = Module[fn](args.length, argv); // sets Module["ret"] (run.c)
+  } catch (e) {
+    cleanUp();
+    throw e;
   }
+  if (running instanceof Promise) {
+    return running.then(
+      () => (cleanUp(), Module["ret"]),
+      (e) => (cleanUp(), Promise.reject(e))
+    );
+  }
+  cleanUp();
   return Module["ret"];
 }
 

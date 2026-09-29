@@ -164,13 +164,17 @@ COPY src/green /src/src/green
 COPY src/bind /src/src/bind
 COPY build/ffmpeg-wasm.sh build.sh
 ENV FFMPEG_LIBS="-lx264 ${FFMPEG_MT:+-lx265} -lvpx -lmp3lame -logg -ltheora -lvorbis -lvorbisenc -lvorbisfile -lopus -lz -lwebpmux -lwebp -lsharpyuv -lfreetype -lfribidi -lharfbuzz -lass -lzimg"
+# FFMPEG_JSPI=yes (with FFMPEG_ST=yes): the single-threaded core with JSPI,
+# built next to it as ffmpeg-core-jspi.js.
+ARG FFMPEG_JSPI
+ENV FFMPEG_JSPI=$FFMPEG_JSPI
 RUN mkdir -p /src/dist/umd && bash -x /src/build.sh \
       ${FFMPEG_LIBS} \
-      -o dist/umd/ffmpeg-core.js
+      -o dist/umd/ffmpeg-core${FFMPEG_JSPI:+-jspi}.js
 RUN mkdir -p /src/dist/esm && bash -x /src/build.sh \
       ${FFMPEG_LIBS} \
       -sEXPORT_ES6 \
-      -o dist/esm/ffmpeg-core.js && \
+      -o dist/esm/ffmpeg-core${FFMPEG_JSPI:+-jspi}.js && \
     echo '{"type": "module"}' > dist/esm/package.json
 
 # Export ffmpeg-core.wasm to dist/, use `docker buildx build -o . .` to get assets

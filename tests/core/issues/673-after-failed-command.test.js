@@ -4,12 +4,12 @@
 // reloaded. FFmpeg 9 returns from errors instead of aborting.
 import { expect } from "vitest";
 import { test } from "../../helpers/core.js";
-import { exec } from "../../helpers/run.js";
+import { exec, times } from "../../helpers/run.js";
 
-test("commands keep working after a failed one", ({ core, dir }) => {
-  const failed = core.exec("-i", `${dir}/missing.mp4`, `${dir}/o.mp4`);
-  const helps = Array.from({ length: 20 }, () => core.exec("-h"));
-  const real = exec(core, "-f", "lavfi", "-i", "sine=d=0.1", `${dir}/a.wav`);
+test("commands keep working after a failed one", async ({ core, dir }) => {
+  const failed = await core.exec("-i", `${dir}/missing.mp4`, `${dir}/o.mp4`);
+  const helps = await times(20, () => core.exec("-h"));
+  const real = await exec(core, "-f", "lavfi", "-i", "sine=d=0.1", `${dir}/a.wav`);
   expect(failed).to.not.equal(0);
   expect(helps).toEqual(Array(20).fill(0));
   expect(real.ret).to.equal(0);

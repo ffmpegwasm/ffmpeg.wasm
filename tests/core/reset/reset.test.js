@@ -1,7 +1,7 @@
 import { expect } from "vitest";
 import { test } from "../../helpers/core.js";
 
-test("sets ret and timeout back to -1", ({ core }) => {
+test("sets ret and timeout back to -1", async ({ core }) => {
   core.ret = 1024;
   core.timeout = 1024;
   core.reset();
@@ -9,7 +9,7 @@ test("sets ret and timeout back to -1", ({ core }) => {
   expect(core.timeout).to.equal(-1);
 });
 
-test("keeps the logger and progress handlers", ({ core }) => {
+test("keeps the logger and progress handlers", async ({ core }) => {
   const logger = () => {};
   const progress = () => {};
   core.setLogger(logger);

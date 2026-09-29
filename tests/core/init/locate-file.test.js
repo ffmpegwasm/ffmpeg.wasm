@@ -6,7 +6,7 @@ import { test } from "../../helpers/core.js";
 
 const hash = (obj) => btoa(JSON.stringify(obj));
 
-test("returns the wasmURL from the hash", ({ core }) => {
+test("returns the wasmURL from the hash", async ({ core }) => {
   core.mainScriptUrlOrBlob = `https://cdn/ffmpeg-core.js#${hash({ wasmURL: "W" })}`;
   const wasm = core.locateFile("ffmpeg-core.wasm", "p/");
   const other = core.locateFile("other.data", "p/");
@@ -14,7 +14,7 @@ test("returns the wasmURL from the hash", ({ core }) => {
   expect(other).to.equal("p/other.data");
 });
 
-test("falls back to prefix + path without mainScriptUrlOrBlob", ({ core }) => {
+test("falls back to prefix + path without mainScriptUrlOrBlob", async ({ core }) => {
   core.mainScriptUrlOrBlob = undefined;
   const wasm = core.locateFile("ffmpeg-core.wasm", "https://x/y/");
   expect(wasm).to.equal("https://x/y/ffmpeg-core.wasm");

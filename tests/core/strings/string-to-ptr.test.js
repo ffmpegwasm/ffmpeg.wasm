@@ -1,7 +1,7 @@
 import { expect } from "vitest";
 import { test } from "../../helpers/core.js";
 
-test.for(["", "-i", "video with spaces.mp4", "ünïcödé-文件-🎬.mp4"])("round-trips %j as NUL-terminated UTF-8", (s, { core }) => {
+test.for(["", "-i", "video with spaces.mp4", "ünïcödé-文件-🎬.mp4"])("round-trips %j as NUL-terminated UTF-8", async (s, { core }) => {
   const ptr = core.stringToPtr(s);
   const readBack = core.UTF8ToString(ptr);
   const terminator = core.getValue(ptr + core.lengthBytesUTF8(s), "i8");

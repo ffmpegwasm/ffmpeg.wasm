@@ -7,9 +7,12 @@ const core = (name) => ({
   test: { name: `core-${name}`, include: ["tests/core/**/*.test.js"], provide: { core: name } },
 });
 
+// The JSPI build of @ffmpeg/core needs WebAssembly.Suspending: Node.js 24+.
+const jspi = typeof WebAssembly.Suspending === "function";
+
 // @ffmpeg/ffmpeg and @ffmpeg/util run in Chromium. The multi-threaded core
 // needs SharedArrayBuffer, so a cross-origin isolated page; the
-// single-threaded core must work without one.
+// single-threaded ones must work without one.
 const ISOLATED = {
   "Cross-Origin-Opener-Policy": "same-origin",
   "Cross-Origin-Embedder-Policy": "require-corp",
@@ -37,6 +40,6 @@ export default defineConfig({
   test: {
     testTimeout: 60000,
     hookTimeout: 60000,
-    projects: [core("st"), core("mt"), browser("st"), browser("mt")],
+    projects: [core("st"), core("mt"), ...(jspi ? [core("jspi")] : []), browser("st"), browser("jspi"), browser("mt")],
   },
 });

@@ -124,8 +124,9 @@ export interface FFmpegCoreModule {
   timeout: number;
   mainScriptUrlOrBlob: string;
 
-  exec: (...args: string[]) => number;
-  ffprobe: (...args: string[]) => number;
+  /** A Promise with the JSPI core (ffmpeg-core-jspi.js). */
+  exec: (...args: string[]) => number | Promise<number>;
+  ffprobe: (...args: string[]) => number | Promise<number>;
   reset: () => void;
   setLogger: (logger: (log: Log) => void) => void;
   setTimeout: (timeout: number) => void;

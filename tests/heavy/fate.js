@@ -32,12 +32,12 @@ function summarize(sample, out) {
   return UNSTABLE_OUTPUT.includes(sample) ? { status: "ok", frames } : { status: "ok", frames, hash };
 }
 
-function decode(core, sample) {
+async function decode(core, sample) {
   // keep the extension: FFmpeg guesses some formats from the file name
   const input = `/in${extname(sample)}`;
   core.FS.writeFile(input, readFileSync(join(suite, sample)));
   core.setTimeout(60000);
-  const { ret } = exec(core, ...framemd5(input, "/out"));
+  const { ret } = await exec(core, ...framemd5(input, "/out"));
   const out = ret === 0 ? core.FS.readFile("/out", { encoding: "utf8" }) : "";
   [input, "/out"].filter((path) => core.FS.analyzePath(path).exists).forEach((path) => core.FS.unlink(path));
   return summarize(sample, out);
@@ -50,7 +50,7 @@ export function decoder() {
   return async (sample) => {
     cores.current ??= await createCore();
     try {
-      return decode(cores.current, sample);
+      return await decode(cores.current, sample);
     } catch {
       delete cores.current;
       return { status: "crash" };

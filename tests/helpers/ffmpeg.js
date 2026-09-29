@@ -1,8 +1,8 @@
 import { test as base, inject } from "vitest";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
+import { coreFile } from "./core.js";
 
-export const coreURL = () =>
-  `${location.origin}/packages/${inject("core") === "mt" ? "core-mt" : "core"}/dist/esm/ffmpeg-core.js`;
+export const coreURL = () => `${location.origin}/packages/${coreFile(inject("core"))}`;
 
 export async function loadFFmpeg(config) {
   const ffmpeg = new FFmpeg();

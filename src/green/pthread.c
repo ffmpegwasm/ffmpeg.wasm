@@ -1,7 +1,13 @@
 // Cooperative ("green") pthreads for builds without SharedArrayBuffer: every
-// thread is an emscripten fiber on the main thread, and a thread runs until it
-// blocks (cond wait, join, a held mutex, sleep).
+// thread runs on the main thread, one at a time, until it blocks (cond wait,
+// join, a held mutex, sleep). A switch between threads is an emscripten fiber
+// swap (Asyncify), or with GREEN_JSPI a suspend and resume through JSPI.
+#ifdef GREEN_JSPI
+#include <emscripten/em_js.h>
+#include <emscripten/emscripten.h>
+#else
 #include <emscripten/fiber.h>
+#endif
 #include <errno.h>
 #include <pthread.h>
 #include <sched.h>
@@ -14,20 +20,68 @@
 #define ASYNCIFY_STACK (1 << 18)
 
 typedef struct gthread {
+#ifdef GREEN_JSPI
+  int started;
+#else
   emscripten_fiber_t fiber;
+  void *asyncify_stack;
+#endif
   void *(*fn)(void *);
   void *arg, *ret;
   int id, done, detached, timed_out, ready;
   double deadline; // ms, 0 when not in a timed wait
   pthread_cond_t *waiting_on;
   struct gthread *joiner, *next_ready, *next_waiter;
-  void *c_stack, *asyncify_stack;
+  void *c_stack;
 } gthread;
 
 static gthread main_thread;
 static gthread *current, *ready_head, *ready_tail;
 static gthread *timed[256];
 static int n_timed, next_id = 1;
+
+#ifdef GREEN_JSPI
+// Runs `next` once the current wasm stack has suspended or returned: a new
+// thread starts on its own C stack, a suspended one resumes.
+EM_JS(void, green_run, (void *next, int start, void *top, void *limit), {
+  queueMicrotask(() => {
+    if (start) {
+      _emscripten_stack_set_limits(top, limit);
+      stackRestore(top);
+      _green_entry(next);
+    } else {
+      Module.greenResume.get(next)();
+    }
+  });
+});
+
+// Suspends the current thread until green_run() resumes it, then puts its
+// stack pointer back.
+EM_ASYNC_JS(void, green_switch, (void *prev, void *next, int start, void *top, void *limit), {
+  const sp = stackSave(), base = _emscripten_stack_get_base(), end = _emscripten_stack_get_end();
+  Module.greenResume ??= new Map();
+  const resumed = new Promise((resolve) => Module.greenResume.set(prev, resolve));
+  green_run(next, start, top, limit);
+  await resumed;
+  Module.greenResume.delete(prev);
+  _emscripten_stack_set_limits(base, end);
+  stackRestore(sp);
+});
+
+static void init(void) {
+  if (current) return;
+  main_thread.started = 1;
+  current = &main_thread;
+}
+
+static void run(gthread *prev, gthread *next) {
+  int start = !next->started;
+  next->started = 1;
+  void *top = (char *)next->c_stack + C_STACK;
+  if (prev) green_switch(prev, next, start, top, next->c_stack);
+  else green_run(next, start, top, next->c_stack);
+}
+#else
 static char main_asyncify_stack[ASYNCIFY_STACK];
 
 static void init(void) {
@@ -35,6 +89,7 @@ static void init(void) {
   emscripten_fiber_init_from_current_context(&main_thread.fiber, main_asyncify_stack, ASYNCIFY_STACK);
   current = &main_thread;
 }
+#endif
 
 static double ms(const struct timespec *ts) { return ts->tv_sec * 1e3 + ts->tv_nsec / 1e6; }
 
@@ -74,7 +129,7 @@ static void time_out(gthread *t) {
 
 // Switches to the next ready thread; the current one must already be queued
 // somewhere (ready, a cond, a joiner, the timed list) or it never runs again.
-static void schedule(void) {
+static gthread *pick_next(void) {
   double now = now_ms(CLOCK_MONOTONIC);
   for (int i = n_timed - 1; i >= 0; i--)
     if (timed[i]->deadline <= now) time_out(timed[i]);
@@ -92,10 +147,19 @@ static void schedule(void) {
   next->ready = 0;
   ready_head = next->next_ready;
   if (!ready_head) ready_tail = NULL;
+  return next;
+}
+
+static void schedule(void) {
+  gthread *next = pick_next();
   if (next == current) return;
   gthread *prev = current;
   current = next;
+#ifdef GREEN_JSPI
+  run(prev, next);
+#else
   emscripten_fiber_swap(&prev->fiber, &next->fiber);
+#endif
 }
 
 static void yield(void) {
@@ -103,6 +167,18 @@ static void yield(void) {
   schedule();
 }
 
+#ifdef GREEN_JSPI
+// A new thread, called from JavaScript on its own C stack. When it finishes,
+// the next thread runs from a fresh JavaScript task.
+EMSCRIPTEN_KEEPALIVE void green_entry(gthread *t) {
+  current = t;
+  t->ret = t->fn(t->arg);
+  t->done = 1;
+  if (t->joiner) make_ready(t->joiner);
+  current = pick_next();
+  run(NULL, current);
+}
+#else
 static void entry(void *arg) {
   gthread *t = arg;
   t->ret = t->fn(t->arg);
@@ -110,6 +186,7 @@ static void entry(void *arg) {
   if (t->joiner) make_ready(t->joiner);
   schedule(); // never returns: nothing queues a finished thread
 }
+#endif
 
 int pthread_create(pthread_t *thread, const pthread_attr_t *attr, void *(*fn)(void *), void *arg) {
   init();
@@ -120,8 +197,10 @@ int pthread_create(pthread_t *thread, const pthread_attr_t *attr, void *(*fn)(vo
   // wasm's stack pointer must stay 16-byte aligned, and emscripten_fiber_init
   // doesn't align the top of the stack; malloc only guarantees 8 bytes.
   t->c_stack = aligned_alloc(16, C_STACK);
+#ifndef GREEN_JSPI
   t->asyncify_stack = aligned_alloc(16, ASYNCIFY_STACK);
   emscripten_fiber_init(&t->fiber, entry, t, t->c_stack, C_STACK, t->asyncify_stack, ASYNCIFY_STACK);
+#endif
   make_ready(t);
   *thread = (pthread_t)t;
   return 0;
@@ -129,7 +208,9 @@ int pthread_create(pthread_t *thread, const pthread_attr_t *attr, void *(*fn)(vo
 
 static void destroy(gthread *t) {
   free(t->c_stack);
+#ifndef GREEN_JSPI
   free(t->asyncify_stack);
+#endif
   free(t);
 }
 
