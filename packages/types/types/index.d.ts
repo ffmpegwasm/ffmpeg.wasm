@@ -63,6 +63,13 @@ export interface WorkerFSMountConfig {
 }
 
 /**
+ * An open file, from FS.open().
+ */
+export interface FSStream {
+  fd: number;
+}
+
+/**
  * Functions to interact with Emscripten FS library.
  *
  * @see [Emscripten File System API](https://emscripten.org/docs/api_reference/Filesystem-API.html)
@@ -87,6 +94,11 @@ export interface FS {
     path: string
   ) => void;
   unmount: (path: string) => void;
+  open: (path: string, flags: string) => FSStream;
+  getStreamChecked: (fd: number) => FSStream;
+  read: (stream: FSStream, buffer: Uint8Array, offset: number, length: number, position?: number) => number;
+  write: (stream: FSStream, buffer: Uint8Array, offset: number, length: number, position?: number) => number;
+  close: (stream: FSStream) => void;
   filesystems: FSFilesystems;
 }
 
