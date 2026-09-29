@@ -1,0 +1,51 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: "ffmpeg.wasm" <ffmpeg.wasm@users.noreply.github.com>
+Date: Mon, 28 Sep 2026 22:13:50 -0400
+Subject: [PATCH 4/5] fftools: return ffprobe's errors instead of exiting the
+ module
+
+---
+ fftools/ffprobe.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/fftools/ffprobe.c b/fftools/ffprobe.c
+index f7473f9..ece8b36 100644
+--- a/fftools/ffprobe.c
++++ b/fftools/ffprobe.c
+@@ -2612,7 +2612,7 @@ static int open_input_file(InputFile *ifile, const char *filename,
+ 
+     ifile->streams = av_calloc(fmt_ctx->nb_streams, sizeof(*ifile->streams));
+     if (!ifile->streams)
+-        exit(1);
++        return AVERROR(ENOMEM);
+     ifile->nb_streams = fmt_ctx->nb_streams;
+ 
+     /* bind a decoder to each input stream */
+@@ -2633,15 +2633,15 @@ static int open_input_file(InputFile *ifile, const char *filename,
+             err = filter_codec_opts(codec_opts, stream->codecpar->codec_id,
+                                     fmt_ctx, stream, codec, &opts, NULL);
+             if (err < 0)
+-                exit(1);
++                return err;
+ 
+             ist->dec_ctx = avcodec_alloc_context3(codec);
+             if (!ist->dec_ctx)
+-                exit(1);
++                return AVERROR(ENOMEM);
+ 
+             err = avcodec_parameters_to_context(ist->dec_ctx, stream->codecpar);
+             if (err < 0)
+-                exit(1);
++                return err;
+ 
+             if (do_show_log) {
+                 // For logging it is needed to disable at least frame threads as otherwise
+@@ -2657,7 +2657,7 @@ static int open_input_file(InputFile *ifile, const char *filename,
+             if (avcodec_open2(ist->dec_ctx, codec, &opts) < 0) {
+                 av_log(NULL, AV_LOG_WARNING, "Could not open codec for input stream %d\n",
+                        stream->index);
+-                exit(1);
++                return AVERROR(EINVAL);
+             }
+ 
+             if ((t = av_dict_iterate(opts, NULL))) {

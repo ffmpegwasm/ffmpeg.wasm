@@ -172,6 +172,12 @@ importers:
 
   .:
     devDependencies:
+      '@ffmpeg/core':
+        specifier: workspace:*
+        version: link:packages/core
+      '@ffmpeg/core-mt':
+        specifier: workspace:*
+        version: link:packages/core-mt
       '@ffmpeg/ffmpeg':
         specifier: workspace:*
         version: link:packages/ffmpeg

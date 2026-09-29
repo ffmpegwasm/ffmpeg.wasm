@@ -26,9 +26,6 @@ CONF_FLAGS=(
   --extra-cflags="$CFLAGS"
   --extra-cxxflags="$CXXFLAGS"
   --extra-ldflags="-sDEFAULT_TO_CXX"   # x265, zimg and harfbuzz are C++
-
-  # disable thread when FFMPEG_ST is NOT defined
-  ${FFMPEG_ST:+ --disable-pthreads --disable-w32threads --disable-os2threads}
 )
 
 emconfigure ./configure "${CONF_FLAGS[@]}" $@

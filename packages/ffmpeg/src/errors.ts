@@ -6,6 +6,9 @@ export const ERROR_TERMINATED = new Error("called FFmpeg.terminate()");
 export const ERROR_IMPORT_FAILURE = new Error(
   "failed to import ffmpeg-core.js"
 );
+export const ERROR_NOT_ISOLATED = new Error(
+  "@ffmpeg/core-mt needs SharedArrayBuffer: serve the page with the headers Cross-Origin-Opener-Policy: same-origin and Cross-Origin-Embedder-Policy: require-corp (or credentialless), or use the single-threaded @ffmpeg/core"
+);
 export const ERROR_WORKER = new Error(
   "ffmpeg worker failed, most likely its script could not be loaded (network, CORS/CORP or 404)"
 );

@@ -1,0 +1,125 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: "ffmpeg.wasm" <ffmpeg.wasm@users.noreply.github.com>
+Date: Mon, 28 Sep 2026 22:13:50 -0400
+Subject: [PATCH 1/5] fftools: link ffmpeg and ffprobe into one module
+
+---
+ fftools/cmdutils.h   | 10 ++++++++--
+ fftools/ffmpeg.c     |  7 ++++---
+ fftools/ffmpeg_opt.c |  6 ++++++
+ fftools/ffprobe.c    |  8 ++++----
+ 4 files changed, 22 insertions(+), 9 deletions(-)
+
+diff --git a/fftools/cmdutils.h b/fftools/cmdutils.h
+index 85b468f..3fc3a5a 100644
+--- a/fftools/cmdutils.h
++++ b/fftools/cmdutils.h
+@@ -37,18 +37,24 @@
+ /**
+  * program name, defined by the program for show_version().
+  */
+-extern const char program_name[];
++extern const char *program_name;
+ 
+ /**
+  * program birth year, defined by the program for show_banner()
+  */
+-extern const int program_birth_year;
++extern int program_birth_year;
+ 
+ extern AVDictionary *sws_dict;
+ extern AVDictionary *swr_opts;
+ extern AVDictionary *format_opts, *codec_opts;
+ extern int hide_banner;
+ 
++/* ffmpeg.wasm links ffmpeg and ffprobe into one module, so their main() and
++ * show_help_default() are renamed. */
++int ffmpeg(int argc, char **argv);
++int ffprobe(int argc, char **argv);
++void show_help_default_ffprobe(const char *opt, const char *arg);
++
+ /**
+  * Initialize dynamic library loading
+  */
+diff --git a/fftools/ffmpeg.c b/fftools/ffmpeg.c
+index b394243..2be17f9 100644
+--- a/fftools/ffmpeg.c
++++ b/fftools/ffmpeg.c
+@@ -86,8 +86,8 @@
+ #include "ffmpeg_utils.h"
+ #include "graph/graphprint.h"
+ 
+-const char program_name[] = "ffmpeg";
+-const int program_birth_year = 2000;
++const char *program_name = "ffmpeg";
++int program_birth_year = 2000;
+ 
+ FILE *vstats_file;
+ 
+@@ -978,7 +978,8 @@ static int64_t getmaxrss(void)
+ #endif
+ }
+ 
+-int main(int argc, char **argv)
++/* main() renamed, as ffmpeg.wasm links ffmpeg and ffprobe into one module. */
++int ffmpeg(int argc, char **argv)
+ {
+     Scheduler *sch = NULL;
+ 
+diff --git a/fftools/ffmpeg_opt.c b/fftools/ffmpeg_opt.c
+index 2c362c6..14eb5e8 100644
+--- a/fftools/ffmpeg_opt.c
++++ b/fftools/ffmpeg_opt.c
+@@ -1254,6 +1254,12 @@ void show_help_default(const char *opt, const char *arg)
+ {
+     int show_advanced = 0, show_avoptions = 0;
+ 
++    /* ffprobe is linked into the same module; its -h ends up here. */
++    if (!strcmp(program_name, "ffprobe")) {
++        show_help_default_ffprobe(opt, arg);
++        return;
++    }
++
+     if (opt && *opt) {
+         if (!strcmp(opt, "long"))
+             show_advanced = 1;
+diff --git a/fftools/ffprobe.c b/fftools/ffprobe.c
+index 31f7410..f7473f9 100644
+--- a/fftools/ffprobe.c
++++ b/fftools/ffprobe.c
+@@ -90,8 +90,6 @@ typedef struct InputFile {
+     int       nb_streams;
+ } InputFile;
+ 
+-const char program_name[] = "ffprobe";
+-const int program_birth_year = 2007;
+ 
+ static int do_analyze_frames = 0;
+ static int do_bitexact = 0;
+@@ -3042,7 +3040,7 @@ static int opt_print_filename(void *optctx, const char *opt, const char *arg)
+     return print_input_filename ? 0 : AVERROR(ENOMEM);
+ }
+ 
+-void show_help_default(const char *opt, const char *arg)
++void show_help_default_ffprobe(const char *opt, const char *arg)
+ {
+     av_log_set_callback(log_callback_help);
+     show_usage();
+@@ -3363,7 +3361,7 @@ static inline int check_section_show_entries(int section_id)
+             do_show_##varname = 1;                                      \
+     } while (0)
+ 
+-int main(int argc, char **argv)
++int ffprobe(int argc, char **argv)
+ {
+     const AVTextFormatter *f;
+     AVTextFormatContext *tctx;
+@@ -3377,6 +3375,8 @@ int main(int argc, char **argv)
+ 
+     setvbuf(stderr, NULL, _IONBF, 0); /* win32 runtime needs this */
+ 
++    program_name = "ffprobe";
++    program_birth_year = 2007;
+     av_log_set_flags(AV_LOG_SKIP_REPEATED);
+ 
+     options = real_options;

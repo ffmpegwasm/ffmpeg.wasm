@@ -28,6 +28,7 @@ import {
   ERROR_UNKNOWN_MESSAGE_TYPE,
   ERROR_NOT_LOADED,
   ERROR_IMPORT_FAILURE,
+  ERROR_NOT_ISOLATED,
 } from "./errors.js";
 
 declare global {
@@ -69,11 +70,17 @@ const load = async ({
   const coreURL = _coreURL;
   const wasmURL = _wasmURL ? _wasmURL : _coreURL.replace(/.js$/g, ".wasm");
 
-  ffmpeg = await (self as WorkerGlobalScope).createFFmpegCore({
-    // Multi-threaded ffmpeg-core starts its threads from this script; the hash
-    // carries the wasm URL for _locateFile() in bind.js.
-    mainScriptUrlOrBlob: `${coreURL}#${btoa(JSON.stringify({ wasmURL }))}`,
-  });
+  try {
+    ffmpeg = await (self as WorkerGlobalScope).createFFmpegCore({
+      // @ffmpeg/core-mt starts its threads from the core script; the hash
+      // carries the wasm URL for _locateFile() in bind.js.
+      mainScriptUrlOrBlob: `${coreURL}#${btoa(JSON.stringify({ wasmURL }))}`,
+    });
+  } catch (e) {
+    // @ffmpeg/core-mt's shared memory needs a cross-origin isolated page.
+    if (String(e).includes("not cross-origin isolated")) throw ERROR_NOT_ISOLATED;
+    throw e;
+  }
   ffmpeg.setLogger((data) =>
     self.postMessage({ type: FFMessageType.LOG, data })
   );
@@ -157,6 +164,25 @@ const unmount = ({ mountPoint }: FFMessageUnmountData): OK => {
   return true;
 };
 
+// emscripten's FS throws ErrnoError objects, which aren't Errors and only
+// carry an errno.
+const ERRNO: Record<number, string> = {
+  2: "EACCES: permission denied",
+  10: "EBUSY: resource busy",
+  20: "EEXIST: file already exists",
+  28: "EINVAL: invalid argument",
+  31: "EISDIR: is a directory",
+  44: "ENOENT: no such file or directory",
+  54: "ENOTDIR: not a directory",
+  55: "ENOTEMPTY: directory not empty",
+  63: "EPERM: operation not permitted",
+};
+const errorMessage = (e: unknown): string => {
+  if (e instanceof Error) return e.toString();
+  const errno = (e as { errno?: number })?.errno;
+  return errno === undefined ? String(e) : `ErrnoError: ${ERRNO[errno] ?? `errno ${errno}`}`;
+};
+
 self.onmessage = async ({
   data: { id, type, data: _data },
 }: FFMessageEvent): Promise<void> => {
@@ -209,7 +235,7 @@ self.onmessage = async ({
     self.postMessage({
       id,
       type: FFMessageType.ERROR,
-      data: (e as Error).toString(),
+      data: errorMessage(e),
     });
     return;
   }

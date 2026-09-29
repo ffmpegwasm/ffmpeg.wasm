@@ -2,21 +2,12 @@
 
 set -euo pipefail
 
-CFLAGS="$CFLAGS -DHB_NO_PRAGMA_GCC_DIAGNOSTIC_ERROR"
-
-# A hacky way to disable pthread
-if [[ "$FFMPEG_ST" == "yes" ]]; then
-  sed -i 's#\[have_pthread=true\]#\[have_pthread=false\]#g' configure.ac
-else
-  sed -i 's#\[have_pthread=false\]#\[have_pthread=true\]#g' configure.ac
-fi
-CXXFLAGS=$CFLAGS
-CONF_FLAGS=(
-  --prefix=$INSTALL_DIR                                 # install library in a build directory for FFmpeg to include
-  --host=i686-gnu                                     # use i686 linux
-  --enable-shared=no                                  # not to build shared library
-  --enable-static 
-)
-
-emconfigure ./autogen.sh "${CONF_FLAGS[@]}"
-emmake make install -j
+meson setup build --cross-file=/meson-cross.ini \
+  --prefix=$INSTALL_DIR --default-library=static --buildtype=release \
+  -Dc_args="$CFLAGS" -Dcpp_args="$CXXFLAGS -DHB_NO_PRAGMA_GCC_DIAGNOSTIC_ERROR" \
+  -Dglib=disabled -Dgobject=disabled -Dcairo=disabled -Dchafa=disabled \
+  -Dicu=disabled -Dfreetype=enabled -Dpng=disabled -Dzlib=disabled \
+  -Draster=disabled -Dvector=disabled -Dgpu=disabled -Dsubset=disabled \
+  -Dtests=disabled -Ddocs=disabled -Dutilities=disabled -Dintrospection=disabled \
+  -Dbenchmark=disabled
+ninja -C build install

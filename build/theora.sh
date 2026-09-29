@@ -16,5 +16,6 @@ CONF_FLAGS=(
   --disable-sdltest                                   # disable sdl tests
 )
 
-emconfigure ./autogen.sh "${CONF_FLAGS[@]}"
+emconfigure ./autogen.sh
+emconfigure ./configure "${CONF_FLAGS[@]}"
 emmake make install -j

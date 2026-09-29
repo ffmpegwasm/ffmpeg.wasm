@@ -7,6 +7,10 @@ CONF_FLAGS=(
   --host=x86_64-gnu                                   # use i686 linux
   --enable-shared=no                                  # not to build shared library
   --without-harfbuzz                                  # disable harfbuzz as incompatible
+  --without-zlib
+  --without-bzip2
+  --without-png
+  --without-brotli
 )
 emconfigure ./autogen.sh
 emconfigure ./configure "${CONF_FLAGS[@]}"

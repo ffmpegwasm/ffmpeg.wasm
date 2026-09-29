@@ -23,6 +23,7 @@ const cases = [
   ["aac", AUDIO, ["-c:a", "aac"], "out.m4a", "aac"],
   ["flac", AUDIO, [], "out.flac", "flac"],
   ["pcm_s16le", AUDIO, [], "out.wav", "pcm_s16le"],
+  ["libtheora", VIDEO, ["-c:v", "libtheora"], "out.ogv", "theora"],
 ];
 
 test.for(cases)("encodes with %s", ([name, input, opts, out, codec], { core, dir, skip }) => {
@@ -35,7 +36,3 @@ test.for(cases)("encodes with %s", ([name, input, opts, out, codec], { core, dir
   expect(stream.codec_name).to.equal(codec);
 });
 
-test.fails("encodes with libtheora (no issue yet)", ({ core, dir }) => {
-  const { ret } = exec(core, ...VIDEO, "-c:v", "libtheora", `${dir}/out.ogv`);
-  expect(ret).to.equal(0);
-});

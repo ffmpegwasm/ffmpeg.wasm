@@ -10,6 +10,7 @@ CONF_FLAGS=(
   --disable-asm                                       # disable asm optimization
   --disable-fontconfig
   --disable-require-system-font-provider
+  --disable-libunibreak
 )
 
 ./autogen.sh && emconfigure ./configure "${CONF_FLAGS[@]}"

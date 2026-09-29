@@ -1,6 +1,4 @@
-// exit_program() is patched (src/fftools/cmdutils.c) to store the exit code in
-// Module.ret and abort() instead of exit(); exec() swallows the abort and
-// returns Module.ret.
+// exec() returns ffmpeg()'s exit code.
 import { expect } from "vitest";
 import { test } from "../../helpers/core.js";
 import { exec, makeMedia } from "../../helpers/run.js";

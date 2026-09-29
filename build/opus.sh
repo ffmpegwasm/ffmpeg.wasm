@@ -14,6 +14,5 @@ CONF_FLAGS=(
   --disable-stack-protector
 )
 
-emconfigure ./autogen.sh
 CFLAGS=$CFLAGS emconfigure ./configure "${CONF_FLAGS[@]}"
 emmake make install -j

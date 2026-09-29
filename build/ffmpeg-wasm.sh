@@ -7,40 +7,44 @@ set -euo pipefail
 
 EXPORT_NAME="createFFmpegCore"
 
+# ffmpeg and ffprobe, compiled with FFmpeg's own rules and flags.
+FFTOOLS=(
+  cmdutils opt_common
+  ffmpeg ffmpeg_dec ffmpeg_demux ffmpeg_enc ffmpeg_filter ffmpeg_hw ffmpeg_mux
+  ffmpeg_mux_init ffmpeg_opt ffmpeg_sched sync_queue thread_queue graph/graphprint
+  textformat/avtextformat textformat/tf_compact textformat/tf_default textformat/tf_flat
+  textformat/tf_ini textformat/tf_json textformat/tf_mermaid textformat/tf_xml
+  textformat/tw_avio textformat/tw_buffer textformat/tw_stdout
+  resources/resman resources/graph.html resources/graph.css
+  ffprobe
+)
+OBJS=("${FFTOOLS[@]/#/fftools/}")
+OBJS=("${OBJS[@]/%/.o}")
+emmake make -j "${OBJS[@]}"
+
 CONF_FLAGS=(
-  -I. 
-  -I./src/fftools 
-  -I$INSTALL_DIR/include 
-  -L$INSTALL_DIR/lib 
-  -Llibavcodec 
-  -Llibavdevice 
-  -Llibavfilter 
-  -Llibavformat 
-  -Llibavutil 
-  -Llibpostproc 
-  -Llibswresample 
-  -Llibswscale 
-  -lavcodec 
-  -lavdevice 
-  -lavfilter 
-  -lavformat 
-  -lavutil 
-  -lpostproc 
-  -lswresample 
-  -lswscale 
-  -Wno-deprecated-declarations 
-  $LDFLAGS 
-  -sENVIRONMENT=web,worker,node           # node: the core tests run in Node.js
-  -sWASM_BIGINT                            # enable big int support
+  -I.
+  -L$INSTALL_DIR/lib
+  -Llibavcodec
+  -Llibavdevice
+  -Llibavfilter
+  -Llibavformat
+  -Llibavutil
+  -Llibswresample
+  -Llibswscale
+  -lavdevice
+  -lavfilter
+  -lavformat
+  -lavcodec
+  -lswresample
+  -lswscale
+  -lavutil
+  $LDFLAGS
   -sDEFAULT_TO_CXX                         # x265, zimg and harfbuzz are C++
-  -sUSE_SDL=2                              # use emscripten SDL2 lib port
+  -sENVIRONMENT=web,worker,node           # node: the core tests run in Node.js
   -sSTACK_SIZE=5MB                         # increase stack size to support libopus
   -sMODULARIZE                             # modularized to use as a library
-  ${FFMPEG_MT:+ -sINITIAL_MEMORY=1024MB -sALLOW_MEMORY_GROWTH -sMAXIMUM_MEMORY=2GB} # start large as growth is slower with threads, but allow it for 4K (#946)
-  ${FFMPEG_MT:+ -sPTHREAD_POOL_SIZE=32}    # use 32 threads
-  ${FFMPEG_MT:+ -sDEFAULT_PTHREAD_STACK_SIZE=2MB} # the 64KB default overflows in x264 and decoder threads
-  ${FFMPEG_MT:+ -sPTHREAD_POOL_SIZE_STRICT=2} # fail instead of hanging when the pool runs out
-  ${FFMPEG_ST:+ -sINITIAL_MEMORY=32MB -sALLOW_MEMORY_GROWTH} # Use just enough memory as memory usage can grow
+  -sALLOW_MEMORY_GROWTH -sMAXIMUM_MEMORY=2GB # grow as needed, up to 2 GB (4K needs more than 1 GB, #946)
   -sINCOMING_MODULE_JS_API=locateFile,mainScriptUrlOrBlob,print,printErr # mainScriptUrlOrBlob: the script pthread workers load
   -sEXPORT_NAME="$EXPORT_NAME"             # required in browser env, so that user can access this module from window object
   -sEXPORTED_FUNCTIONS=$(node src/bind/ffmpeg/export.js) # exported functions
@@ -48,15 +52,29 @@ CONF_FLAGS=(
   -lworkerfs.js
   --pre-js src/bind/ffmpeg/bind.js        # extra bindings, contains most of the ffmpeg.wasm javascript code
   --js-library src/bind/ffmpeg/library.js # overrides of emscripten library functions
-  # ffmpeg source code
-  src/fftools/cmdutils.c 
-  src/fftools/ffmpeg.c 
-  src/fftools/ffmpeg_filter.c 
-  src/fftools/ffmpeg_hw.c 
-  src/fftools/ffmpeg_mux.c 
-  src/fftools/ffmpeg_opt.c 
-  src/fftools/opt_common.c 
-  src/fftools/ffprobe.c 
+  "${OBJS[@]}"
+  src/bind/ffmpeg/run.c                    # ffmpeg() and ffprobe() for bind.js
 )
 
-emcc "${CONF_FLAGS[@]}" $@
+MT_FLAGS=(
+  -sINITIAL_MEMORY=1024MB                  # start large as growth is slower with threads
+  -sDEFAULT_PTHREAD_STACK_SIZE=2MB         # the 64KB default overflows in x264 and decoder threads
+  -sPTHREAD_POOL_SIZE=64                   # workers started with the module; FFmpeg 9 runs a thread per demuxer, decoder, filter, encoder and muxer
+  -sPTHREAD_POOL_SIZE_STRICT=2             # fail instead of hanging when the pool runs out
+  '-sDEFAULT_LIBRARY_FUNCS_TO_INCLUDE=$holdRuntime,$checkIsolation' # see library.js
+)
+
+# FFmpeg's threads take turns on the main thread (src/green), so the core
+# needs no SharedArrayBuffer and no cross-origin isolation.
+ST_FLAGS=(
+  -sINITIAL_MEMORY=32MB
+  -sASYNCIFY                               # green threads switch stacks with Asyncify
+  -Wl,--allow-multiple-definition          # src/green's pthread functions replace libc's single-threaded stubs
+  src/green/pthread.c
+)
+
+if [[ -n "${FFMPEG_MT:-}" ]]; then
+  emcc "${CONF_FLAGS[@]}" "${MT_FLAGS[@]}" "$@"
+else
+  emcc "${CONF_FLAGS[@]}" "${ST_FLAGS[@]}" "$@"
+fi

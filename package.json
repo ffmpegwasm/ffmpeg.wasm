@@ -19,6 +19,8 @@
     "bench": "vitest bench --run --config tests/heavy/vitest.config.js"
   },
   "devDependencies": {
+    "@ffmpeg/core": "workspace:*",
+    "@ffmpeg/core-mt": "workspace:*",
     "@ffmpeg/ffmpeg": "workspace:*",
     "@ffmpeg/util": "workspace:*",
     "@vitest/browser-playwright": "^5.0.2",
