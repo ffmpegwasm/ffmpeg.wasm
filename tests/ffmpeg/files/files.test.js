@@ -34,9 +34,9 @@ test("renames a file", async ({ ffmpeg, dir }) => {
   expect(text).to.equal("x");
 });
 
-test("rejects when reading a missing file", async ({ ffmpeg, dir }) => {
+test("rejects when reading a missing file, saying why", async ({ ffmpeg, dir }) => {
   const reading = ffmpeg.readFile(`${dir}/missing`);
-  await expect(reading).rejects.toBeTypeOf("string");
+  await expect(reading).rejects.toMatch(/ENOENT/);
 });
 
 test("rejects when deleting a missing file", async ({ ffmpeg, dir }) => {

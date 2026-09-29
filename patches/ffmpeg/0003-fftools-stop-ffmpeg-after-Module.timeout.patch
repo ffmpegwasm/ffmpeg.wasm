@@ -1,0 +1,49 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: "ffmpeg.wasm" <ffmpeg.wasm@users.noreply.github.com>
+Date: Mon, 28 Sep 2026 22:13:50 -0400
+Subject: [PATCH 3/5] fftools: stop ffmpeg after Module.timeout
+
+---
+ fftools/ffmpeg.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/fftools/ffmpeg.c b/fftools/ffmpeg.c
+index 7cab05f..d053c5d 100644
+--- a/fftools/ffmpeg.c
++++ b/fftools/ffmpeg.c
+@@ -904,6 +904,13 @@ static int check_keyboard_interaction(int64_t cur_time)
+     return 0;
+ }
+ 
++/* Returns 1 once Module.timeout (ms, -1 for none) has passed. */
++EM_JS(int, is_timeout, (double elapsed_ms), {
++    return Module.timeout !== -1 && Module.timeout <= elapsed_ms;
++});
++
++static int timed_out;
++
+ /*
+  * The following code is the main loop of the file converter
+  */
+@@ -932,6 +939,11 @@ static int transcode(Scheduler *sch)
+         if (received_nb_signals)
+             break;
+ 
++        if (is_timeout((cur_time - timer_start) / 1000.0)) {
++            timed_out = 1;
++            break;
++        }
++
+         /* if 'q' pressed, exits */
+         if (stdin_interaction)
+             if (check_keyboard_interaction(cur_time) < 0)
+@@ -1065,7 +1077,8 @@ int ffmpeg(int argc, char **argv)
+     }
+ 
+     ret = received_nb_signals                 ? 255 :
+-          (ret == FFMPEG_ERROR_RATE_EXCEEDED) ?  69 : ret;
++          (ret == FFMPEG_ERROR_RATE_EXCEEDED) ?  69 :
++          timed_out                           ?   1 : ret;
+ 
+ finish:
+     if (ret == AVERROR_EXIT)

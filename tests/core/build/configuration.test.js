@@ -1,5 +1,5 @@
 // The configure flags in build/ffmpeg.sh and the Dockerfile made it into the
-// binary; ST and MT builds differ only in threading.
+// binary.
 import { expect } from "vitest";
 import { test, isMT } from "../../helpers/core.js";
 import { exec } from "../../helpers/run.js";
@@ -13,9 +13,14 @@ test.for(libs)("--enable-%s", (lib, { core }) => {
   expect(buildconf(core)).to.include(`--enable-${lib}`);
 });
 
-test("threading and libx265 match the build type", ({ core }) => {
-  expect(buildconf(core).includes("--disable-pthreads")).to.equal(!isMT());
-  expect(buildconf(core).includes("--enable-libx265")).to.equal(isMT());
+test("is built with threads, which FFmpeg's command line tools need", ({ core }) => {
+  const conf = buildconf(core);
+  expect(conf).to.not.include("--disable-pthreads");
+});
+
+test("has libx265 only in the multi-threaded core", ({ core }) => {
+  const conf = buildconf(core);
+  expect(conf.includes("--enable-libx265")).to.equal(isMT());
 });
 
 test("-threads 4 encodes", ({ core }) => {

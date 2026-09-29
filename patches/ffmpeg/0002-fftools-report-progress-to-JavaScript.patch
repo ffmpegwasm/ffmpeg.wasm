@@ -1,0 +1,57 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: "ffmpeg.wasm" <ffmpeg.wasm@users.noreply.github.com>
+Date: Mon, 28 Sep 2026 22:13:50 -0400
+Subject: [PATCH 2/5] fftools: report progress to JavaScript
+
+---
+ fftools/ffmpeg.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+
+diff --git a/fftools/ffmpeg.c b/fftools/ffmpeg.c
+index 2be17f9..7cab05f 100644
+--- a/fftools/ffmpeg.c
++++ b/fftools/ffmpeg.c
+@@ -86,6 +86,8 @@
+ #include "ffmpeg_utils.h"
+ #include "graph/graphprint.h"
+ 
++#include <emscripten.h>
++
+ const char *program_name = "ffmpeg";
+ int program_birth_year = 2000;
+ 
+@@ -569,6 +571,25 @@ void update_benchmark(const char *fmt, ...)
+     }
+ }
+ 
++EM_JS(void, send_progress, (double progress, double time), {
++    Module.receiveProgress(progress, time);
++});
++
++/* Progress is pts over the longest input duration, and always ends at 1.
++ * Inputs without a duration (lavfi, live streams) report 0 until the end. */
++static void report_progress(int is_last_report, int64_t pts)
++{
++    int64_t duration = -1;
++    if (pts == AV_NOPTS_VALUE) /* no packet yet */
++        pts = 0;
++    for (int i = 0; i < nb_input_files; i++)
++        duration = FFMAX(duration, input_files[i]->ctx->duration);
++    if (is_last_report)
++        send_progress(1, FFABS(pts));
++    else
++        send_progress(duration > 0 ? FFMIN((double)FFABS(pts) / duration, 1) : 0, FFABS(pts));
++}
++
+ static void print_report(int is_last_report, int64_t timer_start, int64_t cur_time, int64_t pts)
+ {
+     AVBPrint buf, buf_script;
+@@ -585,6 +606,8 @@ static void print_report(int is_last_report, int64_t timer_start, int64_t cur_ti
+     int ret;
+     float t;
+ 
++    report_progress(is_last_report, pts);
++
+     if (!print_stats && !is_last_report && !progress_avio)
+         return;
+ 

@@ -3,7 +3,7 @@
 import { expect } from "vitest";
 import { test } from "../../helpers/core.js";
 
-test.for(["exec", "ffprobe", "setLogger", "setProgress", "setTimeout", "reset"])(
+test.for(["exec", "ffprobe", "setLogger", "setProgress", "setTimeout", "reset", "terminateThreads"])(
   "exports %s()",
   (name, { core }) => expect(core[name]).toBeTypeOf("function")
 );

@@ -47,36 +47,31 @@ function print(message) {
   Module["logger"]({ type: "stdout", message });
 }
 
-// Every command ends in abort() (see runCommand()), which emscripten reports as one
-// of these; they are not errors.
-const EXIT_MESSAGES = ["Aborted()", "Aborted(native code called abort())"];
-
 function printErr(message) {
-  if (!EXIT_MESSAGES.includes(message))
-    Module["logger"]({ type: "stderr", message });
+  Module["logger"]({ type: "stderr", message });
 }
 
 function runCommand(fn, args) {
   const sp = stackSave();
+  const argv = stringsToPtr(args);
   try {
-    // ffprobe() can also return normally, without exit_program() (#817).
-    Module["ret"] = Module[fn](args.length, stringsToPtr(args));
-  } catch (e) {
-    if (!e.message.startsWith("Aborted")) {
-      throw e;
-    }
+    Module[fn](args.length, argv); // sets Module["ret"] (run.c)
   } finally {
     stackRestore(sp);
+    for (let i = 0; i < args.length; i++) {
+      Module["_free"](Module["getValue"](argv + SIZE_I32 * i, "i32"));
+    }
+    Module["_free"](argv);
   }
   return Module["ret"];
 }
 
 function exec(..._args) {
-  return runCommand("_ffmpeg", [...Module["DEFAULT_ARGS"], ..._args]);
+  return runCommand("_run_ffmpeg", [...Module["DEFAULT_ARGS"], ..._args]);
 }
 
 function ffprobe(..._args) {
-  return runCommand("_ffprobe", [...Module["DEFAULT_ARGS_FFPROBE"], ..._args]);
+  return runCommand("_run_ffprobe", [...Module["DEFAULT_ARGS_FFPROBE"], ..._args]);
 }
 
 function setLogger(logger) {
@@ -95,6 +90,14 @@ function receiveProgress(progress, time) {
   Module["progress"]({ progress, time });
 }
 
+/**
+ * Stop the workers that run FFmpeg's threads. The core can't run commands
+ * afterwards; drop it to free its memory.
+ */
+function terminateThreads() {
+  if (typeof PThread !== "undefined") PThread.terminateAllThreads(); // only @ffmpeg/core-mt has workers
+}
+
 function reset() {
   Module["ret"] = -1;
   Module["timeout"] = -1;
@@ -103,8 +106,7 @@ function reset() {
 /**
  * ffmpeg-core.wasm is expected next to ffmpeg-core.js. When it lives
  * elsewhere (e.g. a Blob URL), @ffmpeg/ffmpeg passes its URL in the hash of
- * mainScriptUrlOrBlob, the script the multi-threaded core starts its threads
- * from:
+ * mainScriptUrlOrBlob, the script URL pthread workers are started from:
  *
  *   http://example.com/ffmpeg-core.js#{btoa(JSON.stringify({ wasmURL: "..." }))}
  */
@@ -130,4 +132,5 @@ Module["setLogger"] = setLogger;
 Module["setTimeout"] = setTimeout;
 Module["setProgress"] = setProgress;
 Module["reset"] = reset;
+Module["terminateThreads"] = terminateThreads;
 Module["receiveProgress"] = receiveProgress;

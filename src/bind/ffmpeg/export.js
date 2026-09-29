@@ -1,3 +1,3 @@
-const EXPORTED_FUNCTIONS = ["_ffmpeg", "_abort", "_malloc", "_ffprobe"];
+const EXPORTED_FUNCTIONS = ["_run_ffmpeg", "_run_ffprobe", "_malloc", "_free"];
 
 console.log(EXPORTED_FUNCTIONS.join(","));

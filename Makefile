@@ -1,13 +1,9 @@
 all: dev
 
-MT_FLAGS := -sUSE_PTHREADS -pthread
-
 DEV_ARGS := --progress=plain
 
 DEV_CFLAGS := --profiling
-DEV_MT_CFLAGS := $(DEV_CFLAGS) $(MT_FLAGS)
 PROD_CFLAGS := -O3 -msimd128
-PROD_MT_CFLAGS := $(PROD_CFLAGS) $(MT_FLAGS)
 
 clean:
 	rm -rf ./packages/core$(PKG_SUFFIX)/dist
@@ -29,22 +25,19 @@ build:
 			.
 
 build-st:
-	make build \
-		FFMPEG_ST=yes
+	make build FFMPEG_ST=yes
 
 build-mt:
-	make build \
-		PKG_SUFFIX=-mt \
-		FFMPEG_MT=yes
+	make build PKG_SUFFIX=-mt FFMPEG_MT=yes
 
 dev:
 	make build-st EXTRA_CFLAGS="$(DEV_CFLAGS)" EXTRA_ARGS="$(DEV_ARGS)"
 
 dev-mt:
-	make build-mt EXTRA_CFLAGS="$(DEV_MT_CFLAGS)" EXTRA_ARGS="$(DEV_ARGS)"
+	make build-mt EXTRA_CFLAGS="$(DEV_CFLAGS)" EXTRA_ARGS="$(DEV_ARGS)"
 
 prd:
 	make build-st EXTRA_CFLAGS="$(PROD_CFLAGS)"
 
 prd-mt:
-	make build-mt EXTRA_CFLAGS="$(PROD_MT_CFLAGS)"
+	make build-mt EXTRA_CFLAGS="$(PROD_CFLAGS)"
