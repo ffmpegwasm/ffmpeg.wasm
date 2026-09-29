@@ -33,3 +33,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# written by next dev for AI coding agents
+AGENTS.md
+CLAUDE.md
