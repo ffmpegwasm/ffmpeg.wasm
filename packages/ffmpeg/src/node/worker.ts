@@ -4,6 +4,7 @@ import { parentPort } from "node:worker_threads";
 import { createRequire } from "node:module";
 import { pathToFileURL } from "node:url";
 import type { FFMessageEvent, FFMessageLoadConfig } from "../types.js";
+import { FFMessageType } from "../const.js";
 
 const scope = globalThis as unknown as { onmessage: (event: { data: unknown }) => void };
 
@@ -18,7 +19,7 @@ const toURL = (pathOrURL: string) =>
   /^(file|https?|data|blob):/i.test(pathOrURL) ? pathOrURL : pathToFileURL(pathOrURL).href;
 
 parentPort!.on("message", (data: FFMessageEvent["data"]) => {
-  if (data.type === "LOAD") {
+  if (data.type === FFMessageType.LOAD) {
     const { coreURL, wasmURL, ...config } = (data.data ?? {}) as FFMessageLoadConfig;
     data.data = {
       ...config,
