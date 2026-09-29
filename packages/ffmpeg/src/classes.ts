@@ -18,10 +18,15 @@ import {
   FFFSPath,
 } from "./types.js";
 import { getMessageID } from "./utils.js";
-import { ERROR_TERMINATED, ERROR_NOT_LOADED, ERROR_WORKER } from "./errors.js";
+import { ERROR_TERMINATED, ERROR_NOT_LOADED, ERROR_WORKER, ERROR_CRASHED } from "./errors.js";
 
 type FFMessageOptions = {
   signal?: AbortSignal;
+};
+
+type EventListenerMethod = {
+  (event: "log", callback: LogEventCallback): void;
+  (event: "progress", callback: ProgressEventCallback): void;
 };
 
 /**
@@ -82,6 +87,9 @@ export class FFmpeg {
             break;
           case FFMessageType.ERROR:
             this.#rejects[id](data);
+            // A trap (e.g. "memory access out of bounds") can leave the core's
+            // memory corrupt, so don't run anything else on it (#563).
+            if (String(data).startsWith("RuntimeError")) this.#terminate(ERROR_CRASHED);
             break;
         }
         delete this.#resolves[id];
@@ -147,30 +155,22 @@ export class FFmpeg {
    *
    * @category FFmpeg
    */
-  public on(event: "log", callback: LogEventCallback): void;
-  public on(event: "progress", callback: ProgressEventCallback): void;
-  public on(
-    event: "log" | "progress",
-    callback: LogEventCallback | ProgressEventCallback
-  ) {
+  // Arrow functions like the other methods, so they still reach the #private
+  // fields when called through a Proxy such as Vue's reactive() (#687).
+  public on: EventListenerMethod = (event, callback) => {
     if (event === "log") {
       this.#logEventCallbacks.push(callback as LogEventCallback);
     } else if (event === "progress") {
       this.#progressEventCallbacks.push(callback as ProgressEventCallback);
     }
-  }
+  };
 
   /**
    * Unlisten to log or progress events from `ffmpeg.exec()`.
    *
    * @category FFmpeg
    */
-  public off(event: "log", callback: LogEventCallback): void;
-  public off(event: "progress", callback: ProgressEventCallback): void;
-  public off(
-    event: "log" | "progress",
-    callback: LogEventCallback | ProgressEventCallback
-  ) {
+  public off: EventListenerMethod = (event, callback) => {
     if (event === "log") {
       this.#logEventCallbacks = this.#logEventCallbacks.filter(
         (f) => f !== callback
@@ -180,7 +180,7 @@ export class FFmpeg {
         (f) => f !== callback
       );
     }
-  }
+  };
 
   protected createWorker(classWorkerURL?: string): Worker {
     return classWorkerURL
@@ -334,10 +334,12 @@ export class FFmpeg {
   public writeFile = (
     path: string,
     data: FileData,
-    { signal }: FFMessageOptions = {}
+    { signal, transfer = true }: FFMessageOptions & { transfer?: boolean } = {}
   ): Promise<OK> => {
+    // Transferring moves the data to the worker without a copy, which leaves
+    // the caller's Uint8Array empty; { transfer: false } copies it (#911).
     const trans: Transferable[] = [];
-    if (data instanceof Uint8Array) {
+    if (transfer && data instanceof Uint8Array) {
       trans.push(data.buffer);
     }
     return this.#send(
