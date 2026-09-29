@@ -45,16 +45,18 @@ export default function MoreButton({ options, onItemClick }: MoreButtonProps) {
       </IconButton>
       <Menu
         id="menu"
-        MenuListProps={{
-          "aria-labelledby": "more-button",
-        }}
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        PaperProps={{
-          style: {
-            maxHeight: ITEM_HEIGHT * 4.5,
-            width: "20ch",
+        slotProps={{
+          list: {
+            "aria-labelledby": "more-button",
+          },
+          paper: {
+            style: {
+              maxHeight: ITEM_HEIGHT * 4.5,
+              width: "20ch",
+            },
           },
         }}
       >

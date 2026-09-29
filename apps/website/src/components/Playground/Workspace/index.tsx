@@ -72,11 +72,14 @@ export default function Workspace({ ffmpeg: _ffmpeg }: WorkspaceProps) {
       case "download":
         downloadFile(
           name,
-          ((await ffmpeg.readFile(fullPath, "binary")) as Uint8Array).buffer
+          (await ffmpeg.readFile(fullPath, "binary")) as Uint8Array<ArrayBuffer>
         );
         break;
       case "download-text":
-        downloadFile(name, await ffmpeg.readFile(fullPath, "utf8"));
+        downloadFile(
+          name,
+          (await ffmpeg.readFile(fullPath, "utf8")) as string
+        );
         break;
       case "delete":
         await ffmpeg.deleteFile(fullPath);
@@ -150,7 +153,7 @@ export default function Workspace({ ffmpeg: _ffmpeg }: WorkspaceProps) {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={{ xs: 1 }} columns={{ xs: 4, md: 12 }}>
-        <Grid item xs={4}>
+        <Grid size={4}>
           <FileSystemManager
             path={path}
             nodes={nodes}
@@ -168,7 +171,7 @@ export default function Workspace({ ffmpeg: _ffmpeg }: WorkspaceProps) {
             onRefresh={() => refreshDir(path)}
           />
         </Grid>
-        <Grid item xs={8}>
+        <Grid size={8}>
           <Editor
             args={args}
             logs={logs}

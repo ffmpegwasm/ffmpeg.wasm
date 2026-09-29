@@ -1,4 +1,4 @@
-import Grid from '@mui/material/Unstable_Grid2';
+import Grid from '@mui/material/Grid';
 import MuiThemeProvider from "@site/src/components/common/MuiThemeProvider";
 import ExampleCard from "@site/src/components/common/ExampleCard";
 
@@ -13,7 +13,7 @@ any of the examples.
 
 <MuiThemeProvider>
   <Grid container rowSpacing={1} columnSpacing={1}>
-    <Grid xs={12} sm={6} md={6} lg={6} xl={4}>
+    <Grid size={{ xs: 12, sm: 6, xl: 4 }}>
       <ExampleCard
         img="/img/vanilla.png"
         title="Vanilla JavaScript"
@@ -21,7 +21,7 @@ any of the examples.
         url="https://github.com/ffmpegwasm/ffmpeg.wasm/tree/main/apps/vanilla-app"
       />
     </Grid>
-    <Grid xs={12} sm={6} md={6} lg={6} xl={4}>
+    <Grid size={{ xs: 12, sm: 6, xl: 4 }}>
       <ExampleCard
         img="/img/react-vite.png"
         title="React + Vite"
@@ -29,7 +29,7 @@ any of the examples.
         url="https://github.com/ffmpegwasm/ffmpeg.wasm/tree/main/apps/react-vite-app"
       />
     </Grid>
-    <Grid xs={12} sm={6} md={6} lg={6} xl={4}>
+    <Grid size={{ xs: 12, sm: 6, xl: 4 }}>
       <ExampleCard
         img="/img/vue-vite.png"
         title="Vue + Vite"
@@ -37,7 +37,7 @@ any of the examples.
         url="https://github.com/ffmpegwasm/ffmpeg.wasm/tree/main/apps/vue-vite-app"
       />
     </Grid>
-    <Grid xs={12} sm={6} md={6} lg={6} xl={4}>
+    <Grid size={{ xs: 12, sm: 6, xl: 4 }}>
       <ExampleCard
         img="/img/angular.png"
         title="Angular"
@@ -45,7 +45,7 @@ any of the examples.
         url="https://github.com/ffmpegwasm/ffmpeg.wasm/tree/main/apps/angular-app"
       />
     </Grid>
-    <Grid xs={12} sm={6} md={6} lg={6} xl={4}>
+    <Grid size={{ xs: 12, sm: 6, xl: 4 }}>
       <ExampleCard
         img="/img/nextjs.png"
         title="Next.js"
@@ -53,7 +53,7 @@ any of the examples.
         url="https://github.com/ffmpegwasm/ffmpeg.wasm/tree/main/apps/nextjs-app"
       />
     </Grid>
-    <Grid xs={12} sm={6} md={6} lg={6} xl={4}>
+    <Grid size={{ xs: 12, sm: 6, xl: 4 }}>
       <ExampleCard
         img="/img/sveltekit-vite.png"
         title="SvelteKit + Vite"
@@ -61,7 +61,7 @@ any of the examples.
         url="https://github.com/ffmpegwasm/ffmpeg.wasm/tree/main/apps/sveltekit-app"
       />
     </Grid>
-    <Grid xs={12} sm={6} md={6} lg={6} xl={4}>
+    <Grid size={{ xs: 12, sm: 6, xl: 4 }}>
       <ExampleCard
         img="/img/solidstart-vite.png"
         title="SolidStart + Vite"

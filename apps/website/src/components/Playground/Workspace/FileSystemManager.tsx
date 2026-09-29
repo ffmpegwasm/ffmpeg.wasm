@@ -82,12 +82,11 @@ export default function FileSystemManager({
   return (
     <>
       <Paper variant="outlined" style={{ padding: 8, height: "100%" }}>
-        <Stack justifyContent="space-between" style={{ height: "100%" }}>
+        <Stack sx={{ justifyContent: "space-between", height: "100%" }}>
           <>
             <Stack
               direction="row"
-              justifyContent="space-between"
-              alignItems="center"
+              sx={{ justifyContent: "space-between", alignItems: "center" }}
             >
               <Typography>File System:</Typography>
               <Box>
@@ -195,7 +194,7 @@ export default function FileSystemManager({
               value={dirName}
               onChange={(event) => setDirName(event.target.value)}
             />
-            <Stack direction="row" justifyContent="flex-end">
+            <Stack direction="row" sx={{ justifyContent: "flex-end" }}>
               <Button onClick={handleNewFolderModalClose}>Cancel</Button>
               <Button
                 variant="contained"
@@ -228,7 +227,7 @@ export default function FileSystemManager({
               value={newName}
               onChange={onNewNameChange()}
             />
-            <Stack direction="row" justifyContent="flex-end">
+            <Stack direction="row" sx={{ justifyContent: "flex-end" }}>
               <Button onClick={onCloseRenameModal()}>Cancel</Button>
               <Button
                 variant="contained"
