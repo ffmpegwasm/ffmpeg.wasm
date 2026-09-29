@@ -7,16 +7,17 @@ const core = (name) => ({
   test: { name: `core-${name}`, include: ["tests/core/**/*.test.js"], provide: { core: name } },
 });
 
-// @ffmpeg/ffmpeg and @ffmpeg/util run in Chromium. SharedArrayBuffer, which
-// the multi-threaded core needs, requires a cross-origin isolated page.
+// @ffmpeg/ffmpeg and @ffmpeg/util run in Chromium. The multi-threaded core
+// needs SharedArrayBuffer, so a cross-origin isolated page; the
+// single-threaded core must work without one.
+const ISOLATED = {
+  "Cross-Origin-Opener-Policy": "same-origin",
+  "Cross-Origin-Embedder-Policy": "require-corp",
+};
+
 const browser = (name) => ({
   plugins: [testRoutes()],
-  server: {
-    headers: {
-      "Cross-Origin-Opener-Policy": "same-origin",
-      "Cross-Origin-Embedder-Policy": "require-corp",
-    },
-  },
+  server: { headers: name === "mt" ? ISOLATED : {} },
   optimizeDeps: { exclude: ["@ffmpeg/ffmpeg", "@ffmpeg/util"] },
   test: {
     name: `browser-${name}`,
