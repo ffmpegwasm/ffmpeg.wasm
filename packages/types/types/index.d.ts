@@ -130,6 +130,7 @@ export interface FFmpegCoreModule {
   setLogger: (logger: (log: Log) => void) => void;
   setTimeout: (timeout: number) => void;
   setProgress: (handler: (progress: Progress) => void) => void;
+  setThreads: (threads: number) => void;
 
   locateFile: (path: string, prefix: string) => string;
 }
