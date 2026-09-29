@@ -1,7 +1,10 @@
-# syntax=docker/dockerfile-upstream:master-labs
+# syntax=docker/dockerfile:1.10@sha256:865e5dd094beca432e8c0a1d5e1c465db5f998dca4e439981029b3b81fb39ed5
+
+# Every input is pinned (image digests, git commits, tarball checksums) so a
+# release can't change underneath us. The comments name the pinned versions.
 
 # Base emsdk image with environment variables.
-FROM emscripten/emsdk:6.0.10 AS emsdk-base
+FROM emscripten/emsdk:6.0.10@sha256:e077d54e2b8970575ebc4f185ac1de0b95c05f2b266134d4ba27449af7aebf65 AS emsdk-base
 ARG EXTRA_CFLAGS
 ARG EXTRA_LDFLAGS
 # FFMPEG_ST=yes: single-threaded core; FFMPEG_MT=yes: multi-threaded core.
@@ -10,7 +13,6 @@ ARG FFMPEG_MT
 ENV FFMPEG_ST=$FFMPEG_ST
 ENV FFMPEG_MT=$FFMPEG_MT
 ENV INSTALL_DIR=/opt
-ENV FFMPEG_VERSION=n9.0.2
 ENV CFLAGS="-I$INSTALL_DIR/include ${FFMPEG_MT:+-pthread} $EXTRA_CFLAGS"
 ENV CXXFLAGS="$CFLAGS"
 ENV LDFLAGS="-L$INSTALL_DIR/lib $CFLAGS $EXTRA_LDFLAGS"
@@ -23,38 +25,44 @@ COPY build/meson-cross.ini /meson-cross.ini
 
 # Build x264
 FROM emsdk-base AS x264-builder
+# stable branch
 ADD https://code.videolan.org/videolan/x264.git#b35605ace3ddf7c1a5d67a2eb553f034aef41d55 /src
 COPY build/x264.sh /src/build.sh
 RUN bash -x /src/build.sh
 
 # Build x265
 FROM emsdk-base AS x265-builder
-ADD https://bitbucket.org/multicoreware/x265_git.git#4.2 /src
+# 4.2
+ADD https://bitbucket.org/multicoreware/x265_git.git#e444744c03978c1fb4e037168967020cf2648427 /src
 COPY build/x265.sh /src/build.sh
 RUN bash -x /src/build.sh
 
 # Build libvpx
 FROM emsdk-base AS libvpx-builder
-ADD https://github.com/webmproject/libvpx.git#v1.17.0 /src
+# v1.17.0
+ADD https://github.com/webmproject/libvpx.git#6df3ec34557879fff673706f4a1d9fbd0f3a6f0e /src
 COPY build/libvpx.sh /src/build.sh
 RUN bash -x /src/build.sh
 
 # Build lame (3.100, the latest release; there is no upstream git repository)
 FROM emsdk-base AS lame-builder
-ADD https://github.com/ffmpegwasm/lame.git#master /src
+# 3.100
+ADD https://github.com/ffmpegwasm/lame.git#2badea1974ae36cb8312afe99cff1e6b3b5decee /src
 COPY build/lame.sh /src/build.sh
 RUN bash -x /src/build.sh
 
 # Build ogg
 FROM emsdk-base AS ogg-builder
-ADD https://github.com/xiph/ogg.git#v1.3.6 /src
+# v1.3.6
+ADD https://github.com/xiph/ogg.git#be05b13e98b048f0b5a0f5fa8ce514d56db5f822 /src
 COPY build/ogg.sh /src/build.sh
 RUN bash -x /src/build.sh
 
 # Build theora
 FROM emsdk-base AS theora-builder
 COPY --from=ogg-builder $INSTALL_DIR $INSTALL_DIR
-ADD https://github.com/xiph/theora.git#v1.2.0 /src
+# v1.2.0
+ADD https://github.com/xiph/theora.git#8e4808736e9c181b971306cc3f05df9e61354004 /src
 COPY build/theora.sh /src/build.sh
 RUN bash -x /src/build.sh
 
@@ -70,39 +78,45 @@ RUN bash -x /src/build.sh
 # Build vorbis
 FROM emsdk-base AS vorbis-builder
 COPY --from=ogg-builder $INSTALL_DIR $INSTALL_DIR
-ADD https://github.com/xiph/vorbis.git#v1.3.7 /src
+# v1.3.7
+ADD https://github.com/xiph/vorbis.git#0657aee69dec8508a0011f47f3b69d7538e9d262 /src
 COPY build/vorbis.sh /src/build.sh
 RUN bash -x /src/build.sh
 
 # Build zlib
 FROM emsdk-base AS zlib-builder
-ADD https://github.com/madler/zlib.git#v1.3.2 /src
+# v1.3.2
+ADD https://github.com/madler/zlib.git#da607da739fa6047df13e66a2af6b8bec7c2a498 /src
 COPY build/zlib.sh /src/build.sh
 RUN bash -x /src/build.sh
 
 # Build libwebp
 FROM emsdk-base AS libwebp-builder
 COPY --from=zlib-builder $INSTALL_DIR $INSTALL_DIR
-ADD https://github.com/webmproject/libwebp.git#v1.6.0 /src
+# v1.6.0
+ADD https://github.com/webmproject/libwebp.git#4fa21912338357f89e4fd51cf2368325b59e9bd9 /src
 COPY build/libwebp.sh /src/build.sh
 RUN bash -x /src/build.sh
 
 # Build freetype2
 FROM emsdk-base AS freetype2-builder
-ADD https://github.com/freetype/freetype.git#VER-2-14-3 /src
+# VER-2-14-3
+ADD https://github.com/freetype/freetype.git#0a0221a1347e2f1e07c395263540026e9a0aa7c7 /src
 COPY build/freetype2.sh /src/build.sh
 RUN bash -x /src/build.sh
 
 # Build fribidi
 FROM emsdk-base AS fribidi-builder
-ADD https://github.com/fribidi/fribidi.git#v1.0.17 /src
+# v1.0.17
+ADD https://github.com/fribidi/fribidi.git#b93119f5fdc7ea47672cc304c1455ffa6dfe7536 /src
 COPY build/fribidi.sh /src/build.sh
 RUN bash -x /src/build.sh
 
 # Build harfbuzz (with FreeType, for FFmpeg's drawtext)
 FROM emsdk-base AS harfbuzz-builder
 COPY --from=freetype2-builder $INSTALL_DIR $INSTALL_DIR
-ADD https://github.com/harfbuzz/harfbuzz.git#14.5.0 /src
+# 14.5.0
+ADD https://github.com/harfbuzz/harfbuzz.git#863d3f7787c6df18d20e4535c5906bf3eb803bd5 /src
 COPY build/harfbuzz.sh /src/build.sh
 RUN bash -x /src/build.sh
 
@@ -111,19 +125,22 @@ FROM emsdk-base AS libass-builder
 COPY --from=freetype2-builder $INSTALL_DIR $INSTALL_DIR
 COPY --from=fribidi-builder $INSTALL_DIR $INSTALL_DIR
 COPY --from=harfbuzz-builder $INSTALL_DIR $INSTALL_DIR
-ADD https://github.com/libass/libass.git#0.17.5 /src
+# 0.17.5
+ADD https://github.com/libass/libass.git#4a05d8127f525943ebf45fdc6497c9e665947f0d /src
 COPY build/libass.sh /src/build.sh
 RUN bash -x /src/build.sh
 
 # Build zimg
 FROM emsdk-base AS zimg-builder
-ADD https://github.com/sekrit-twc/zimg.git#release-3.0.6 /src
+# release-3.0.6
+ADD https://github.com/sekrit-twc/zimg.git#f819b14e8f39d1282400b0d9543e8ef73c1b2bbd /src
 COPY build/zimg.sh /src/build.sh
 RUN bash -x /src/build.sh
 
 # Base ffmpeg image with dependencies and source code populated.
 FROM emsdk-base AS ffmpeg-base
-ADD https://github.com/FFmpeg/FFmpeg.git#$FFMPEG_VERSION /src
+# n9.0.2
+ADD https://github.com/FFmpeg/FFmpeg.git#946fcce07b6dcd0331c8cc609192aeff5e1924f8 /src
 COPY --from=x264-builder $INSTALL_DIR $INSTALL_DIR
 COPY --from=x265-builder $INSTALL_DIR $INSTALL_DIR
 COPY --from=libvpx-builder $INSTALL_DIR $INSTALL_DIR
