@@ -1650,7 +1650,8 @@ static void print_report(int is_last_report, int64_t timer_start, int64_t cur_ti
         duration = file_duration;
       }
     }
-    send_progress((double)pts_abs / (double)duration, (double)pts_abs);
+    /* Unknown duration (e.g. lavfi or live inputs): report 0 until the end. */
+    send_progress(duration > 0 ? FFMIN((double)pts_abs / (double)duration, 1) : 0, (double)pts_abs);
 
     secs = FFABS(pts) / AV_TIME_BASE;
     us = FFABS(pts) % AV_TIME_BASE;
@@ -4587,6 +4588,9 @@ void init_globals() {
   ffmpeg_exited = 0;
   main_return_code = 0;
   copy_ts_first_pts = AV_NOPTS_VALUE;
+
+  reset_options();
+  reset_log();
 }
 
 /* ffmpeg() is simply a rename of main(), but it makes things easier to

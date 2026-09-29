@@ -42,7 +42,7 @@ test("is not called after setProgress(() => {})", async ({ core, dir }) => {
   expect(events).to.deep.equal([]);
 });
 
-test.fails("never reports negative progress when the input duration is unknown (#600)", ({ core }) => {
+test("never reports negative progress when the input duration is unknown", ({ core }) => {
   const { events } = run({ core }, "-f", "lavfi", "-i", "testsrc=d=1:s=16x16", "-f", "null", "-");
   events.forEach((e) => expect(e.progress).to.be.within(0, 1));
 });

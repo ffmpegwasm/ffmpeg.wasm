@@ -47,15 +47,20 @@ function print(message) {
   Module["logger"]({ type: "stdout", message });
 }
 
+// Every command ends in abort() (see runCommand()), which emscripten reports as one
+// of these; they are not errors.
+const EXIT_MESSAGES = ["Aborted()", "Aborted(native code called abort())"];
+
 function printErr(message) {
-  if (!message.startsWith("Aborted(native code called abort())"))
+  if (!EXIT_MESSAGES.includes(message))
     Module["logger"]({ type: "stderr", message });
 }
 
 function runCommand(fn, args) {
   const sp = stackSave();
   try {
-    Module[fn](args.length, stringsToPtr(args));
+    // ffprobe() can also return normally, without exit_program() (#817).
+    Module["ret"] = Module[fn](args.length, stringsToPtr(args));
   } catch (e) {
     if (!e.message.startsWith("Aborted")) {
       throw e;

@@ -11,7 +11,7 @@ test("writes the probe result to a file", async ({ ffmpeg, dir }) => {
   expect(duration).to.be.closeTo(1, 0.1);
 });
 
-test.fails("resolves 0 on success (#817)", async ({ ffmpeg, dir }) => {
+test("resolves 0 on success", async ({ ffmpeg, dir }) => {
   await ffmpeg.writeFile(`${dir}/v.mp4`, await testdata("video-1s.mp4"));
   const ret = await ffmpeg.ffprobe([`${dir}/v.mp4`]);
   expect(ret).to.equal(0);

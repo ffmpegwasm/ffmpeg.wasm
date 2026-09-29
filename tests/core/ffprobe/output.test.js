@@ -11,7 +11,7 @@ test("writes JSON to a file with -o", async ({ core, dir }) => {
   expect(json.format.format_name).to.include("mp4");
 });
 
-test.fails("returns 0 after probing a file (#817)", ({ core, dir }) => {
+test("returns 0 after probing a file", ({ core, dir }) => {
   makeMedia(core, `${dir}/a.wav`, ["-f", "lavfi", "-i", "sine=d=0.1"]);
   const ret = core.ffprobe(`${dir}/a.wav`);
   expect(ret).to.equal(0);
