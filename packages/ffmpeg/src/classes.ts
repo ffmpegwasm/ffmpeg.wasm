@@ -18,7 +18,7 @@ import {
   FFFSPath,
 } from "./types.js";
 import { getMessageID } from "./utils.js";
-import { ERROR_TERMINATED, ERROR_NOT_LOADED } from "./errors.js";
+import { ERROR_TERMINATED, ERROR_NOT_LOADED, ERROR_WORKER } from "./errors.js";
 
 type FFMessageOptions = {
   signal?: AbortSignal;
@@ -86,6 +86,11 @@ export class FFmpeg {
         }
         delete this.#resolves[id];
         delete this.#rejects[id];
+      };
+      // Nothing will answer the pending calls, so reject them.
+      this.#worker.onerror = (event) => {
+        event.preventDefault(); // handled here, not an uncaught page error
+        this.#terminate(ERROR_WORKER);
       };
     }
   };
@@ -292,11 +297,13 @@ export class FFmpeg {
    *
    * @category FFmpeg
    */
-  public terminate = (): void => {
+  public terminate = (): void => this.#terminate(ERROR_TERMINATED);
+
+  #terminate = (reason: Error): void => {
     const ids = Object.keys(this.#rejects);
     // rejects all incomplete Promises.
     for (const id of ids) {
-      this.#rejects[id](ERROR_TERMINATED);
+      this.#rejects[id](reason);
       delete this.#rejects[id];
       delete this.#resolves[id];
     }

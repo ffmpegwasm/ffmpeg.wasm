@@ -36,8 +36,10 @@ CONF_FLAGS=(
   -sUSE_SDL=2                              # use emscripten SDL2 lib port
   -sSTACK_SIZE=5MB                         # increase stack size to support libopus
   -sMODULARIZE                             # modularized to use as a library
-  ${FFMPEG_MT:+ -sINITIAL_MEMORY=1024MB}   # ALLOW_MEMORY_GROWTH is not recommended when using threads, thus we use a large initial memory
+  ${FFMPEG_MT:+ -sINITIAL_MEMORY=1024MB -sALLOW_MEMORY_GROWTH -sMAXIMUM_MEMORY=2GB} # start large as growth is slower with threads, but allow it for 4K (#946)
   ${FFMPEG_MT:+ -sPTHREAD_POOL_SIZE=32}    # use 32 threads
+  ${FFMPEG_MT:+ -sDEFAULT_PTHREAD_STACK_SIZE=2MB} # the 64KB default overflows in x264 and decoder threads
+  ${FFMPEG_MT:+ -sPTHREAD_POOL_SIZE_STRICT=2} # fail instead of hanging when the pool runs out
   ${FFMPEG_ST:+ -sINITIAL_MEMORY=32MB -sALLOW_MEMORY_GROWTH} # Use just enough memory as memory usage can grow
   -sINCOMING_MODULE_JS_API=locateFile,mainScriptUrlOrBlob,print,printErr # mainScriptUrlOrBlob: the script pthread workers load
   -sEXPORT_NAME="$EXPORT_NAME"             # required in browser env, so that user can access this module from window object
@@ -45,6 +47,7 @@ CONF_FLAGS=(
   -sEXPORTED_RUNTIME_METHODS=$(node src/bind/ffmpeg/export-runtime.js) # exported built-in functions
   -lworkerfs.js
   --pre-js src/bind/ffmpeg/bind.js        # extra bindings, contains most of the ffmpeg.wasm javascript code
+  --js-library src/bind/ffmpeg/library.js # overrides of emscripten library functions
   # ffmpeg source code
   src/fftools/cmdutils.c 
   src/fftools/ffmpeg.c 

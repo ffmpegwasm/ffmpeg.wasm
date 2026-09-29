@@ -52,28 +52,26 @@ function printErr(message) {
     Module["logger"]({ type: "stderr", message });
 }
 
-function exec(..._args) {
-  const args = [...Module["DEFAULT_ARGS"], ..._args];
+function runCommand(fn, args) {
+  const sp = stackSave();
   try {
-    Module["_ffmpeg"](args.length, stringsToPtr(args));
+    Module[fn](args.length, stringsToPtr(args));
   } catch (e) {
     if (!e.message.startsWith("Aborted")) {
       throw e;
     }
+  } finally {
+    stackRestore(sp);
   }
   return Module["ret"];
 }
 
+function exec(..._args) {
+  return runCommand("_ffmpeg", [...Module["DEFAULT_ARGS"], ..._args]);
+}
+
 function ffprobe(..._args) {
-  const args = [...Module["DEFAULT_ARGS_FFPROBE"], ..._args];
-  try {
-    Module["_ffprobe"](args.length, stringsToPtr(args));
-  } catch (e) {
-    if (!e.message.startsWith("Aborted")) {
-      throw e;
-    }
-  }
-  return Module["ret"];
+  return runCommand("_ffprobe", [...Module["DEFAULT_ARGS_FFPROBE"], ..._args]);
 }
 
 function setLogger(logger) {
