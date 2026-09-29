@@ -5,11 +5,12 @@
 //   pnpm test:e2e              build the site if needed, run everything
 //   pnpm test:e2e --rebuild    rebuild the site first
 //   pnpm test:e2e --headed
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync } from "node:fs";
 import { execSync } from "node:child_process";
 import { join } from "node:path";
 import { chromium } from "playwright";
 import { startServer, root } from "../helpers/server.js";
+import { hermeticContext, runner } from "./lib.mjs";
 
 const args = new Set(process.argv.slice(2));
 const site = join(root, "apps/website/build");
@@ -19,42 +20,8 @@ if (!existsSync(site) || args.has("--rebuild")) {
 
 const { server, url } = await startServer({ dir: site });
 const browser = await chromium.launch({ headless: !args.has("--headed") });
-const context = await browser.newContext();
-
-// Keep the run hermetic: no ads or analytics.
-await context.route(/google|doubleclick|adtrafficquality/, (route) => route.abort());
-// jsDelivr's @ffmpeg/core and @ffmpeg/core-mt -> packages/core(-mt)/dist.
-await context.route(/cdn\.jsdelivr\.net\/npm\/@ffmpeg\/(core(?:-mt)?)@[^/]+\/dist\/(.*)$/, (route) => {
-  const [, pkg, file] = route.request().url().match(/@ffmpeg\/(core(?:-mt)?)@[^/]+\/dist\/(.*)$/);
-  route.fulfill({ path: join(root, "packages", pkg, "dist", file), headers: { "Access-Control-Allow-Origin": "*" } });
-});
-// Sample media from the testdata repository, downloaded once into .cache.
-const cache = join(root, ".cache/testdata");
-mkdirSync(cache, { recursive: true });
-await context.route(/raw\.githubusercontent\.com\/ffmpegwasm\/testdata\/master\/(.*)$/, async (route) => {
-  const file = join(cache, route.request().url().split("/").pop());
-  if (!existsSync(file)) {
-    writeFileSync(file, Buffer.from(await (await fetch(route.request().url())).arrayBuffer()));
-  }
-  route.fulfill({ body: readFileSync(file), headers: { "Access-Control-Allow-Origin": "*" } });
-});
-
-let failures = 0;
-async function test(name, fn) {
-  const page = await context.newPage();
-  const errors = [];
-  page.on("pageerror", (e) => errors.push(e.message));
-  const start = Date.now();
-  try {
-    await fn(page);
-    if (errors.length) throw new Error(errors.join("\n"));
-    console.log(`✓ ${name} (${((Date.now() - start) / 1000).toFixed(1)}s)`);
-  } catch (e) {
-    failures++;
-    console.log(`✗ ${name}\n  ${e.message.split("\n").join("\n  ")}`);
-  }
-  await page.close();
-}
+const context = await hermeticContext(browser);
+const { test, failures } = runner(context);
 
 // Every live example: click "Load ffmpeg-core", then its action button, and
 // wait for the <video> it fills to load.
@@ -120,4 +87,4 @@ await test("playground: survives arguments that aren't a list of strings (#791, 
 
 await browser.close();
 server.close();
-process.exit(failures ? 1 : 0);
+process.exit(failures() ? 1 : 0);
