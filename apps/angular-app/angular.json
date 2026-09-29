@@ -22,7 +22,12 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "*.js",
+                "input": "node_modules/@ffmpeg/ffmpeg/dist/esm",
+                "output": "ffmpeg"
+              }
             ],
             "styles": [
               "src/styles.css"

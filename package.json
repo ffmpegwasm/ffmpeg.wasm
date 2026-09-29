@@ -16,6 +16,7 @@
     "test": "vitest run && pnpm test:e2e",
     "test:unit": "vitest run",
     "test:e2e": "node tests/e2e/run.mjs",
+    "test:e2e:apps": "node tests/e2e/apps.mjs",
     "test:docker": "docker build -f tests/Dockerfile -t ffmpeg-wasm-tests . && docker run --rm --ipc=host ffmpeg-wasm-tests",
     "test:install": "playwright install --with-deps chromium",
     "test:heavy": "vitest run --config tests/heavy/vitest.config.js",

@@ -2,7 +2,7 @@ import { FFmpeg } from '@ffmpeg/ffmpeg';
 import { fetchFile, toBlobURL } from '@ffmpeg/util';
 import { createSignal, Show } from 'solid-js';
 
-const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core-mt@0.12.10/dist/esm';
+const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm';
 const videoURL =
   'https://raw.githubusercontent.com/ffmpegwasm/testdata/master/video-15s.avi';
 
@@ -27,10 +27,6 @@ export default function Home() {
       wasmURL: await toBlobURL(
         `${baseURL}/ffmpeg-core.wasm`,
         'application/wasm'
-      ),
-      workerURL: await toBlobURL(
-        `${baseURL}/ffmpeg-core.worker.js`,
-        'text/javascript'
       ),
     });
     setLoaded(true);
