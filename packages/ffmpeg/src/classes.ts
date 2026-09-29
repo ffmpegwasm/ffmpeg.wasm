@@ -188,7 +188,8 @@ export class FFmpeg {
 
   protected createWorker(classWorkerURL?: string): Worker {
     return classWorkerURL
-      ? new Worker(new URL(classWorkerURL, import.meta.url), { type: "module" })
+      ? // Resolved by the browser, not bundlers: they can't follow a runtime URL.
+        new Worker(classWorkerURL, { type: "module" })
       : // Keep the literal URL here so bundlers pick up worker.js.
         new Worker(new URL("./worker.js", import.meta.url), { type: "module" });
   }
