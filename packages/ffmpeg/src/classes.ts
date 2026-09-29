@@ -182,6 +182,13 @@ export class FFmpeg {
     }
   }
 
+  protected createWorker(classWorkerURL?: string): Worker {
+    return classWorkerURL
+      ? new Worker(new URL(classWorkerURL, import.meta.url), { type: "module" })
+      : // Keep the literal URL here so bundlers pick up worker.js.
+        new Worker(new URL("./worker.js", import.meta.url), { type: "module" });
+  }
+
   /**
    * Loads ffmpeg-core inside web worker. It is required to call this method first
    * as it initializes WebAssembly and other essential variables.
@@ -194,15 +201,7 @@ export class FFmpeg {
     { signal }: FFMessageOptions = {}
   ): Promise<IsFirst> => {
     if (!this.#worker) {
-      this.#worker = classWorkerURL ?
-        new Worker(new URL(classWorkerURL, import.meta.url), {
-          type: "module",
-        }) :
-        // We need to duplicated the code here to enable webpack
-        // to bundle worker.js here.
-        new Worker(new URL("./worker.js", import.meta.url), {
-          type: "module",
-        });
+      this.#worker = this.createWorker(classWorkerURL);
       this.#registerHandlers();
     }
     return this.#send(

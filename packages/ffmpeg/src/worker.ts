@@ -80,12 +80,12 @@ const load = async ({
   const coreURL = _coreURL;
   const wasmURL = _wasmURL ? _wasmURL : _coreURL.replace(/.js$/g, ".wasm");
 
+  // the hash tells @ffmpeg/core-mt's threads where the wasm is (see _locateFile in bind.js)
+  const mainScriptUrlOrBlob = `${coreURL}#${btoa(JSON.stringify({ wasmURL }))}`;
   try {
-    ffmpeg = await (self as WorkerGlobalScope).createFFmpegCore({
-      // @ffmpeg/core-mt starts its threads from the core script; the hash
-      // carries the wasm URL for _locateFile() in bind.js.
-      mainScriptUrlOrBlob: `${coreURL}#${btoa(JSON.stringify({ wasmURL }))}`,
-    });
+    ffmpeg = await (self as WorkerGlobalScope).createFFmpegCore(
+      coreURL.startsWith("file:") ? {} : { mainScriptUrlOrBlob }
+    );
   } catch (e) {
     // @ffmpeg/core-mt's shared memory needs a cross-origin isolated page.
     if (String(e).includes("not cross-origin isolated")) throw ERROR_NOT_ISOLATED;
