@@ -10,7 +10,7 @@
     "allowJs": true,
     "noEmit": true,
     "strict": true,
-    "types": ["vinxi/types/client"],
+    "types": ["@solidjs/start/env"],
     "isolatedModules": true,
     "paths": {
       "~/*": ["./src/*"]

@@ -4,11 +4,8 @@
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "composite": true,
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    },
-    "target": "esnext",
-    "moduleResolution": "node"
+    }
   }
 }

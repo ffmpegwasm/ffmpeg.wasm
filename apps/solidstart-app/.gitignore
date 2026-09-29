@@ -4,7 +4,6 @@ dist
 .output
 .vercel
 .netlify
-.vinxi
 
 # Environment
 .env

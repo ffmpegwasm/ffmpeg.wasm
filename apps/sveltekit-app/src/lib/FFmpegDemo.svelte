@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { FFmpeg } from '@ffmpeg/ffmpeg';
-	// @ts-ignore
-	import type { LogEvent } from '@ffmpeg/ffmpeg/dist/esm/types';
+	import type { LogEvent } from '@ffmpeg/ffmpeg';
 	import { fetchFile, toBlobURL } from '@ffmpeg/util';
 
 	let videoEl: HTMLVideoElement;
@@ -29,14 +28,13 @@
 		const data = await ffmpeg.readFile('test.mp4');
 		console.log('done');
 		videoEl.src = URL.createObjectURL(
-			new Blob([(data as Uint8Array).buffer], { type: 'video/mp4' })
+			new Blob([(data as Uint8Array<ArrayBuffer>).buffer], { type: 'video/mp4' })
 		);
 	}
 </script>
 
 <div>
-	<!-- svelte-ignore a11y-media-has-caption -->
-	<video bind:this={videoEl} controls />
+	<video bind:this={videoEl} controls></video>
 	<br />
 	<button on:click={transcode}>Start</button>
 	<p>{message}</p>
