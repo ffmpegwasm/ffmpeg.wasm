@@ -6,6 +6,17 @@ You will need to install `make` to run build scripts.
 
 ## Build
 
+One command starts Docker Desktop if it isn't running, builds both cores and
+then the JS packages:
+
+```bash
+$ npm run build:wasm        # production builds, like CI
+$ npm run build:wasm dev    # dev builds (--profiling)
+```
+
+The emsdk image is multi-arch, so this runs natively on Apple Silicon too. The
+`make` targets below are what it runs.
+
 Dev Build (single thread):
 ```bash
 $ make dev

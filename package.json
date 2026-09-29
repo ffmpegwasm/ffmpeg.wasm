@@ -6,6 +6,7 @@
     "lint:packages": "npm run lint --workspace=packages --if-present",
     "lint:root": "eslint tests",
     "build": "npm run build --workspace=packages --if-present",
+    "build:wasm": "bash scripts/build-wasm.sh",
     "pretest": "npm run build",
     "serve": "node tests/server.js",
     "test": "server-test test:browser:server 3000 test:all",
