@@ -2,7 +2,7 @@ import { FFmpeg } from '@ffmpeg/ffmpeg';
 import { fetchFile, toBlobURL } from '@ffmpeg/util';
 import { createSignal, Show } from 'solid-js';
 
-const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm';
+const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.13.0/dist/esm';
 const videoURL =
   'https://raw.githubusercontent.com/ffmpegwasm/testdata/master/video-15s.avi';
 

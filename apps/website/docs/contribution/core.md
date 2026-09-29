@@ -42,6 +42,22 @@ $ make prd-mt
 
 The output file locates at **/packages/core** or **/packages/core-mt**.
 
+## Changes to FFmpeg
+
+ffmpeg.wasm builds FFmpeg at the tag in `FFMPEG_VERSION` (Dockerfile) with the
+patches in `patches/ffmpeg`, one per change. To change one, or add one:
+
+```bash
+$ git clone --branch n9.0.2 https://github.com/FFmpeg/FFmpeg && cd FFmpeg
+$ git am ../ffmpeg.wasm/patches/ffmpeg/*.patch
+# edit, commit
+$ git format-patch --zero-commit --no-signature -o ../ffmpeg.wasm/patches/ffmpeg n9.0.2
+```
+
+FFmpeg's command line tools need threads. `@ffmpeg/core-mt` uses real
+threads (Web Workers and SharedArrayBuffer); `@ffmpeg/core` runs them one at a
+time on a single thread with the cooperative pthreads in `src/green`.
+
 ## Custom Build / Reduce Build Size
 
 You can customize your build to include only the libraries you need, which can significantly reduce the final build size. This is done by modifying the `Dockerfile`.
