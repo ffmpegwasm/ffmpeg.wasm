@@ -28,9 +28,9 @@
     "@ffmpeg/core-mt": "workspace:*",
     "@ffmpeg/ffmpeg": "workspace:*",
     "@ffmpeg/util": "workspace:*",
-    "@vitest/browser-playwright": "^5.0.2",
+    "@vitest/browser-playwright": "^5.0.1",
     "playwright": "^1.63.0",
     "sirv": "^3.0.2",
-    "vitest": "^5.0.2"
+    "vitest": "^5.0.1"
   }
 }

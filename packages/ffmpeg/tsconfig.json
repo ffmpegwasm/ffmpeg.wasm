@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "module": "esnext",
-    "rootDir": "src"
+    "rootDir": "src",
+    "types": ["node"]
   }
 }
