@@ -73,8 +73,21 @@ ST_FLAGS=(
   src/green/pthread.c
 )
 
+# The same, switching threads with JSPI instead: no Asyncify instrumentation,
+# but exec() and ffprobe() return Promises and the browser needs JSPI.
+JSPI_FLAGS=(
+  -sINITIAL_MEMORY=32MB
+  -sJSPI -sJSPI_EXPORTS=run_ffmpeg,run_ffprobe,green_entry
+  -Wl,--allow-multiple-definition          # src/green's pthread functions replace libc's single-threaded stubs
+  -DGREEN_JSPI src/green/pthread.c
+  -sEXPORTED_FUNCTIONS=$(node src/bind/ffmpeg/export.js),_green_entry,_emscripten_stack_set_limits,_emscripten_stack_get_base,_emscripten_stack_get_end
+  '-sDEFAULT_LIBRARY_FUNCS_TO_INCLUDE=$stackSave,$stackRestore' # src/green's JavaScript
+)
+
 if [[ -n "${FFMPEG_MT:-}" ]]; then
   emcc "${CONF_FLAGS[@]}" "${MT_FLAGS[@]}" "$@"
+elif [[ -n "${FFMPEG_JSPI:-}" ]]; then
+  emcc "${CONF_FLAGS[@]}" "${JSPI_FLAGS[@]}" "$@"
 else
   emcc "${CONF_FLAGS[@]}" "${ST_FLAGS[@]}" "$@"
 fi

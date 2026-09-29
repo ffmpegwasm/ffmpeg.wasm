@@ -1,6 +1,10 @@
 import { test as base, inject } from "vitest";
 
-const path = (core) => `../../packages/${core === "mt" ? "core-mt" : "core"}/dist/esm/ffmpeg-core.js`;
+// st: @ffmpeg/core, jspi: its JSPI build, mt: @ffmpeg/core-mt
+export const coreFile = (core) =>
+  ({ st: "core/dist/esm/ffmpeg-core.js", jspi: "core/dist/esm/ffmpeg-core-jspi.js", mt: "core-mt/dist/esm/ffmpeg-core.js" })[core];
+
+const path = (core) => `../../packages/${coreFile(core)}`;
 
 export async function createCore(options) {
   const { default: createFFmpegCore } = await import(path(inject("core")));

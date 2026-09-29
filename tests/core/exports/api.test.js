@@ -5,10 +5,10 @@ import { test } from "../../helpers/core.js";
 
 test.for(["exec", "ffprobe", "setLogger", "setProgress", "setTimeout", "reset", "terminateThreads"])(
   "exports %s()",
-  (name, { core }) => expect(core[name]).toBeTypeOf("function")
+  async (name, { core }) => expect(core[name]).toBeTypeOf("function")
 );
 
-test("exports FS with the file systems mount() offers", ({ core }) => {
+test("exports FS with the file systems mount() offers", async ({ core }) => {
   expect(core.FS.filesystems).toHaveProperty("MEMFS");
   expect(core.FS.filesystems).toHaveProperty("WORKERFS");
 });

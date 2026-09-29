@@ -23,7 +23,7 @@ import type {
   FSNode,
   FileData,
 } from "./types";
-import { CORE_URL, FFMessageType } from "./const.js";
+import { CORE_URL, CORE_JSPI_URL, CORE_MT_URL, FFMessageType } from "./const.js";
 import {
   ERROR_UNKNOWN_MESSAGE_TYPE,
   ERROR_NOT_LOADED,
@@ -43,18 +43,28 @@ interface ImportedFFmpegCoreModuleFactory {
 
 let ffmpeg: FFmpegCoreModule;
 
+// Without a coreURL, the fastest core that works here: @ffmpeg/core-mt on a
+// cross-origin isolated page, else @ffmpeg/core's JSPI build where
+// WebAssembly.Suspending exists, else @ffmpeg/core.
+const defaultCoreURL = (): string => {
+  if (self.crossOriginIsolated) return CORE_MT_URL;
+  if (typeof (WebAssembly as { Suspending?: unknown }).Suspending === "function") return CORE_JSPI_URL;
+  return CORE_URL;
+};
+
 const load = async ({
   coreURL: _coreURL,
   wasmURL: _wasmURL,
 }: FFMessageLoadConfig): Promise<IsFirst> => {
   const first = !ffmpeg;
 
+  const defaultCore = !_coreURL;
+  _coreURL = _coreURL ?? defaultCoreURL();
   try {
-    if (!_coreURL) _coreURL = CORE_URL;
     // when web worker type is `classic`.
     importScripts(_coreURL);
   } catch {
-    if (!_coreURL || _coreURL === CORE_URL) _coreURL = CORE_URL.replace('/umd/', '/esm/');
+    if (defaultCore) _coreURL = _coreURL.replace('/umd/', '/esm/');
     // when web worker type is `module`.
     (self as WorkerGlobalScope).createFFmpegCore = (
       (await import(
@@ -93,17 +103,17 @@ const load = async ({
   return first;
 };
 
-const exec = ({ args, timeout = -1 }: FFMessageExecData): ExitCode => {
+const exec = async ({ args, timeout = -1 }: FFMessageExecData): Promise<ExitCode> => {
   ffmpeg.setTimeout(timeout);
-  ffmpeg.exec(...args);
+  await ffmpeg.exec(...args); // a Promise with the JSPI core
   const ret = ffmpeg.ret;
   ffmpeg.reset();
   return ret;
 };
 
-const ffprobe = ({ args, timeout = -1 }: FFMessageExecData): ExitCode => {
+const ffprobe = async ({ args, timeout = -1 }: FFMessageExecData): Promise<ExitCode> => {
   ffmpeg.setTimeout(timeout);
-  ffmpeg.ffprobe(...args);
+  await ffmpeg.ffprobe(...args); // a Promise with the JSPI core
   const ret = ffmpeg.ret;
   ffmpeg.reset();
   return ret;
@@ -196,10 +206,10 @@ self.onmessage = async ({
         data = await load(_data as FFMessageLoadConfig);
         break;
       case FFMessageType.EXEC:
-        data = exec(_data as FFMessageExecData);
+        data = await exec(_data as FFMessageExecData);
         break;
       case FFMessageType.FFPROBE:
-        data = ffprobe(_data as FFMessageExecData);
+        data = await ffprobe(_data as FFMessageExecData);
         break;
       case FFMessageType.WRITE_FILE:
         data = writeFile(_data as FFMessageWriteFileData);

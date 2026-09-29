@@ -9,5 +9,6 @@ if ! docker info >/dev/null 2>&1 && [ "$(uname -s)" = Darwin ]; then
 fi
 
 make "${1:-prd}"
+make "${1:-prd}-jspi"
 make "${1:-prd}-mt"
 pnpm build

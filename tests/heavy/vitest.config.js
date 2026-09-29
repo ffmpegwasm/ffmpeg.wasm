@@ -13,14 +13,19 @@ const heavy = (name) => ({
   },
 });
 
+// The JSPI build (Node.js 24+) runs the same code as the Asyncify one, so its
+// output must match @ffmpeg/core's baseline.
+const jspi = typeof WebAssembly.Suspending === "function";
+const baseline = (name) => (name === "heavy-jspi" ? "st" : name.replace("heavy-", ""));
+
 export default defineConfig({
   test: {
     testTimeout: 120000,
-    projects: [heavy("st"), heavy("mt")],
+    projects: [heavy("st"), heavy("mt"), ...(jspi ? [heavy("jspi")] : [])],
     // The FATE suite gains samples over time: record new ones instead of failing.
     update: "new",
-    // one baseline per core: baseline/fate-st.snap, baseline/fate-mt.snap
+    // baseline/fate-st.snap (also for jspi), baseline/fate-mt.snap
     resolveSnapshotPath: (path, extension, { config }) =>
-      `${import.meta.dirname}/baseline/${basename(path, ".test.js")}-${config.name.replace("heavy-", "")}${extension}`,
+      `${import.meta.dirname}/baseline/${basename(path, ".test.js")}-${baseline(config.name)}${extension}`,
   },
 });

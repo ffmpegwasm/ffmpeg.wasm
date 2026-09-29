@@ -26,12 +26,12 @@ const cases = [
   ["libtheora", VIDEO, ["-c:v", "libtheora"], "out.ogv", "theora"],
 ];
 
-test.for(cases)("encodes with %s", ([name, input, opts, out, codec], { core, dir, skip }) => {
+test.for(cases)("encodes with %s", async ([name, input, opts, out, codec], { core, dir, skip }) => {
   // libx265 is only in core-mt, see issues/898.
   if (name === "libx265" && !isMT()) skip();
   const path = `${dir}/${out}`;
-  const { ret, log } = exec(core, ...input, ...opts, path);
-  const [stream] = probe(core, path).streams;
+  const { ret, log } = await exec(core, ...input, ...opts, path);
+  const [stream] = (await probe(core, path)).streams;
   expect(ret, log).to.equal(0);
   expect(stream.codec_name).to.equal(codec);
 });

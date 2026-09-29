@@ -11,15 +11,15 @@ test.for([
   ["the default preset (#359)", []],
   ["sliced threads", ["-x264-params", "sliced-threads=1"]],
   ["4 lookahead threads", ["-x264-params", "lookahead-threads=4"]],
-])("encodes with %s", ([, options], { core, dir }) => {
-  const { ret, log } = exec(core, ...INPUT, ...options, `${dir}/out.mp4`);
+])("encodes with %s", async ([, options], { core, dir }) => {
+  const { ret, log } = await exec(core, ...INPUT, ...options, `${dir}/out.mp4`);
   expect(ret, log).to.equal(0);
 });
 
-test("encodes in two passes (#212)", ({ core, dir }) => {
+test("encodes in two passes (#212)", async ({ core, dir }) => {
   const passlog = ["-passlogfile", `${dir}/x264`];
-  const firstPass = exec(core, ...INPUT, "-b:v", "160k", "-pass", "1", ...passlog, "-f", "mp4", "/dev/null");
-  const secondPass = exec(core, ...INPUT, "-b:v", "160k", "-pass", "2", ...passlog, `${dir}/out.mp4`);
+  const firstPass = await exec(core, ...INPUT, "-b:v", "160k", "-pass", "1", ...passlog, "-f", "mp4", "/dev/null");
+  const secondPass = await exec(core, ...INPUT, "-b:v", "160k", "-pass", "2", ...passlog, `${dir}/out.mp4`);
   expect(firstPass.ret, firstPass.log).to.equal(0);
   expect(secondPass.ret, secondPass.log).to.equal(0);
 });

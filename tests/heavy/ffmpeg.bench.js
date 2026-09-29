@@ -30,7 +30,7 @@ const core = await createCore();
 [H264_1080P, VP9_480P, WAV].forEach((sample) => core.FS.writeFile(`/${basename(sample)}`, readFileSync(join(suite, sample))));
 
 test.for(JOBS)("%s", async ([, sample, args], { bench }) => {
-  const wasm = bench("ffmpeg.wasm", { perProject: true }, () => exec(core, "-i", `/${basename(sample)}`, ...args));
+  const wasm = bench("ffmpeg.wasm", { perProject: true }, async () => await exec(core, "-i", `/${basename(sample)}`, ...args));
   const nativeArgs = ["-v", "error", "-y", "-i", join(suite, sample), ...args.map((arg) => (arg === "/out" ? "/dev/null" : arg))];
   const native = bench("native ffmpeg", () => execFileSync("ffmpeg", nativeArgs, { stdio: "ignore" }));
   await (process.env.FATE_NATIVE ? bench.compare(wasm, native, RUNS) : wasm.run(RUNS));

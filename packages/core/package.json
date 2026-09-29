@@ -11,6 +11,14 @@
     "./wasm": {
       "import": "./dist/esm/ffmpeg-core.wasm",
       "require": "./dist/umd/ffmpeg-core.wasm"
+    },
+    "./jspi": {
+      "import": "./dist/esm/ffmpeg-core-jspi.js",
+      "require": "./dist/umd/ffmpeg-core-jspi.js"
+    },
+    "./jspi/wasm": {
+      "import": "./dist/esm/ffmpeg-core-jspi.wasm",
+      "require": "./dist/umd/ffmpeg-core-jspi.wasm"
     }
   },
   "files": [
