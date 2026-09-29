@@ -1,4 +1,4 @@
-export const downloadFile = (name: string, data: ArrayBuffer | string) => {
+export const downloadFile = (name: string, data: BlobPart) => {
   const a = document.createElement("a");
   const blob = new Blob([data]);
   const url = window.URL.createObjectURL(blob);

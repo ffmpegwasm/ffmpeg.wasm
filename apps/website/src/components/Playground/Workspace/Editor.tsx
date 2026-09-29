@@ -1,7 +1,6 @@
-/// <reference types="ace" />
-
 import React, { useEffect, useState } from "react";
 import AceEditor from "react-ace";
+import type { Ace } from "ace-builds";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -56,7 +55,8 @@ export default function Editor({
 
   useEffect(() => {
     // scroll logs to the end.
-    output && output.renderer.scrollToLine(Number.POSITIVE_INFINITY);
+    output &&
+      output.renderer.scrollToLine(Number.POSITIVE_INFINITY, false, false);
   }, [logs]);
 
   const theme = colorMode === "dark" ? "github" : "dracula";
@@ -115,7 +115,11 @@ export default function Editor({
         />
         <Typography>Transcoding Progress:</Typography>
         <LinearProgressWithLabel value={progress} />
-        <Stack direction="row" spacing={2} justifyContent="space-between">
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{ justifyContent: "space-between" }}
+        >
           <Typography>
             {time === 0 ? "" : `Time Elapsed: ${(time / 1000).toFixed(2)} s`}
           </Typography>

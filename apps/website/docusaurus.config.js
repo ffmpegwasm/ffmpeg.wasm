@@ -1,8 +1,7 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require("prism-react-renderer/themes/github");
-const darkCodeTheme = require("prism-react-renderer/themes/dracula");
+const { themes } = require("prism-react-renderer");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -12,7 +11,11 @@ const config = {
   url: "https://ffmpegwasm.netlify.app",
   baseUrl: "/",
   onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "warn",
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: "warn",
+    },
+  },
   favicon: "img/favicon.ico",
 
   // GitHub pages deployment config.
@@ -131,8 +134,8 @@ const config = {
         copyright: `Copyright © ${new Date().getFullYear()} ffmpeg.wasm, Inc. Built with Docusaurus.`,
       },
       prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
+        theme: themes.github,
+        darkTheme: themes.dracula,
         additionalLanguages: ['docker'],
       },
     }),
@@ -149,11 +152,8 @@ const config = {
         entryPoints: ["../../packages/ffmpeg/src/index.ts"],
         tsconfig: "../../packages/ffmpeg/tsconfig.json",
         readme: "none",
-        out: "api/ffmpeg",
-        sidebar: {
-          indexLabel: "@ffmpeg/ffmpeg",
-          fullNames: true,
-        },
+        out: "docs/api/ffmpeg",
+        sidebar: { autoConfiguration: false },
       },
     ],
     [
@@ -163,11 +163,8 @@ const config = {
         entryPoints: ["../../packages/util/src/index.ts"],
         tsconfig: "../../packages/util/tsconfig.json",
         readme: "none",
-        out: "api/util",
-        sidebar: {
-          indexLabel: "@ffmpeg/util",
-          fullNames: true,
-        },
+        out: "docs/api/util",
+        sidebar: { autoConfiguration: false },
       },
     ],
   ],

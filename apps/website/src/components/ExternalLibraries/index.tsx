@@ -1,4 +1,4 @@
-import React from "react";
+import React, { type ReactNode } from "react";
 import clsx from "clsx";
 import styles from "./styles.module.css";
 
@@ -83,7 +83,7 @@ function Library({ title, desc, img, isBlackBackground = false }: LibraryItem) {
   );
 }
 
-export default function ExternalLibraries(): JSX.Element {
+export default function ExternalLibraries(): ReactNode {
   return (
     <section className={styles.libraries}>
       <div className="container">

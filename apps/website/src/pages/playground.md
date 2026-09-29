@@ -93,13 +93,11 @@ System to make sure these files can be consumed by the ffmpeg.wasm APIs:
 - <ThemedIconButton size="small"><RefreshIcon fontSize="small"
     /></ThemedIconButton>: Refresh File System.
 
-> Press <ThemedButton>Load Sample Files</ThemedButton> to load a set of samples
-files.
+<blockquote>Press <ThemedButton>Load Sample Files</ThemedButton> to load a set of samples files.</blockquote>
 
 #### Run a command 
 
-With files are ready in the File System, you can update arguments in the Editor
-and hit <ThemedButton variant="contained">Run</ThemedButton> afterward:
+<div className="margin-bottom--md">With files are ready in the File System, you can update arguments in the Editor and hit <ThemedButton variant="contained">Run</ThemedButton> afterward:</div>
 
 <div style={{ maxWidth: 480 }}>
   <MuiThemeProvider>

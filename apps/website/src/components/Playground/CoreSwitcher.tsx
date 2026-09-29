@@ -4,7 +4,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import IconButton from "@mui/material/IconButton";
-import HelpIcon from "@mui/icons-material/HelpOutline";
+import HelpIcon from "@mui/icons-material/HelpOutlineOutlined";
 import Tooltip from "@mui/material/Tooltip";
 
 interface CoreSwitcherProps {
@@ -15,7 +15,7 @@ interface CoreSwitcherProps {
 export default function CoreSwitcher({ checked, onChange }: CoreSwitcherProps) {
   return (
     <>
-      <Stack direction="row" justifyContent="flex-end">
+      <Stack direction="row" sx={{ justifyContent: "flex-end" }}>
         <FormGroup>
           <FormControlLabel
             control={<Switch checked={checked} onChange={onChange} />}
