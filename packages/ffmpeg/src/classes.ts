@@ -93,7 +93,7 @@ export class FFmpeg {
             this.#rejects[id](data);
             // A trap (e.g. "memory access out of bounds") can leave the core's
             // memory corrupt, so don't run anything else on it (#563).
-            if (String(data).startsWith("RuntimeError")) this.#terminate(ERROR_CRASHED);
+            if (typeof data === "string" && data.startsWith("RuntimeError")) this.#terminate(ERROR_CRASHED);
             break;
         }
         delete this.#resolves[id];
@@ -121,7 +121,7 @@ export class FFmpeg {
 
     return new Promise((resolve, reject) => {
       const id = getMessageID();
-      this.#worker && this.#worker.postMessage({ id, type, data }, trans);
+      this.#worker?.postMessage({ id, type, data }, trans);
       this.#resolves[id] = resolve;
       this.#rejects[id] = reject;
 

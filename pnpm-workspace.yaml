@@ -1,3 +1,6 @@
+# Only resolve versions published at least a week ago.
+minimumReleaseAge: 10080
+
 packages:
   - packages/*
   - apps/*

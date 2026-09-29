@@ -73,13 +73,13 @@ const load = async ({
   } catch {
     if (defaultCore) _coreURL = _coreURL.replace('/umd/', '/esm/');
     // when web worker type is `module`.
-    (self as WorkerGlobalScope).createFFmpegCore = (
+    (self as unknown as WorkerGlobalScope).createFFmpegCore = (
       (await import(
         /* @vite-ignore */ _coreURL
       )) as ImportedFFmpegCoreModuleFactory
     ).default;
 
-    if (!(self as WorkerGlobalScope).createFFmpegCore) {
+    if (!(self as unknown as WorkerGlobalScope).createFFmpegCore) {
       throw ERROR_IMPORT_FAILURE;
     }
   }
@@ -90,12 +90,12 @@ const load = async ({
   // the hash tells @ffmpeg/core-mt's threads where the wasm is (see _locateFile in bind.js)
   const mainScriptUrlOrBlob = `${coreURL}#${btoa(JSON.stringify({ wasmURL }))}`;
   try {
-    ffmpeg = await (self as WorkerGlobalScope).createFFmpegCore(
+    ffmpeg = await (self as unknown as WorkerGlobalScope).createFFmpegCore(
       coreURL.startsWith("file:") ? {} : { mainScriptUrlOrBlob }
     );
   } catch (e) {
     // e.g. an HTML 404 page or SPA fallback served instead of the wasm (#609)
-    if (String(e).includes("magic word")) throw new Error(`${wasmURL} is not a WebAssembly file (${String(e)})`);
+    if (String(e).includes("magic word")) throw new Error(`${wasmURL} is not a WebAssembly file (${String(e)})`, { cause: e });
     // @ffmpeg/core-mt's shared memory needs a cross-origin isolated page.
     if (String(e).includes("not cross-origin isolated")) throw ERROR_NOT_ISOLATED;
     throw e;
@@ -227,7 +227,7 @@ self.onmessage = async ({
   const trans = [];
   let data: CallbackData;
   try {
-    if (type !== FFMessageType.LOAD && !ffmpeg) throw ERROR_NOT_LOADED; // eslint-disable-line
+    if (type !== FFMessageType.LOAD && !ffmpeg) throw ERROR_NOT_LOADED;
 
     switch (type) {
       case FFMessageType.LOAD:
