@@ -1,4 +1,4 @@
 #!/bin/bash
 
-npm install
-npm run build
+pnpm install
+pnpm build

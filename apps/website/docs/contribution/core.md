@@ -10,8 +10,8 @@ One command starts Docker Desktop if it isn't running, builds both cores and
 then the JS packages:
 
 ```bash
-$ npm run build:wasm        # production builds, like CI
-$ npm run build:wasm dev    # dev builds (--profiling)
+$ pnpm build:wasm        # production builds, like CI
+$ pnpm build:wasm dev    # dev builds (--profiling)
 ```
 
 The emsdk image is multi-arch, so this runs natively on Apple Silicon too. The

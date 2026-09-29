@@ -1,38 +1,20 @@
 {
   "name": "root",
   "private": true,
-  "scripts": {
-    "lint": "npm-run-all lint:*",
-    "lint:packages": "npm run lint --workspace=packages --if-present",
-    "lint:root": "eslint tests",
-    "build": "npm run build --workspace=packages --if-present",
-    "build:wasm": "bash scripts/build-wasm.sh",
-    "pretest": "npm run build",
-    "serve": "node tests/server.js",
-    "test": "server-test test:browser:server 3000 test:all",
-    "test:all": "npm-run-all test:browser:*:*",
-    "test:browser": "mocha-headless-chrome -a enable-features=SharedArrayBuffer",
-    "test:browser:core:mt": "npm run test:browser -- -f http://localhost:3000/tests/ffmpeg-core-mt.test.html",
-    "test:browser:core:st": "npm run test:browser -- -f http://localhost:3000/tests/ffmpeg-core-st.test.html",
-    "test:browser:ffmpeg:mt": "npm run test:browser -- -f http://localhost:3000/tests/ffmpeg-mt.test.html",
-    "test:browser:ffmpeg:st": "npm run test:browser -- -f http://localhost:3000/tests/ffmpeg-st.test.html",
-    "test:browser:server": "npm run serve",
-    "test:node": "mocha --exit --bail -t 60000",
-    "test:node:core:mt": "npm run test:node -- --require tests/test-helper-mt.js tests/ffmpeg-core.test.js",
-    "test:node:core:st": "npm run test:node -- --require tests/test-helper-st.js tests/ffmpeg-core.test.js",
-    "prepublishOnly": "npm run build",
-    "postinstall": "npm run build"
+  "packageManager": "pnpm@12.6.0",
+  "engines": {
+    "node": ">=22"
   },
-  "workspaces": [
-    "packages/*",
-    "apps/*"
-  ],
+  "scripts": {
+    "lint": "pnpm -r --filter './packages/*' lint",
+    "build": "pnpm -r --filter './packages/*' build",
+    "build:wasm": "bash scripts/build-wasm.sh",
+    "prepublishOnly": "pnpm build",
+    "postinstall": "pnpm build"
+  },
   "devDependencies": {
-    "chai": "^4.3.7",
-    "http-server": "^14.1.1",
-    "mocha": "^10.2.0",
-    "mocha-headless-chrome": "^4.0.0",
-    "npm-run-all": "^4.1.5",
-    "start-server-and-test": "^2.0.3"
+    "@vitest/browser-playwright": "^5.0.2",
+    "playwright": "^1.63.0",
+    "vitest": "^5.0.2"
   }
 }

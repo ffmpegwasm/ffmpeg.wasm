@@ -9,8 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ffmpeg/ffmpeg": "*",
-    "@ffmpeg/util": "*",
+    "@ffmpeg/ffmpeg": "workspace:*",
+    "@ffmpeg/util": "workspace:*",
     "@types/node": "20.4.9",
     "@types/react": "18.2.20",
     "@types/react-dom": "18.2.7",

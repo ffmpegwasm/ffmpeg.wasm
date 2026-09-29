@@ -1,0 +1,23 @@
+packages:
+  - packages/*
+  - apps/*
+# Dependencies allowed to run install scripts: the native ones. The others
+# only print messages.
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
+  unrs-resolver: true
+  core-js: false
+  core-js-pure: false
+  nice-napi: false
+  svelte-preprocess: false
+# Docusaurus 2's theme requires webpack without declaring it, and deep-imports
+# webpack/lib files that later 5.x releases moved.
+packageExtensions:
+  "@docusaurus/theme-classic@2":
+    dependencies:
+      webpack: "~5.89.0"
+overrides:
+  webpack: "~5.89.0"
+  # docusaurus-search-local 0.34 uses cheerio's default export, gone in 1.0.
+  "@easyops-cn/docusaurus-search-local>cheerio": 1.0.0-rc.12

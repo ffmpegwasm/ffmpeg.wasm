@@ -73,29 +73,11 @@ jobs:
         with:
           name: ffmpeg-core-mt
           path: packages/core-mt/dist
-      - name: Use Node.js 18
-        uses: actions/setup-node@v2
+      - uses: pnpm/action-setup@v6
+      - name: Use Node.js 24
+        uses: actions/setup-node@v4
         with:
-          node-version: 18.x
-      - name: Cache dependencies
-        id: cache-dependencies
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: node-modules-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            node-modules-
+          node-version: 24.x
+          cache: pnpm
       - name: Install dependencies
-        run: npm install
-      - name: Install Chrome
-        uses: browser-actions/setup-chrome@latest
-        with:
-          chrome-version: stable
-      - name: Run tests
-        run: |
-          set -o pipefail
-          npm run serve &
-          sleep 5
-          for page in ffmpeg-core-st ffmpeg-st ffmpeg-core-mt ffmpeg-mt; do
-            npx mocha-headless-chrome -a no-sandbox -f "http://localhost:3000/tests/$page.test.html"
-          done
+        run: pnpm install --frozen-lockfile
