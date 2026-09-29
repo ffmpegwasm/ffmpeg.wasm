@@ -139,6 +139,7 @@ jobs:
       - run: pnpm test:install
       - run: pnpm test:unit --project browser-st --project browser-mt
       - run: pnpm test:e2e
+      - run: pnpm test:e2e:apps
   heavy:
     # FATE samples + benchmarks: nightly, on demand, or with the "heavy" PR label.
     if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'heavy')
