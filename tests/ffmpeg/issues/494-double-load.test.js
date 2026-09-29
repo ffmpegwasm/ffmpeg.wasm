@@ -4,7 +4,7 @@
 import { expect } from "vitest";
 import { test, coreURL } from "../../helpers/ffmpeg.js";
 
-test.fails("load() again keeps the loaded core (#494)", { timeout: 60000 }, async ({ ffmpeg }) => {
+test("load() again keeps the loaded core", { timeout: 60000 }, async ({ ffmpeg }) => {
   await ffmpeg.writeFile("/kept.txt", "hello");
   const isFirst = await ffmpeg.load({ coreURL: coreURL() });
   const kept = await ffmpeg.readFile("/kept.txt", "utf8");

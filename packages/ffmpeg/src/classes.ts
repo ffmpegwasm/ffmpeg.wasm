@@ -299,13 +299,10 @@ export class FFmpeg {
   public terminate = (): void => this.#terminate(ERROR_TERMINATED);
 
   #terminate = (reason: Error): void => {
-    const ids = Object.keys(this.#rejects);
     // rejects all incomplete Promises.
-    for (const id of ids) {
-      this.#rejects[id](reason);
-      delete this.#rejects[id];
-      delete this.#resolves[id];
-    }
+    Object.values(this.#rejects).forEach((reject) => reject(reason));
+    this.#rejects = {};
+    this.#resolves = {};
 
     if (this.#worker) {
       this.#worker.terminate();

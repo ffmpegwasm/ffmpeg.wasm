@@ -164,9 +164,7 @@ export type CallbackData =
   | FSNode[]
   | undefined;
 
-export interface Callbacks {
-  [id: number | string]: (data: CallbackData) => void;
-}
+export type Callbacks = Record<number, (data: CallbackData) => void>;
 
 export type LogEventCallback = (event: LogEvent) => void;
 export type ProgressEventCallback = (event: ProgressEvent) => void;
