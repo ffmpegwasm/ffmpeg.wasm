@@ -2115,109 +2115,145 @@ exports[`auravision/salma-hayek-in-ugly-betty-partial-avi 1`] = `
 
 exports[`av1/annexb.obu 1`] = `
 {
-  "status": "error",
+  "frames": 10,
+  "hash": "4f0387583bb8cf41",
+  "status": "ok",
 }
 `;
 
 exports[`av1/decode_model.ivf 1`] = `
 {
-  "status": "error",
+  "frames": 24,
+  "hash": "e01bb35bb3b79bed",
+  "status": "ok",
 }
 `;
 
 exports[`av1/film_grain.ivf 1`] = `
 {
-  "status": "error",
+  "frames": 10,
+  "hash": "932fc2f8fa2b692b",
+  "status": "ok",
 }
 `;
 
 exports[`av1/frames_refs_short_signaling.ivf 1`] = `
 {
-  "status": "error",
+  "frames": 50,
+  "hash": "80b59a854ea9273f",
+  "status": "ok",
 }
 `;
 
 exports[`av1/non_uniform_tiling.ivf 1`] = `
 {
-  "status": "error",
+  "frames": 24,
+  "hash": "0a4690b13a7f833e",
+  "status": "ok",
 }
 `;
 
 exports[`av1/seq_hdr_op_param_info.ivf 1`] = `
 {
-  "status": "error",
+  "frames": 64,
+  "hash": "05aa9508db2f107c",
+  "status": "ok",
 }
 `;
 
 exports[`av1/switch_frame.ivf 1`] = `
 {
-  "status": "error",
+  "frames": 32,
+  "hash": "daf2793fbdb82e1c",
+  "status": "ok",
 }
 `;
 
 exports[`av1-test-vectors/av1-1-b8-02-allintra.ivf 1`] = `
 {
-  "status": "error",
+  "frames": 15,
+  "hash": "09171291c7d13610",
+  "status": "ok",
 }
 `;
 
 exports[`av1-test-vectors/av1-1-b8-03-sizedown.ivf 1`] = `
 {
-  "status": "error",
+  "frames": 20,
+  "hash": "868432b15452f506",
+  "status": "ok",
 }
 `;
 
 exports[`av1-test-vectors/av1-1-b8-03-sizeup.ivf 1`] = `
 {
-  "status": "error",
+  "frames": 20,
+  "hash": "c32e5aa540c30653",
+  "status": "ok",
 }
 `;
 
 exports[`av1-test-vectors/av1-1-b8-04-cdfupdate.ivf 1`] = `
 {
-  "status": "error",
+  "frames": 2,
+  "hash": "78c94f799c0aacaf",
+  "status": "ok",
 }
 `;
 
 exports[`av1-test-vectors/av1-1-b8-05-mv.ivf 1`] = `
 {
-  "status": "error",
+  "frames": 4,
+  "hash": "3dddf92c12dcf52e",
+  "status": "ok",
 }
 `;
 
 exports[`av1-test-vectors/av1-1-b8-06-mfmv.ivf 1`] = `
 {
-  "status": "error",
+  "frames": 4,
+  "hash": "d6aa373661488d34",
+  "status": "ok",
 }
 `;
 
 exports[`av1-test-vectors/av1-1-b8-22-svc-L1T2.ivf 1`] = `
 {
-  "status": "error",
+  "frames": 8,
+  "hash": "b4d09345baa8c7cd",
+  "status": "ok",
 }
 `;
 
 exports[`av1-test-vectors/av1-1-b8-22-svc-L2T1.ivf 1`] = `
 {
-  "status": "error",
+  "frames": 8,
+  "hash": "89df52dfb192e812",
+  "status": "ok",
 }
 `;
 
 exports[`av1-test-vectors/av1-1-b8-22-svc-L2T2.ivf 1`] = `
 {
-  "status": "error",
+  "frames": 8,
+  "hash": "e343e02c2fa5142d",
+  "status": "ok",
 }
 `;
 
 exports[`av1-test-vectors/av1-1-b8-23-film_grain-50.ivf 1`] = `
 {
-  "status": "error",
+  "frames": 10,
+  "hash": "5e6f39d7851b0fe9",
+  "status": "ok",
 }
 `;
 
 exports[`av1-test-vectors/av1-1-b10-23-film_grain-50.ivf 1`] = `
 {
-  "status": "error",
+  "frames": 10,
+  "hash": "718db9b9a87b2c4c",
+  "status": "ok",
 }
 `;
 
@@ -2239,13 +2275,17 @@ exports[`avid/avidmeridianntsc.mov 1`] = `
 
 exports[`avif/still_image.avif 1`] = `
 {
-  "status": "error",
+  "frames": 1,
+  "hash": "073088b00d6851a0",
+  "status": "ok",
 }
 `;
 
 exports[`avif/still_image_exif.avif 1`] = `
 {
-  "status": "error",
+  "frames": 1,
+  "hash": "073088b00d6851a0",
+  "status": "ok",
 }
 `;
 
@@ -11223,7 +11263,9 @@ exports[`lagarith/lagarith-red.avi 1`] = `
 
 exports[`lcevc/L_AV1_854x480p_8bit8bit_2D_dd.mkv 1`] = `
 {
-  "status": "error",
+  "frames": 30,
+  "hash": "c0dbec834c04f48e",
+  "status": "ok",
 }
 `;
 
@@ -12228,13 +12270,17 @@ exports[`mov/mov-piff-encrypted.mp4 1`] = `
 
 exports[`mov/mov-t35-cdsc-track.mp4 1`] = `
 {
-  "status": "error",
+  "frames": 10,
+  "hash": "4f0387583bb8cf41",
+  "status": "ok",
 }
 `;
 
 exports[`mov/mov-t35-rndr-track.mp4 1`] = `
 {
-  "status": "error",
+  "frames": 10,
+  "hash": "4f0387583bb8cf41",
+  "status": "ok",
 }
 `;
 
