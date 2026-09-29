@@ -651,6 +651,9 @@ importers:
 
   packages/util:
     devDependencies:
+      '@types/node':
+        specifier: ^22.20.4
+        version: 22.20.4
       '@typescript-eslint/eslint-plugin':
         specifier: ^6.1.0
         version: 6.21.0(@typescript-eslint/parser@6.21.0(eslint@8.57.1(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.3.3))(eslint@8.57.1(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.3.3)
