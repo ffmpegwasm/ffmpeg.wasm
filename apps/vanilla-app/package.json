@@ -4,7 +4,7 @@
   "description": "browser example",
   "private": true,
   "scripts": {
-    "download": "node ../../scripts/download-assets.js",
+    "download": "node ../../scripts/download-assets.cjs",
     "prestart": "pnpm download",
     "start": "node server.js"
   },
