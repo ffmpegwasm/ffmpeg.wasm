@@ -13,7 +13,11 @@ ARG FFMPEG_MT
 ENV FFMPEG_ST=$FFMPEG_ST
 ENV FFMPEG_MT=$FFMPEG_MT
 ENV INSTALL_DIR=/opt
-ENV CFLAGS="-I$INSTALL_DIR/include ${FFMPEG_MT:+-pthread} $EXTRA_CFLAGS"
+# zimg reports errors with C++ exceptions it catches itself, so everything is
+# built with exception support (and the matching setjmp/longjmp): wasm
+# exceptions for the multi-threaded core, JavaScript ones for the
+# single-threaded core, as Asyncify doesn't support wasm exceptions.
+ENV CFLAGS="-I$INSTALL_DIR/include ${FFMPEG_MT:+-pthread -fwasm-exceptions} ${FFMPEG_ST:+-fexceptions} $EXTRA_CFLAGS"
 ENV CXXFLAGS="$CFLAGS"
 ENV LDFLAGS="-L$INSTALL_DIR/lib $CFLAGS $EXTRA_LDFLAGS"
 ENV EM_PKG_CONFIG_PATH=$INSTALL_DIR/lib/pkgconfig:/emsdk/upstream/emscripten/system/lib/pkgconfig
