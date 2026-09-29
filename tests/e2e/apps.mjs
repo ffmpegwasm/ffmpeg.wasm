@@ -14,9 +14,9 @@ import { hermeticContext, runner } from "./lib.mjs";
 // The dev server command of each app, with the port to use.
 const APPS = {
   "angular-app": (port) => ["ng", "serve", "--port", port],
-  "nextjs-app": (port) => ["next", "dev", "--port", port],
+  "nextjs-app": (port) => ["next", "dev", "--webpack", "--port", port],
   "react-vite-app": (port) => ["vite", "--port", port, "--strictPort"],
-  "solidstart-app": (port) => ["vinxi", "dev", "--port", port],
+  "solidstart-app": (port) => ["vite", "dev", "--port", port, "--strictPort"],
   "sveltekit-app": (port) => ["vite", "dev", "--port", port, "--strictPort"],
   "vue-vite-app": (port) => ["vite", "--port", port, "--strictPort"],
 };

@@ -11,6 +11,8 @@ allowBuilds:
   esbuild: true
   unrs-resolver: true
   core-js: false
+  lmdb: false
+  msgpackr-extract: false
   core-js-pure: false
   nice-napi: false
   svelte-preprocess: false

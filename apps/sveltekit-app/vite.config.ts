@@ -1,9 +1,9 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { fileURLToPath, URL } from 'node:url'
+import type { Plugin } from 'vite';
 import { defineConfig } from 'vitest/config';
 
-/** @type {import('vite').Plugin} */
-const viteServerConfig = {
+const viteServerConfig: Plugin = {
     name: 'log-request-middleware',
     configureServer(server) {
         server.middlewares.use((req, res, next) => {

@@ -2,22 +2,21 @@
 	"name": "solidstart-ffmpeg",
 	"type": "module",
 	"scripts": {
-		"dev": "vinxi dev",
-		"build": "vinxi build",
-		"start": "vinxi start"
+		"dev": "vite dev",
+		"build": "vite build",
+		"start": "vite preview"
 	},
 	"dependencies": {
 		"@ffmpeg/ffmpeg": "workspace:*",
 		"@ffmpeg/util": "workspace:*",
-		"@solidjs/router": "^0.14.1",
-		"@solidjs/start": "^1.0.4",
-		"autoprefixer": "^10.4.19",
-		"postcss": "^8.4.38",
-		"solid-js": "^1.8.18",
-		"tailwindcss": "^3.4.3",
-		"vinxi": "^0.5.7"
+		"@solidjs/router": "^1.0.0",
+		"@solidjs/start": "^2.0.5",
+		"@tailwindcss/vite": "^4.3.3",
+		"solid-js": "^1.9.15",
+		"tailwindcss": "^4.3.3",
+		"vite": "^8.3.0"
 	},
 	"engines": {
-		"node": ">=18"
+		"node": ">=24"
 	}
 }

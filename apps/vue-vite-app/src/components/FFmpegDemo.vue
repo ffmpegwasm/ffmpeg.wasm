@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { FFmpeg } from '@ffmpeg/ffmpeg'
-import type { LogEvent } from '@ffmpeg/ffmpeg/dist/esm/types'
+import type { LogEvent } from '@ffmpeg/ffmpeg'
 import { fetchFile, toBlobURL } from '@ffmpeg/util'
 import { defineComponent, ref } from 'vue'
 
@@ -19,7 +19,7 @@ export default defineComponent({
   setup() {
     const ffmpeg = new FFmpeg()
     const message = ref('Click Start to Transcode')
-    let video = ref('')
+    const video = ref('')
 
     async function transcode() {
       message.value = 'Loading ffmpeg-core.js'
@@ -36,7 +36,7 @@ export default defineComponent({
       message.value = 'Complete transcoding'
       const data = await ffmpeg.readFile('test.mp4')
       video.value = URL.createObjectURL(
-        new Blob([(data as Uint8Array).buffer], { type: 'video/mp4' })
+        new Blob([(data as Uint8Array<ArrayBuffer>).buffer], { type: 'video/mp4' })
       )
     }
     return {

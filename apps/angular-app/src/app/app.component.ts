@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { FFmpeg } from '@ffmpeg/ffmpeg';
@@ -12,6 +12,7 @@ const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm';
   imports: [CommonModule, RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class AppComponent {
   loaded = false;
@@ -40,7 +41,7 @@ export class AppComponent {
     await this.ffmpeg.writeFile('input.avi', await fetchFile(videoURL));
     await this.ffmpeg.exec(['-i', 'input.avi', 'output.mp4']);
     const fileData = await this.ffmpeg.readFile('output.mp4');
-    const data = new Uint8Array(fileData as ArrayBuffer);
+    const data = new Uint8Array(fileData as Uint8Array);
     this.videoURL = URL.createObjectURL(
       new Blob([data.buffer], { type: 'video/mp4' }),
     );
