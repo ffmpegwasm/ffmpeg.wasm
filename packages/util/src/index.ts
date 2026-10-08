@@ -4,6 +4,45 @@ import {
 } from "./errors.js";
 import { HeaderContentLength } from "./const.js";
 import { ProgressCallback } from "./types.js";
+import { fetchBlob } from "cos-resource-fetcher";
+import { NPMSHA256HashFetcher } from "npm-sha256-hash-fetcher";
+
+// Extracts a versioned npm resource path from a full URL or a bare npm path.
+// Matches (@scope/)?package@<semver>/path patterns so it works with any CDN
+// (jsDelivr, unpkg, …) as well as bare paths like "@ffmpeg/core@0.12.10/dist/esm".
+const _npmPathRe = /(?:^|\/)((?:@[^/@]+\/)?[^/@]+@\d[^/]*\/.+)/;
+
+function _toNpmPath(url: string): string | null {
+  let pathname: string;
+  try {
+    pathname = new URL(url).pathname;
+  } catch {
+    pathname = url; // already a bare path
+  }
+  const m = pathname.match(_npmPathRe);
+  return m ? m[1].replace(/[?#].*$/, "") : null;
+}
+
+const _npmHashFetcher = new NPMSHA256HashFetcher();
+
+// Returns the SHA-256 hash and uncompressed file size from the npm registry.
+// Size is the decompressed byte count, so it stays accurate as the progress
+// denominator even when the CDN serves the file with Content-Encoding compression.
+async function _getNpmMeta(
+  url: string
+): Promise<{ sha256?: string; size?: number }> {
+  const npmPath = _toNpmPath(url);
+  if (!npmPath) return {};
+  try {
+    const results = await _npmHashFetcher.getHexHashForResource(npmPath);
+    const first = results[0];
+    if (first.status !== "fulfilled") return {};
+    const { hexHash, size } = first.value as { hexHash: string; size?: number };
+    return { sha256: hexHash, size };
+  } catch {
+    return {};
+  }
+}
 
 const readFromBlobOrFile = (blob: Blob | File): Promise<Uint8Array> =>
   new Promise((resolve, reject) => {
@@ -173,9 +212,38 @@ export const toBlobURL = async (
   progress = false,
   cb?: ProgressCallback
 ): Promise<string> => {
-  const buf = progress
-    ? await downloadWithProgress(url, cb)
-    : await (await fetch(url)).arrayBuffer();
-  const blob = new Blob([buf], { type: mimeType });
-  return URL.createObjectURL(blob);
+  // Look up SHA-256 and uncompressed file size from the npm registry upfront.
+  // Size is the decompressed byte count — accurate as a progress denominator even
+  // when the CDN serves with Content-Encoding (e.g. br), where Content-Length
+  // reflects the compressed transfer size and would cause overshoot.
+  const { sha256, size: registrySize } = await _getNpmMeta(url);
+
+  let prevLoaded = 0;
+  const onProgress =
+    progress && cb
+      ? ({ loaded, total }: { loaded: number; total: number | null }) => {
+          const totalBytes = registrySize ?? total ?? -1;
+          const delta = loaded - prevLoaded;
+          prevLoaded = loaded;
+          cb({ url, total: totalBytes, received: loaded, delta, done: false });
+        }
+      : undefined;
+
+  try {
+    // Progressive enhancement: fetchBlob uses Cross-Origin Storage when available,
+    // otherwise falls back to the Cache API. sha256 is passed directly when known
+    // (avoids a second registry round-trip inside fetchBlob).
+    const raw = await fetchBlob(url, {
+      ...(sha256 ? { sha256 } : {}),
+      onProgress,
+    });
+    if (progress && cb) {
+      cb({ url, total: raw.size, received: raw.size, delta: 0, done: true });
+    }
+    return URL.createObjectURL(new Blob([raw], { type: mimeType }));
+  } catch {
+    // Fallback for non-npm URLs or when storage APIs are unavailable.
+    const buf = await (await fetch(url)).arrayBuffer();
+    return URL.createObjectURL(new Blob([buf], { type: mimeType }));
+  }
 };
