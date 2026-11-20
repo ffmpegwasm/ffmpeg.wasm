@@ -64,6 +64,27 @@ function() {
 }
 ```
 
+### Read the MP4 output in TypeScript
+
+After a successful transcode, pass the loaded FFmpeg instance to this helper.
+The return type of `readFile` also allows text for files read with UTF-8
+encoding. Narrow the result before passing the binary data to the browser.
+
+```ts
+import type { FFmpeg } from '@ffmpeg/ffmpeg';
+
+async function readVideo(ffmpeg: FFmpeg): Promise<Blob> {
+    const data = await ffmpeg.readFile('output.mp4');
+    if (typeof data === 'string') {
+        throw new TypeError('Expected binary MP4 output');
+    }
+    return new Blob([new Uint8Array(data)], { type: 'video/mp4' });
+}
+```
+
+Use the resulting Blob with `URL.createObjectURL` and revoke the URL when
+the video element no longer needs it.
+
 ## Transcode webm to mp4 video (multi-thread)
 
 :::caution
